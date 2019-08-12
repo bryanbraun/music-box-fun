@@ -1,0 +1,139 @@
+:root {
+  /* COLORS */
+  --surface-color: #efefef;
+  --paper-color: white;
+  --orange-accent: #947000;
+
+  /* FONTS */
+  --main-font: 'Nunito', 'Helvetica Neue', sans-serif;
+
+  /* LENGTHS */
+  --sidebar-width: 250px;
+  --hole-width: 20px;
+  --default-music-length: 1600px;
+}
+
+@font-face {
+  font-family: 'Nunito';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400;
+  src:  url('/fonts/nunito-v8-latin-regular.woff') format('truetype');
+}
+
+@font-face {
+  font-family: 'Nunito';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 700;
+  src: url('/fonts/nunito-v8-latin-700.woff') format('truetype');
+}
+
+html {
+  box-sizing: border-box;
+}
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+body {
+  background: var(--surface-color);
+  font-family: var(--main-font);
+  margin: 0;
+  display: flex;
+  flex-wrap: nowrap;
+}
+
+a {
+  color: var(--orange-accent);
+}
+
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: var(--sidebar-width);
+  padding: 0 1.5rem;
+  background: white;
+  box-shadow: 0px 0px 11px -8px #444;
+}
+
+.workspace {
+  margin-left: var(--sidebar-width);
+  width: 100%;
+}
+
+.music-box-kit {
+  padding: 4rem 0;
+
+  /*
+   centers the paper, which
+   is an inline-block element
+   in order for its width to
+   depend on its content.
+  */
+  text-align: center;
+}
+
+
+.paper {
+  display: inline-block;
+  background: var(--paper-color);
+  padding: 1rem 2rem 2rem;
+  box-shadow: 0px 0px 11px -8px #444;
+}
+
+.song-title {
+  text-align: center;
+  padding: 2rem 0;
+}
+
+.note-header {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  padding: 0.75rem 0;
+  background: var(--paper-color);
+
+  /* Stack our header above the note-lines and holes */
+  z-index: 1;
+}
+
+.note-lines {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  align-items: stretch;
+  min-height: var(--default-music-length);
+}
+
+.note-line {
+  position: relative;
+  width: var(--hole-width);
+}
+
+.note-line::before {
+  display: block;
+  content: "";
+  position: absolute;
+  margin-left: auto;
+  margin-right: auto;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background-color: black
+}
+
+.hole {
+  width: var(--hole-width);
+  height: var(--hole-width);
+  border-radius: 50%;
+  background-color: var(--surface-color);
+}

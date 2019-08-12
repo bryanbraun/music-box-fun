@@ -6,16 +6,68 @@
   <title>Music Box Fun</title>
   <meta name="description" content="Create music box songs.">
 
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="/css/styles.css">
 </head>
 
 <body>
-  <div class="page">
-    <div class="paper">
-      <!-- notes will go here -->
+  <aside class="sidebar">
+    <div class="title">
+      <h1>Music Box Fun</h1>
     </div>
-  </div>
-  <script src="index.js"></script>
+    <div class="description">
+      <p>This is a 15-note programmable music box, designed to work like <a
+          href="https://www.amazon.com/Movement-Refill-Strips-Puncher-Customize/dp/B019Z6AJP0/ref=pd_sbs_201_5/147-2607630-6675016">the
+          mechanical ones</a>.</p>
+    </div>
+  </aside>
+  <main class="workspace">
+    <div class="music-box-kit">
+      <div class="music-box"></div>
+      <div class="paper">
+        <div class="song-title" contenteditable="true">Untitled Song</div>
+        <div class="note-header">
+          <div>C</div>
+          <div>D</div>
+          <div>E</div>
+          <div>F</div>
+          <div>G</div>
+          <div>A</div>
+          <div>B</div>
+          <div>C</div>
+          <div>D</div>
+          <div>E</div>
+          <div>F</div>
+          <div>G</div>
+          <div>A</div>
+          <div>B</div>
+          <div>C</div>
+        </div>
+        <div class="note-lines">
+          <div class="note-line">
+            <div class="hole"></div>
+          </div>
+          <div class="note-line"></div>
+          <div class="note-line"></div>
+          <div class="note-line"></div>
+          <div class="note-line"></div>
+          <div class="note-line"></div>
+          <div class="note-line"></div>
+          <div class="note-line"></div>
+          <div class="note-line"></div>
+          <div class="note-line"></div>
+          <div class="note-line"></div>
+          <div class="note-line"></div>
+          <div class="note-line"></div>
+          <div class="note-line"></div>
+          <div class="note-line"></div>
+        </div>
+      </div>
+    </div>
+    <div class="controls">
+      <!-- placeholder for controls -->
+    </div>
+  </main>
+  <script type="module" src="/js/main.js"></script>
 </body>
 
 </html>
