@@ -4,6 +4,7 @@
   --paper-color: white;
   --orange-accent: #947000;
   --hole-color: #444444;
+  --music-box-color: silver;
 
   /* FONTS */
   --main-font: 'Nunito', 'Helvetica Neue', sans-serif;
@@ -11,10 +12,19 @@
   /* LENGTHS */
   --sidebar-width: 250px;
   --hole-width: 16px;
+  --paper-side-margins: 2rem;
+  --music-box-height: 200px; /* the same for all music boxes */
+  --music-box-distance-from-top-of-workspace: 120px;
 
   /* We want to end the length with "1", so
      the paper ends on the next measure line */
   --default-music-length: 1601px;
+
+  /* Z-INDEX */
+  /* -1 - 10: music box */
+  --z-music-box-bottom-plate: -1;
+  --z-music-box-playhead: 2;
+  --z-music-box-side-plate: 5;
 }
 
 @font-face {
@@ -68,7 +78,8 @@ a {
   width: 100%;
 }
 
-.music-box-kit {
+.equipment {
+  position: relative;
   padding: 4rem 0;
 
   /*
@@ -80,12 +91,84 @@ a {
   text-align: center;
 }
 
+.music-box-kit {
+  display: inline-block;
+}
+
+.fifteen-note {
+  --number-of-notes: 15;
+}
+.music-box {
+  --left-box-edge-width: 30px;
+  --right-box-edge-width: 30px;
+  --left-plate-width: 16px;
+  --right-plate-width: 16px;
+  --side-plate-shift: 8px;
+  --paper-width: calc(var(--paper-side-margins) * 2 + var(--number-of-notes) * var(--hole-width));
+  --music-box-width: calc(var(--left-box-edge-width) + var(--paper-width) + var(--right-box-edge-width));
+}
+
+/* these classes inherit custom properties from the values defined above. */
+.music-box__bottom-plate {
+  position: fixed;
+  top: var(--music-box-distance-from-top-of-workspace);
+  z-index: var(--z-music-box-bottom-plate); /* positions the box underneath the paper */
+  width: var(--music-box-width);
+  height: var(--music-box-height);
+
+  background-color: var(--music-box-color);
+  transform: translateX(calc(-1 * var(--left-box-edge-width)));
+  border-radius: 12px;
+}
+
+/* currently unused... possibly deletable */
+.music-box__left-plate {
+  position: fixed;
+  top: var(--music-box-distance-from-top-of-workspace);
+  background-color: #d6d6d6;
+  z-index: var(--z-music-box-side-plate);
+
+  width: var(--left-plate-width);
+  height: var(--music-box-height);
+  transform: translateX(calc(-1 * var(--side-plate-shift)));
+  box-shadow: -2px 0px 4px -3px black;
+}
+
+/* currently unused... possibly deletable */
+.music-box__right-plate {
+  position: fixed;
+  top: var(--music-box-distance-from-top-of-workspace);
+  background-color: #d6d6d6;
+  z-index: var(--z-music-box-side-plate);
+
+  width: var(--right-plate-width);
+  height: var(--music-box-height);
+  transform: translateX(calc(var(--paper-width) - var(--left-plate-width) + var(--side-plate-shift)));
+  box-shadow: 2px 0px 4px -3px black;
+}
+
+.music-box__playhead {
+  --playhead-position: calc(var(--music-box-distance-from-top-of-workspace) + 44px);
+
+  position: fixed;
+  top: var(--playhead-position);
+  z-index: var(--z-music-box-playhead);
+
+  width: var(--paper-width);
+  height: 1px;
+
+  background-color: #ff8d00;
+}
+
 
 .paper {
   display: inline-block;
   background: var(--paper-color);
-  padding: 1rem 2rem 2rem;
+  padding: 1rem 2rem 4rem;
   box-shadow: 0px 0px 11px -8px #444;
+
+  /* allow the paper to completely move through the box */
+  margin-bottom: 80vh;
 }
 
 .song-title {
@@ -124,7 +207,7 @@ a {
 .note-line {
   position: relative;
   width: var(--hole-width);
-  background-image: url('/images/measure-lines.svg');
+  background: url('/images/measure-lines.svg');
 }
 
 .note-line:first-child {
