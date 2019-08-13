@@ -24,17 +24,16 @@
     <div class="equipment">
       <div class="music-box-kit fifteen-note">
         <div class="music-box">
+          <!-- Note to future self: if you want to adjust the music box design, do it in
+               sketch first, instead of the browser. Iterating there is so much easier,
+               given the z-index and and spacing complexities within in the music box. -->
           <div class="music-box__bottom-plate"></div>
-          <!-- Leaving these out for now because the code & design look simpler without them.
-               Promise yourself that if you want to adjust the music box design that you'll do
-               it in sketch first, instead of the browser. You'll save yourself some headaches. -->
-
-          <!-- <div class="music-box__left-plate"></div> -->
-          <!-- <div class="music-box__right-plate"></div> -->
           <div class="music-box__playhead"></div>
         </div>
         <div class="paper">
-          <div class="song-title" contenteditable="true">Untitled Song</div>
+          <form id="song-title" class="song-title">
+            <input type="text" placeholder="Untitled Song" />
+          </form>
           <div class="note-header">
             <div class="note-label">C</div>
             <div class="note-label">D</div>
