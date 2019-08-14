@@ -1,18 +1,37 @@
 import { Component } from './component.js';
 import { musicBoxStore } from '../music-box-store.js';
+import {
+  showShadowNote,
+  hideShadowNote,
+  haveShadowNoteFollowCursor,
+  punchHole
+} from './note-line-events.js';
 
-export class SongTitle extends Component {
-  constructor() {
+export class NoteLine extends Component {
+  constructor(props = {}) {
     super({
-      element: document.querySelector('#song-title')
+      props,
+      musicBoxStore,
+      renderTrigger: props.id,
+      element: document.querySelector(`#${props.id}`)
     });
   }
 
-  // This should run on initial page load only...
   render() {
-    console.log('SongTitle got rendered');
+    console.log(`Noteline ${this.props.id} was rendered`);
+    const notesArray = this.props.noteData.split(',').filter(val => val.length !== 0);
+
     this.element.innerHTML = `
-      <input type="text" placeholder="Untitled Song" value="${musicBoxStore.state.songTitle}" />
+      <div class="shadow-note"></div>
+      ${notesArray
+        .map(note => `<div class="hole" style="top: ${note}px;"></div>`)
+        .join('')}
     `;
+
+    this.element.addEventListener('mouseenter', showShadowNote);
+    this.element.addEventListener('mouseleave', hideShadowNote);
+    this.element.addEventListener('mousemove', haveShadowNoteFollowCursor);
+    this.element.querySelector('.shadow-note')
+      .addEventListener('click', punchHole);
   }
 }

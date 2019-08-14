@@ -11,8 +11,13 @@ export class SongTitle extends Component {
   // This should run on initial page load only...
   render() {
     console.log('SongTitle got rendered');
+
     this.element.innerHTML = `
       <input type="text" placeholder="Untitled Song" value="${musicBoxStore.state.songTitle}" />
     `;
+
+    this.element.addEventListener('input', event => {
+      musicBoxStore.dispatch('changeTitle', event.target.value);
+    });
   }
 }

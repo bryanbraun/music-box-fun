@@ -38,18 +38,9 @@ export class Store {
         // Set the value as we would normally
         state[key] = value;
 
-        // When an array value is added, this 'set' trap is run twice... once
-        // for adding the array value, and once when the array's 'length'
-        // property is updated internally. We don't care about this second
-        // update, so we return early when this is the case.
-        //
-        // Update: This problem goes away when I store data as CSVs.
-        // if (key === 'length') {
-        //   return true;
-        // }
-
         // Trace out to the console. This will be grouped by the related action
         console.log(`stateChange: ${key}: ${value}`);
+        console.log('Current State', self.state);
 
         // Publish the change event for the components that are listening
         self.events.publish('stateChange', self.state);
