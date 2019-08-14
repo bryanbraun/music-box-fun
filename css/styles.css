@@ -3,6 +3,7 @@
   /* brand */
   --mb-white: white;
   --mb-gray-10: #efefef;
+  --mb-gray-15: #dddddd;
   --mb-gray-20: #c0c0c0;
   --mb-gray-30: #bfbfbf;
   --mb-gray-40: #444444;
@@ -12,6 +13,7 @@
   --paper-color: var(--mb-white);
   --surface-color: var(--mb-gray-10);
   --music-box-color: var(--mb-gray-20);
+  --shadow-note-color: var(--mb-gray-15);
   --hole-color: var(--mb-gray-40);
   --link-color: var(--mb-orange-accent);
 
@@ -222,6 +224,19 @@ a {
   bottom: 0;
   width: 1px;
   background-color: black
+}
+
+.shadow-note {
+  display: none;
+
+}
+
+.shadow-note--visible {
+  display: block;
+  width: var(--hole-width);
+  height: var(--hole-width);
+  border-radius: 50%;
+  background-color: var(--shadow-note-color);
 }
 
 .hole {

@@ -25,20 +25,36 @@ export class Store {
       self.mutations = params.mutations;
     }
 
-    // Set our state to be a Proxy. We are setting the default state by
-    // checking the params and defaulting to an empty object if no default
-    // state is passed in
-    self.state = new Proxy((params.state || {}), {
-      set: function (state, key, value) {
-
+    // Make our state a Proxy, so we can publish events when state is changed.
+    // We use 'get' to recursively create Proxies on the fly for nested data.
+    const proxyHandler = {
+      get(target, key) {
+        if (typeof target[key] === 'object' && target[key] !== null) {
+          return new Proxy(target[key], proxyHandler)
+        }
+        return target[key];
+      },
+      set(state, key, value) {
         // Set the value as we would normally
         state[key] = value;
+
+        // When an array value is added, this 'set' trap is run twice... once
+        // for adding the array value, and once when the array's 'length'
+        // property is updated internally. We don't care about this second
+        // update, so we return early when this is the case.
+        //
+        // Update: This problem goes away when I store data as CSVs.
+        // if (key === 'length') {
+        //   return true;
+        // }
 
         // Trace out to the console. This will be grouped by the related action
         console.log(`stateChange: ${key}: ${value}`);
 
         // Publish the change event for the components that are listening
         self.events.publish('stateChange', self.state);
+        // Publish a new event for making updates based on changes to specific keys.
+        self.events.publish(key, value);
 
         // Give the user a little telling off if they set a value directly
         if (self.status !== 'mutation') {
@@ -50,7 +66,9 @@ export class Store {
 
         return true;
       }
-    });
+    };
+
+    self.state = new Proxy((params.state || {}), proxyHandler);
   }
 
   /**
@@ -110,11 +128,8 @@ export class Store {
     // Let anything that's watching the status know that we're mutating state
     self.status = 'mutation';
 
-    // Get a new version of the state by running the mutation and storing the result of it
-    let newState = self.mutations[mutationKey](self.state, payload);
-
-    // Merge the old and new together to create a new state and set it
-    self.state = Object.assign(self.state, newState);
+    // Get a new version of the state by running the mutation
+    self.mutations[mutationKey](self.state, payload);
 
     return true;
   }
