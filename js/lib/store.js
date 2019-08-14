@@ -43,7 +43,7 @@ export class Store {
         console.log('Current State', self.state);
 
         // Publish the change event for the components that are listening
-        self.events.publish('stateChange', self.state);
+        self.events.publish('state', self.state);
         // Publish a new event for making updates based on changes to specific keys.
         self.events.publish(key, value);
 

@@ -228,7 +228,8 @@ a {
 
 .shadow-note {
   display: none;
-
+  position: absolute;
+  top: 0;
 }
 
 .shadow-note--visible {
@@ -241,6 +242,7 @@ a {
 
 .hole {
   position: absolute;
+  top: 0;
   width: var(--hole-width);
   height: var(--hole-width);
   border-radius: 50%;
