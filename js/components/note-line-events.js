@@ -1,5 +1,8 @@
 import { musicBoxStore } from '../music-box-store.js';
 
+/**
+ * EVENT HANDLERS
+ */
 function showShadowNote(event) {
   const shadowNoteEl = event.currentTarget.querySelector('.shadow-note');
   _positionShadowNote(shadowNoteEl, event.layerY);
@@ -18,15 +21,27 @@ function haveShadowNoteFollowCursor(event) {
 }
 
 function punchHole(event) {
+  musicBoxStore.dispatch('addNote', _getNoteData(event));
+}
+
+function removeHole(event) {
+  musicBoxStore.dispatch('removeNote', _getNoteData(event));
+}
+
+/**
+ * EVENT HELPERS
+ */
+function _getNoteData(event) {
   const pitch = event.target.parentElement.id;
   const yposRegex = /translateY\((\d+)px\)/;
   const yposMatch = event.target.style.transform.match(yposRegex);
   const ypos = (yposMatch && yposMatch[1]) ? parseInt(yposMatch[1]) : console.error('Could not find note position');
 
-  musicBoxStore.dispatch('addNote', { pitch, ypos });
+  return { pitch, ypos };
 }
 
 function _positionShadowNote(noteEl, yPosition) {
+  // TODO: we should probably cache this value, since this is code is run a ton on hover.
   const holeWidth = parseInt(
     getComputedStyle(document.documentElement).getPropertyValue('--hole-width').trim()
   );
@@ -42,4 +57,5 @@ export {
   hideShadowNote,
   haveShadowNoteFollowCursor,
   punchHole,
+  removeHole,
 };

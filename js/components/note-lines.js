@@ -5,7 +5,6 @@ import { NoteLine } from './note-line.js';
 export class NoteLines extends Component {
   constructor() {
     super({
-      // Only render this on pageLoad, for now.
       element: document.querySelector('#note-lines')
     });
   }

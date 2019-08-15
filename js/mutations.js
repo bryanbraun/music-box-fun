@@ -14,5 +14,13 @@ export const mutations = {
       .sort((a, b) => Number(a) - Number(b))
       .join(',');
     state.songData[pitch] = newPitchString;
+  },
+  removeNote(state, payload) {
+    const { pitch, ypos } = payload;
+    const newPitchString = state.songData[pitch]
+      .split(',')
+      .filter(val => val !== ypos.toString())
+      .join(',');
+    state.songData[pitch] = newPitchString;
   }
 };

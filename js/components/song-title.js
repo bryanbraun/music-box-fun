@@ -8,7 +8,6 @@ export class SongTitle extends Component {
     });
   }
 
-  // This should run on initial page load only...
   render() {
     console.log('SongTitle got rendered');
 

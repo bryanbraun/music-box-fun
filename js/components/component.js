@@ -4,15 +4,14 @@ import { musicBoxStore } from '../music-box-store.js';
 //
 // 1. Assigning props for re-use outside the parent component's constructor
 // 2. An element to attach to when rendering
-// 3. Automatic re-rendering, triggered by a user-defined renderEvent
+// 3. Automatic re-rendering, triggered by a user-defined renderTrigger
 //
 // If we don't need these features, we could skip inheriting from this base component
 // and use a functional component instead.
 export class Component {
   constructor(params = {}) {
-    let renderEvent;
 
-    // Allows us to access props outside the constructor
+    // Allows us to access props outside the constructor.
     this.props = params.props;
 
     // A default render function, just in case the inheriting component doesn't set one.

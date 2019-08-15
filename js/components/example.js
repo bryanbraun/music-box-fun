@@ -14,7 +14,7 @@ export class Example extends Component {
       //   "state" (any change to state)
       //   "songTitle" (any change to the songTitle)
       //   (any other key from state.js, like "songData" or "C4")
-      renderTrigger: "state",
+      renderTrigger: 'state',
 
       // Which DOM element does this component correspond to? Query it here so
       // We can reference it in our render function below.
