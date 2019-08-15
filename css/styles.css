@@ -152,7 +152,7 @@ a {
 }
 
 .song-title {
-  padding: 2rem 0;
+  padding: 2rem 0 2.75rem;
 }
 
 .song-title input {
@@ -173,11 +173,12 @@ a {
   justify-content: space-between;
   position: sticky;
   top: 0;
-  padding: 0.75rem 0;
   background: rgba(255, 255, 255, 0.95);
-
   /* Stack our header above the note-lines and holes */
   z-index: 1;
+
+  /* TODO: Add more padding around this header when it sticks. If nothing else, we could
+    do it with this https://developers.google.com/web/updates/2017/09/sticky-headers */
 }
 
 .note-label {
@@ -197,21 +198,23 @@ a {
 .note-line {
   position: relative;
   width: var(--hole-width);
-  background: url('/images/measure-lines.svg');
+  background-image: url('/images/measure-lines.svg');
+  background-position: 0 var(--hole-width);
 }
 
 .note-line:first-child {
   background-image: url('/images/measure-lines.svg');
-  background-position: calc(var(--hole-width) / 2) 0;
+  background-position: calc(var(--hole-width) / 2) var(--hole-width);
   background-repeat: repeat-y;
 }
 
 .note-line:last-child {
   background-image: url('/images/measure-lines.svg');
-  background-position: right calc(var(--hole-width) / 2) top 0;
+  background-position: right calc(var(--hole-width) / 2) top var(--hole-width);
   background-repeat: repeat-y;
 }
 
+/* The vertical line running down the center of the column */
 .note-line::before {
   display: block;
   content: "";
@@ -220,7 +223,7 @@ a {
   margin-right: auto;
   left: 0;
   right: 0;
-  top: 0;
+  top: var(--hole-width);
   bottom: 0;
   width: 1px;
   background-color: black
@@ -228,16 +231,18 @@ a {
 
 .shadow-note {
   display: none;
+  width: var(--hole-width);
+  height: var(--hole-width);
+  border-radius: 50%;
+  background-color: var(--shadow-note-color);
+
+  /* prevent these notes from stacking in columns */
   position: absolute;
   top: 0;
 }
 
 .shadow-note--visible {
   display: block;
-  width: var(--hole-width);
-  height: var(--hole-width);
-  border-radius: 50%;
-  background-color: var(--shadow-note-color);
 }
 
 .hole {

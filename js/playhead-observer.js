@@ -1,6 +1,7 @@
 let playheadObserver;
 
 function setupPlayheadObserver() {
+  const synth = new Tone.Synth().toMaster();
 
   // We get the playhead position by querying the playhead directly (instead of looking
   // up the CSS variable) because the variable uses calc which makes it difficult to
@@ -14,7 +15,7 @@ function setupPlayheadObserver() {
   const options = {
     root: null,
     rootMargin: `-${playheadPosition}px 0px 0px 0px`,
-    threshold: 1
+    threshold: 0.5, // trigger event when 50% of the note crosses the threshold.
   }
 
   const isAtPlayhead = (objectPositionTop) => {
@@ -25,6 +26,7 @@ function setupPlayheadObserver() {
   const intersectionHandler = (entries, observer) => {
     entries.forEach(entry => {
       if (isAtPlayhead(entry.boundingClientRect.top)) {
+        synth.triggerAttackRelease(entry.target.parentElement.id, '8n');
         console.log(`A ${entry.target.parentElement.id} is at the playhead`);
       }
     });

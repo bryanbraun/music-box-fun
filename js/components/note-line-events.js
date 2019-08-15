@@ -40,16 +40,21 @@ function _getNoteData(event) {
   return { pitch, ypos };
 }
 
-function _positionShadowNote(noteEl, yPosition) {
+function _positionShadowNote(shadowNoteEl, yPosition) {
   // TODO: we should probably cache this value, since this is code is run a ton on hover.
   const holeWidth = parseInt(
     getComputedStyle(document.documentElement).getPropertyValue('--hole-width').trim()
   );
 
+  // Prevent users from positioning notes such that they are clipped by the top edge of the note line.
+  if (yPosition < (holeWidth / 2)) {
+    return false;
+  }
+
   // Note: layerY is supported across browsers, but it's technically
   // not a standard, so this code may fail at some point in the future.
   // See: https://developer.mozilla.org/en-US/docs/Web/API/UIEvent/layerY
-  noteEl.style = `transform: translateY(${yPosition - (holeWidth / 2)}px)`;
+  shadowNoteEl.style = `transform: translateY(${yPosition - (holeWidth / 2)}px)`;
 }
 
 export {
