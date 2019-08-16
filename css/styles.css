@@ -11,12 +11,14 @@
   --mb-orange-accent: #947000;
 
   /* functional */
+  --sidebar-color: var(--mb-white);
   --paper-color: var(--mb-white);
   --surface-color: var(--mb-gray-10);
   --music-box-color: var(--mb-gray-30);
   --shadow-note-color: var(--mb-gray-20);
   --hole-color: var(--mb-gray-60);
   --link-color: var(--mb-orange-accent);
+  --discrete-text: var(--mb-gray-40);
 
   /* FONTS */
   --main-font: 'Nunito', 'Helvetica Neue', sans-serif;
@@ -75,6 +77,18 @@ a {
   color: var(---link-color);
 }
 
+.title-box {
+  margin: 1.25rem 0;
+}
+.title {
+  margin: 0;
+}
+.alpha {
+  color: var(--discrete-text);
+  font-size: 12px;
+  text-transform: uppercase;
+}
+
 .sidebar {
   position: fixed;
   top: 0;
@@ -82,7 +96,7 @@ a {
   bottom: 0;
   width: var(--sidebar-width);
   padding: 0 1.5rem;
-  background: white;
+  background: var(--sidebar-color);
   box-shadow: 0px 0px 11px -8px #444;
 }
 
@@ -237,6 +251,7 @@ a {
   height: var(--hole-width);
   border-radius: 50%;
   background-color: var(--shadow-note-color);
+  cursor: pointer;
 
   /* prevent these notes from stacking in columns */
   position: absolute;
@@ -254,6 +269,7 @@ a {
   height: var(--hole-width);
   border-radius: 50%;
   background-color: var(--hole-color);
+  cursor: pointer;
 }
 
 .controls {
@@ -278,4 +294,5 @@ a {
 .speed-slider {
   display: block;
   padding-top: 1rem;
+  cursor: pointer;
 }

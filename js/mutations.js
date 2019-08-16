@@ -28,6 +28,8 @@ export const mutations = {
   },
   toggleScrolling(state, payload) {
     state.appState.isScrolling = payload;
+  },
+  loadSong(state, payload) {
+    state.songState = payload;
   }
-
 };

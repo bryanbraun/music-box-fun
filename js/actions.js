@@ -14,5 +14,8 @@ export const actions = {
   },
   toggleScrolling(context, payload) {
     context.commit('toggleScrolling', payload);
+  },
+  loadSong(context, payload) {
+    context.commit('loadSong', payload);
   }
 };
