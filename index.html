@@ -103,7 +103,19 @@
       </div>
     </div>
     <div class="controls">
-      <!-- placeholder for controls -->
+      <div id="play-button-wrapper">
+        <button class="play-button" aria-pressed="false" aria-label="Play" role="button">
+          <svg id="play-svg" width="100%" viewBox="0 0 58 58" xmlns="http://www.w3.org/2000/svg">
+            <path
+              d="M29 58C12.984 58 0 45.016 0 29S12.984 0 29 0s29 12.984 29 29-12.984 29-29 29zm12.193-27.292a2 2 0 0 0 0-3.416L24.04 16.85A2 2 0 0 0 21 18.56V39.44a2 2 0 0 0 3.04 1.709l17.153-10.442z"
+              fill="#444" fill-rule="evenodd" />
+          </svg>
+        </button>
+      </div>
+      <label id="speed-slider" class="speed-slider">
+        <div>Play Speed</div>
+        <input type="range" min="0" max="10" value="5" />
+      </label>
     </div>
   </main>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/13.0.1/Tone.min.js"></script>

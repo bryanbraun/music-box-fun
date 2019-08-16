@@ -6,8 +6,8 @@ import { musicBoxStore } from '../music-box-store.js';
 // 2. An element to attach to when rendering
 // 3. Automatic re-rendering, triggered by a user-defined renderTrigger
 //
-// If we don't need these features, we could skip inheriting from this base component
-// and use a functional component instead.
+// If we don't need to subscribe to events, we could possibly skip inheriting from this
+// base component and use a functional component instead.
 export class Component {
   constructor(params = {}) {
 

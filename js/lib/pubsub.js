@@ -13,7 +13,6 @@ export class PubSub {
    * @memberof PubSub
    */
   subscribe(event, callback) {
-
     let self = this;
 
     // If there's not already an event with this name set in our collection

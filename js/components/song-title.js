@@ -12,7 +12,7 @@ export class SongTitle extends Component {
     console.log('SongTitle got rendered');
 
     this.element.innerHTML = `
-      <input type="text" placeholder="Untitled Song" value="${musicBoxStore.state.songTitle}" />
+      <input type="text" placeholder="Untitled Song" value="${musicBoxStore.state.songState.songTitle}" />
     `;
 
     this.element.addEventListener('input', event => {

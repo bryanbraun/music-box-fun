@@ -3,18 +3,19 @@
   /* brand */
   --mb-white: white;
   --mb-gray-10: #efefef;
-  --mb-gray-15: #dddddd;
-  --mb-gray-20: #c0c0c0;
-  --mb-gray-30: #bfbfbf;
-  --mb-gray-40: #444444;
+  --mb-gray-20: #dddddd;
+  --mb-gray-25: #cecece;
+  --mb-gray-30: #c0c0c0;
+  --mb-gray-40: #bfbfbf;
+  --mb-gray-60: #444444;
   --mb-orange-accent: #947000;
 
   /* functional */
   --paper-color: var(--mb-white);
   --surface-color: var(--mb-gray-10);
-  --music-box-color: var(--mb-gray-20);
-  --shadow-note-color: var(--mb-gray-15);
-  --hole-color: var(--mb-gray-40);
+  --music-box-color: var(--mb-gray-30);
+  --shadow-note-color: var(--mb-gray-20);
+  --hole-color: var(--mb-gray-60);
   --link-color: var(--mb-orange-accent);
 
   /* FONTS */
@@ -22,6 +23,7 @@
 
   /* LENGTHS */
   --sidebar-width: 250px;
+  --controls-width: 175px;
   --hole-width: 16px;
   --paper-side-margins: 2rem;
   --music-box-height: 200px; /* the same for all music boxes */
@@ -30,7 +32,7 @@
 
   /* We want to end the length with "1", so
      the paper ends on the next measure line */
-  --default-music-length: 1601px;
+  --default-music-length: 1617px;
 
   /* Z-INDEX */
   /* -1 - 10: music box */
@@ -86,6 +88,7 @@ a {
 
 .workspace {
   margin-left: var(--sidebar-width);
+  margin-right: var(--controls-width);
   width: 100%;
 }
 
@@ -140,7 +143,6 @@ a {
   background-color: #ff8d00;
 }
 
-
 .paper {
   display: inline-block;
   background: var(--paper-color);
@@ -160,7 +162,7 @@ a {
   border-left: 0;
   border-right: 0;
   border-top: 0;
-  border-bottom: 1px solid var(--mb-gray-30);
+  border-bottom: 1px solid var(--mb-gray-40);
   font-size: 14px;
   width: calc((var(--number-of-notes) - 1) * var(--hole-width));
   padding-bottom: 2px;
@@ -252,4 +254,28 @@ a {
   height: var(--hole-width);
   border-radius: 50%;
   background-color: var(--hole-color);
+}
+
+.controls {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: var(--controls-width);
+  margin: 1rem 0;
+  padding: 1rem;
+  border-left: 1px solid var(--mb-gray-25);
+}
+
+.play-button {
+  width: 100%;
+  border: none;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.speed-slider {
+  display: block;
+  padding-top: 1rem;
 }

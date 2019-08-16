@@ -8,5 +8,11 @@ export const actions = {
   },
   removeNote(context, payload) {
     context.commit('removeNote', payload);
+  },
+  changeSpeed(context, payload) {
+    context.commit('changeSpeed', payload);
+  },
+  toggleScrolling(context, payload) {
+    context.commit('toggleScrolling', payload);
   }
 };

@@ -20,7 +20,7 @@ export class NoteLine extends Component {
 
   render() {
     console.log(`Noteline ${this.props.id} was rendered`);
-    const notesArray = musicBoxStore.state.songData[this.props.id]
+    const notesArray = musicBoxStore.state.songState.songData[this.props.id]
       .split(',')
       .filter(val => val.length !== 0);
 

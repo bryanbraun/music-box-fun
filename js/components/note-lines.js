@@ -14,13 +14,13 @@ export class NoteLines extends Component {
     console.log('Notelines got rendered');
 
     this.element.innerHTML = `
-      ${Object.keys(musicBoxStore.state.songData)
+      ${Object.keys(musicBoxStore.state.songState.songData)
         .map(pitchId => `<div class="note-line" id="${pitchId}"></div>`)
         .join('')}
     `;
 
     // Attach the new NoteLine components to the markup we just added.
-    Object.entries(musicBoxStore.state.songData).forEach(([id, noteData]) => {
+    Object.entries(musicBoxStore.state.songState.songData).forEach(([id, noteData]) => {
       new NoteLine({ id, noteData }).render();
     });
   }
