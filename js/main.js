@@ -6,7 +6,9 @@ import { SpeedSlider } from './components/speed-slider.js';
 
 import { musicBoxStore } from './music-box-store.js';
 import { setupPlayheadObserver } from './playhead-observer.js';
+import { setupKeyboardEvents } from './keyboard-events.js';
 import { subscribeUrlToStateChanges, getStateFromUrlAsync } from './components/url-manager.js';
+import './vendor/outline.js';
 
 getStateFromUrlAsync().then(urlState => {
   // We load URL song data into state first, before we have any listeners
@@ -30,15 +32,4 @@ getStateFromUrlAsync().then(urlState => {
   // Do this at the end, so rendering things doesn't accidentally trigger url changes
   // (I don't think it would, but maybe!)
   subscribeUrlToStateChanges();
-});
-
-// Here, we can query dom elements and add event listeners on the initial page load,
-// for things that won't don't rely on state, if we want. If it gets too cluttered,
-// I'll move it to another file.
-document.addEventListener('keydown', event => {
-  const isInsideTextInput = (event.target.tagName === 'INPUT');
-  if (!isInsideTextInput && event.keyCode === 32) {
-    event.preventDefault(); // Prevent default space bar page scroll.
-    musicBoxStore.dispatch('toggleScrolling', !musicBoxStore.state.appState.isScrolling);
-  }
 });
