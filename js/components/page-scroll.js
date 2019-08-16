@@ -17,7 +17,6 @@ export class PageScroll extends Component {
     const millisecondsPerChange = 10 + -musicBoxStore.state.songState.playSpeed;
     window.scrollBy(0, 1);
     this.timeoutId = window.setTimeout(this.startScrolling, millisecondsPerChange);
-    // console.log(`the timeout id is: ${this.timeoutId}`);
   };
 
   render() {

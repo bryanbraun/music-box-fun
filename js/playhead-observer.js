@@ -1,7 +1,22 @@
 let playheadObserver;
 
 function setupPlayheadObserver() {
-  const synth = new Tone.Synth().toMaster();
+  // I landed on these values by tinkering on https://tonejs.github.io/examples/simpleSynth.html
+  // I'm sure I could get better ones somehow. The beepbox music box notes sound perfect.
+  const synthOptions = {
+    oscillator: {
+      type: 'sine'
+    },
+    envelope: {
+      attack: 0.01,
+      decay: 0.16,
+      sustain: 0.1,
+      release: 1.24
+    }
+  };
+
+  const synth = new Tone.PolySynth(10, Tone.Synth).toMaster();
+  synth.set(synthOptions);
 
   // We get the playhead position by querying the playhead directly (instead of looking
   // up the CSS variable) because the variable uses calc which makes it difficult to
