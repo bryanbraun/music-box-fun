@@ -15,6 +15,12 @@ export const actions = {
   toggleScrolling(context, payload) {
     context.commit('toggleScrolling', payload);
   },
+  showAudioDisabledMessage(context, payload) {
+    context.commit('showAudioDisabledMessage', payload);
+  },
+  resolveAudioDisabledMessage(context, payload) {
+    context.commit('resolveAudioDisabledMessage', payload);
+  },
   loadSong(context, payload) {
     context.commit('loadSong', payload);
   }

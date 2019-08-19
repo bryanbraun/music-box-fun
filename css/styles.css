@@ -4,7 +4,6 @@
   --mb-white: white;
   --mb-gray-10: #efefef;
   --mb-gray-20: #dddddd;
-  --mb-gray-25: #cecece;
   --mb-gray-30: #c0c0c0;
   --mb-gray-40: #bfbfbf;
   --mb-gray-60: #444444;
@@ -40,6 +39,17 @@
   /* -1 - 10: music box */
   --z-music-box-bottom-plate: -1;
   --z-music-box-playhead: 5;
+
+  /* BREAKPOINTS */
+  /* These aren't a thing! See https://stackoverflow.com/a/40723269/1154642
+     I'm going to put them here anyway, for documentation. If I ever need
+     to change one of these variables, I'll just find/replace the pixel value.
+     I'll also try to keep the pixel values unique, so it's unlikely that any
+     other properties will inadvertantly use them.
+
+  --one-to-two-columns: 603px;
+  --two-to-three-columns: 819px;
+  */
 }
 
 @font-face {
@@ -100,10 +110,27 @@ a {
   box-shadow: 0px 0px 11px -8px #444;
 }
 
+@media (max-width: 819px) { /* --two-to-three-columns */
+  .sidebar {
+    display: none;
+  }
+}
+
 .workspace {
   margin-left: var(--sidebar-width);
   margin-right: var(--controls-width);
   width: 100%;
+}
+
+@media (max-width: 819px) { /* --two-to-three-columns */
+  .workspace {
+    margin-left: 0;
+  }
+}
+@media (max-width: 603px) { /* --one-to-two-columns */
+  .workspace {
+    margin-right: 0;
+  }
 }
 
 .equipment {
@@ -272,6 +299,29 @@ a {
   cursor: pointer;
 }
 
+.audio-disabled-message {
+  display: block;
+  position: fixed;
+  top: 0;
+  right: var(--controls-width);
+  width: 156px; /* a magic number that fits our text well */
+  opacity: 1;
+  font-size: 12px;
+  text-align: left;
+  padding: 1rem;
+  background: var(--surface-color);
+}
+.audio-disabled-message--hidden {
+  display: none;
+}
+.audio-disabled-message--audio-enabled {
+  opacity: 0;
+  transition-property: opacity;
+  transition-delay: 1.2s;
+  transition-duration: 1.5s;
+  transition-timing-function: linear;
+}
+
 .controls {
   position: fixed;
   top: 0;
@@ -280,7 +330,14 @@ a {
   width: var(--controls-width);
   margin: 1rem 0;
   padding: 1rem;
-  border-left: 1px solid var(--mb-gray-25);
+  border-left: 1px dashed var(--mb-gray-30);
+  background: var(--surface-color);
+}
+
+@media (max-width: 603px) { /* --one-to-two-columns */
+  .controls {
+    display: none;
+  }
 }
 
 .play-button {

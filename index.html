@@ -5,6 +5,7 @@
   <meta charset="UTF-8" />
   <title>Music Box Fun</title>
   <meta name="description" content="Create music box songs.">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=PYeynP29wQ">
   <link rel="stylesheet" href="/css/styles.css">
@@ -102,6 +103,9 @@
           </div>
         </div>
       </div>
+      <div id="audio-disabled-message" class="audio-disabled-message audio-disabled-message--hidden">
+        <strong>Not hearing anything?</strong><br>Your browser disabled the sound. Click anywhere to enable it.
+      </div>
     </div>
     <div class="controls">
       <div id="play-button-wrapper">
@@ -123,6 +127,9 @@
   </main>
   <script src="https://cdn.jsdelivr.net/npm/tone@13.4.9/build/Tone.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/json-url@2.4.2/dist/browser/json-url-single.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/classnames@2.2.6/index.min.js"></script>
+  <script defer src="/js/vendor/outline.js"></script>
+
   <script type="module" src="/js/main.js"></script>
 </body>
 

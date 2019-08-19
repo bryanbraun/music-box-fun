@@ -3,12 +3,12 @@ import { SongTitle } from './components/song-title.js';
 import { NoteLines } from './components/note-lines.js';
 import { PlayButton } from './components/play-button.js';
 import { SpeedSlider } from './components/speed-slider.js';
+import { AudioDisabledMessage } from './components/audio-disabled-message.js';
 
 import { musicBoxStore } from './music-box-store.js';
 import { setupPlayheadObserver } from './playhead-observer.js';
-import { setupKeyboardEvents } from './keyboard-events.js';
+import { setupKeyboardEvents, enableAudioContextForRestrictiveBrowsers } from './document.js';
 import { subscribeUrlToStateChanges, getStateFromUrlAsync } from './components/url-manager.js';
-import './vendor/outline.js';
 
 getStateFromUrlAsync().then(urlState => {
   // We load URL song data into state first, before we have any listeners
@@ -28,8 +28,12 @@ getStateFromUrlAsync().then(urlState => {
   new NoteLines().render();
   new PlayButton().render();
   new SpeedSlider().render();
+  new AudioDisabledMessage().render();
 
   // Do this at the end, so rendering things doesn't accidentally trigger url changes
   // (I don't think it would, but maybe!)
   subscribeUrlToStateChanges();
 });
+
+setupKeyboardEvents();
+enableAudioContextForRestrictiveBrowsers();

@@ -22,9 +22,12 @@ export class Component {
       this.element = params.element;
     }
 
-    // If a renderTrigger event name is passed, subscribe re-renders to that event.
+    // If one or more renderTrigger event names are passed, subscribe re-renders to those events.
     if (params.renderTrigger) {
-      musicBoxStore.events.subscribe(params.renderTrigger, () => this.render());
+      const renderTriggerArray = [].concat(params.renderTrigger);
+      renderTriggerArray.forEach(renderTrigger => {
+        musicBoxStore.events.subscribe(renderTrigger, () => this.render());
+      });
     }
   }
 }

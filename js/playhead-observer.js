@@ -1,3 +1,5 @@
+import { musicBoxStore } from './music-box-store.js';
+
 let playheadObserver;
 
 function setupPlayheadObserver() {
@@ -40,10 +42,19 @@ function setupPlayheadObserver() {
 
   const intersectionHandler = (entries, observer) => {
     entries.forEach(entry => {
-      if (isAtPlayhead(entry.boundingClientRect.top)) {
-        synth.triggerAttackRelease(entry.target.parentElement.id, '8n');
-        console.log(`A ${entry.target.parentElement.id} is at the playhead`);
+      if (!isAtPlayhead(entry.boundingClientRect.top)) {
+        return;
       }
+
+      console.log(`A ${entry.target.parentElement.id} is at the playhead`);
+
+      if (Tone.context.state !== 'running' &&
+        !musicBoxStore.state.appState.isAudioDisabledMessageVisible) {
+        musicBoxStore.dispatch('showAudioDisabledMessage', true);
+        return;
+      }
+
+      synth.triggerAttackRelease(entry.target.parentElement.id, '8n');
     });
   }
 

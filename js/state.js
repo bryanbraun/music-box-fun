@@ -9,6 +9,8 @@
 export const state = {
   appState: {
     isScrolling: false,
+    isAudioDisabledMessageVisible: false,
+    isAudioDisabledMessageResolved: false,
   },
   songState: {
     songTitle: '',

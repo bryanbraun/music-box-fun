@@ -29,6 +29,12 @@ export const mutations = {
   toggleScrolling(state, payload) {
     state.appState.isScrolling = payload;
   },
+  showAudioDisabledMessage(state, payload) {
+    state.appState.isAudioDisabledMessageVisible = payload;
+  },
+  resolveAudioDisabledMessage(state, payload) {
+    state.appState.isAudioDisabledMessageResolved = payload;
+  },
   loadSong(state, payload) {
     state.songState = payload;
   }
