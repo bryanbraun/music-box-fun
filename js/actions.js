@@ -1,27 +1,38 @@
-// @TODO: make sure I'm using these properly. They seem pretty useless right now...
 export const actions = {
-  changeTitle(context, payload) {
-    context.commit('changeTitle', payload);
+  changeTitle(state, payload) {
+    state.songState.songTitle = payload;
   },
-  addNote(context, payload) {
-    context.commit('addNote', payload);
+  addNote(state, payload) {
+    const { pitch, ypos } = payload;
+    const newPitchString = state.songState.songData[pitch]
+      .split(',')
+      .concat(ypos)
+      .filter(val => val.length !== 0)
+      .sort((a, b) => Number(a) - Number(b))
+      .join(',');
+    state.songState.songData[pitch] = newPitchString;
   },
-  removeNote(context, payload) {
-    context.commit('removeNote', payload);
+  removeNote(state, payload) {
+    const { pitch, ypos } = payload;
+    const newPitchString = state.songState.songData[pitch]
+      .split(',')
+      .filter(val => val !== ypos.toString())
+      .join(',');
+    state.songState.songData[pitch] = newPitchString;
   },
-  changeSpeed(context, payload) {
-    context.commit('changeSpeed', payload);
+  changeSpeed(state, payload) {
+    state.songState.playSpeed = payload;
   },
-  toggleScrolling(context, payload) {
-    context.commit('toggleScrolling', payload);
+  toggleScrolling(state, payload) {
+    state.appState.isScrolling = payload;
   },
-  showAudioDisabledMessage(context, payload) {
-    context.commit('showAudioDisabledMessage', payload);
+  showAudioDisabledMessage(state, payload) {
+    state.appState.isAudioDisabledMessageVisible = payload;
   },
-  resolveAudioDisabledMessage(context, payload) {
-    context.commit('resolveAudioDisabledMessage', payload);
+  resolveAudioDisabledMessage(state, payload) {
+    state.appState.isAudioDisabledMessageResolved = payload;
   },
-  loadSong(context, payload) {
-    context.commit('loadSong', payload);
+  loadSong(state, payload) {
+    state.songState = payload;
   }
 };
