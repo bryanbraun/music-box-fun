@@ -14,13 +14,13 @@ export class Component {
     // Allows us to access props outside the constructor.
     this.props = params.props;
 
-    // A default render function, just in case the inheriting component doesn't set one.
-    this.render = this.render || function () { };
-
     // Store the HTML element to attach the render to if set.
     if (params.hasOwnProperty('element')) {
       this.element = params.element;
     }
+
+    // A default render function, just in case the inheriting component doesn't set one.
+    this.render = this.render || function () { };
 
     // If one or more renderTrigger event names are passed, subscribe re-renders to those events.
     if (params.renderTrigger) {

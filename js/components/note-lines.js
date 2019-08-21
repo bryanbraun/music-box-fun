@@ -11,17 +11,17 @@ export class NoteLines extends Component {
 
   // This should run on initial page load only, to start.
   render() {
-    console.log('Notelines got rendered');
+    const noteLinesData = musicBoxStore.state.songState.songData;
 
     this.element.innerHTML = `
-      ${Object.keys(musicBoxStore.state.songState.songData)
+      ${Object.keys(noteLinesData)
         .map(pitchId => `<div class="note-line" id="${pitchId}"></div>`)
         .join('')}
     `;
 
     // Attach the new NoteLine components to the markup we just added.
-    Object.entries(musicBoxStore.state.songState.songData).forEach(([id, noteData]) => {
-      new NoteLine({ id, noteData }).render();
+    Object.entries(noteLinesData).forEach(([id, noteData]) => {
+      new NoteLine({ id }).render();
     });
   }
 }
