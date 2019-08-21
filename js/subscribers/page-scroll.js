@@ -1,4 +1,4 @@
-import { Component } from './component.js';
+import { Component } from '../components/component.js';
 import { musicBoxStore } from '../music-box-store.js';
 
 // A simple non-visual component that starts/stops page scrolling when the play state is toggled

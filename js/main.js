@@ -1,4 +1,4 @@
-import { PageScroll } from './components/page-scroll.js';
+import { PageScroll } from './subscribers/page-scroll.js';
 import { SongTitle } from './components/song-title.js';
 import { NoteLines } from './components/note-lines.js';
 import { PlayButton } from './components/play-button.js';
@@ -7,8 +7,9 @@ import { AudioDisabledMessage } from './components/audio-disabled-message.js';
 
 import { musicBoxStore } from './music-box-store.js';
 import { setupPlayheadObserver } from './playhead-observer.js';
-import { setupKeyboardEvents, enableAudioContextForRestrictiveBrowsers } from './document.js';
-import { urlManager } from './components/url-manager.js';
+import { setupAudioContextFallbackForRestrictiveBrowsers } from './subscribers/audio-context.js';
+import { setupKeyboardEvents } from './subscribers/keyboard-manager.js';
+import { urlManager } from './subscribers/url-manager.js';
 
 urlManager.getStateFromUrlAsync().then(urlState => {
   // We load URL song data into state first, before we have any listeners
@@ -38,4 +39,4 @@ urlManager.getStateFromUrlAsync().then(urlState => {
 });
 
 setupKeyboardEvents();
-enableAudioContextForRestrictiveBrowsers();
+setupAudioContextFallbackForRestrictiveBrowsers();
