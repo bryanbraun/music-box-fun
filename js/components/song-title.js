@@ -9,8 +9,6 @@ export class SongTitle extends Component {
   }
 
   render() {
-    console.log('SongTitle got rendered');
-
     this.element.innerHTML = `
       <input type="text" placeholder="Untitled Song" value="${musicBoxStore.state.songState.songTitle}" />
     `;

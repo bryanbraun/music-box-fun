@@ -10,8 +10,6 @@ export class AudioDisabledMessage extends Component {
   }
 
   render() {
-    console.log('AudioDisabledMessage was rendered');
-
     this.element.className = classNames('audio-disabled-message', {
       'audio-disabled-message--hidden': !musicBoxStore.state.appState.isAudioDisabledMessageVisible,
       'audio-disabled-message--audio-enabled': musicBoxStore.state.appState.isAudioDisabledMessageResolved,

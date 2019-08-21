@@ -9,8 +9,6 @@ export class SpeedSlider extends Component {
   }
 
   render() {
-    console.log('Speed Slider was rendered');
-
     this.element.innerHTML = `
       <div>Play Speed</div>
       <input type="range" min="-5" max="5" value="${musicBoxStore.state.songState.playSpeed}" />
