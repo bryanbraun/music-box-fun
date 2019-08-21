@@ -1,4 +1,3 @@
-import { PageScroll } from './subscribers/page-scroll.js';
 import { SongTitle } from './components/song-title.js';
 import { NoteLines } from './components/note-lines.js';
 import { PlayButton } from './components/play-button.js';
@@ -10,6 +9,7 @@ import { setupPlayheadObserver } from './playhead-observer.js';
 import { setupAudioContextFallbackForRestrictiveBrowsers } from './subscribers/audio-context.js';
 import { setupKeyboardEvents } from './subscribers/keyboard-manager.js';
 import { urlManager } from './subscribers/url-manager.js';
+import { pageScroller } from './subscribers/page-scroller.js';
 
 urlManager.getStateFromUrlAsync().then(urlState => {
   // We load URL song data into state first, before we have any listeners
@@ -25,12 +25,13 @@ urlManager.getStateFromUrlAsync().then(urlState => {
   setupPlayheadObserver();
 
   // Initial page render
-  new PageScroll().render();
   new SongTitle().render();
   new NoteLines().render();
   new PlayButton().render();
   new SpeedSlider().render();
   new AudioDisabledMessage().render();
+
+  pageScroller.subscribeToScrollState();
 
   // Do this at the end, so rendering things doesn't accidentally trigger url changes
   // (I don't think it would, but maybe!)
