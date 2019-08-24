@@ -3,6 +3,7 @@ import { NoteLines } from './components/note-lines.js';
 import { PlayButton } from './components/play-button.js';
 import { SpeedSlider } from './components/speed-slider.js';
 import { AudioDisabledMessage } from './components/audio-disabled-message.js';
+import { PageTitle } from './components/page-title.js';
 
 import { musicBoxStore } from './music-box-store.js';
 import { setupPlayheadObserver } from './playhead-observer.js';
@@ -30,6 +31,7 @@ urlManager.getStateFromUrlAsync().then(urlState => {
   new PlayButton().render();
   new SpeedSlider().render();
   new AudioDisabledMessage().render();
+  new PageTitle().render();
 
   pageScroller.subscribeToScrollState();
 
