@@ -12,6 +12,10 @@ export const state = {
     isAudioDisabledMessageVisible: false,
     isAudioDisabledMessageResolved: false,
   },
+
+  // DANGER! CHANGING THE STRUCTURE OR KEYS OF THE OBJECT BELOW COULD
+  // BREAK LINKS TO EXISTING SONGS. MAKE SURE YOUR CHANGES ARE VERSIONED
+  // OR BACKWARDS COMPATIBLE. SEE "/DOCS/URL-DATA.MD" FOR DETAILS.
   songState: {
     songTitle: '',
     playSpeed: 0,
@@ -34,3 +38,28 @@ export const state = {
     }
   }
 };
+
+
+// The keys in songState (above) can be minified before being compressed
+// and saved in the URL, making the URLs shorter. This single-level map
+// helps by providing a one-character alt-name for everything in songState.
+export const minifyMap = {
+  songTitle: 'a',
+  playSpeed: 'b',
+  songData: 'c',
+  C4: 'd',
+  D4: 'e',
+  E4: 'f',
+  F4: 'g',
+  G4: 'h',
+  A4: 'i',
+  B4: 'j',
+  C5: 'k',
+  D5: 'l',
+  E5: 'm',
+  F5: 'n',
+  G5: 'o',
+  A5: 'p',
+  B5: 'q',
+  C6: 'r',
+}
