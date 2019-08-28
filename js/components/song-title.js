@@ -14,7 +14,7 @@ export class SongTitle extends Component {
     `;
 
     this.element.addEventListener('input', event => {
-      musicBoxStore.dispatch('changeTitle', event.target.value);
+      musicBoxStore.setState('songState.songTitle', event.target.value);
     });
   }
 }

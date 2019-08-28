@@ -4,7 +4,7 @@ import { musicBoxStore } from '../music-box-store.js';
 export class AudioDisabledMessage extends Component {
   constructor() {
     super({
-      renderTrigger: ['isAudioDisabledMessageVisible', 'isAudioDisabledMessageResolved'],
+      renderTrigger: ['appState.isAudioDisabledMessageVisible', 'appState.isAudioDisabledMessageResolved'],
       element: document.querySelector('#audio-disabled-message')
     });
   }

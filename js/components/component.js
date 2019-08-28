@@ -26,7 +26,7 @@ export class Component {
     if (params.renderTrigger) {
       const renderTriggerArray = [].concat(params.renderTrigger);
       renderTriggerArray.forEach(renderTrigger => {
-        musicBoxStore.events.subscribe(renderTrigger, () => this.render());
+        musicBoxStore.subscribe(renderTrigger, () => this.render());
       });
     }
   }

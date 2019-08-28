@@ -69,9 +69,7 @@ songState: {
 Breaking changes:
 - Added a version number
 - Created a custom minification map, to manually minify the songState when compressing, and unminify it when decompressing. This saves about 40 characters and the savings will increase as songState gets more complex over time.
-
-!!!!!!!!!!!!!!!!!!!!TODO!!!!!!!!!!!!!!!!!!!:
-- Changed the CSV notes to an Array (this compresses better).
+- Changed the CSV notes to Arrays (this compresses better).
 
 ### Future ideas
 - A custom, domain-specific encoding?

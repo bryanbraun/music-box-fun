@@ -5,7 +5,7 @@ function setupKeyboardEvents() {
     const isInsideTextInput = (event.target.tagName === 'INPUT');
     if (!isInsideTextInput && event.keyCode === 32) {
       event.preventDefault(); // Prevent default space bar page scroll.
-      musicBoxStore.dispatch('toggleScrolling', !musicBoxStore.state.appState.isScrolling);
+      musicBoxStore.setState('appState.isScrolling', !musicBoxStore.state.appState.isScrolling);
     }
   });
 }

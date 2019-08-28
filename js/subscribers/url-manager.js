@@ -24,8 +24,8 @@ export const urlManager = {
       });
   },
 
-  saveStateToUrlAsync(state) {
-    const minifiedSongState = this.cloneDeepWithRenamedKeys(state.songState, minifyMap);
+  saveStateToUrlAsync() {
+    const minifiedSongState = this.cloneDeepWithRenamedKeys(musicBoxStore.state.songState, minifyMap);
 
     JsonUrl('lzma').compress(minifiedSongState).then(result => {
       const newHash = `${this.currentVersion}${result}`;
@@ -51,10 +51,8 @@ export const urlManager = {
     return newObj;
   },
 
-  // @TODO: We currently subscribe to all state changes. We only need to subscribe to
-  //        songState changes. It might be easier to make this more granular in the future.
   subscribeUrlToStateChanges() {
-    musicBoxStore.events.subscribe('state', this.saveStateToUrlAsync.bind(this));
+    musicBoxStore.subscribe('songState', this.saveStateToUrlAsync.bind(this));
   },
 
   // This fixes an edge-case where a user on the site could click a bookmarked

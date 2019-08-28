@@ -4,7 +4,7 @@ import { musicBoxStore } from '../music-box-store.js';
 export class PlayButton extends Component {
   constructor() {
     super({
-      renderTrigger: 'isScrolling',
+      renderTrigger: 'appState.isScrolling',
       element: document.querySelector('#play-button-wrapper')
     });
   }
@@ -37,10 +37,11 @@ export class PlayButton extends Component {
     }
   }
 
-  // This controls dynamic aspects of Play/Pause functionality.
-  render() {
-    console.log('Play Button was rendered');
+  onClick() {
+    musicBoxStore.setState('appState.isScrolling', !musicBoxStore.state.appState.isScrolling);
+  }
 
+  render() {
     const isScrolling = musicBoxStore.state.appState.isScrolling;
     const classes = classNames('play-button', { 'is-playing': isScrolling });
     const buttonText = isScrolling ? 'Pause' : 'Play';
@@ -51,8 +52,6 @@ export class PlayButton extends Component {
       </button>
     `;
 
-    this.element.querySelector('.play-button').addEventListener('click', () => {
-      musicBoxStore.dispatch('toggleScrolling', !musicBoxStore.state.appState.isScrolling);
-    });
+    this.element.querySelector('.play-button').addEventListener('click', this.onClick);
   }
 }

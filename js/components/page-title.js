@@ -4,7 +4,7 @@ import { musicBoxStore } from '../music-box-store.js';
 export class PageTitle extends Component {
   constructor() {
     super({
-      renderTrigger: 'songTitle',
+      renderTrigger: 'songState.songTitle',
       element: document.querySelector('title')
     })
   }

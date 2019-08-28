@@ -50,7 +50,7 @@ function setupPlayheadObserver() {
 
       if (Tone.context.state !== 'running' &&
         !musicBoxStore.state.appState.isAudioDisabledMessageVisible) {
-        musicBoxStore.dispatch('showAudioDisabledMessage', true);
+        musicBoxStore.setState('appState.isAudioDisabledMessageVisible', true);
         return;
       }
 

@@ -15,7 +15,7 @@ export class SpeedSlider extends Component {
     `;
 
     this.element.lastElementChild.addEventListener('input', event => {
-      musicBoxStore.dispatch('changeSpeed', parseInt(event.target.value));
+      musicBoxStore.setState('songState.playSpeed', parseInt(event.target.value));
     });
   }
 }

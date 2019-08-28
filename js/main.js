@@ -17,7 +17,7 @@ urlManager.getStateFromUrlAsync().then(urlState => {
   // set up for our PubSub state-change events. This way, this change won't
   // trigger any re-renders.
   if (urlState) {
-    musicBoxStore.dispatch('loadSong', urlState);
+    musicBoxStore.setState('songState', urlState);
   }
 
   // Playhead Observer must be setup before rendering notes, because we

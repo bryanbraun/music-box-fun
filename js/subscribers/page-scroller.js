@@ -22,6 +22,6 @@ export const pageScroller = {
   },
 
   subscribeToScrollState() {
-    musicBoxStore.events.subscribe('isScrolling', this.toggleScrolling.bind(this));
+    musicBoxStore.subscribe('appState.isScrolling', this.toggleScrolling.bind(this));
   }
 }
