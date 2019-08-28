@@ -23,14 +23,10 @@ a {
 .title {
   margin: 0;
 }
-.alpha {
+.beta {
   color: var(--discrete-text);
   font-size: 12px;
   text-transform: uppercase;
-}
-.alpha-warning {
-  color: var(--discrete-text);
-  font-size: 12px;
 }
 
 .sidebar {
