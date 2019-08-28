@@ -70,6 +70,7 @@ Breaking changes:
 - Added a version number
 - Created a custom minification map, to manually minify the songState when compressing, and unminify it when decompressing. This saves about 40 characters and the savings will increase as songState gets more complex over time.
 - Changed the CSV notes to Arrays (this compresses better).
+- Removed "playSpeed" from state (to be reintroduced later as "tempo").
 
 ### Future ideas
 - A custom, domain-specific encoding?

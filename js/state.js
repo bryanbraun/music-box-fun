@@ -18,7 +18,6 @@ export const state = {
   // OR BACKWARDS COMPATIBLE. SEE "/DOCS/URL-DATA.MD" FOR DETAILS.
   songState: {
     songTitle: '',
-    playSpeed: 0,
     songData: {
       C4: [],
       D4: [],
@@ -45,7 +44,6 @@ export const state = {
 // helps by providing a one-character alt-name for everything in songState.
 export const minifyMap = {
   songTitle: 'a',
-  playSpeed: 'b',
   songData: 'c',
   C4: 'd',
   D4: 'e',

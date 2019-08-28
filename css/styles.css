@@ -281,9 +281,3 @@ a {
   padding: 0;
   cursor: pointer;
 }
-
-.speed-slider {
-  display: block;
-  padding-top: 1rem;
-  cursor: pointer;
-}

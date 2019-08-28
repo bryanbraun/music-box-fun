@@ -1,7 +1,6 @@
 import { SongTitle } from './components/song-title.js';
 import { NoteLines } from './components/note-lines.js';
 import { PlayButton } from './components/play-button.js';
-import { SpeedSlider } from './components/speed-slider.js';
 import { AudioDisabledMessage } from './components/audio-disabled-message.js';
 import { PageTitle } from './components/page-title.js';
 
@@ -29,7 +28,6 @@ urlManager.getStateFromUrlAsync().then(urlState => {
   new SongTitle().render();
   new NoteLines().render();
   new PlayButton().render();
-  new SpeedSlider().render();
   new AudioDisabledMessage().render();
   new PageTitle().render();
 
