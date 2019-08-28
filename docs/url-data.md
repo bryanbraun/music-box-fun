@@ -1,6 +1,6 @@
 # URL Data
 
-Whenever a song is updated, all of the song data is encoded and compressed into the URL.
+Whenever a song is updated, all of the song data is encoded and stored in the URL.
 
 It's crucial that songs, once created, don't break for people in the future. That means if we ever change how songs are encoded or stored, we need those changes to be backwards compatible.
 
