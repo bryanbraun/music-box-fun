@@ -21,6 +21,10 @@ export const urlManager = {
 
         const unminifiedSongState = this.cloneDeepWithRenamedKeys(decompressedObject, invertedMinifyMap);
         return unminifiedSongState;
+      })
+      .catch(error => {
+        console.warn('The song could not be loaded from the URL.', error);
+        return false;
       });
   },
 
