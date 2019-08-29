@@ -173,6 +173,7 @@ a {
   width: var(--hole-width);
   background-image: url('/images/measure-lines.svg');
   background-position: 0 var(--hole-width);
+  cursor: pointer;
 }
 
 .note-line:first-child {
@@ -208,7 +209,6 @@ a {
   height: var(--hole-width);
   border-radius: 50%;
   background-color: var(--shadow-note-color);
-  cursor: pointer;
 
   /* prevent these notes from stacking in columns */
   position: absolute;
