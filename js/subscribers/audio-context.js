@@ -10,7 +10,7 @@ function setupAudioContextFallbackForRestrictiveBrowsers() {
         musicBoxStore.setState('appState.isAudioDisabledMessageResolved', true);
       }
     }
-  });
+  }, true);
 }
 
 export {

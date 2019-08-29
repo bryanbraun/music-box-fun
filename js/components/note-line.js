@@ -1,6 +1,7 @@
 import { Component } from './component.js';
 import { musicBoxStore } from '../music-box-store.js';
-import { playheadObserver } from '../playhead-observer.js';
+import { playheadObserver } from '../services/playhead-observer.js';
+import { synth } from '../services/synth.js';
 
 export class NoteLine extends Component {
   constructor(props) {
@@ -91,6 +92,7 @@ export class NoteLine extends Component {
         .concat(ypos)
         .sort((a, b) => Number(a) - Number(b));
 
+    synth.triggerAttackRelease(pitch, '8n');
     musicBoxStore.setState(`songState.songData.${pitch}`, newPitchArray);
   }
 
@@ -106,7 +108,7 @@ export class NoteLine extends Component {
     const notesArray = musicBoxStore.state.songState.songData[this.props.id];
 
     // Prevent weird bugs by removing observers from any existing notes, before re-rendering.
-    this.element.querySelectorAll('.hole').forEach(hole => playheadObserver.unobserve(hole));
+    this.element.querySelectorAll('.hole').forEach(hole => playheadObserver.get().unobserve(hole));
 
     this.element.innerHTML = `
       <div class="shadow-note"></div>
@@ -115,7 +117,7 @@ export class NoteLine extends Component {
         .join('')}
     `;
 
-    this.element.querySelectorAll('.hole').forEach(hole => playheadObserver.observe(hole));
+    this.element.querySelectorAll('.hole').forEach(hole => playheadObserver.get().observe(hole));
     this.element.addEventListener('mouseenter', this.showShadowNote);
     this.element.addEventListener('mouseleave', this.hideShadowNote);
     this.element.addEventListener('mousemove', this.haveShadowNoteFollowCursor);
