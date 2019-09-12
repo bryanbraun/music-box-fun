@@ -234,6 +234,7 @@ a {
   position: fixed;
   top: 0;
   right: var(--controls-width);
+  z-index: var(--z-audio-context-message);
   width: 156px; /* a magic number that fits our text well */
   opacity: 1;
   font-size: 12px;
@@ -266,14 +267,27 @@ a {
 
 @media (max-width: 603px) { /* --one-to-two-columns */
   .controls {
-    display: none;
+    visibility: hidden;
   }
 }
 
 .play-button {
-  width: 100%;
+  display: block;
+  margin: 0 auto;
+  width: 70%;
   border: none;
   background: none;
   padding: 0;
   cursor: pointer;
+}
+
+@media (max-width: 603px) { /* --one-to-two-columns */
+  .play-button {
+    visibility: visible;
+    position: fixed;
+    /* follow material design specs, shown here: https://material.io/components/buttons-floating-action-button/#specs */
+    bottom: 1rem;
+    right: 1rem;
+    width: 56px;
+  }
 }

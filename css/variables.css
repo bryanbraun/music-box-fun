@@ -35,10 +35,12 @@
      the paper ends on the next measure line */
   --default-music-length: 1617px;
 
-  /* Z-INDEX */
+  /* Z-INDEX (page context) */
   /* -1 - 10: music box */
   --z-music-box-bottom-plate: -1;
   --z-music-box-playhead: 5;
+  /* 10-100: Overlays */
+  --z-audio-context-message: 12;
 
   /* BREAKPOINTS */
   /* These aren't a thing! See https://stackoverflow.com/a/40723269/1154642
