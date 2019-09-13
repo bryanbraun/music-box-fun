@@ -8,13 +8,17 @@ export class SongTitle extends Component {
     });
   }
 
+  handleInput(event) {
+    musicBoxStore.setState('songState.songTitle', event.target.value);
+  }
+
   render() {
     this.element.innerHTML = `
-      <input type="text" placeholder="Untitled Song" value="${musicBoxStore.state.songState.songTitle}" />
+      <input type="text" placeholder="Untitled Song" maxlength="140" />
     `;
 
-    this.element.addEventListener('input', event => {
-      musicBoxStore.setState('songState.songTitle', event.target.value);
-    });
+    // Set the input value directly to remove the possibility of XSS issues.
+    this.element.querySelector('input').value = musicBoxStore.state.songState.songTitle;
+    this.element.addEventListener('input', this.handleInput);
   }
 }

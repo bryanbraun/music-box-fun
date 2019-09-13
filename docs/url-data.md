@@ -11,11 +11,13 @@ We want to minimize these kinds of changes to keep our code as simple as possibl
 ### Encoding
 Our data is encoded with the [json-url](https://github.com/masotime/json-url) library, which takes our `songState` javascript object and runs it through a compression algorithm.
 
+The `songTitle` is the only property that accepts arbitrary user input. These titles are added to `songState` as-is, meaning, there is no html-encoding of individual characters when the data is stored. Instead, we are careful when displaying these titles to set them as textContent or html-encode them before embedding them as innerHTML (to prevent XSS issues).
+
 I tested several algorithms early in the project and here are the results I got:
 
 |                             | LZW | LZMA | LZSTRING | PACK |
 |-----------------------------|-----|------|----------|------|
-| Small JS Object (50 bytes)   | 56  | 80   | 75       | 48   |
+| Small JS Object (50 bytes)  | 56  | 80   | 75       | 48   |
 | Empty Song (177 bytes)      | 142 | 128  | 142      | 139  |
 | Mid-length Song (441 bytes) | 471 | 371  | 390      | 399  |
 | Long Song (925 bytes)       | 931 | 640  | 723      | 808  |

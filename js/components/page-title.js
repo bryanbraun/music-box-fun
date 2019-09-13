@@ -11,6 +11,8 @@ export class PageTitle extends Component {
 
   render() {
     const songTitle = musicBoxStore.state.songState.songTitle;
-    this.element.innerHTML = songTitle ? `${songTitle} | Music Box Fun` : `Music Box Fun`;
+
+    // Use textContent to be extra safe in preventing XSS issues.
+    this.element.textContent = songTitle ? `${songTitle} | Music Box Fun` : `Music Box Fun`;
   }
 }
