@@ -220,11 +220,13 @@ a {
 }
 
 .hole {
+  display: block;
   position: absolute;
   top: 0;
   width: var(--hole-width);
   height: var(--hole-width);
   border-radius: 50%;
+  border: none;
   background-color: var(--hole-color);
   cursor: pointer;
 }

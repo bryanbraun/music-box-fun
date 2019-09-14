@@ -17,6 +17,14 @@ export class NoteLine extends Component {
     this.handleClick = this.handleClick.bind(this);
 
     this.holeWidth = null; // For caching this value
+
+    // When a note is added or removed, the NoteLine is re-rendered underneath the cursor.
+    // In this situation, the mouse events won't fire until you move the mouse again. This
+    // led to some edge-cases where the shadow note wasn't being positioned properly during
+    // repeated clicks. To fix this, we store the last shadow note position (and visibility)
+    // details, so we can use them to set the initial shadow note position during re-renders.
+    this.lastShadowNotePosition = 0;
+    this.lastShadowNoteVisibilityClass = '';
   }
 
   showShadowNote(event) {
@@ -27,13 +35,15 @@ export class NoteLine extends Component {
       getComputedStyle(document.documentElement).getPropertyValue('--hole-width').trim()
     );
 
-    this.positionShadowNote(shadowNoteEl, event.pageY);
+    this.lastShadowNoteVisibilityClass = 'shadow-note--visible';
     shadowNoteEl.classList.add('shadow-note--visible');
   }
 
   hideShadowNote(event) {
     const shadowNoteEl = event.currentTarget.querySelector('.shadow-note');
 
+    this.lastShadowNotePosition = 0;
+    this.lastShadowNoteVisibilityClass = '';
     shadowNoteEl.style = `transform: translateY(0px)`;
     shadowNoteEl.classList.remove('shadow-note--visible');
   }
@@ -68,21 +78,36 @@ export class NoteLine extends Component {
       noteYPosition = relativeCursorYPos - holeRadius;
     }
 
+    this.lastShadowNotePosition = noteYPosition;
     shadowNoteEl.style = `transform: translateY(${noteYPosition}px)`;
   }
 
   handleClick(event) {
-    const shadowNoteEl = event.currentTarget.querySelector('.shadow-note');
-    const pitch = event.currentTarget.id;
+    const noteLineEl = event.currentTarget;
+    const shadowNoteEl = noteLineEl.querySelector('.shadow-note');
+    const pitch = noteLineEl.id;
+
+    const isShadowNoteOverlappingExistingNote = shadowNoteYPos => (
+      musicBoxStore.state.songState.songData[pitch].includes(shadowNoteYPos)
+    );
+
     const getNoteYPos = element => {
       const yposMatch = element.style.transform.match(/translateY\((\d+)px\)/);
       return (yposMatch && yposMatch[1]) ? parseInt(yposMatch[1]) : console.error("Couldn't find note position");
     };
 
+    const shadowNoteYPos = getNoteYPos(shadowNoteEl);
+
     if (event.target.className === 'hole') {
       this.removeNote(pitch, getNoteYPos(event.target));
-    } else {
-      this.addNote(pitch, getNoteYPos(shadowNoteEl))
+    }
+    else if (isShadowNoteOverlappingExistingNote(shadowNoteYPos)) {
+      // This case happens when snap-to-grid allows you to click when your
+      // cursor isn't on an existing note but your shadow note is.
+      this.removeNote(pitch, shadowNoteYPos);
+    }
+    else {
+      this.addNote(pitch, shadowNoteYPos)
     }
   }
 
@@ -111,9 +136,10 @@ export class NoteLine extends Component {
     this.element.querySelectorAll('.hole').forEach(hole => playheadObserver.get().unobserve(hole));
 
     this.element.innerHTML = `
-      <div class="shadow-note"></div>
+      <div class="shadow-note ${this.lastShadowNoteVisibilityClass}"
+           style="transform: translateY(${this.lastShadowNotePosition}px)"></div>
       ${notesArray
-        .map(val => `<div id="${this.props.id}-${val}" class="hole" style="transform: translateY(${val}px)"></div>`)
+        .map(val => `<button class="hole" style="transform: translateY(${val}px)"></button>`)
         .join('')}
     `;
 
