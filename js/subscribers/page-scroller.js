@@ -9,6 +9,17 @@ export const pageScroller = {
   // https://javascript.info/bind).
   startScrolling() {
     const millisecondsPerChange = 10;
+    const END_OF_PAGE_BUFFER = 3;
+    const isFullyScrolled =
+      document.documentElement.scrollHeight -
+      document.documentElement.clientHeight -
+      document.documentElement.scrollTop <= END_OF_PAGE_BUFFER;
+
+    if (isFullyScrolled) {
+      musicBoxStore.setState('appState.isScrolling', false);
+      return // return early so we don't create a new timeout while exiting this function.
+    }
+
     window.scrollBy(0, 1);
     this.timeoutId = window.setTimeout(this.startScrolling.bind(this), millisecondsPerChange);
   },
