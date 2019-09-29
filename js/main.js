@@ -1,8 +1,11 @@
 import { SongTitle } from './components/song-title.js';
 import { NoteLines } from './components/note-lines.js';
 import { PlayButton } from './components/play-button.js';
+import { NewSongButton } from './components/new-song-button.js';
+import { SnapToGridToggle } from './components/snap-to-grid-toggle.js';
 import { PageTitle } from './components/page-title.js';
 import { AudioDisabledMessage } from './components/audio-disabled-message.js';
+import { SongUpdatedMessage } from './components/song-saved-message.js';
 
 import { musicBoxStore } from './music-box-store.js';
 import { setupSynth } from './services/synth.js';
@@ -29,8 +32,11 @@ urlManager.getStateFromUrlAsync().then(urlState => {
   new SongTitle().render();
   new NoteLines().render();
   new PlayButton().render();
+  new NewSongButton().render();
+  new SnapToGridToggle().render();
   new AudioDisabledMessage().render();
   new PageTitle().render();
+  new SongUpdatedMessage(); // This element is hidden by default, so it doesn't need to render on page load.
 
   pageScroller.subscribeToScrollState();
 

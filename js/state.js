@@ -8,6 +8,7 @@
 
 export const state = {
   appState: {
+    isSnappingToGrid: true,
     isScrolling: false,
     isAudioDisabledMessageVisible: false,
     isAudioDisabledMessageResolved: false,

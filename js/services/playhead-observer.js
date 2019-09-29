@@ -43,6 +43,11 @@ export const playheadObserver = (function () {
         return;
       }
 
+      // Reject events firing for "silent" (red) notes
+      if (entry.target.classList.contains('silent')) {
+        return;
+      }
+
       synth.triggerAttackRelease(entry.target.parentElement.id, '8n');
     });
   }

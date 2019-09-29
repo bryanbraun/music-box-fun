@@ -1,0 +1,68 @@
+
+.toggle {
+  --toggle-width: 36px;
+  --toggle-height: 20px;
+  --toggle-padding: 2px;
+  --handle-size: calc(var(--toggle-height) - var(--toggle-padding) * 2);
+}
+
+.toggle__input {
+  position: absolute;
+  clip: rect(1px, 1px, 1px, 1px);
+  clip-path: inset(50%);
+  height: 1px;
+  width: 1px;
+  margin: -1px;
+  overflow: hidden;
+}
+
+.toggle__label {
+  display: inline-block;
+  cursor: pointer;
+}
+
+.toggle__outer,
+.toggle__inner {
+  transition: all 0.1s ease;
+}
+
+.toggle__outer {
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
+  width: var(--toggle-width);
+  height: var(--toggle-height);
+  border-radius: var(--toggle-height);
+  padding: 0 var(--toggle-padding);
+  vertical-align: text-bottom;
+  user-select: none;
+  background-color: var(--mb-gray-60);
+  overflow: hidden;
+}
+
+.toggle__inner {
+  width: var(--handle-size);
+  height: var(--handle-size);
+  border-radius: 50%;
+  background-color: var(--controls-button);
+}
+
+.toggle__text {
+  margin-left: 0.375rem;
+}
+
+.toggle__input:checked + .toggle__outer {
+  background-color: #87d687;
+}
+
+.toggle__input:focus + .toggle__outer {
+  outline: rgb(59, 153, 252) auto 5px;
+}
+/* override the focus-ring when a user is clicking */
+.no-focus .toggle__input:focus + .toggle__outer {
+  outline: 0;
+}
+
+.toggle__input:checked + .toggle__outer .toggle__inner {
+  transform: translateX(calc(var(--toggle-width) - var(--handle-size) - var(--toggle-padding) * 2));
+}

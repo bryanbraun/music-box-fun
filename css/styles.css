@@ -13,8 +13,22 @@ body {
   flex-wrap: nowrap;
 }
 
+
 a {
   color: var(---link-color);
+}
+
+/*
+  We like focus rings, but only when a person is tabbing (not clicking).
+  Thus, we scope all focus ring suppression to a "no-focus" class, which
+  is added to the body tag when a person is clicking, and removed when a
+  person is tabbing. Same idea as https://github.com/lindsayevans/outline.js
+*/
+.no-focus :focus {
+  outline: 0;
+}
+.no-focus ::-moz-focus-inner {
+  border: 0;
 }
 
 .title-box {
@@ -231,6 +245,10 @@ a {
   cursor: pointer;
 }
 
+.silent {
+  background-color: var(--mb-red);
+}
+
 .audio-disabled-message {
   display: block;
   position: fixed;
@@ -263,8 +281,9 @@ a {
   width: var(--controls-width);
   margin: 1rem 0;
   padding: 1rem;
-  border-left: 1px dashed var(--mb-gray-30);
+  border-left: 1px dashed var(--controls-border);
   background: var(--surface-color);
+  font-size: 14px;
 }
 
 @media (max-width: 603px) { /* --one-to-two-columns */
@@ -273,14 +292,28 @@ a {
   }
 }
 
+.controls__section {
+  border-top: 1px dashed var(--controls-border);
+  padding: 1rem 0 1rem;
+}
+.controls__title {
+  font-size: 1rem;
+  margin: 0 0 0.5rem;
+}
+
 .play-button {
   display: block;
   margin: 0 auto;
-  width: 70%;
   border: none;
   background: none;
-  padding: 0;
+  padding: 0 1rem 1rem;
   cursor: pointer;
+}
+.play-button__outer-circle {
+  fill: var(--mb-gray-60);
+}
+.play-button__inner-shape {
+  fill: var(--controls-button);
 }
 
 @media (max-width: 603px) { /* --one-to-two-columns */
@@ -291,5 +324,71 @@ a {
     bottom: 1rem;
     right: 1rem;
     width: 56px;
+    padding: 0;
   }
+}
+
+.new-song {
+  width: 100%;
+  font-family: inherit;
+  font-size: inherit;
+  background-color: var(--controls-button);
+  background-image: url(/images/new-blank-song.svg);
+  background-repeat: no-repeat;
+  background-position: 7px 50%;
+  border-radius: 5px;
+  border: 1px solid var(--mb-gray-20);
+  border-bottom: 1px solid #bbb;
+  padding: 0.4rem 0.4rem 0.4rem 1.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: left;
+  cursor: pointer;
+}
+
+.new-song:hover {
+  background-color: #f8f8f8;
+}
+
+.new-song:active {
+  border: 1px solid var(--mb-gray-20);
+}
+
+.song-updated {
+  display: flex;
+  position: fixed;
+  top: 0;
+  padding: 8px 12px;
+  font-size: 13px;
+  text-align: center;
+  opacity: 1;
+}
+.song-updated--hidden {
+  opacity: 0;
+
+  /* fade-out settings */
+  transition-property: opacity;
+  transition-delay: 2s;
+  transition-duration: 3s;
+}
+
+.song-updated__message {
+  color: var(--mb-gray-60);
+  margin-right: 0.5rem;
+}
+
+.song-updated__details {
+  border: none;
+  cursor: pointer;
+
+  /* temporarily hidden until we set up a modal and description for this */
+  display: none;
+}
+
+.question-icon {
+  background-color: var(--discrete-text);
+  -webkit-mask-image: url(/images/question-icon.svg);
+  mask-image: url(/images/question-icon.svg);
+  width: 14px;
+  height: 14px;
 }

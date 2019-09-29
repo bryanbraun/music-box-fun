@@ -2,18 +2,22 @@
   /* COLORS */
   /* brand */
   --mb-white: white;
+  --mb-offwhite: #fcfcfc;
   --mb-gray-10: #efefef;
   --mb-gray-20: #dddddd;
   --mb-gray-30: #c0c0c0;
   --mb-gray-40: #a9a9a9;
   --mb-gray-60: #444444;
   --mb-orange-accent: #947000;
+  --mb-red: #ff5f5f;
 
   /* functional */
   --sidebar-color: var(--mb-white);
   --paper-color: var(--mb-white);
   --surface-color: var(--mb-gray-10);
   --music-box-color: var(--mb-gray-30);
+  --controls-border: var(--mb-gray-30);
+  --controls-button: var(--mb-offwhite);
   --shadow-note-color: var(--mb-gray-20);
   --hole-color: var(--mb-gray-60);
   --link-color: var(--mb-orange-accent);

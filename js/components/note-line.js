@@ -16,7 +16,13 @@ export class NoteLine extends Component {
     this.haveShadowNoteFollowCursor = this.haveShadowNoteFollowCursor.bind(this);
     this.handleClick = this.handleClick.bind(this);
 
-    this.holeWidth = null; // For caching this value
+    // Constants
+    this.QUARTER_BAR_GAP = 50; // Pixel distance between the black quarter note bars.
+    this.EIGHTH_BAR_GAP = 25; // Pixel distance between the gray eighth note bars.
+
+    // Cached Constants
+    this.holeWidth = null;
+    this.holeRadius = null;
 
     // When a note is added or removed, the NoteLine is re-rendered underneath the cursor.
     // In this situation, the mouse events won't fire until you move the mouse again. This
@@ -27,13 +33,21 @@ export class NoteLine extends Component {
     this.lastShadowNoteVisibilityClass = '';
   }
 
+  // We base a lot of our math on the size of the hole, which is a CSS variable. This value
+  // could change in the future to allow us to adjust the size of the paper. When this happens,
+  // we want our math to continue working. Instead of looking up the CSS variable incessantly,
+  // we use this function to look it up at key moments and cache the value in the class instance.
+  // This simplifies our code and may improve performance. If we end up never adjusting the hole
+  // size, we can remove this function and store the sizes as hard-coded constants in the class.
+  updateHoleSize() {
+    this.holeWidth = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--hole-width').trim());
+    this.holeRadius = this.holeWidth / 2;
+  }
+
   showShadowNote(event) {
     const shadowNoteEl = event.currentTarget.querySelector('.shadow-note');
 
-    // We cache this value once on showShadowNote to prevent repetitive lookups on hover.
-    this.holeWidth = parseInt(
-      getComputedStyle(document.documentElement).getPropertyValue('--hole-width').trim()
-    );
+    this.updateHoleSize();
 
     this.lastShadowNoteVisibilityClass = 'shadow-note--visible';
     shadowNoteEl.classList.add('shadow-note--visible');
@@ -56,26 +70,23 @@ export class NoteLine extends Component {
 
   positionShadowNote(shadowNoteEl, cursorPositionPageY) {
     const relativeCursorYPos = cursorPositionPageY - shadowNoteEl.parentElement.offsetTop;
-    const holeRadius = this.holeWidth / 2;
-    const snapToGrid = true;
     let noteYPosition;
 
     // Prevent users from positioning notes too high on the note line.
-    if (relativeCursorYPos < holeRadius) {
+    if (relativeCursorYPos < this.holeRadius) {
       return false;
     }
 
-    if (snapToGrid) {
+    if (musicBoxStore.state.appState.isSnappingToGrid) {
       const topPixelOffset = this.holeWidth;
-      const distanceBetweenBars = 25;
 
       const snapToNearestBar = val => (
-        Math.round((val + topPixelOffset) / distanceBetweenBars) * distanceBetweenBars - topPixelOffset
+        Math.round((val + topPixelOffset) / this.EIGHTH_BAR_GAP) * this.EIGHTH_BAR_GAP - topPixelOffset
       );
 
-      noteYPosition = snapToNearestBar(relativeCursorYPos - holeRadius);
+      noteYPosition = snapToNearestBar(relativeCursorYPos - this.holeRadius);
     } else {
-      noteYPosition = relativeCursorYPos - holeRadius;
+      noteYPosition = relativeCursorYPos - this.holeRadius;
     }
 
     this.lastShadowNotePosition = noteYPosition;
@@ -98,7 +109,7 @@ export class NoteLine extends Component {
 
     const shadowNoteYPos = getNoteYPos(shadowNoteEl);
 
-    if (event.target.className === 'hole') {
+    if (event.target.classList.contains('hole')) {
       this.removeNote(pitch, getNoteYPos(event.target));
     }
     else if (isShadowNoteOverlappingExistingNote(shadowNoteYPos)) {
@@ -129,18 +140,31 @@ export class NoteLine extends Component {
     musicBoxStore.setState(`songState.songData.${pitch}`, newPitchArray);
   }
 
+  renderNotes(pitch) {
+    const notesArray = musicBoxStore.state.songState.songData[pitch];
+    const deadZoneLength = this.QUARTER_BAR_GAP - this.holeRadius - 1;
+    let lastPlayableNoteYPos = 0;
+    let notesMarkup = '';
+
+    notesArray.forEach((yPos, i) => {
+      const isNotePlayable = (i === 0) ? true : (yPos - lastPlayableNoteYPos > deadZoneLength);
+      lastPlayableNoteYPos = isNotePlayable ? yPos : lastPlayableNoteYPos; // update this scoped variable.
+
+      notesMarkup += `<button class="hole ${isNotePlayable ? '' : 'silent'}" style="transform: translateY(${yPos}px)"></button>`;
+    });
+
+    return notesMarkup;
+  }
+
   render() {
-    const notesArray = musicBoxStore.state.songState.songData[this.props.id];
+    this.updateHoleSize();
 
     // Prevent weird bugs by removing observers from any existing notes, before re-rendering.
     this.element.querySelectorAll('.hole').forEach(hole => playheadObserver.get().unobserve(hole));
 
     this.element.innerHTML = `
-      <div class="shadow-note ${this.lastShadowNoteVisibilityClass}"
-           style="transform: translateY(${this.lastShadowNotePosition}px)"></div>
-      ${notesArray
-        .map(val => `<button class="hole" style="transform: translateY(${val}px)"></button>`)
-        .join('')}
+      <div class="shadow-note ${this.lastShadowNoteVisibilityClass}" style="transform: translateY(${this.lastShadowNotePosition}px)"></div>
+      ${this.renderNotes(this.props.id)}
     `;
 
     this.element.querySelectorAll('.hole').forEach(hole => playheadObserver.get().observe(hole));

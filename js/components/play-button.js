@@ -10,15 +10,12 @@ export class PlayButton extends Component {
   }
 
   getIconSvg(isScrolling) {
-    const iconFillDark = getComputedStyle(document.documentElement).getPropertyValue('--mb-gray-60');
-    const iconFillLight = getComputedStyle(document.documentElement).getPropertyValue('--sidebar-color');
-
     if (isScrolling) {
       return `
         <svg id="pause-svg" width="100%" viewBox="0 0 58 58" xmlns="http://www.w3.org/2000/svg">
           <g fill="none" fill-rule="evenodd">
-            <circle fill="${iconFillDark}" cx="29" cy="29" r="29"/>
-            <g transform="translate(18 17)" fill="${iconFillLight}">
+            <circle class="play-button__outer-circle" cx="29" cy="29" r="29"/>
+            <g transform="translate(18 17)" class="play-button__inner-shape">
               <rect x="13" width="9" height="25" rx="2"/>
               <rect width="9" height="25" rx="2"/>
             </g>
@@ -29,8 +26,8 @@ export class PlayButton extends Component {
       return `
         <svg id="play-svg"  width="100%" viewBox="0 0 58 58" xmlns="http://www.w3.org/2000/svg">
           <g fill="none" fill-rule="evenodd">
-            <circle fill="${iconFillDark}" cx="29" cy="29" r="29"/>
-            <path fill="${iconFillLight}" d="M41.193 30.708L24.04 41.15A2 2 0 0 1 21 39.44V18.56a2 2 0 0 1 3.04-1.709l17.153 10.442a2 2 0 0 1 0 3.416z"/>
+            <circle class="play-button__outer-circle" cx="29" cy="29" r="29"/>
+            <path class="play-button__inner-shape" d="M41.193 30.708L24.04 41.15A2 2 0 0 1 21 39.44V18.56a2 2 0 0 1 3.04-1.709l17.153 10.442a2 2 0 0 1 0 3.416z"/>
           </g>
         </svg>
       ` ;
