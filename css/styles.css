@@ -368,7 +368,6 @@ a {
 
   /* fade-out settings */
   transition-property: opacity;
-  transition-delay: 2s;
   transition-duration: 3s;
 }
 

@@ -5,7 +5,7 @@ import { NewSongButton } from './components/new-song-button.js';
 import { SnapToGridToggle } from './components/snap-to-grid-toggle.js';
 import { PageTitle } from './components/page-title.js';
 import { AudioDisabledMessage } from './components/audio-disabled-message.js';
-import { SongUpdatedMessage } from './components/song-saved-message.js';
+import { SongUpdatedMessage } from './components/song-updated-message.js';
 
 import { musicBoxStore } from './music-box-store.js';
 import { setupSynth } from './services/synth.js';
