@@ -1,3 +1,7 @@
 @import "variables.css";
 @import "styles.css";
 @import "toggle.css";
+
+/* this one is included directly in head because delaying the load
+   by using @import will cause the transition to fire on page load. */
+/* @import "song-updated.css"; */

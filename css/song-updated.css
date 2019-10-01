@@ -1,0 +1,29 @@
+.song-updated {
+  display: flex;
+  position: fixed;
+  top: 0;
+  padding: 8px 12px;
+  font-size: 13px;
+  text-align: center;
+  opacity: 1;
+}
+.song-updated--hidden {
+  opacity: 0;
+
+  /* fade-out settings */
+  transition-property: opacity;
+  transition-duration: 3s;
+}
+
+.song-updated__message {
+  color: var(--mb-gray-60);
+  margin-right: 0.5rem;
+}
+
+.song-updated__details {
+  border: none;
+  cursor: pointer;
+
+  /* temporarily hidden until we set up a modal and description for this */
+  display: none;
+}
