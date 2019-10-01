@@ -113,9 +113,10 @@
           </div>
         </div>
       </div>
-      <div id="updated-message" class="song-updated song-updated--hidden">
-        <span class="song-updated__message">Song link updated</span>
-        <button class="song-updated__details question-icon"></button>
+      <div id="song-updated-message">
+        <!-- we leave this empty by default to prevent it from rendering at opacity 1 (the default)
+             before the CSS is loaded and then transitioning slowly to transparent on page load. For
+             more details, see https://stackoverflow.com/q/14389566/1154642 -->
       </div>
       <div id="audio-disabled-message" class="audio-disabled-message audio-disabled-message--hidden">
         <strong>Not hearing anything?</strong><br>Your browser disabled the sound. Click anywhere to enable it.

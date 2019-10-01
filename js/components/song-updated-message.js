@@ -5,18 +5,23 @@ export class SongUpdatedMessage extends Component {
   constructor() {
     super({
       renderTrigger: 'songState',
-      element: document.querySelector('#updated-message')
+      element: document.querySelector('#song-updated-message')
     });
 
-    this.initialRender = true;
+    this.timeoutId = null;
   }
 
   showSongUpdatedMessage() {
     const FADE_DELAY = 2000;
 
+    // Clear any existing fade timers
+    clearTimeout(this.timeoutId);
+
+    this.element.classList.add('song-updated'); // Just in case it's absent
     this.element.classList.remove('song-updated--hidden');
 
-    window.setTimeout(() => {
+    // Set a new fade timer
+    this.timeoutId = setTimeout(() => {
       this.element.classList.add('song-updated--hidden');
     }, FADE_DELAY);
   }
