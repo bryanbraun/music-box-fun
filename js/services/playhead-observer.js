@@ -1,5 +1,5 @@
 import { musicBoxStore } from '../music-box-store.js';
-import { synth } from './synth.js';
+import { sampler } from './sampler.js';
 
 // We had to go with the revealing module pattern here. I tried a plain
 // object but our scroll event handler required us to use bind(). Unfortunately,
@@ -48,7 +48,7 @@ export const playheadObserver = (function () {
         return;
       }
 
-      synth.triggerAttackRelease(entry.target.parentElement.id, '8n');
+      sampler.triggerAttackRelease(entry.target.parentElement.id, '8n');
     });
   }
 

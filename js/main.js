@@ -8,7 +8,7 @@ import { AudioDisabledMessage } from './components/audio-disabled-message.js';
 import { SongUpdatedMessage } from './components/song-updated-message.js';
 
 import { musicBoxStore } from './music-box-store.js';
-import { setupSynth } from './services/synth.js';
+import { setupSampler } from './services/sampler.js';
 import { playheadObserver } from './services/playhead-observer.js';
 import { setupAudioContextFallbackForRestrictiveBrowsers } from './subscribers/audio-context.js';
 import { setupKeyboardEvents } from './subscribers/keyboard-manager.js';
@@ -46,6 +46,6 @@ urlManager.getStateFromUrlAsync().then(urlState => {
   urlManager.subscribeUrlToExternalHashChanges();
 });
 
-setupSynth();
+setupSampler();
 setupKeyboardEvents();
 setupAudioContextFallbackForRestrictiveBrowsers();

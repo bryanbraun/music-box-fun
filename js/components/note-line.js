@@ -1,7 +1,7 @@
 import { Component } from './component.js';
 import { musicBoxStore } from '../music-box-store.js';
 import { playheadObserver } from '../services/playhead-observer.js';
-import { synth } from '../services/synth.js';
+import { sampler } from '../services/sampler.js';
 
 export class NoteLine extends Component {
   constructor(props) {
@@ -128,7 +128,7 @@ export class NoteLine extends Component {
         .concat(ypos)
         .sort((a, b) => Number(a) - Number(b));
 
-    synth.triggerAttackRelease(pitch, '8n');
+    sampler.triggerAttackRelease(pitch, '8n');
     musicBoxStore.setState(`songState.songData.${pitch}`, newPitchArray);
   }
 
