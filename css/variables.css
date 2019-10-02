@@ -35,9 +35,19 @@
   --music-box-distance-from-top-of-workspace: 120px;
   --playhead-distance-from-top-of-workspace: calc(var(--music-box-distance-from-top-of-workspace) + 44px);
 
-  /* We want to end the length with "1", so
-     the paper ends on the next measure line */
-  --default-music-length: 1617px;
+  /*
+
+      52   (# of quarter note bars)
+    x 50px (per quarter note bar)
+    ------
+    2600px
+      16px (space before the first bar)
+    +  1px (to show the final bar)
+    ------
+    2617px = Total length of a song sheet
+
+     */
+  --default-music-length: 2617px;
 
   /* Z-INDEX (page context) */
   /* -1 - 10: music box */
