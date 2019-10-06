@@ -46,17 +46,23 @@ export const pageScroller = {
     const END_OF_PAGE_BUFFER = 3;
     const BEATS_PER_MINUTE = 110;
     const scrollRate = this.BpmToPixelsPerMillisecond(BEATS_PER_MINUTE);
-    const newElapsedTime = timestamp - this.startTime;
     const isFullyScrolled =
       document.documentElement.scrollHeight -
       document.documentElement.clientHeight -
       document.documentElement.scrollTop <= END_OF_PAGE_BUFFER;
 
+    console.log('scrollHeight: ', document.documentElement.scrollHeight,
+      'clientHeight: ', document.documentElement.clientHeight,
+      'scrollTop:', document.documentElement.scrollTop);
+
+
     if (isFullyScrolled) {
+      console.log('is fully scrolled');
       musicBoxStore.setState('appState.isScrolling', false);
     }
 
     if (!musicBoxStore.state.appState.isScrolling) {
+      console.log('reset start time');
       this.startTime = null;
       return;
     }
@@ -69,7 +75,7 @@ export const pageScroller = {
       this.getTargetScrollTop = (elapsedTime) => scrollRate * elapsedTime + initialScrollTop; // y = mx+b
     }
 
-    window.scrollTo(0, this.getTargetScrollTop(newElapsedTime));
+    window.scrollTo(0, this.getTargetScrollTop(timestamp - this.startTime));
 
     requestAnimationFrame(this.scrollPage.bind(this));
   },
