@@ -51,18 +51,11 @@ export const pageScroller = {
       document.documentElement.clientHeight -
       document.documentElement.scrollTop <= END_OF_PAGE_BUFFER;
 
-    console.log('scrollHeight: ', document.documentElement.scrollHeight,
-      'clientHeight: ', document.documentElement.clientHeight,
-      'scrollTop:', document.documentElement.scrollTop);
-
-
     if (isFullyScrolled) {
-      console.log('is fully scrolled');
       musicBoxStore.setState('appState.isScrolling', false);
     }
 
     if (!musicBoxStore.state.appState.isScrolling) {
-      console.log('reset start time');
       this.startTime = null;
       return;
     }

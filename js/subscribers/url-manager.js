@@ -31,10 +31,11 @@ export const urlManager = {
   saveStateToUrlAsync() {
     const minifiedSongState = this.cloneDeepWithRenamedKeys(musicBoxStore.state.songState, minifyMap);
 
-    JsonUrl('lzma').compress(minifiedSongState).then(result => {
+    return JsonUrl('lzma').compress(minifiedSongState).then(result => {
       const newHash = `${this.currentVersion}${result}`;
-      location.href = `#${newHash}`;
       this.lastInternalUrlChange = newHash;
+
+      location.href = `#${newHash}`;
     });
   },
 
@@ -59,10 +60,11 @@ export const urlManager = {
     musicBoxStore.subscribe('songState', this.saveStateToUrlAsync.bind(this));
   },
 
-  // This fixes an edge-case where a user on the site could click a bookmarked
-  // link to another musicboxfun.com url, but the song wouldn't load because the
-  // hashchange wouldn't re-render the page. We could further optimize this case
-  // by rerendering specific components without reloading the entire page.
+  // This fixes an edge-case where a user on the site would click the "back" button,
+  // "forward" button, or a bookmarked link to another musicboxfun.com url, and the
+  // song wouldn't load because the hashchange wouldn't re-render the page. We could
+  // further optimize this case by rerendering specific components without reloading
+  // the entire page.
   subscribeUrlToExternalHashChanges() {
     window.addEventListener('hashchange', event => {
       const newHash = event.newURL.split('#')[1];
