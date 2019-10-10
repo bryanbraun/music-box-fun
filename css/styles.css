@@ -31,18 +31,6 @@ a {
   border: 0;
 }
 
-.title-box {
-  margin: 1.25rem 0;
-}
-.title {
-  margin: 0;
-}
-.beta {
-  color: var(--discrete-text);
-  font-size: 12px;
-  text-transform: uppercase;
-}
-
 .sidebar {
   position: fixed;
   top: 0;
@@ -52,12 +40,50 @@ a {
   padding: 0 1.5rem;
   background: var(--sidebar-color);
   box-shadow: 0px 0px 11px -8px #444;
+  display: flex;
+  flex-direction: column;
 }
 
 @media (max-width: 819px) { /* --two-to-three-columns */
   .sidebar {
     display: none;
   }
+}
+
+.title-box {
+  margin: 1.25rem 0;
+  flex: 0 0 auto;
+}
+.title {
+  margin: 0;
+  font-size: 1.5rem;
+}
+.beta {
+  color: var(--discrete-text);
+  font-size: 12px;
+  text-transform: uppercase;
+}
+.description {
+  margin-bottom: 2.5rem;
+  flex: 0 0 auto;
+}
+.recent {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+}
+.recent__title {
+  margin: 0 0 1rem 0;
+  font-size: 1.125rem;
+}
+#twitter-widget-0 {
+  /* This overrides the widget's fixed height, and forces it to
+     have a flexible height that takes up the remaining space on
+     the sidebar. Setting min-height:0 reduces the min-height from
+     200px to 150px, but it won't go any smaller, for some reason.
+  */
+  flex: 1 1 100% !important;
+  min-height: 0 !important;
 }
 
 .workspace {
