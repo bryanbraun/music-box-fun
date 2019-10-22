@@ -1,2 +1,6 @@
 designs
 audio/audacity
+
+.env
+
+node_modules

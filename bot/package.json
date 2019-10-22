@@ -1,0 +1,20 @@
+{
+  "name": "music-box-bot",
+  "version": "1.0.0",
+  "description": "A bot that retweets 'Music Box Fun' songs.",
+  "author": "Bryan Braun",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node --experimental-modules index.js",
+    "container": "docker build -t music-box-bot . && docker run -d music-box-bot"
+  },
+  "dependencies": {
+    "twit": "2.2.11",
+    "dotenv": "8.2.0"
+  },
+  "engines": {
+    "node": ">=12.0.0"
+  }
+}
