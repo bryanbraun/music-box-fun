@@ -54,7 +54,8 @@
   --z-music-box-bottom-plate: -1;
   --z-music-box-playhead: 5;
   /* 10-100: Overlays */
-  --z-audio-context-message: 12;
+  --z-messages: 12;
+  --z-audio-context-message: 16;
 
   /* BREAKPOINTS */
   /* These aren't a thing! See https://stackoverflow.com/a/40723269/1154642

@@ -152,6 +152,7 @@ a {
   height: 1px;
 
   background-color: #ff8d00;
+  pointer-events: none;
 }
 
 .paper {
@@ -297,6 +298,15 @@ a {
   transition-delay: 1.2s;
   transition-duration: 1.5s;
   transition-timing-function: linear;
+
+  /* Currently it's possible for this transparent
+     message box to overlap the music paper and
+     prevent clicking. Removing pointer events is
+     a quick solution. Long-term, it might be nice
+     to reapply audio-disabled-message--hidden on
+     a transition event.
+  */
+  pointer-events: none;
 }
 
 .controls {
@@ -388,6 +398,7 @@ a {
   font-size: 13px;
   text-align: center;
   opacity: 1;
+  z-index: var(--z-messages);
 }
 .song-updated--hidden {
   opacity: 0;
@@ -416,4 +427,17 @@ a {
   mask-image: url(/images/question-icon.svg);
   width: 14px;
   height: 14px;
+}
+
+.twitter-share {
+  position: fixed;
+  bottom: 0;
+  margin: 0 0 0.75rem 1rem;
+}
+.twitter-share__updated {
+  position: absolute;
+  bottom: 0;
+}
+.twitter-share iframe {
+  display: block;
 }

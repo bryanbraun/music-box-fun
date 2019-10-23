@@ -6,6 +6,7 @@ import { SnapToGridToggle } from './components/snap-to-grid-toggle.js';
 import { PageTitle } from './components/page-title.js';
 import { AudioDisabledMessage } from './components/audio-disabled-message.js';
 import { SongUpdatedMessage } from './components/song-updated-message.js';
+import { TwitterShareButton } from  './components/twitter-share-button.js';
 
 import { musicBoxStore } from './music-box-store.js';
 import { setupSampler } from './services/sampler.js';
@@ -36,6 +37,8 @@ urlManager.getStateFromUrlAsync().then(urlState => {
   new SnapToGridToggle().render();
   new AudioDisabledMessage().render();
   new PageTitle().render();
+  new TwitterShareButton().render();
+
   new SongUpdatedMessage(); // This element is hidden by default, so it doesn't need to render on page load.
 
   pageScroller.subscribeToScrollState();
