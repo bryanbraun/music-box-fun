@@ -41,10 +41,10 @@ export class PlayButton extends Component {
   render() {
     const isScrolling = musicBoxStore.state.appState.isScrolling;
     const classes = classNames('play-button', { 'is-playing': isScrolling });
-    const buttonText = isScrolling ? 'Pause' : 'Play';
+    const buttonText = isScrolling ? 'Pause (Space)' : 'Play (Space)';
 
     this.element.innerHTML = `
-      <button class="${classes}" aria-pressed="${isScrolling}" aria-label="${buttonText}" role="button" >
+      <button class="${classes}" aria-pressed="${isScrolling}" aria-label="${buttonText}" title="${buttonText}" role="button" >
         ${this.getIconSvg(isScrolling)}
       </button>
     `;
