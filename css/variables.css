@@ -42,17 +42,21 @@
     ------
     2600px
       16px (space before the first bar)
+      48px (space after the last bar, for the add-button preview)
     +  1px (to show the final bar)
     ------
-    2617px = Total length of a song sheet
+    2665px = Total length of a song sheet
 
      */
-  --default-music-length: 2617px;
+  --default-music-length: 2665px;
 
   /* Z-INDEX (page context) */
   /* -1 - 10: music box */
   --z-music-box-bottom-plate: -1;
-  --z-music-box-playhead: 5;
+  --z-music-box-extend-button: 2;
+  --z-music-box-notes: 4;
+  --z-music-box-note-header: 6;
+  --z-music-box-playhead: 8;
   /* 10-100: Overlays */
   --z-messages: 12;
   --z-audio-context-message: 16;

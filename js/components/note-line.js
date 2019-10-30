@@ -69,7 +69,10 @@ export class NoteLine extends Component {
   }
 
   positionShadowNote(shadowNoteEl, cursorPositionPageY) {
-    const relativeCursorYPos = cursorPositionPageY - shadowNoteEl.parentElement.offsetTop;
+    // We're building the translateY value for the shadow note, but the web apis aren't ideal so we have to cobble it
+    // together from the properties we have. For noteLinesPageOffsetTop, see https://stackoverflow.com/q/34422189/1154642
+    const noteLinesPageOffsetTop = document.querySelector('#note-lines').getBoundingClientRect().top + window.scrollY;
+    const relativeCursorYPos = cursorPositionPageY - noteLinesPageOffsetTop;
     let noteYPosition;
 
     // Prevent users from positioning notes too high on the note line.

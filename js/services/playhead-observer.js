@@ -56,6 +56,8 @@ export const playheadObserver = (function () {
     // We get the playhead position by querying the playhead directly (instead of looking
     // up the CSS variable) because the variable uses calc which makes it difficult to
     // query. See https://stackoverflow.com/q/56229772/1154642.
+    //
+    // TODO: is this code cleaner if we use getBoundingClientRect().top?
     playheadPosition = parseInt(
       getComputedStyle(document.querySelector('.music-box__playhead'))
         .getPropertyValue('top')
