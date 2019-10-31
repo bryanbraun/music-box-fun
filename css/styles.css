@@ -487,11 +487,66 @@ a {
   z-index: var(--z-music-box-extend-button);
 }
 .extend-song-button:hover {
-  border-top: 1px dashed var(--mb-gray-40);
   background: linear-gradient(to bottom,
    rgba(255,255,255,0.8) 0%,
    rgba(255,255,255,0.9) 40%,
    var(--paper-color) 80%,
    var(--paper-color) 100%
   );
+}
+.extend-song-button:hover .dashed-line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -1px;
+  height: 1px;
+
+  /* Getting a nice-looking, centered, custom-length, gray-and-white dashed border is difficult.
+     I ended up hacking it a bit by using a linear gradient background image, on a 1px height element. */
+  background-image: linear-gradient(90deg,
+   var(--mb-gray-40) 0%,
+   var(--mb-gray-40) 30%,
+   var(--paper-color) 30%,
+   var(--paper-color) 70%,
+   var(--mb-gray-40) 70%,
+   var(--mb-gray-40) 100%
+  );
+  background-size: 20px 1px;
+  background-position: center;
+  pointer-events: none;
+}
+
+.divider {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+
+  height: 1px;
+  background-image: linear-gradient(90deg,
+   var(--mb-gray-40) 0%,
+   var(--mb-gray-40) 30%,
+   var(--paper-color) 30%,
+   var(--paper-color) 70%,
+   var(--mb-gray-40) 70%,
+   var(--mb-gray-40) 100%  );
+  background-size: 20px 1px;
+  background-position: center;
+  pointer-events: none;
+}
+
+.divider__trim-icon {
+  position: absolute;
+  right: 10px;
+  top: 2px;
+  font-size: 1.25rem;
+  font-family: var(--main-font);
+  padding: 0;
+  border: none;
+  cursor: pointer;
+  color: var(--mb-gray-40);
+  pointer-events: auto;
+}
+.divider__trim-icon--hidden {
+  display: none;
 }

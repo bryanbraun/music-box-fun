@@ -7,7 +7,7 @@ import { PageTitle } from './components/page-title.js';
 import { AudioDisabledMessage } from './components/audio-disabled-message.js';
 import { SongUpdatedMessage } from './components/song-updated-message.js';
 import { TwitterShareButton } from  './components/twitter-share-button.js';
-import { ExtendSongButton } from './components/extend-song-button.js';
+import { PaperFooter } from './components/paper-footer.js';
 
 import { musicBoxStore } from './music-box-store.js';
 import { setupSampler } from './services/sampler.js';
@@ -39,7 +39,7 @@ urlManager.getStateFromUrlAsync().then(urlState => {
   new AudioDisabledMessage().render();
   new PageTitle().render();
   new TwitterShareButton().render();
-  new ExtendSongButton().render();
+  new PaperFooter().render();
 
   new SongUpdatedMessage(); // This element is hidden by default, so it doesn't need to render on page load.
 

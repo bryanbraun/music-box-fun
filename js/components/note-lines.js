@@ -20,7 +20,7 @@ export class NoteLines extends Component {
     `;
 
     // Attach the new NoteLine components to the markup we just added.
-    Object.entries(noteLinesData).forEach(([id, noteData]) => {
+    Object.keys(noteLinesData).forEach(id => {
       new NoteLine({ id }).render();
     });
   }
