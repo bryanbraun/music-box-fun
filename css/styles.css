@@ -84,6 +84,16 @@ a {
   */
   flex: 1 1 100% !important;
   min-height: 0 !important;
+  box-shadow: inset 0px 6px 7px -11px #444, inset 0px -6px 7px -11px;
+}
+
+.mini-footer {
+  font-size: 12px;
+  padding: 0.75rem 0;
+  text-align: center;
+}
+.mini-footer a {
+  color: var(--mb-gray-60);
 }
 
 .workspace {

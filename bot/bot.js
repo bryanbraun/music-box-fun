@@ -39,6 +39,8 @@ function retweetValidTweets(tweet) {
     return;
   }
 
+  console.log('Valid tweet detected:', id);
+
   T.post('statuses/retweet/:id', { id }, function (err, data, response) {
     if (err) {
       console.log(err);
