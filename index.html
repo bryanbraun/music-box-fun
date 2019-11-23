@@ -22,7 +22,7 @@
   <meta property="og:site_name" content="Music Box Fun">
   <meta property="og:title" content="Music Box Fun">
   <meta property="og:description" content="Create music box songs online.">
-  <meta property="og:image" content="https://musicboxfun.com/images/og-image.png">
+  <meta property="og:image" content="/images/og-image.png">
   <meta property="og:url" content="https://musicboxfun.com">
   <meta property="og:type" content="website">
 
@@ -138,51 +138,50 @@
           </div>
         </div>
       </div>
-      <div id=" song-updated-message">
-              <!-- we leave this empty by default to prevent it from rendering at opacity 1 (the default)
+      <div id="song-updated-message">
+        <!-- we leave this empty by default to prevent it from rendering at opacity 1 (the default)
              before the CSS is loaded and then transitioning slowly to transparent on page load. For
              more details, see https://stackoverflow.com/q/14389566/1154642 -->
-          </div>
-          <div id="audio-disabled-message" class="audio-disabled-message audio-disabled-message--hidden">
-            <strong>Not hearing anything?</strong><br>Your browser disabled the sound. Click anywhere to enable it.
-          </div>
-          <div id="twitter-share" class="twitter-share">
-            <a class="share-button"
-              href="https://twitter.com/intent/tweet?text=Music%20Box%20Fun%0Ahttps%3A%2F%2Fmusicboxfun.com&related=musicboxfun">
-              Share this song
-            </a>
-          </div>
+      </div>
+      <div id="audio-disabled-message" class="audio-disabled-message audio-disabled-message--hidden">
+        <strong>Not hearing anything?</strong><br>Your browser disabled the sound. Click anywhere to enable it.
+      </div>
+      <div id="twitter-share" class="twitter-share">
+        <a class="share-button"
+          href="https://twitter.com/intent/tweet?text=Music%20Box%20Fun%0Ahttps%3A%2F%2Fmusicboxfun.com&related=musicboxfun">
+          Share this song
+        </a>
+      </div>
+    </div>
+    <div class="controls">
+      <div id="play-button-wrapper">
+        <button class="play-button" aria-pressed="false" aria-label="Play (Space)" title="Play (Space)" role="button">
+          <svg id="play-svg" width="100%" viewBox="0 0 58 58" xmlns="http://www.w3.org/2000/svg">
+            <g fill="none" fill-rule="evenodd">
+              <circle class="play-button__outer-circle" cx="29" cy="29" r="29" />
+              <path class="play-button__inner-shape"
+                d="M41.193 30.708L24.04 41.15A2 2 0 0 1 21 39.44V18.56a2 2 0 0 1 3.04-1.709l17.153 10.442a2 2 0 0 1 0 3.416z" />
+            </g>
+          </svg>
+        </button>
+      </div>
+      <div class="controls__section">
+        <div id="file">
+          <button class="new-song">New blank song</button>
         </div>
-        <div class="controls">
-          <div id="play-button-wrapper">
-            <button class="play-button" aria-pressed="false" aria-label="Play (Space)" title="Play (Space)"
-              role="button">
-              <svg id="play-svg" width="100%" viewBox="0 0 58 58" xmlns="http://www.w3.org/2000/svg">
-                <g fill="none" fill-rule="evenodd">
-                  <circle class="play-button__outer-circle" cx="29" cy="29" r="29" />
-                  <path class="play-button__inner-shape"
-                    d="M41.193 30.708L24.04 41.15A2 2 0 0 1 21 39.44V18.56a2 2 0 0 1 3.04-1.709l17.153 10.442a2 2 0 0 1 0 3.416z" />
-                </g>
-              </svg>
-            </button>
-          </div>
-          <div class="controls__section">
-            <div id="file">
-              <button class="new-song">New blank song</button>
+      </div>
+      <div class="controls__section">
+        <div class="toggle" id="snap-to-grid">
+          <label class="toggle__label">
+            <input class="toggle__input" type="checkbox" checked />
+            <div class="toggle__outer">
+              <div class="toggle__inner"></div>
             </div>
-          </div>
-          <div class="controls__section">
-            <div class="toggle" id="snap-to-grid">
-              <label class="toggle__label">
-                <input class="toggle__input" type="checkbox" checked />
-                <div class="toggle__outer">
-                  <div class="toggle__inner"></div>
-                </div>
-                <span class="toggle__text">Snap to grid</span>
-              </label>
-            </div>
-          </div>
+            <span class="toggle__text">Snap to grid</span>
+          </label>
         </div>
+      </div>
+    </div>
   </main>
   <script src="/js/vendor/Tone.min.js"></script>
   <script src="/js/vendor/json-url-single.min.js"></script>
