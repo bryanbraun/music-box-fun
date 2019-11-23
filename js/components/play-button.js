@@ -44,7 +44,7 @@ export class PlayButton extends Component {
     const buttonText = isScrolling ? 'Pause (Space)' : 'Play (Space)';
 
     this.element.innerHTML = `
-      <button class="${classes}" aria-pressed="${isScrolling}" aria-label="${buttonText}" title="${buttonText}" role="button" >
+      <button class="${classes}" aria-pressed="${isScrolling}" aria-label="${buttonText}" title="${buttonText}">
         ${this.getIconSvg(isScrolling)}
       </button>
     `;

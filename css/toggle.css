@@ -23,6 +23,7 @@
 
 .toggle__outer,
 .toggle__inner {
+  display: block;
   transition: all 0.1s ease;
 }
 

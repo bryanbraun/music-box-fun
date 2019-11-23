@@ -22,7 +22,11 @@
   <meta property="og:site_name" content="Music Box Fun">
   <meta property="og:title" content="Music Box Fun">
   <meta property="og:description" content="Create music box songs online.">
-  <meta property="og:image" content="/images/og-image.png">
+  <!-- I'm dropping the og:image for now because I don't like how twitter fails to display the link
+       when the image comes in. If twitter ever changes this display, we should bring it back because
+       it looks pretty great on Facebook/Linkedin. We could also bring it back if we ever get static-ly
+       served, customized, metadata for each song link. -->
+  <!-- <meta property="og:image" content="https://musicboxfun.com/images/og-image.png"> -->
   <meta property="og:url" content="https://musicboxfun.com">
   <meta property="og:type" content="website">
 
@@ -47,11 +51,10 @@
         Twitter</a>
     </div>
     <div class="mini-footer">
+      <a href="https://www.bryanbraun.com/2019/11/02/music-box-fun/" title="About">About</a>&nbsp;·&nbsp;
       <a href="https://github.com/bryanbraun/music-box-fun" title="Source code on Github">Code</a>&nbsp;·&nbsp;
       <a href="https://github.com/bryanbraun/music-box-fun/projects/1" title="Planned features">Roadmap</a>&nbsp;·&nbsp;
-      <a href="https://github.com/bryanbraun/music-box-fun/issues"
-        title="Submit a question, issue, or feature request on Github.">Issues</a>&nbsp;·&nbsp;
-      <a href="https://twitter.com/BryanEBraun" title="">Say Hi</a>
+      <a href="https://twitter.com/BryanEBraun" title="Say Hi">Say Hi</a>
     </div>
   </aside>
   <main class="workspace">
@@ -134,14 +137,16 @@
           </div>
           <div id="paper-footer">
             <div id="dividers"></div>
-            <button class="extend-song-button" title="Extend Song"">+</button>
+            <button class="extend-song-button" title="Extend Song">+</button>
           </div>
         </div>
       </div>
       <div id="song-updated-message">
-        <!-- we leave this empty by default to prevent it from rendering at opacity 1 (the default)
-             before the CSS is loaded and then transitioning slowly to transparent on page load. For
-             more details, see https://stackoverflow.com/q/14389566/1154642 -->
+        <!--
+          we leave this empty by default to prevent it from rendering at opacity 1 (the default)
+          before the CSS is loaded and then transitioning slowly to transparent on page load. For
+          more details, see https://stackoverflow.com/q/14389566/1154642
+        -->
       </div>
       <div id="audio-disabled-message" class="audio-disabled-message audio-disabled-message--hidden">
         <strong>Not hearing anything?</strong><br>Your browser disabled the sound. Click anywhere to enable it.
@@ -155,7 +160,7 @@
     </div>
     <div class="controls">
       <div id="play-button-wrapper">
-        <button class="play-button" aria-pressed="false" aria-label="Play (Space)" title="Play (Space)" role="button">
+        <button class="play-button" aria-pressed="false" aria-label="Play (Space)" title="Play (Space)">
           <svg id="play-svg" width="100%" viewBox="0 0 58 58" xmlns="http://www.w3.org/2000/svg">
             <g fill="none" fill-rule="evenodd">
               <circle class="play-button__outer-circle" cx="29" cy="29" r="29" />
@@ -174,9 +179,9 @@
         <div class="toggle" id="snap-to-grid">
           <label class="toggle__label">
             <input class="toggle__input" type="checkbox" checked />
-            <div class="toggle__outer">
-              <div class="toggle__inner"></div>
-            </div>
+            <span class="toggle__outer">
+              <span class="toggle__inner"></span>
+            </span>
             <span class="toggle__text">Snap to grid</span>
           </label>
         </div>
