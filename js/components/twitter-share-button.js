@@ -31,7 +31,7 @@ export class TwitterShareButton extends Component {
     const songUrl = this.encodeString(document.location.href);
 
     this.element.innerHTML = `
-      <a class="share-button" href="https://twitter.com/intent/tweet?text=${songTitle}%0A${songUrl}&related=musicboxfun">
+      <a class="share-button" href="https://twitter.com/intent/tweet?text=${songTitle}%0A${songUrl}%0A%E2%80%93&related=musicboxfun">
         <i></i>
         Share this song
       </a>

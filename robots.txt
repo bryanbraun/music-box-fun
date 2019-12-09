@@ -1,4 +1,0 @@
-# Prevent Twitter's bots from crawling my site in an attempt to
-# prevent rich summary data from appearing in shared song links.
-User-agent: Twitterbot
-Disallow: /
