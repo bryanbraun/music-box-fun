@@ -5,11 +5,11 @@ import { NoteLine } from './note-line.js';
 export class NoteLines extends Component {
   constructor() {
     super({
-      element: document.querySelector('#note-lines')
+      element: document.querySelector('#note-lines'),
+      renderTrigger: 'boxType'
     });
   }
 
-  // This should run on initial page load only, to start.
   render() {
     const noteLinesData = musicBoxStore.state.songState.songData;
 

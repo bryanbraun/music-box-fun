@@ -62,6 +62,9 @@
   --z-twitter-share: 15;
   --z-audio-context-message: 16;
 
+  /* OTHER */
+  --number-of-notes: 15;
+
   /* BREAKPOINTS */
   /* These aren't a thing! See https://stackoverflow.com/a/40723269/1154642
      I'm going to put them here anyway, for documentation. If I ever need

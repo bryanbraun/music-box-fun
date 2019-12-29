@@ -1,0 +1,38 @@
+/* generic select styles */
+.select {
+  width: 100%;
+  -webkit-appearance: none;
+  font-family: inherit;
+  font-size: inherit;
+  background-color: var(--controls-button);
+  background-image: url(/images/select-down.svg);
+  background-repeat: no-repeat;
+  background-position: right 7px center;
+  border-radius: 5px;
+  border: 1px solid var(--mb-gray-20);
+  border-bottom: 1px solid #bbb;
+  padding: 0.4rem 1.2rem 0.4rem 0.4rem;
+}
+.select::after > .select {
+  content: "";
+  position: absolute;
+  right: 0.7em;
+  margin: auto;
+  top: 0;
+  bottom: 0;
+  height: 0;
+  border-top: 0.4em solid currentColor;
+  border-left: 0.3em solid transparent;
+  border-right: 0.3em solid transparent;
+  pointer-events: none;
+}
+
+/* override background image and padding to provide an icon */
+.select-music-box-type {
+  padding-left: 1.8rem;
+  padding-bottom: 0.3rem; /* remove some padding because this text has no descenders (and we don't expect it to) */
+  background-image: url(/images/music-box-type.svg),
+                    url(/images/select-down.svg);
+  background-position: 7px center, right 7px center;
+  background-repeat: no-repeat, no-repeat;
+}

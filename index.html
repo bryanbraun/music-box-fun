@@ -67,7 +67,7 @@
           <form id="song-title" class="song-title">
             <input type="text" placeholder="Untitled Song" />
           </form>
-          <div class="note-header">
+          <div id="note-header" class="note-header">
             <div class="note-label">C</div>
             <div class="note-label">D</div>
             <div class="note-label">E</div>
@@ -169,6 +169,12 @@
       <div class="controls__section">
         <div id="file">
           <button class="new-song">New blank song</button>
+        </div>
+        <div id="music-box-type">
+          <select class="select select-music-box-type">
+            <option selected="" value="15">15-note</option>
+            <option value="20">20-note</option>
+          </select>
         </div>
       </div>
       <div class="controls__section">

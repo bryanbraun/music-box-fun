@@ -1,7 +1,9 @@
 import { SongTitle } from './components/song-title.js';
+import { NoteHeader } from './components/note-header.js';
 import { NoteLines } from './components/note-lines.js';
 import { PlayButton } from './components/play-button.js';
 import { NewSongButton } from './components/new-song-button.js';
+import { MusicBoxTypeSelect } from './components/music-box-type-select.js';
 import { SnapToGridToggle } from './components/snap-to-grid-toggle.js';
 import { PageTitle } from './components/page-title.js';
 import { AudioDisabledMessage } from './components/audio-disabled-message.js';
@@ -32,9 +34,11 @@ urlManager.getStateFromUrlAsync().then(urlState => {
 
   // Initial page render
   new SongTitle().render();
+  new NoteHeader().render();
   new NoteLines().render();
   new PlayButton().render();
   new NewSongButton().render();
+  new MusicBoxTypeSelect().render();
   new SnapToGridToggle().render();
   new AudioDisabledMessage().render();
   new PageTitle().render();

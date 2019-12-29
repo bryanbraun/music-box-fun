@@ -125,9 +125,6 @@ a {
   display: inline-block;
 }
 
-.fifteen-note {
-  --number-of-notes: 15;
-}
 .music-box {
   --left-box-edge-width: 30px;
   --right-box-edge-width: 30px;
@@ -340,9 +337,9 @@ a {
   border-top: 1px dashed var(--controls-border);
   padding: 1rem 0 1rem;
 }
-.controls__title {
-  font-size: 1rem;
-  margin: 0 0 0.5rem;
+/* define spacing between controls elements */
+.controls__section div:not(:last-of-type) {
+  padding-bottom: 1rem;
 }
 
 .play-button {
