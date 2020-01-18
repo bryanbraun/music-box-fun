@@ -61,4 +61,9 @@ export const minifyMap = {
   A5: 'p',
   B5: 'q',
   C6: 'r',
+  D6: 's',
+  E6: 't',
+  F6: 'u',
+  G6: 'v',
+  A6: 'w',
 }
