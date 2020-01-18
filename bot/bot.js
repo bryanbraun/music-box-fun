@@ -14,8 +14,11 @@ function initialize() {
 
 function hasASongUrl(urls) {
   if (!Array.isArray(urls) || urls.length === 0) {
+    console.log('urls is not an Array');
     return false;
   }
+
+  console.log('urls', urls);
 
   const songUrlIndex = urls.findIndex(el => el.expanded_url.includes('musicboxfun.com/#'));
 
@@ -33,6 +36,8 @@ function retweetValidTweets(tweet) {
   if (tweet.retweeted_status) {
     return;
   }
+
+  console.log('Tweet with musicboxfun.com url detected:', id);
 
   // Don't retweet it, if it is missing a song url.
   if (!hasASongUrl(tweet.entities.urls)) {
