@@ -48,7 +48,7 @@ export const playheadObserver = (function () {
         return;
       }
 
-      sampler.triggerAttackRelease(entry.target.parentElement.id, '8n');
+      sampler.triggerAttackRelease(entry.target.parentElement.dataset.id, '8n');
     });
   }
 

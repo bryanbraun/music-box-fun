@@ -18,6 +18,7 @@ import { setupAudioContextFallbackForRestrictiveBrowsers } from './subscribers/a
 import { setupKeyboardEvents } from './subscribers/keyboard-manager.js';
 import { urlManager } from './subscribers/url-manager.js';
 import { pageScroller } from './subscribers/page-scroller.js';
+import { getCurrentBoxType, boxTypeHoleWidths } from './services/box-types.js';
 
 urlManager.getStateFromUrlAsync().then(urlState => {
   // We load URL song data into state first, before we have any listeners
@@ -32,13 +33,18 @@ urlManager.getStateFromUrlAsync().then(urlState => {
   // intensive. It might be worth looking into why that is, and how to improve it.
   playheadObserver.setup();
 
+  // Initialize values (before rendering components)
+  const currentBoxType = getCurrentBoxType();
+  document.documentElement.style.setProperty('--number-of-notes', currentBoxType);
+  document.documentElement.style.setProperty('--hole-width', boxTypeHoleWidths[currentBoxType]);
+
   // Initial page render
   new SongTitle().render();
   new NoteHeader().render();
   new NoteLines().render();
   new PlayButton().render();
   new NewSongButton().render();
-  new MusicBoxTypeSelect().render();
+  new MusicBoxTypeSelect({ currentBoxType }).render();
   new SnapToGridToggle().render();
   new AudioDisabledMessage().render();
   new PageTitle().render();

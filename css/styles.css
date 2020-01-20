@@ -13,7 +13,6 @@ body {
   flex-wrap: nowrap;
 }
 
-
 a {
   color: var(---link-color);
 }
@@ -198,9 +197,24 @@ a {
     do it with this https://developers.google.com/web/updates/2017/09/sticky-headers */
 }
 
+.thirty .note-label:nth-of-type(odd) {
+  margin-top: 1.125rem;
+}
+.thirty .note-label {
+  font-size: 14px;
+}
 .note-label {
   flex: 0 0 var(--hole-width);
   text-align: center;
+  position: relative;
+}
+.sharp::after {
+  display: block;
+  content: '#';
+  font-size: 8px;
+  position: absolute;
+  top: -2px;
+  left: 0px;
 }
 
 .note-lines {
@@ -209,7 +223,8 @@ a {
   flex-wrap: nowrap;
   justify-content: space-between;
   align-items: stretch;
-  min-height: var(--default-music-length);
+  /* we add the hole-width here to include the starting-gap (which is dynamic) */
+  min-height: calc(var(--default-note-line-length) + var(--hole-width));
 }
 
 .note-line {
@@ -275,6 +290,7 @@ a {
   background-color: var(--hole-color);
   cursor: pointer;
   z-index: var(--z-music-box-notes);
+  padding: 0;
 }
 
 .silent {
@@ -316,6 +332,7 @@ a {
 
 .controls {
   position: fixed;
+  z-index: var(--z-controls);
   top: 0;
   right: 0;
   bottom: 0;

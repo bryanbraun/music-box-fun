@@ -14,7 +14,6 @@ export class PaperFooter extends Component {
     // Constants
     this.NUMBER_OF_BARS = 52;
     this.BAR_LENGTH = 50;
-    this.STARTING_GAP = 16; // hole size
     this.ENDING_GAP = 48;
     this.FINAL_BAR_LINE = 1;
 
@@ -24,16 +23,24 @@ export class PaperFooter extends Component {
     this.trimSong = this.trimSong.bind(this);
   }
 
-  getMusicLengthVar() {
-    return parseInt(getComputedStyle(document.documentElement).getPropertyValue('--default-music-length').trim());
+  getNoteLineLengthVar() {
+    return parseInt(getComputedStyle(document.documentElement).getPropertyValue('--default-note-line-length').trim());
   }
 
-  setMusicLengthVar(newVal) {
-    document.documentElement.style.setProperty('--default-music-length', `${newVal}px`);
+  getHoleWidthVar() {
+    return parseInt(getComputedStyle(document.documentElement).getPropertyValue('--hole-width').trim());
+  }
+
+  setNoteLineLengthVar(newVal) {
+    document.documentElement.style.setProperty('--default-note-line-length', `${newVal}px`);
   }
 
   getNumberOfUsedPages() {
-    const singleUsePixels = (this.STARTING_GAP / 2) + this.FINAL_BAR_LINE; // 9
+    // We use "standard" values instead of dynamic ones for the hole size because these
+    // calculations are made against stored note data, which isn't adjusted for hole size.
+    const STANDARD_STARTING_GAP = 16;
+    const STANDARD_HALF_HOLE = 8;
+    const singleUsePixels = STANDARD_STARTING_GAP - STANDARD_HALF_HOLE + this.FINAL_BAR_LINE; // 25
     const pageDivisor = this.NUMBER_OF_BARS * this.BAR_LENGTH; // 2600
 
     const finalNoteYPos = Object.values(musicBoxStore.state.songState.songData).reduce((accumulator, currentValue) => {
@@ -44,31 +51,31 @@ export class PaperFooter extends Component {
   }
 
   getNumberOfExposedPages() {
-    const singleUsePixels = this.STARTING_GAP + this.ENDING_GAP + this.FINAL_BAR_LINE; // 65
+    const singleUsePixels = this.ENDING_GAP + this.FINAL_BAR_LINE; // 49
     const pageDivisor = this.NUMBER_OF_BARS * this.BAR_LENGTH; // 2600
-    return (this.getMusicLengthVar() - singleUsePixels) / pageDivisor;
+    return (this.getNoteLineLengthVar() - singleUsePixels) / pageDivisor;
   }
 
   setInitialMusicLength() {
-    const initialMusicLength = this.STARTING_GAP + (this.NUMBER_OF_BARS * this.BAR_LENGTH * this.getNumberOfUsedPages()) + this.ENDING_GAP + this.FINAL_BAR_LINE;
-
-    this.setMusicLengthVar(initialMusicLength);
+    const initialNoteLineLength = (this.NUMBER_OF_BARS * this.BAR_LENGTH * this.getNumberOfUsedPages()) + this.ENDING_GAP + this.FINAL_BAR_LINE;
+    this.setNoteLineLengthVar(initialNoteLineLength);
   }
 
   extendSong() {
-    const newMusicLength = this.getMusicLengthVar() + (this.NUMBER_OF_BARS * this.BAR_LENGTH);
-    this.setMusicLengthVar(newMusicLength);
+    const newNoteLineLength = this.getNoteLineLengthVar() + (this.NUMBER_OF_BARS * this.BAR_LENGTH);
+    this.setNoteLineLengthVar(newNoteLineLength);
     this.render();
   }
 
   trimSong(event) {
-    const newMusicLength = this.getMusicLengthVar() - (this.NUMBER_OF_BARS * this.BAR_LENGTH);
-    this.setMusicLengthVar(newMusicLength);
+    const newNoteLineLength = this.getNoteLineLengthVar() - (this.NUMBER_OF_BARS * this.BAR_LENGTH);
+    this.setNoteLineLengthVar(newNoteLineLength);
     this.render();
   }
 
   render() {
-    // A little hack for setting the initial minimum music length on page load.
+    // A little hack for setting the initial minimum music length on page load. Maybe
+    // someday we can find a clean way to add this to the "Initialize values" in main.js.
     if (this.isInitialRender) {
       this.setInitialMusicLength();
       this.isInitialRender = false;

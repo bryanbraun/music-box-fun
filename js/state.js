@@ -43,6 +43,7 @@ export const state = {
 // The keys in songState (above) can be minified before being compressed
 // and saved in the URL, making the URLs shorter. This single-level map
 // helps by providing a one-character alt-name for everything in songState.
+// CHANGING VALUES IN THIS MAP COULD BREAK LINKS TO EXISTING SONGS.
 export const minifyMap = {
   songTitle: 'a',
   songData: 'c',
@@ -66,4 +67,17 @@ export const minifyMap = {
   F6: 'u',
   G6: 'v',
   A6: 'w',
+  C3: 'x',
+  D3: 'y',
+  G3: 'z',
+  A3: 'A',
+  B3: 'B',
+  'F#4': 'C',
+  'G#4': 'D',
+  'A#4': 'E',
+  'C#5': 'F',
+  'D#5': 'G',
+  'F#5': 'H',
+  'G#5': 'I',
+  'A#5': 'J',
 }

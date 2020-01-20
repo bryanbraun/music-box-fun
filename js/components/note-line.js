@@ -8,17 +8,20 @@ export class NoteLine extends Component {
     super({
       props,
       renderTrigger: `songState.songData.${props.id}`,
-      element: document.querySelector(`#${props.id}`)
+      element: document.querySelector(`[data-id="${props.id}"]`)
     });
 
     // We need to bind these in order to use "this" inside of them.
     this.showShadowNote = this.showShadowNote.bind(this);
     this.haveShadowNoteFollowCursor = this.haveShadowNoteFollowCursor.bind(this);
     this.handleClick = this.handleClick.bind(this);
+    this.adjustStoredYPosForHoleSize = this.adjustStoredYPosForHoleSize.bind(this);
+    this.adjustDisplayedYPosForHoleSize = this.adjustDisplayedYPosForHoleSize.bind(this);
 
     // Constants
     this.QUARTER_BAR_GAP = 50; // Pixel distance between the black quarter note bars.
     this.EIGHTH_BAR_GAP = 25; // Pixel distance between the gray eighth note bars.
+    this.STANDARD_HOLE_RADIUS = 8; // Used only in calculations on stored note data.
 
     // Cached Constants
     this.holeWidth = null;
@@ -36,12 +39,25 @@ export class NoteLine extends Component {
   // We base a lot of our math on the size of the hole, which is a CSS variable. This value
   // could change in the future to allow us to adjust the size of the paper. When this happens,
   // we want our math to continue working. Instead of looking up the CSS variable incessantly,
-  // we use this function to look it up at key moments and cache the value in the class instance.
-  // This simplifies our code and may improve performance. If we end up never adjusting the hole
-  // size, we can remove this function and store the sizes as hard-coded constants in the class.
+  // (like on hover) we use this function to look it up at key moments and cache the value in
+  // the class instance. This simplifies our code and may improve performance.
   updateHoleSize() {
     this.holeWidth = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--hole-width').trim());
     this.holeRadius = this.holeWidth / 2;
+  }
+
+  // We want the songData in state to be the same, regardless of whether the song was composed on
+  // a screen showing small or large holes. This doesn't seem like it should be a problem, because the
+  // vertical axis doesn't scale with hole size. HOWEVER, the distance between the top of the hole and
+  // center of the hole DOES change with hole size. That's a problem because whenever we would add a hole,
+  // its translateY value (which depended on the hole size) was getting stored. These functions allow
+  // us to adjust the yPos when it goes into and out of storage, so it is always stored the same, but is
+  // displayed with slight offsets whenever the hole-radius is non-standard.
+  adjustDisplayedYPosForHoleSize(yPos) {
+    return yPos - (this.STANDARD_HOLE_RADIUS - this.holeRadius);
+  }
+  adjustStoredYPosForHoleSize(yPos) {
+    return yPos + (this.STANDARD_HOLE_RADIUS - this.holeRadius);
   }
 
   showShadowNote(event) {
@@ -81,10 +97,10 @@ export class NoteLine extends Component {
     }
 
     if (musicBoxStore.state.appState.isSnappingToGrid) {
-      const topPixelOffset = this.holeWidth;
+      const topPixelOffset = this.holeRadius;
 
       const snapToNearestBar = val => (
-        Math.round((val + topPixelOffset) / this.EIGHTH_BAR_GAP) * this.EIGHTH_BAR_GAP - topPixelOffset
+        Math.round((val - topPixelOffset) / this.EIGHTH_BAR_GAP) * this.EIGHTH_BAR_GAP + topPixelOffset
       );
 
       noteYPosition = snapToNearestBar(relativeCursorYPos - this.holeRadius);
@@ -99,14 +115,14 @@ export class NoteLine extends Component {
   handleClick(event) {
     const noteLineEl = event.currentTarget;
     const shadowNoteEl = noteLineEl.querySelector('.shadow-note');
-    const pitch = noteLineEl.id;
+    const pitch = noteLineEl.getAttribute('data-id');
 
     const isShadowNoteOverlappingExistingNote = shadowNoteYPos => (
       musicBoxStore.state.songState.songData[pitch].includes(shadowNoteYPos)
     );
 
     const getNoteYPos = element => {
-      const yposMatch = element.style.transform.match(/translateY\((\d+)px\)/);
+      const yposMatch = element.style.transform.match(/translateY\((\d+\.?\d*)px\)/); // https://regex101.com/r/49U5Dx/1
       return (yposMatch && yposMatch[1]) ? parseInt(yposMatch[1]) : console.error("Couldn't find note position");
     };
 
@@ -125,27 +141,34 @@ export class NoteLine extends Component {
     }
   }
 
-  addNote(pitch, ypos) {
+  addNote(pitch, yPos) {
+    const storedYPos = this.adjustStoredYPosForHoleSize(yPos);
     const newPitchArray =
       [...musicBoxStore.state.songState.songData[pitch]]
-        .concat(ypos)
+        .concat(storedYPos)
         .sort((a, b) => Number(a) - Number(b));
 
     sampler.triggerAttackRelease(pitch, '8n');
     musicBoxStore.setState(`songState.songData.${pitch}`, newPitchArray);
   }
 
-  removeNote(pitch, ypos) {
+  removeNote(pitch, yPos) {
+    const storedYPos = this.adjustStoredYPosForHoleSize(yPos);
     const newPitchArray =
       [...musicBoxStore.state.songState.songData[pitch]]
-        .filter(val => val !== ypos);
+        .filter(val => val !== storedYPos);
 
     musicBoxStore.setState(`songState.songData.${pitch}`, newPitchArray);
   }
 
   renderNotes(pitch) {
     const notesArray = musicBoxStore.state.songState.songData[pitch];
-    const deadZoneLength = this.QUARTER_BAR_GAP - this.holeRadius - 1;
+
+    // The "dead zone" is the region after a note, wherein if a note is placed, it
+    // will display as red and will not play a note (due to mechanical limitations).
+    // We base this length on the actual boxes, and the STANDARD_HOLE_RADIUS to ensure
+    // the dead-zone is the same when we use different hole-sizes.
+    const deadZoneLength = this.QUARTER_BAR_GAP - this.STANDARD_HOLE_RADIUS - 1;
     let lastPlayableNoteYPos = 0;
     let notesMarkup = '';
 
@@ -153,7 +176,9 @@ export class NoteLine extends Component {
       const isNotePlayable = (i === 0) ? true : (yPos - lastPlayableNoteYPos > deadZoneLength);
       lastPlayableNoteYPos = isNotePlayable ? yPos : lastPlayableNoteYPos; // update this scoped variable.
 
-      notesMarkup += `<button class="hole ${isNotePlayable ? '' : 'silent'}" style="transform: translateY(${yPos}px)"></button>`;
+      const displayedYPos = this.adjustDisplayedYPosForHoleSize(yPos);
+
+      notesMarkup += `<button class="hole ${isNotePlayable ? '' : 'silent'}" style="transform: translateY(${displayedYPos}px)"></button>`;
     });
 
     return notesMarkup;

@@ -1,5 +1,6 @@
 import { Component } from './component.js';
 import { musicBoxStore } from '../music-box-store.js';
+import { getCurrentBoxType } from '../services/box-types.js';
 
 export class NoteHeader extends Component {
   constructor() {
@@ -12,9 +13,20 @@ export class NoteHeader extends Component {
   render() {
     const songData = musicBoxStore.state.songState.songData;
 
+    // @todo: could this be improved with ClassNames?
+    if (getCurrentBoxType() === '30') {
+      this.element.classList.add('thirty');
+    } else {
+      this.element.classList.remove('thirty');
+    }
+
     this.element.innerHTML = `
       ${Object.keys(songData)
-        .map(pitchId => `<div class="note-label">${pitchId[0]}</div>`)
+        .map(pitchId => (
+          `<div class="note-label ${pitchId[1] === '#' ? 'sharp' : ''}">
+            ${pitchId[0]}
+          </div>`
+        ))
         .join('')}
     `;
   }
