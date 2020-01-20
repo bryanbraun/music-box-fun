@@ -495,13 +495,12 @@ a {
     to get full width because it's a button. See:
     https://stackoverflow.com/q/29293302/1154642 */
   width: 100%;
-
+  margin: 0;
   padding: 0;
   border: 0;
   font-family: var(--main-font);
   font-size: 1.25rem;
   line-height: 3rem;
-  border: 0;
   background: var(--paper-color);
   cursor: pointer;
   z-index: var(--z-music-box-extend-button);
