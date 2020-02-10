@@ -4,6 +4,7 @@ import { NoteLines } from './components/note-lines.js';
 import { PlayButton } from './components/play-button.js';
 import { NewSongButton } from './components/new-song-button.js';
 import { MusicBoxTypeSelect } from './components/music-box-type-select.js';
+import { Tempo } from './components/tempo.js';
 import { SnapToGridToggle } from './components/snap-to-grid-toggle.js';
 import { PageTitle } from './components/page-title.js';
 import { AudioDisabledMessage } from './components/audio-disabled-message.js';
@@ -45,6 +46,7 @@ urlManager.getStateFromUrlAsync().then(urlState => {
   new PlayButton().render();
   new NewSongButton().render();
   new MusicBoxTypeSelect({ currentBoxType }).render();
+  new Tempo().render();
   new SnapToGridToggle().render();
   new AudioDisabledMessage().render();
   new PageTitle().render();

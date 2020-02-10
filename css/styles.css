@@ -355,7 +355,7 @@ a {
   padding: 1rem 0 1rem;
 }
 /* define spacing between controls elements */
-.controls__section div:not(:last-of-type) {
+.controls__section > *:not(:last-child) {
   padding-bottom: 1rem;
 }
 
@@ -410,6 +410,23 @@ a {
 
 .new-song:active {
   border: 1px solid var(--mb-gray-20);
+}
+
+.tempo {
+  display: block;
+}
+
+.tempo-inputs {
+  display: flex;
+  justify-content: space-between;
+}
+.tempo-slider {
+  cursor: pointer;
+  width: 100%;
+}
+.tempo-field {
+  width: 40px;
+  margin-left: 6px;
 }
 
 .song-updated {

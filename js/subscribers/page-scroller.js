@@ -44,7 +44,8 @@ export const pageScroller = {
 
   scrollPage(timestamp) {
     const END_OF_PAGE_BUFFER = 3;
-    const BEATS_PER_MINUTE = 110;
+    const DEFAULT_TEMPO = 110;
+    const BEATS_PER_MINUTE = musicBoxStore.state.songState.tempo || DEFAULT_TEMPO;
     const scrollRate = this.BpmToPixelsPerMillisecond(BEATS_PER_MINUTE);
     const isFullyScrolled =
       document.documentElement.scrollHeight -
@@ -60,7 +61,8 @@ export const pageScroller = {
       return;
     }
 
-    // First iteration set-up
+    // First iteration set-up.
+    // Note: We may be able to make performance improvements by moving more things into here.
     if (!this.startTime) {
       const initialScrollTop = document.documentElement.scrollTop;
 

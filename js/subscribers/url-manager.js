@@ -1,5 +1,6 @@
 import { musicBoxStore } from '../music-box-store.js';
 import { minifyMap } from '../state.js';
+import { debounce } from '../utils/debounce.js';
 
 export const urlManager = {
   currentVersion: '0',
@@ -56,8 +57,14 @@ export const urlManager = {
     return newObj;
   },
 
+
   subscribeUrlToStateChanges() {
-    musicBoxStore.subscribe('songState', this.saveStateToUrlAsync.bind(this));
+    // We debounce URL updates to reduce processing and prevent potential race conditions
+    // (like the page reload I was seeing during rapid slider changes).
+    // Debouncing here means other parts of the UI can update in real time, which is nice.
+    const DEBOUNCE_DELAY = 200;
+    const debouncedUpdateUrlAsync = debounce(this.saveStateToUrlAsync.bind(this), DEBOUNCE_DELAY);
+    musicBoxStore.subscribe('songState', debouncedUpdateUrlAsync);
   },
 
   // This fixes an edge-case where a user on the site would click the "back" button,

@@ -19,6 +19,7 @@ export const state = {
   // OR BACKWARDS COMPATIBLE. SEE "/DOCS/URL-DATA.MD" FOR DETAILS.
   songState: {
     songTitle: '',
+    tempo: 110,
     songData: {
       C4: [],
       D4: [],
@@ -80,4 +81,5 @@ export const minifyMap = {
   'F#5': 'H',
   'G#5': 'I',
   'A#5': 'J',
+  tempo: 'K',
 }
