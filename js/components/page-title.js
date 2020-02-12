@@ -13,6 +13,6 @@ export class PageTitle extends Component {
     const songTitle = musicBoxStore.state.songState.songTitle;
 
     // Use textContent to be extra safe in preventing XSS issues.
-    this.element.textContent = songTitle ? `${songTitle} | Music Box Fun` : `Music Box Fun`;
+    this.element.textContent = songTitle ? `${songTitle} | Music Box Fun` : `Music Box Fun - Online Music Box Maker`;
   }
 }
