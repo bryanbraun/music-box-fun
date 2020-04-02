@@ -180,7 +180,7 @@ a {
 }
 
 .song-title {
-  padding: 2rem 0 2.75rem;
+  padding: 2rem 0 2.5rem;
 }
 
 .song-title input {
@@ -189,7 +189,7 @@ a {
   border-right: 0;
   border-top: 0;
   border-bottom: 1px solid var(--mb-gray-40);
-  font-size: 14px;
+  font-size: 0.875rem;
   width: calc((var(--number-of-notes) - 1) * var(--hole-width));
   padding-bottom: 2px;
 }
@@ -202,18 +202,16 @@ a {
   position: sticky;
   top: 0;
   background: rgba(255, 255, 255, 0.95);
+  padding: 4px 0 3px;
   /* Stack our header above the note-lines and holes */
   z-index: var(--z-music-box-note-header);
-
-  /* TODO: Add more padding around this header when it sticks. If nothing else, we could
-    do it with this https://developers.google.com/web/updates/2017/09/sticky-headers */
 }
 
 .thirty .note-label:nth-of-type(odd) {
   margin-top: 1.125rem;
 }
 .thirty .note-label {
-  font-size: 14px;
+  font-size: 0.875rem;
 }
 .note-label {
   flex: 0 0 var(--hole-width);
@@ -223,7 +221,7 @@ a {
 .sharp::after {
   display: block;
   content: '#';
-  font-size: 8px;
+  font-size: 0.5rem;
   position: absolute;
   top: -2px;
   left: 0px;
