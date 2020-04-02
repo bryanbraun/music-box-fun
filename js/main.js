@@ -1,3 +1,4 @@
+import { Description } from './components/description.js';
 import { SongTitle } from './components/song-title.js';
 import { NoteHeader } from './components/note-header.js';
 import { NoteLines } from './components/note-lines.js';
@@ -40,6 +41,7 @@ urlManager.getStateFromUrlAsync().then(urlState => {
   document.documentElement.style.setProperty('--hole-width', boxTypeHoleWidths[currentBoxType]);
 
   // Initial page render
+  new Description().render();
   new SongTitle().render();
   new NoteHeader().render();
   new NoteLines().render();

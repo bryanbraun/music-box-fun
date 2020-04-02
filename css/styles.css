@@ -50,16 +50,28 @@ a {
 }
 
 .title-box {
-  margin: 1.25rem 0;
   flex: 0 0 auto;
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
 }
 .title {
+  margin: 0 0 0.75rem;
+  font-size: 1.55rem;
+  line-height: 1;
+}
+.subtitle {
   margin: 0;
-  font-size: 1.5rem;
+  font-size: 0.875rem;
+  line-height: 1;
+  color: var(--mb-gray-60);
 }
 .description {
-  margin-bottom: 2.5rem;
   flex: 0 0 auto;
+  margin-bottom: 2.5rem;
+  line-height: 1.33;
+}
+.description p {
+  margin: 0;
 }
 .recent {
   flex: 1 1 auto;
