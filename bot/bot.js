@@ -18,8 +18,6 @@ function hasASongUrl(urls) {
     return false;
   }
 
-  console.log('urls', urls);
-
   const songUrlIndex = urls.findIndex(el => el.expanded_url.includes('musicboxfun.com/#'));
 
   if (songUrlIndex === -1) {
@@ -29,36 +27,42 @@ function hasASongUrl(urls) {
   return true;
 }
 
-function retweetValidTweets(tweet) {
-  const id = tweet.id_str;
+function runBot() {
+  initialize();
+  const stream = T.stream('statuses/filter', { track: ['musicboxfun com'] });
 
-  // Don't retweet it, if we've already retweeted it.
-  if (tweet.retweeted_status) {
-    return;
-  }
+  console.log('the bot is running');
 
-  console.log('Tweet with musicboxfun.com url detected:', id);
+  stream.on('tweet', async tweet => {
+    const id = tweet.id_str;
 
-  // Don't retweet it, if it is missing a song url.
-  if (!hasASongUrl(tweet.entities.urls)) {
-    return;
-  }
+    // Don't retweet it, if we've already retweeted it.
+    if (tweet.retweeted_status) {
+      return;
+    }
 
-  console.log('Valid tweet detected:', id);
+    console.log('Tweet with musicboxfun.com URL detected:', id);
 
-  T.post('statuses/retweet/:id', { id }, function (err, data, response) {
-    if (err) {
+    // Look up this tweet ID, so we can confirm that a song is being shared.
+    // This requires a call to the JSON API b/c the streaming API doesn't currently
+    // support "tweet_mode: extended". We need this mode to consistently look up the
+    // full expanded_url being shared. For more details, see:
+    // https://dev.to/frontendwizard/comment/9785
+    // https://developer.twitter.com/en/docs/tweets/tweet-updates
+    try {
+      const result = await T.get('statuses/show/:id', { id, tweet_mode: 'extended' });
+
+      console.log('Tweet URL data:', result.data.entities.urls);
+
+      if (!hasASongUrl(result.data.entities.urls)) return;
+
+      console.log('Tweet has a valid a song URL.');
+
+      await T.post('statuses/retweet/:id', { id });
+    } catch (err) {
       console.log(err);
     }
   });
-};
-
-function runBot() {
-  initialize();
-  const stream = T.stream('statuses/filter', { track: ['musicboxfun com'] })
-  console.log('the bot is running');
-
-  stream.on('tweet', retweetValidTweets);
 }
 
 export {
