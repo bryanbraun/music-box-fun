@@ -3,6 +3,8 @@
 
 **[musicboxfun.com](https://musicboxfun.com)**
 
+For the background on this project, see: [https://www.bryanbraun.com/2019/11/02/music-box-fun](https://www.bryanbraun.com/2019/11/02/music-box-fun)
+
 ## Credits
 
 - The JavaScript architecture was inspired by [Andy Bell's article on state management in vanilla JavaScript](https://css-tricks.com/build-a-state-management-system-with-vanilla-javascript/).
