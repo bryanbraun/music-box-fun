@@ -435,8 +435,10 @@ a {
   width: 100%;
 }
 .tempo-field {
-  width: 40px;
+  width: 44px;
   margin-left: 6px;
+  border: 1px solid var(--mb-gray-30);
+  border-radius: 2px;
 }
 
 .song-updated {
