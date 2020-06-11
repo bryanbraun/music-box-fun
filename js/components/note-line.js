@@ -2,6 +2,7 @@ import { Component } from './component.js';
 import { musicBoxStore } from '../music-box-store.js';
 import { playheadObserver } from '../services/playhead-observer.js';
 import { sampler } from '../services/sampler.js';
+import { QUARTER_BAR_GAP, EIGHTH_BAR_GAP, STANDARD_HOLE_RADIUS, DEAD_ZONE_LENGTH } from '../utils/constants.js';
 
 export class NoteLine extends Component {
   constructor(props) {
@@ -17,11 +18,6 @@ export class NoteLine extends Component {
     this.handleClick = this.handleClick.bind(this);
     this.adjustStoredYPosForHoleSize = this.adjustStoredYPosForHoleSize.bind(this);
     this.adjustDisplayedYPosForHoleSize = this.adjustDisplayedYPosForHoleSize.bind(this);
-
-    // Constants
-    this.QUARTER_BAR_GAP = 50; // Pixel distance between the black quarter note bars.
-    this.EIGHTH_BAR_GAP = 25; // Pixel distance between the gray eighth note bars.
-    this.STANDARD_HOLE_RADIUS = 8; // Used only in calculations on stored note data.
 
     // Cached Constants
     this.holeWidth = null;
@@ -54,10 +50,10 @@ export class NoteLine extends Component {
   // us to adjust the yPos when it goes into and out of storage, so it is always stored the same, but is
   // displayed with slight offsets whenever the hole-radius is non-standard.
   adjustDisplayedYPosForHoleSize(yPos) {
-    return yPos - (this.STANDARD_HOLE_RADIUS - this.holeRadius);
+    return yPos - (STANDARD_HOLE_RADIUS - this.holeRadius);
   }
   adjustStoredYPosForHoleSize(yPos) {
-    return yPos + (this.STANDARD_HOLE_RADIUS - this.holeRadius);
+    return yPos + (STANDARD_HOLE_RADIUS - this.holeRadius);
   }
 
   showShadowNote(event) {
@@ -100,7 +96,7 @@ export class NoteLine extends Component {
       const topPixelOffset = this.holeRadius;
 
       const snapToNearestBar = val => (
-        Math.round((val - topPixelOffset) / this.EIGHTH_BAR_GAP) * this.EIGHTH_BAR_GAP + topPixelOffset
+        Math.round((val - topPixelOffset) / EIGHTH_BAR_GAP) * EIGHTH_BAR_GAP + topPixelOffset
       );
 
       noteYPosition = snapToNearestBar(relativeCursorYPos - this.holeRadius);
@@ -163,17 +159,11 @@ export class NoteLine extends Component {
 
   renderNotes(pitch) {
     const notesArray = musicBoxStore.state.songState.songData[pitch];
-
-    // The "dead zone" is the region after a note, wherein if a note is placed, it
-    // will display as red and will not play a note (due to mechanical limitations).
-    // We base this length on the actual boxes, and the STANDARD_HOLE_RADIUS to ensure
-    // the dead-zone is the same when we use different hole-sizes.
-    const deadZoneLength = this.QUARTER_BAR_GAP - this.STANDARD_HOLE_RADIUS - 1;
     let lastPlayableNoteYPos = 0;
     let notesMarkup = '';
 
     notesArray.forEach((yPos, i) => {
-      const isNotePlayable = (i === 0) ? true : (yPos - lastPlayableNoteYPos > deadZoneLength);
+      const isNotePlayable = (i === 0) ? true : (yPos - lastPlayableNoteYPos > DEAD_ZONE_LENGTH);
       lastPlayableNoteYPos = isNotePlayable ? yPos : lastPlayableNoteYPos; // update this scoped variable.
 
       const displayedYPos = this.adjustDisplayedYPosForHoleSize(yPos);

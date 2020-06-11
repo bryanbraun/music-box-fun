@@ -30,6 +30,11 @@ export const playheadObserver = (function () {
         return;
       }
 
+      // Exit early if we are in ToneJS playing mode
+      if (musicBoxStore.state.appState.isPlaying) {
+        return;
+      }
+
       // Exit early if the audio context has been disabled by the browser.
       if (Tone.context.state !== 'running') {
         if (!musicBoxStore.state.appState.isAudioDisabledMessageVisible) {

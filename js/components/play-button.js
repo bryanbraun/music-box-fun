@@ -4,13 +4,13 @@ import { musicBoxStore } from '../music-box-store.js';
 export class PlayButton extends Component {
   constructor() {
     super({
-      renderTrigger: 'appState.isScrolling',
+      renderTrigger: 'appState.isPlaying',
       element: document.querySelector('#play-button-wrapper')
     });
   }
 
-  getIconSvg(isScrolling) {
-    if (isScrolling) {
+  getIconSvg(isPlaying) {
+    if (isPlaying) {
       return `
         <svg id="pause-svg" width="100%" viewBox="0 0 58 58" xmlns="http://www.w3.org/2000/svg">
           <g fill="none" fill-rule="evenodd">
@@ -35,17 +35,17 @@ export class PlayButton extends Component {
   }
 
   onClick() {
-    musicBoxStore.setState('appState.isScrolling', !musicBoxStore.state.appState.isScrolling);
+    musicBoxStore.setState('appState.isPlaying', !musicBoxStore.state.appState.isPlaying);
   }
 
   render() {
-    const isScrolling = musicBoxStore.state.appState.isScrolling;
-    const classes = classNames('play-button', { 'is-playing': isScrolling });
-    const buttonText = isScrolling ? 'Pause (Space)' : 'Play (Space)';
+    const isPlaying = musicBoxStore.state.appState.isPlaying;
+    const classes = classNames('play-button', { 'is-playing': isPlaying });
+    const buttonText = isPlaying ? 'Pause (Space)' : 'Play (Space)';
 
     this.element.innerHTML = `
-      <button class="${classes}" aria-pressed="${isScrolling}" aria-label="${buttonText}" title="${buttonText}">
-        ${this.getIconSvg(isScrolling)}
+      <button class="${classes}" aria-pressed="${isPlaying}" aria-label="${buttonText}" title="${buttonText}">
+        ${this.getIconSvg(isPlaying)}
       </button>
     `;
 

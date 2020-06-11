@@ -20,6 +20,7 @@ import { setupAudioContextFallbackForRestrictiveBrowsers } from './subscribers/a
 import { setupKeyboardEvents } from './subscribers/keyboard-manager.js';
 import { urlManager } from './subscribers/url-manager.js';
 import { pageScroller } from './subscribers/page-scroller.js';
+import { songPlayer } from './subscribers/song-player.js';
 import { getCurrentBoxType, boxTypeHoleWidths } from './services/box-types.js';
 
 urlManager.getStateFromUrlAsync().then(urlState => {
@@ -58,6 +59,8 @@ urlManager.getStateFromUrlAsync().then(urlState => {
   new SongUpdatedMessage(); // This element is hidden by default, so it doesn't need to render on page load.
 
   pageScroller.subscribeToScrollState();
+  songPlayer.subscribeToPlayState();
+  songPlayer.subscribeToSongChanges();
 
   // Do this at the end, so rendering things doesn't accidentally trigger url changes
   // (I don't think it would, but maybe!)

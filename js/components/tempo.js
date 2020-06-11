@@ -2,6 +2,7 @@ import { Component } from './component.js';
 import { musicBoxStore } from '../music-box-store.js';
 import { TempoField } from './tempo-field.js';
 import { TempoSlider } from './tempo-slider.js';
+import { DEFAULT_TEMPO } from '../utils/constants.js';
 
 export class Tempo extends Component {
   constructor() {
@@ -12,7 +13,6 @@ export class Tempo extends Component {
     // Constants
     this.MIN = 60;
     this.MAX = 160;
-    this.DEFAULT_TEMPO = 110;
   }
 
   render() {
@@ -24,7 +24,7 @@ export class Tempo extends Component {
       </div>
     `;
 
-    new TempoSlider({ id: 'tempo-slider', min: this.MIN, max: this.MAX, defaultTempo: this.DEFAULT_TEMPO }).render();
-    new TempoField({ id: 'tempo-field', min: this.MIN, max: this.MAX, defaultTempo: this.DEFAULT_TEMPO }).render();
+    new TempoSlider({ id: 'tempo-slider', min: this.MIN, max: this.MAX, defaultTempo: DEFAULT_TEMPO }).render();
+    new TempoField({ id: 'tempo-field', min: this.MIN, max: this.MAX, defaultTempo: DEFAULT_TEMPO }).render();
   }
 }

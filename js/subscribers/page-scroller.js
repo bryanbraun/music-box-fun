@@ -1,4 +1,5 @@
 import { musicBoxStore } from '../music-box-store.js';
+import { DEFAULT_TEMPO } from '../utils/constants.js';
 
 /* Page Scroller
 
@@ -36,7 +37,7 @@ export const pageScroller = {
   getTargetScrollTop: null,
 
   BpmToPixelsPerMillisecond(bpm) {
-    const PIXELS_PER_BEAT = 50;
+    const PIXELS_PER_BEAT = 48; // I DON'T KNOW WHY CHANGING THIS ALIGNS EVERYTHING. I SHOULD DRAW IT ON PAPER.
     const MS_PER_MINUTE = 60000;
 
     return bpm * PIXELS_PER_BEAT / MS_PER_MINUTE;
@@ -44,7 +45,6 @@ export const pageScroller = {
 
   scrollPage(timestamp) {
     const END_OF_PAGE_BUFFER = 3;
-    const DEFAULT_TEMPO = 110;
     const BEATS_PER_MINUTE = musicBoxStore.state.songState.tempo || DEFAULT_TEMPO;
     const scrollRate = this.BpmToPixelsPerMillisecond(BEATS_PER_MINUTE);
     const isFullyScrolled =
@@ -53,10 +53,10 @@ export const pageScroller = {
       document.documentElement.scrollTop <= END_OF_PAGE_BUFFER;
 
     if (isFullyScrolled) {
-      musicBoxStore.setState('appState.isScrolling', false);
+      musicBoxStore.setState('appState.isPlaying', false);
     }
 
-    if (!musicBoxStore.state.appState.isScrolling) {
+    if (!musicBoxStore.state.appState.isPlaying) {
       this.startTime = null;
       return;
     }
@@ -76,15 +76,15 @@ export const pageScroller = {
   },
 
   toggleScrolling() {
-    if (musicBoxStore.state.appState.isScrolling) {
+    if (musicBoxStore.state.appState.isPlaying) {
       this.scrollPage(performance.now());
     }
 
-    // If the appState was set to isScrolling: false, we don't need to do anything
+    // If the appState was set to isPlaying: false, we don't need to do anything
     // because the play loop checks this state value and will exit automatically.
   },
 
   subscribeToScrollState() {
-    musicBoxStore.subscribe('appState.isScrolling', this.toggleScrolling.bind(this));
+    musicBoxStore.subscribe('appState.isPlaying', this.toggleScrolling.bind(this));
   }
 }
