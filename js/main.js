@@ -68,6 +68,7 @@ urlManager.getStateFromUrlAsync().then(urlState => {
   urlManager.subscribeUrlToExternalHashChanges();
 });
 
+// These things don't need URL data, so they can happen asynchronously.
 setupSampler();
 setupKeyboardEvents();
 setupAudioContextFallbackForRestrictiveBrowsers();

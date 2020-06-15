@@ -40,14 +40,14 @@
       52   (# of quarter note bars)
     x 50px (per quarter note bar)
     ------
-    2600px
+    2496px
       48px (space after the last bar, for the add-button preview)
     +  1px (to show the final bar)
     ------
-    2649px = Total length of a black note line
+    2545px = Total length of a black note line
              (not including the starting gap... that's dynamic and added on later)
   */
-  --default-note-line-length: 2649px;
+  --default-note-line-length: 2545px;
 
   /* Z-INDEX (page context) */
   /* -1 - 10: music box */

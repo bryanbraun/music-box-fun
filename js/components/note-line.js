@@ -2,7 +2,8 @@ import { Component } from './component.js';
 import { musicBoxStore } from '../music-box-store.js';
 import { playheadObserver } from '../services/playhead-observer.js';
 import { sampler } from '../services/sampler.js';
-import { QUARTER_BAR_GAP, EIGHTH_BAR_GAP, STANDARD_HOLE_RADIUS, DEAD_ZONE_LENGTH } from '../utils/constants.js';
+import { forEachNotes } from '../services/silent-notes.js';
+import { QUARTER_BAR_GAP, EIGHTH_BAR_GAP, STANDARD_HOLE_RADIUS } from '../utils/constants.js';
 
 export class NoteLine extends Component {
   constructor(props) {
@@ -42,18 +43,18 @@ export class NoteLine extends Component {
     this.holeRadius = this.holeWidth / 2;
   }
 
-  // We want the songData in state to be the same, regardless of whether the song was composed on
-  // a screen showing small or large holes. This doesn't seem like it should be a problem, because the
-  // vertical axis doesn't scale with hole size. HOWEVER, the distance between the top of the hole and
-  // center of the hole DOES change with hole size. That's a problem because whenever we would add a hole,
-  // its translateY value (which depended on the hole size) was getting stored. These functions allow
-  // us to adjust the yPos when it goes into and out of storage, so it is always stored the same, but is
-  // displayed with slight offsets whenever the hole-radius is non-standard.
+  // The yPos value we store in songData is the center of the hole (the moment when the note plays).
+  // This is ideal for ToneJS, and it makes sense for a UI with a variety of hole sizes. But in
+  // order to position these holes with translateY, we need to reference the top of each hole. These
+  // functions allow us to adjust the yPos for display vs storage, so it is always stored using the
+  // center value, but displayed using the top value.
   adjustDisplayedYPosForHoleSize(yPos) {
-    return yPos - (STANDARD_HOLE_RADIUS - this.holeRadius);
+    const holeSizeDifferenceBeforeTheFirstBar = 2 * (STANDARD_HOLE_RADIUS - this.holeRadius);
+    return yPos - this.holeRadius - holeSizeDifferenceBeforeTheFirstBar;
   }
   adjustStoredYPosForHoleSize(yPos) {
-    return yPos + (STANDARD_HOLE_RADIUS - this.holeRadius);
+    const holeSizeDifferenceBeforeTheFirstBar = 2 * (STANDARD_HOLE_RADIUS - this.holeRadius);
+    return yPos + this.holeRadius + holeSizeDifferenceBeforeTheFirstBar;
   }
 
   showShadowNote(event) {
@@ -159,17 +160,12 @@ export class NoteLine extends Component {
 
   renderNotes(pitch) {
     const notesArray = musicBoxStore.state.songState.songData[pitch];
-    let lastPlayableNoteYPos = 0;
     let notesMarkup = '';
 
-    notesArray.forEach((yPos, i) => {
-      const isNotePlayable = (i === 0) ? true : (yPos - lastPlayableNoteYPos > DEAD_ZONE_LENGTH);
-      lastPlayableNoteYPos = isNotePlayable ? yPos : lastPlayableNoteYPos; // update this scoped variable.
-
+    forEachNotes(notesArray, (yPos, isSilent) => {
       const displayedYPos = this.adjustDisplayedYPosForHoleSize(yPos);
-
-      notesMarkup += `<button class="hole ${isNotePlayable ? '' : 'silent'}" style="transform: translateY(${displayedYPos}px)"></button>`;
-    });
+      notesMarkup += `<button class="hole ${isSilent ? 'silent' : ''}" style="transform: translateY(${displayedYPos}px)"></button>`;
+    })
 
     return notesMarkup;
   }

@@ -1,6 +1,7 @@
 import { Component } from './component.js';
 import { PaperDivider } from './paper-divider.js';
 import { musicBoxStore } from '../music-box-store.js';
+import { QUARTER_BAR_GAP, STANDARD_HOLE_RADIUS } from '../utils/constants.js';
 
 export class PaperFooter extends Component {
   constructor(props) {
@@ -13,7 +14,6 @@ export class PaperFooter extends Component {
 
     // Constants
     this.NUMBER_OF_BARS = 52;
-    this.BAR_LENGTH = 50;
     this.ENDING_GAP = 48;
     this.FINAL_BAR_LINE = 1;
 
@@ -39,9 +39,8 @@ export class PaperFooter extends Component {
     // We use "standard" values instead of dynamic ones for the hole size because these
     // calculations are made against stored note data, which isn't adjusted for hole size.
     const STANDARD_STARTING_GAP = 16;
-    const STANDARD_HALF_HOLE = 8;
-    const singleUsePixels = STANDARD_STARTING_GAP - STANDARD_HALF_HOLE + this.FINAL_BAR_LINE; // 25
-    const pageDivisor = this.NUMBER_OF_BARS * this.BAR_LENGTH; // 2600
+    const singleUsePixels = STANDARD_STARTING_GAP - STANDARD_HOLE_RADIUS + this.FINAL_BAR_LINE;
+    const pageDivisor = this.NUMBER_OF_BARS * QUARTER_BAR_GAP; // 2496
 
     const finalNoteYPos = Object.values(musicBoxStore.state.songState.songData).reduce((accumulator, currentValue) => {
       return Math.max(accumulator, Math.max(...currentValue));
@@ -52,23 +51,23 @@ export class PaperFooter extends Component {
 
   getNumberOfExposedPages() {
     const singleUsePixels = this.ENDING_GAP + this.FINAL_BAR_LINE; // 49
-    const pageDivisor = this.NUMBER_OF_BARS * this.BAR_LENGTH; // 2600
+    const pageDivisor = this.NUMBER_OF_BARS * QUARTER_BAR_GAP; // 2496
     return (this.getNoteLineLengthVar() - singleUsePixels) / pageDivisor;
   }
 
   setInitialMusicLength() {
-    const initialNoteLineLength = (this.NUMBER_OF_BARS * this.BAR_LENGTH * this.getNumberOfUsedPages()) + this.ENDING_GAP + this.FINAL_BAR_LINE;
+    const initialNoteLineLength = (this.NUMBER_OF_BARS * QUARTER_BAR_GAP * this.getNumberOfUsedPages()) + this.ENDING_GAP + this.FINAL_BAR_LINE;
     this.setNoteLineLengthVar(initialNoteLineLength);
   }
 
   extendSong() {
-    const newNoteLineLength = this.getNoteLineLengthVar() + (this.NUMBER_OF_BARS * this.BAR_LENGTH);
+    const newNoteLineLength = this.getNoteLineLengthVar() + (this.NUMBER_OF_BARS * QUARTER_BAR_GAP);
     this.setNoteLineLengthVar(newNoteLineLength);
     this.render();
   }
 
   trimSong(event) {
-    const newNoteLineLength = this.getNoteLineLengthVar() - (this.NUMBER_OF_BARS * this.BAR_LENGTH);
+    const newNoteLineLength = this.getNoteLineLengthVar() - (this.NUMBER_OF_BARS * QUARTER_BAR_GAP);
     this.setNoteLineLengthVar(newNoteLineLength);
     this.render();
   }
@@ -99,7 +98,7 @@ export class PaperFooter extends Component {
       new PaperDivider({
         dividerNumber: i + 1,
         isTrimmable: this.getNumberOfUsedPages() <= (i + 1),
-        yFromBottom: this.ENDING_GAP + ((numberOfDividers - i) * this.NUMBER_OF_BARS * this.BAR_LENGTH),
+        yFromBottom: this.ENDING_GAP + ((numberOfDividers - i) * this.NUMBER_OF_BARS * QUARTER_BAR_GAP),
         trimSong: this.trimSong
       }).render();
     }

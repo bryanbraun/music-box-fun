@@ -1,6 +1,6 @@
-<svg width="20" height="50" xmlns="http://www.w3.org/2000/svg">
-    <g fill="none" fill-rule="evenodd">
-        <path fill="#000" d="M0 0h20v1H0z"/>
-        <path fill="silver" d="M0 25h20v1H0z"/>
-    </g>
+<svg width="20" height="48" xmlns="http://www.w3.org/2000/svg">
+  <g fill-rule="evenodd" fill="none">
+    <path fill="#000" d="M0 0h20v1H0z"/>
+    <path fill="silver" d="M0 24h20v1H0z"/>
+  </g>
 </svg>

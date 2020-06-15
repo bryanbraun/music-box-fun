@@ -1,5 +1,5 @@
 import { musicBoxStore } from '../music-box-store.js';
-import { DEFAULT_TEMPO } from '../utils/constants.js';
+import { QUARTER_BAR_GAP } from '../utils/constants.js';
 
 /* Page Scroller
 
@@ -37,7 +37,7 @@ export const pageScroller = {
   getTargetScrollTop: null,
 
   BpmToPixelsPerMillisecond(bpm) {
-    const PIXELS_PER_BEAT = 48; // I DON'T KNOW WHY CHANGING THIS ALIGNS EVERYTHING. I SHOULD DRAW IT ON PAPER.
+    const PIXELS_PER_BEAT = QUARTER_BAR_GAP; // 48
     const MS_PER_MINUTE = 60000;
 
     return bpm * PIXELS_PER_BEAT / MS_PER_MINUTE;
@@ -45,7 +45,7 @@ export const pageScroller = {
 
   scrollPage(timestamp) {
     const END_OF_PAGE_BUFFER = 3;
-    const BEATS_PER_MINUTE = musicBoxStore.state.songState.tempo || DEFAULT_TEMPO;
+    const BEATS_PER_MINUTE = musicBoxStore.state.songState.tempo;
     const scrollRate = this.BpmToPixelsPerMillisecond(BEATS_PER_MINUTE);
     const isFullyScrolled =
       document.documentElement.scrollHeight -

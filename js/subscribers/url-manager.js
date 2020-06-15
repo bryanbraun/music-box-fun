@@ -1,9 +1,11 @@
 import { musicBoxStore } from '../music-box-store.js';
 import { minifyMap } from '../state.js';
 import { debounce } from '../utils/debounce.js';
+import { cloneDeepWithRenamedKeys } from '../utils/clone.js';
+import { adaptDataForVersions } from '../services/version-adapters.js';
 
 export const urlManager = {
-  currentVersion: '0',
+  currentVersion: 1,
   lastInternalUrlChange: '',
 
   getStateFromUrlAsync() {
@@ -13,6 +15,7 @@ export const urlManager = {
 
     // Our state data begins at character "2" because "0" is the "#" and "1" is the version number.
     const dataToLoad = location.hash.substring(2);
+    const versionInUrl = Number(location.hash[1]);
     return JsonUrl('lzma').decompress(dataToLoad)
       .then(decompressedObject => {
         const invertedMinifyMap = {};
@@ -20,8 +23,9 @@ export const urlManager = {
           invertedMinifyMap[minifyMap[key]] = key;
         });
 
-        const unminifiedSongState = this.cloneDeepWithRenamedKeys(decompressedObject, invertedMinifyMap);
-        return unminifiedSongState;
+        const unminifiedSongState = cloneDeepWithRenamedKeys(decompressedObject, invertedMinifyMap);
+        const versionAdaptedSongState = adaptDataForVersions(unminifiedSongState, versionInUrl);
+        return versionAdaptedSongState;
       })
       .catch(error => {
         console.warn('The song could not be loaded from the URL.', error);
@@ -30,7 +34,7 @@ export const urlManager = {
   },
 
   saveStateToUrlAsync() {
-    const minifiedSongState = this.cloneDeepWithRenamedKeys(musicBoxStore.state.songState, minifyMap);
+    const minifiedSongState = cloneDeepWithRenamedKeys(musicBoxStore.state.songState, minifyMap);
 
     return JsonUrl('lzma').compress(minifiedSongState).then(result => {
       const newHash = `${this.currentVersion}${result}`;
@@ -39,24 +43,6 @@ export const urlManager = {
       location.href = `#${newHash}`;
     });
   },
-
-  // We use this function to minify our state object before storing it in the URL, and
-  // unminify it after removing it from the URL. This shortens the URL by ≈50 characters.
-  cloneDeepWithRenamedKeys(object, renameMap) {
-    if (!object) {
-      return object;
-    }
-
-    let newObj = Array.isArray(object) ? [] : {};
-    for (const key in object) {
-      let value = object[key];
-      let renamedKey = renameMap[key] ? renameMap[key] : key;
-      newObj[renamedKey] = (typeof value === "object") ? this.cloneDeepWithRenamedKeys(value, renameMap) : value;
-    }
-
-    return newObj;
-  },
-
 
   subscribeUrlToStateChanges() {
     // We debounce URL updates to reduce processing and prevent potential race conditions

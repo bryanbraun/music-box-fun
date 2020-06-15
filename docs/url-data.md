@@ -51,6 +51,8 @@ This means we have about 2022 characters available for song data. If we start to
 
 ## Version History
 
+Our approach to handling older songs is to adapt their data to work for the newest version of the app, and to do it all at once, when pulling the data out of the URL. This way, we don't have fallbacks and versioning logic scattered throughout the whole app. For details on this approach, see `version-adapters.js`.
+
 ### Un-versioned
 
 There was no version while 'Music Box Fun' was in ALPHA. Thus, no backwards compatibility was guaranteed here.
@@ -73,6 +75,14 @@ Breaking changes:
 - Created a custom minification map, to manually minify the songState when compressing, and unminify it when decompressing. This saves about 40 characters and the savings will increase as songState gets more complex over time.
 - Changed the CSV notes to Arrays (this compresses better).
 - Removed "playSpeed" from state (to be reintroduced later as "tempo").
+
+### Version 1
+
+Breaking changes:
+- Change the stored yPos data to represent the "note-center" or "strike-time" of the note, instead of the y-position of the top of a "standard" (16px) note.
+- Adjust bar lengths from 50px to 48px, and adapt the data of existing songs accordingly.
+
+See the `version-adapters.js` file for more details.
 
 ### Future ideas
 - A custom, domain-specific encoding?

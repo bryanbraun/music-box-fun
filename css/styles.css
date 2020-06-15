@@ -594,6 +594,7 @@ a {
   cursor: pointer;
   color: var(--mb-gray-40);
   pointer-events: auto;
+  background: none;
 }
 .divider__trim-icon--hidden {
   display: none;
