@@ -1,8 +1,8 @@
-import { Component } from './component.js';
+import { Component } from '../alt-react/component.js';
 import { musicBoxStore } from '../music-box-store.js';
 import { TempoField } from './tempo-field.js';
 import { TempoSlider } from './tempo-slider.js';
-import { DEFAULT_TEMPO } from '../utils/constants.js';
+import { DEFAULT_TEMPO } from '../common/constants.js';
 
 export class Tempo extends Component {
   constructor() {

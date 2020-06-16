@@ -1,6 +1,6 @@
 import { musicBoxStore } from '../music-box-store.js';
-import { sampler } from '../services/sampler.js';
-import { forEachNotes } from '../services/silent-notes.js';
+import { sampler } from '../common/sampler.js';
+import { forEachNotes } from '../common/silent-notes.js';
 
 
 const TICKS_PER_PIXEL = 4;

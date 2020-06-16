@@ -14,14 +14,14 @@ import { TwitterShareButton } from  './components/twitter-share-button.js';
 import { PaperFooter } from './components/paper-footer.js';
 
 import { musicBoxStore } from './music-box-store.js';
-import { setupSampler } from './services/sampler.js';
-import { playheadObserver } from './services/playhead-observer.js';
+import { setupSampler } from './common/sampler.js';
+import { playheadObserver } from './common/playhead-observer.js';
 import { setupAudioContextFallbackForRestrictiveBrowsers } from './subscribers/audio-context.js';
 import { setupKeyboardEvents } from './subscribers/keyboard-manager.js';
 import { urlManager } from './subscribers/url-manager.js';
 import { pageScroller } from './subscribers/page-scroller.js';
 import { songPlayer } from './subscribers/song-player.js';
-import { getCurrentBoxType, boxTypeHoleWidths } from './services/box-types.js';
+import { getCurrentBoxType, boxTypeHoleWidths } from './common/box-types.js';
 
 urlManager.getStateFromUrlAsync().then(urlState => {
   // We load URL song data into state first, before we have any listeners

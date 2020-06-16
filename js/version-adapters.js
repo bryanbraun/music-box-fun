@@ -5,8 +5,8 @@
 // data out of the URL. This way, we don't have fallbacks and versioning logic
 // scattered throughout the whole app.
 
-import { cloneDeep } from '../utils/clone.js';
-import { DEFAULT_TEMPO, STANDARD_HOLE_RADIUS } from '../utils/constants.js';
+import { cloneDeep } from './utils/clone.js';
+import { DEFAULT_TEMPO, STANDARD_HOLE_RADIUS } from './common/constants.js';
 
 // Previously, the stored Ypos values were arbitrary, being:
 //

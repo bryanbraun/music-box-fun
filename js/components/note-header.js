@@ -1,6 +1,6 @@
-import { Component } from './component.js';
+import { Component } from '../alt-react/component.js';
 import { musicBoxStore } from '../music-box-store.js';
-import { getCurrentBoxType } from '../services/box-types.js';
+import { getCurrentBoxType } from '../common/box-types.js';
 
 export class NoteHeader extends Component {
   constructor() {

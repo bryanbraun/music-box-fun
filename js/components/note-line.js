@@ -1,9 +1,9 @@
-import { Component } from './component.js';
+import { Component } from '../alt-react/component.js';
 import { musicBoxStore } from '../music-box-store.js';
-import { playheadObserver } from '../services/playhead-observer.js';
-import { sampler } from '../services/sampler.js';
-import { forEachNotes } from '../services/silent-notes.js';
-import { QUARTER_BAR_GAP, EIGHTH_BAR_GAP, STANDARD_HOLE_RADIUS } from '../utils/constants.js';
+import { playheadObserver } from '../common/playhead-observer.js';
+import { sampler } from '../common/sampler.js';
+import { forEachNotes } from '../common/silent-notes.js';
+import { QUARTER_BAR_GAP, EIGHTH_BAR_GAP, STANDARD_HOLE_RADIUS } from '../common/constants.js';
 
 export class NoteLine extends Component {
   constructor(props) {

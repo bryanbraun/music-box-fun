@@ -1,4 +1,4 @@
-import { QUARTER_BAR_GAP, STANDARD_HOLE_RADIUS } from '../utils/constants.js';
+import { QUARTER_BAR_GAP, STANDARD_HOLE_RADIUS } from '../common/constants.js';
 
 /**
  * A specialized forEach function that loops over a notesArray, and provides the

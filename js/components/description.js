@@ -1,5 +1,5 @@
-import { Component } from './component.js';
-import { getCurrentBoxType } from '../services/box-types.js';
+import { Component } from '../alt-react/component.js';
+import { getCurrentBoxType } from '../common/box-types.js';
 
 export class Description extends Component {
   constructor() {

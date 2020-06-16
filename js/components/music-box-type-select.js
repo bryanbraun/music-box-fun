@@ -1,7 +1,7 @@
-import { Component } from './component.js';
+import { Component } from '../alt-react/component.js';
 import { musicBoxStore } from '../music-box-store.js';
-import { boxTypePitches, boxTypeHoleWidths, getCurrentBoxType } from '../services/box-types.js';
-import { confirmationDialog } from '../services/confirmation-dialog.js';
+import { boxTypePitches, boxTypeHoleWidths, getCurrentBoxType } from '../common/box-types.js';
+import { confirmationDialog } from '../common/confirmation-dialog.js';
 
 export class MusicBoxTypeSelect extends Component {
   constructor(props) {

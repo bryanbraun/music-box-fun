@@ -1,4 +1,4 @@
-import { Component } from './component.js';
+import { Component } from '../alt-react/component.js';
 
 export class NewSongButton extends Component {
   constructor() {

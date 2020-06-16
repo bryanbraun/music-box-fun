@@ -1,4 +1,4 @@
-import { Component } from './component.js';
+import { Component } from '../alt-react/component.js';
 import { musicBoxStore } from '../music-box-store.js';
 
 export class SongTitle extends Component {

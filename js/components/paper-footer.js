@@ -1,7 +1,7 @@
-import { Component } from './component.js';
+import { Component } from '../alt-react/component.js';
 import { PaperDivider } from './paper-divider.js';
 import { musicBoxStore } from '../music-box-store.js';
-import { QUARTER_BAR_GAP, STANDARD_HOLE_RADIUS } from '../utils/constants.js';
+import { QUARTER_BAR_GAP, STANDARD_HOLE_RADIUS } from '../common/constants.js';
 
 export class PaperFooter extends Component {
   constructor(props) {

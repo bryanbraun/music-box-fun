@@ -1,4 +1,4 @@
-import { Component } from './component.js';
+import { Component } from '../alt-react/component.js';
 import { musicBoxStore } from '../music-box-store.js';
 
 // This uses the Twitter intents API to create a customized twitter share button. The pop-up is

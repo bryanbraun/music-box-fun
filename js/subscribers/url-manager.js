@@ -2,7 +2,7 @@ import { musicBoxStore } from '../music-box-store.js';
 import { minifyMap } from '../state.js';
 import { debounce } from '../utils/debounce.js';
 import { cloneDeepWithRenamedKeys } from '../utils/clone.js';
-import { adaptDataForVersions } from '../services/version-adapters.js';
+import { adaptDataForVersions } from '../version-adapters.js';
 
 export const urlManager = {
   currentVersion: 1,
