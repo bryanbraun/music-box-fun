@@ -23,13 +23,32 @@ export class TempoField extends Component {
     `;
 
     this.element.lastElementChild.addEventListener('input', event => {
-      musicBoxStore.setState('songState.tempo', parseInt(event.target.value));
+      let value = Number(event.target.value);
+
+      // Fix any values that are outside of the acceptable range.
+      value = isNaN(value) ? this.props.defaultTempo : value;
+      value = Math.max(value, this.props.min);
+      value = Math.min(value, this.props.max);
+
+      musicBoxStore.setState('songState.tempo', parseInt(value));
 
       // Publish a one-off event telling the slider to re-render. We'd prefer this
       // over having the slider subscribe to 'songState.tempo' because it's simpler
       // to keep the slider an uncontrolled component.
       // (see https://reactjs.org/docs/uncontrolled-components.html)
       musicBoxStore.publish('TempoFieldUpdated');
+    });
+
+    this.element.lastElementChild.addEventListener('blur', event => {
+      let fieldValue = Number(event.target.value);
+      let storedValue = musicBoxStore.state.songState.tempo;
+
+      if (fieldValue !== storedValue) {
+        // If the value in the field still isn't acceptable when the user moves
+        // out from this field, set the value to the storedValue (which should
+        // have been adjusted to be in the acceptable range before storing).
+        event.target.value = storedValue;
+      }
     });
   }
 }
