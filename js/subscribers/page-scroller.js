@@ -28,63 +28,58 @@ We've gone through several iterations of this code:
   - Granular tempos are still possible. Apparently, browsers can scrollTo with sub-pixel precision.
   - You cannot scroll mid-song... it jumps back to the planned position without missing a beat.
 
-  Possible future ideas:
-  - Trigger scrolling on the web-audio timer somehow?
-  - Place some activities into a background worker? Like intersection observer and playing notes?
+4. Scroll with `requestAnimationFrame` but play audio with ToneJS.
+
+  This uses the same basic scrolling logic in 3, but we disable the observers from playing notes while
+  the play button is enabled. Instead we feed the audio data into ToneJS and it plays the notes as part
+  of the WebAudio scheduler while we run the requestAnimationFrame scrolling at the same position & speed.
+
 */
 export const pageScroller = {
-  startTime: null,
-  getTargetScrollTop: null,
-
   BpmToPixelsPerMillisecond(bpm) {
     const PIXELS_PER_BEAT = QUARTER_BAR_GAP; // 48
     const MS_PER_MINUTE = 60000;
 
-    return bpm * PIXELS_PER_BEAT / MS_PER_MINUTE;
+    return (bpm * PIXELS_PER_BEAT) / MS_PER_MINUTE;
   },
 
-  scrollPage(timestamp) {
+  startScrolling() {
+    if (!musicBoxStore.state.appState.isPlaying) return;
+
     const END_OF_PAGE_BUFFER = 3;
-    const BEATS_PER_MINUTE = musicBoxStore.state.songState.tempo;
-    const scrollRate = this.BpmToPixelsPerMillisecond(BEATS_PER_MINUTE);
-    const isFullyScrolled =
-      document.documentElement.scrollHeight -
-      document.documentElement.clientHeight -
-      document.documentElement.scrollTop <= END_OF_PAGE_BUFFER;
+    const beatsPerMinute = musicBoxStore.state.songState.tempo;
+    const scrollRate = this.BpmToPixelsPerMillisecond(beatsPerMinute);
+    const initialScrollTop = document.documentElement.scrollTop;
+    const getTargetScrollTop = (elapsedTime) => scrollRate * elapsedTime + initialScrollTop;
 
-    if (isFullyScrolled) {
-      musicBoxStore.setState('appState.isPlaying', false);
+    let startTime;
+
+    requestAnimationFrame(function(timestamp) {
+      startTime = timestamp;
+      scrollPage(timestamp);
+    });
+
+    function scrollPage(timestamp) {
+      const isFullyScrolled =
+        document.documentElement.scrollHeight -
+        document.documentElement.clientHeight -
+        document.documentElement.scrollTop <= END_OF_PAGE_BUFFER;
+
+      if (isFullyScrolled) {
+        musicBoxStore.setState('appState.isPlaying', false);
+      }
+
+      window.scrollTo(0, getTargetScrollTop(timestamp - startTime));
+
+      if (musicBoxStore.state.appState.isPlaying) {
+        requestAnimationFrame(scrollPage);
+      }
+
+      // if isPlaying is not longer true, then we exit the loop here.
     }
-
-    if (!musicBoxStore.state.appState.isPlaying) {
-      this.startTime = null;
-      return;
-    }
-
-    // First iteration set-up.
-    // Note: We may be able to make performance improvements by moving more things into here.
-    if (!this.startTime) {
-      const initialScrollTop = document.documentElement.scrollTop;
-
-      this.startTime = timestamp;
-      this.getTargetScrollTop = (elapsedTime) => scrollRate * elapsedTime + initialScrollTop; // y = mx+b
-    }
-
-    window.scrollTo(0, this.getTargetScrollTop(timestamp - this.startTime));
-
-    requestAnimationFrame(this.scrollPage.bind(this));
-  },
-
-  toggleScrolling() {
-    if (musicBoxStore.state.appState.isPlaying) {
-      this.scrollPage(performance.now());
-    }
-
-    // If the appState was set to isPlaying: false, we don't need to do anything
-    // because the play loop checks this state value and will exit automatically.
   },
 
   subscribeToScrollState() {
-    musicBoxStore.subscribe('appState.isPlaying', this.toggleScrolling.bind(this));
+    musicBoxStore.subscribe('appState.isPlaying', this.startScrolling.bind(this));
   }
 }

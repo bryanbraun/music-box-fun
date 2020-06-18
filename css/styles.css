@@ -240,19 +240,19 @@ a {
 .note-line {
   position: relative;
   width: var(--hole-width);
-  background-image: url('/images/measure-lines.svg');
+  background-image: url('/images/measure-lines.gif');
   background-position: 0 var(--hole-width);
   cursor: pointer;
 }
 
 .note-line:first-child {
-  background-image: url('/images/measure-lines.svg');
+  background-image: url('/images/measure-lines.gif');
   background-position: calc(var(--hole-width) / 2) var(--hole-width);
   background-repeat: repeat-y;
 }
 
 .note-line:last-child {
-  background-image: url('/images/measure-lines.svg');
+  background-image: url('/images/measure-lines.gif');
   background-position: right calc(var(--hole-width) / 2) top var(--hole-width);
   background-repeat: repeat-y;
 }
