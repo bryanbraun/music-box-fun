@@ -45,7 +45,7 @@
   width: var(--handle-size);
   height: var(--handle-size);
   border-radius: 50%;
-  background-color: var(--controls-button);
+  background-color: var(--controls-button-color);
 }
 
 .toggle__text {

@@ -30,21 +30,21 @@ a {
   border: 0;
 }
 
-.sidebar {
+.left-sidebar {
   position: fixed;
   top: 0;
   left: 0;
   bottom: 0;
-  width: var(--sidebar-width);
+  width: var(--left-sidebar-width);
   padding: 0 1.5rem;
-  background: var(--sidebar-color);
+  background: var(--left-sidebar-color);
   box-shadow: 0px 0px 11px -8px #444;
   display: flex;
   flex-direction: column;
 }
 
 @media (max-width: 819px) { /* --two-to-three-columns */
-  .sidebar {
+  .left-sidebar {
     display: none;
   }
 }
@@ -103,8 +103,8 @@ a {
 }
 
 .workspace {
-  margin-left: var(--sidebar-width);
-  margin-right: var(--controls-width);
+  margin-left: var(--left-sidebar-width);
+  margin-right: var(--right-sidebar-width);
   width: 100%;
 }
 
@@ -257,6 +257,16 @@ a {
   background-repeat: repeat-y;
 }
 
+/* Crisper measure lines for retina devices (looks nice on page boundaries) */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  .note-line,
+  .note-line:first-child,
+  .note-line:last-child {
+    background-image: url('/images/measure-lines-2x.gif');
+    background-size: 20px 48px;
+  }
+}
+
 /* The vertical line running down the center of the column */
 .note-line::before {
   display: block;
@@ -304,14 +314,18 @@ a {
 }
 
 .silent {
-  background-color: var(--mb-red);
+  background-color: var(--mb-white);
+  background-image: url('/images/asterisk.svg');
+  background-size: 80% 80%; /* the SVG is scaled to allow a gap between the image and background lines, regardless of the hole size. */
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 .audio-disabled-message {
   display: block;
   position: fixed;
   top: 0;
-  right: var(--controls-width);
+  right: var(--right-sidebar-width);
   z-index: var(--z-audio-context-message);
   width: 156px; /* a magic number that fits our text well */
   opacity: 1;
@@ -340,28 +354,35 @@ a {
   pointer-events: none;
 }
 
-.controls {
+.right-sidebar {
   position: fixed;
   z-index: var(--z-controls);
   top: 0;
   right: 0;
   bottom: 0;
-  width: var(--controls-width);
+  width: var(--right-sidebar-width);
   margin: 1rem 0;
-  padding: 1rem;
-  border-left: 1px dashed var(--controls-border);
+  padding: 0 1rem;
+  border-left: var(--controls-border);
   background: var(--surface-color);
   font-size: 14px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
 }
 
 @media (max-width: 603px) { /* --one-to-two-columns */
-  .controls {
+  .right-sidebar {
     visibility: hidden;
   }
 }
 
+.controls {
+  flex: 1 1 0%;
+}
+
 .controls__section {
-  border-top: 1px dashed var(--controls-border);
+  border-top: var(--controls-border);
   padding: 1rem 0 1rem;
 }
 /* define spacing between controls elements */
@@ -381,7 +402,7 @@ a {
   fill: var(--mb-gray-60);
 }
 .play-button__inner-shape {
-  fill: var(--controls-button);
+  fill: var(--controls-button-color);
 }
 
 @media (max-width: 603px) { /* --one-to-two-columns */
@@ -400,7 +421,7 @@ a {
   width: 100%;
   font-family: inherit;
   font-size: inherit;
-  background-color: var(--controls-button);
+  background-color: var(--controls-button-color);
   background-image: url(/images/new-blank-song.svg);
   background-repeat: no-repeat;
   background-position: 7px 50%;
@@ -439,6 +460,28 @@ a {
   margin-left: 6px;
   border: 1px solid var(--mb-gray-30);
   border-radius: 2px;
+}
+
+.footnote p {
+  font-size: 12px;
+  margin: 0;
+  color: var(--mb-gray-50);
+  position: relative;
+  padding-left: 6px; /* space for the icon */
+}
+.footnote p::before {
+  content: "";
+  width: 10px;
+  height: 10px;
+  position: absolute;
+  background-image: url('/images/asterisk.svg');
+  background-repeat: no-repeat;
+  background-size: 100%;
+  top: -2px;
+  left: -8px;
+}
+.footnote--hidden {
+  display: none;
 }
 
 .song-updated {

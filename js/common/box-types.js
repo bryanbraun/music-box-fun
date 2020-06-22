@@ -9,7 +9,7 @@ export const boxTypePitches = {
 // Define the hole-width for each box type, to keep the size of the paper reasonable.
 // This could be improved in the future by taking screen-width into consideration.
 // We're only using even-valued hole-widths for now because we use the hole-radius in
-// some calculations, and keeping that an integer simplifies some things. This
+// some calculations, and keeping that an integer simplifies some things.
 export const boxTypeHoleWidths = {
   '15': '16px',
   '20': '14px',

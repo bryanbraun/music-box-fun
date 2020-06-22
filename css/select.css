@@ -4,7 +4,7 @@
   -webkit-appearance: none;
   font-family: inherit;
   font-size: inherit;
-  background-color: var(--controls-button);
+  background-color: var(--controls-button-color);
   background-image: url(/images/select-down.svg);
   background-repeat: no-repeat;
   background-position: right 7px center;

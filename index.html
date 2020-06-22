@@ -30,7 +30,7 @@
 </head>
 
 <body>
-  <aside class="sidebar">
+  <aside class="left-sidebar">
     <div class="title-box">
       <h1 class="title">Music Box Fun</h1>
       <p class="subtitle">Make and share music box songs online.</p>
@@ -154,51 +154,54 @@
         </a>
       </div>
     </div>
-    <div class="controls">
-      <div id="play-button-wrapper">
-        <button class="play-button" aria-pressed="false" aria-label="Play (Space)" title="Play (Space)">
-          <svg id="play-svg" width="100%" viewBox="0 0 58 58" xmlns="http://www.w3.org/2000/svg">
-            <g fill="none" fill-rule="evenodd">
-              <circle class="play-button__outer-circle" cx="29" cy="29" r="29" />
-              <path class="play-button__inner-shape"
-                d="M41.193 30.708L24.04 41.15A2 2 0 0 1 21 39.44V18.56a2 2 0 0 1 3.04-1.709l17.153 10.442a2 2 0 0 1 0 3.416z" />
-            </g>
-          </svg>
-        </button>
-      </div>
-      <div class="controls__section">
-        <div id="file">
-          <button class="new-song">New blank song</button>
+    <div class="right-sidebar">
+      <div class="controls">
+        <div id="play-button-wrapper">
+          <button class="play-button" aria-pressed="false" aria-label="Play (Space)" title="Play (Space)">
+            <svg id="play-svg" width="100%" viewBox="0 0 58 58" xmlns="http://www.w3.org/2000/svg">
+              <g fill="none" fill-rule="evenodd">
+                <circle class="play-button__outer-circle" cx="29" cy="29" r="29" />
+                <path class="play-button__inner-shape"
+                  d="M41.193 30.708L24.04 41.15A2 2 0 0 1 21 39.44V18.56a2 2 0 0 1 3.04-1.709l17.153 10.442a2 2 0 0 1 0 3.416z" />
+              </g>
+            </svg>
+          </button>
         </div>
-        <div id="music-box-type">
-          <select class="select select-music-box-type">
-            <option selected="" value="15">15-note</option>
-            <option value="20">20-note</option>
-          </select>
-        </div>
-        <label id="tempo" class="tempo">
-          <div>Tempo</div>
-          <div class="tempo-inputs">
-            <div id="tempo-slider">
-              <input class="tempo-slider" type="range" />
-            </div>
-            <div id="tempo-field">
-              <input class="tempo-field" type="number" value="110" />
-            </div>
+        <div class="controls__section">
+          <div id="file">
+            <button class="new-song">New blank song</button>
           </div>
-        </label>
-      </div>
-      <div class="controls__section">
-        <div class="toggle" id="snap-to-grid">
-          <label class="toggle__label">
-            <input class="toggle__input" type="checkbox" checked />
-            <span class="toggle__outer">
-              <span class="toggle__inner"></span>
-            </span>
-            <span class="toggle__text">Snap to grid</span>
+          <div id="music-box-type">
+            <select class="select select-music-box-type">
+              <option selected="" value="15">15-note</option>
+              <option value="20">20-note</option>
+            </select>
+          </div>
+          <label id="tempo" class="tempo">
+            <div>Tempo</div>
+            <div class="tempo-inputs">
+              <div id="tempo-slider">
+                <input class="tempo-slider" type="range" />
+              </div>
+              <div id="tempo-field">
+                <input class="tempo-field" type="number" value="110" />
+              </div>
+            </div>
           </label>
         </div>
+        <div class="controls__section">
+          <div class="toggle" id="snap-to-grid">
+            <label class="toggle__label">
+              <input class="toggle__input" type="checkbox" checked />
+              <span class="toggle__outer">
+                <span class="toggle__inner"></span>
+              </span>
+              <span class="toggle__text">Snap to grid</span>
+            </label>
+          </div>
+        </div>
       </div>
+      <div id="footnote"></div>
     </div>
   </main>
   <script src="/js/vendor/Tone.min.js"></script>

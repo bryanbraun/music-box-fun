@@ -7,17 +7,16 @@
   --mb-gray-20: #dddddd;
   --mb-gray-30: #c0c0c0;
   --mb-gray-40: #a9a9a9;
+  --mb-gray-50: #777777;
   --mb-gray-60: #444444;
   --mb-orange-accent: #947000;
-  --mb-red: #ff5f5f;
 
   /* functional */
-  --sidebar-color: var(--mb-white);
+  --left-sidebar-color: var(--mb-white);
   --paper-color: var(--mb-white);
   --surface-color: var(--mb-gray-10);
   --music-box-color: var(--mb-gray-30);
-  --controls-border: var(--mb-gray-30);
-  --controls-button: var(--mb-offwhite);
+  --controls-button-color: var(--mb-offwhite);
   --shadow-note-color: var(--mb-gray-20);
   --hole-color: var(--mb-gray-60);
   --link-color: var(--mb-orange-accent);
@@ -27,8 +26,8 @@
   --main-font: 'Nunito', 'Helvetica Neue', sans-serif;
 
   /* LENGTHS */
-  --sidebar-width: 250px;
-  --controls-width: 175px;
+  --left-sidebar-width: 250px;
+  --right-sidebar-width: 175px;
   --hole-width: 16px;
   --paper-side-margins: 2rem;
   --music-box-height: 200px; /* the same for all music boxes */
@@ -64,6 +63,7 @@
 
   /* OTHER */
   --number-of-notes: 15;
+  --controls-border: 1px dashed var(--mb-gray-30);
 
   /* BREAKPOINTS */
   /* These aren't a thing! See https://stackoverflow.com/a/40723269/1154642

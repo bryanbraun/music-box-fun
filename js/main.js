@@ -12,6 +12,7 @@ import { AudioDisabledMessage } from './components/audio-disabled-message.js';
 import { SongUpdatedMessage } from './components/song-updated-message.js';
 import { TwitterShareButton } from  './components/twitter-share-button.js';
 import { PaperFooter } from './components/paper-footer.js';
+import { Footnote } from './components/footnote.js';
 
 import { musicBoxStore } from './music-box-store.js';
 import { setupSampler } from './common/sampler.js';
@@ -55,6 +56,7 @@ urlManager.getStateFromUrlAsync().then(urlState => {
   new PageTitle().render();
   new TwitterShareButton().render();
   new PaperFooter().render();
+  new Footnote().render();
 
   new SongUpdatedMessage(); // This element is hidden by default, so it doesn't need to render on page load.
 
