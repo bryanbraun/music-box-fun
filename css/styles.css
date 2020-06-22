@@ -334,6 +334,11 @@ a {
   padding: 1rem;
   background: var(--surface-color);
 }
+@media (max-width: 603px) { /* --one-to-two-columns */
+  .audio-disabled-message {
+    right: 0;
+  }
+}
 .audio-disabled-message--hidden {
   display: none;
 }
@@ -493,6 +498,7 @@ a {
   text-align: center;
   opacity: 1;
   z-index: var(--z-messages);
+  background: var(--surface-color);
 }
 .song-updated--hidden {
   opacity: 0;
@@ -504,12 +510,12 @@ a {
 
 .song-updated__message {
   color: var(--mb-gray-60);
-  margin-right: 0.5rem;
 }
 
 .song-updated__details {
   border: none;
   cursor: pointer;
+  margin-left: 0.5rem;
 
   /* temporarily hidden until we set up a modal and description for this */
   display: none;
