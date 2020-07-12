@@ -7,7 +7,7 @@ import { musicBoxStore } from '../music-box-store.js';
 export class TwitterShareButton extends Component {
   constructor(props) {
     super({
-      renderTrigger: 'songState',
+      renderTrigger: 'songState*',
       element: document.querySelector('#twitter-share')
     });
   }

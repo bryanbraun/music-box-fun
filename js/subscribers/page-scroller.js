@@ -79,7 +79,7 @@ export const pageScroller = {
     }
   },
 
-  subscribeToScrollState() {
+  subscribeToPlayState() {
     musicBoxStore.subscribe('appState.isPlaying', this.startScrolling.bind(this));
   }
 }

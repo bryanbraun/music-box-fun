@@ -1,33 +1,27 @@
 import { Component } from '../alt-react/component.js';
-import { musicBoxStore } from '../music-box-store.js';
-import { getCurrentBoxType } from '../common/box-types.js';
+import { getCurrentBoxType, getCurrentPitchArray } from '../common/box-types.js';
 
 export class NoteHeader extends Component {
   constructor() {
     super({
       element: document.querySelector('#note-header'),
-      renderTrigger: 'boxType'
+      renderTrigger: 'songState.songData'
     });
   }
 
   render() {
-    const songData = musicBoxStore.state.songState.songData;
+    const pitchArray = getCurrentPitchArray();
 
-    // @todo: could this be improved with ClassNames?
-    if (getCurrentBoxType() === '30') {
-      this.element.classList.add('thirty');
-    } else {
-      this.element.classList.remove('thirty');
-    }
+    this.element.className = classNames('note-header', {
+      'thirty': getCurrentBoxType() === '30'
+    });
 
     this.element.innerHTML = `
-      ${Object.keys(songData)
-        .map(pitchId => (
-          `<div class="note-label ${pitchId[1] === '#' ? 'sharp' : ''}">
-            ${pitchId[0]}
-          </div>`
-        ))
-        .join('')}
+      ${pitchArray.map(pitchId => (
+        `<div class="note-label ${pitchId[1] === '#' ? 'sharp' : ''}">
+          ${pitchId[0]}
+        </div>`
+      )).join('')}
     `;
   }
 }

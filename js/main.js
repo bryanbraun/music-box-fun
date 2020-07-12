@@ -1,4 +1,5 @@
 import { Description } from './components/description.js';
+import { BrowseTabs } from './components/browse-tabs.js';
 import { SongTitle } from './components/song-title.js';
 import { NoteHeader } from './components/note-header.js';
 import { NoteLines } from './components/note-lines.js';
@@ -20,36 +21,32 @@ import { playheadObserver } from './common/playhead-observer.js';
 import { setupAudioContextFallbackForRestrictiveBrowsers } from './subscribers/audio-context.js';
 import { setupKeyboardEvents } from './subscribers/keyboard-manager.js';
 import { urlManager } from './subscribers/url-manager.js';
+import { holeWidthManager } from './subscribers/hole-width-manager.js';
 import { pageScroller } from './subscribers/page-scroller.js';
-import { songPlayer } from './subscribers/song-player.js';
-import { getCurrentBoxType, boxTypeHoleWidths } from './common/box-types.js';
+import { audioPlayer } from './subscribers/audio-player.js';
+import { songPauser } from './subscribers/song-pauser.js';
 
 urlManager.getStateFromUrlAsync().then(urlState => {
-  // We load URL song data into state first, before we have any listeners
-  // set up for our PubSub state-change events. This way, this change won't
-  // trigger any re-renders.
+  // Initialize our global state with song data. We don't need to call setState
+  // because we're doing this before the initial render of any of the components.
   if (urlState) {
-    musicBoxStore.setState('songState', urlState);
+    musicBoxStore.state.songState = urlState;
   }
 
-  // Playhead Observer must be setup before rendering notes, because we
-  // observe new notes as they are created. Note: this step looks performance
-  // intensive. It might be worth looking into why that is, and how to improve it.
-  playheadObserver.setup();
-
-  // Initialize values (before rendering components)
-  const currentBoxType = getCurrentBoxType();
-  document.documentElement.style.setProperty('--number-of-notes', currentBoxType);
-  document.documentElement.style.setProperty('--hole-width', boxTypeHoleWidths[currentBoxType]);
+  // Things we should set up before rendering components.
+  playheadObserver.setup();           // because we observe new notes as they are created.
+  holeWidthManager.setCssVariables(); // because note-lines rely on having the correct CSS variables.
+  holeWidthManager.subscribeToBoxTypeChanges(); // because this event needs to fire before note-line-rerenders when state changes.
 
   // Initial page render
   new Description().render();
+  new BrowseTabs().render();
   new SongTitle().render();
   new NoteHeader().render();
   new NoteLines().render();
   new PlayButton().render();
   new NewSongButton().render();
-  new MusicBoxTypeSelect({ currentBoxType }).render();
+  new MusicBoxTypeSelect().render();
   new Tempo().render();
   new SnapToGridToggle().render();
   new AudioDisabledMessage().render();
@@ -60,14 +57,13 @@ urlManager.getStateFromUrlAsync().then(urlState => {
 
   new SongUpdatedMessage(); // This element is hidden by default, so it doesn't need to render on page load.
 
-  pageScroller.subscribeToScrollState();
-  songPlayer.subscribeToPlayState();
-  songPlayer.subscribeToSongChanges();
-
-  // Do this at the end, so rendering things doesn't accidentally trigger url changes
-  // (I don't think it would, but maybe!)
+  // Things we can set up after rendering components.
+  pageScroller.subscribeToPlayState();
+  audioPlayer.subscribeToPlayState();
+  audioPlayer.subscribeToSongChanges();
+  songPauser.subscribeToSongChanges();
   urlManager.subscribeUrlToStateChanges();
-  urlManager.subscribeUrlToExternalHashChanges();
+  urlManager.subscribeAppToNavigationChanges();
 });
 
 // These things don't need URL data, so they can happen asynchronously.

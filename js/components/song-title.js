@@ -1,9 +1,14 @@
 import { Component } from '../alt-react/component.js';
 import { musicBoxStore } from '../music-box-store.js';
+import { escapeHtml } from '../utils/escapeHtml.js';
 
 export class SongTitle extends Component {
   constructor() {
     super({
+      // A workaround that allows rerenders for new songs, without needing to make this a controlled component.
+      // (it would be more accurate to use songState.songTitle, but that would "control" this component)
+      renderTrigger: 'songState',
+
       element: document.querySelector('#song-title')
     });
   }
@@ -14,11 +19,14 @@ export class SongTitle extends Component {
 
   render() {
     this.element.innerHTML = `
-      <input type="text" placeholder="Untitled Song" maxlength="140" />
+      <input
+        type="text"
+        placeholder="Untitled Song"
+        value="${escapeHtml(musicBoxStore.state.songState.songTitle)}"
+        maxlength="140"
+      />
     `;
 
-    // Set the input value directly to remove the possibility of XSS issues.
-    this.element.querySelector('input').value = musicBoxStore.state.songState.songTitle;
     this.element.addEventListener('input', this.handleInput);
   }
 }

@@ -51,6 +51,7 @@ function adjustYposFrom50PixelBarsTo48PixelBars(songState) {
 function adaptDataForVersions(songStateFromTheUrl, versionInUrl) {
   let adaptedSongState = cloneDeep(songStateFromTheUrl);
 
+  // This exists because early versions of the app had no tempo slider
   if (!adaptedSongState.tempo) {
     adaptedSongState.tempo = DEFAULT_TEMPO;
   }

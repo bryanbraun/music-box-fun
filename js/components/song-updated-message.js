@@ -4,7 +4,7 @@ import { musicBoxStore } from '../music-box-store.js';
 export class SongUpdatedMessage extends Component {
   constructor() {
     super({
-      renderTrigger: 'songState',
+      renderTrigger: 'songState*',
       element: document.querySelector('#song-updated-message')
     });
 

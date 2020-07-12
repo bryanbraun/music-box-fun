@@ -5,7 +5,7 @@ import { forEachNotes } from '../common/silent-notes.js';
 
 const TICKS_PER_PIXEL = 4;
 
-export const songPlayer = {
+export const audioPlayer = {
   isSongNeedsUpdated: true,
 
   // Convert our songData into a format that ToneJS can read.
@@ -47,7 +47,7 @@ export const songPlayer = {
     song.start(0);
   },
 
-  toggleSongPlayer() {
+  toggleAudioPlayer() {
     const playheadToViewportTop = document.querySelector('.music-box__playhead').getBoundingClientRect().top;
     const songTopToViewportTop = document.querySelector('#note-lines').getBoundingClientRect().top;
     const songPlayheadPositionPixels = playheadToViewportTop - songTopToViewportTop;
@@ -67,14 +67,15 @@ export const songPlayer = {
     }
   },
 
-  songChanged() {
+  flagSongAsNeedsUpdated() {
     this.isSongNeedsUpdated = true;
   },
 
   subscribeToSongChanges() {
-    musicBoxStore.subscribe('songState', this.songChanged.bind(this));
+    musicBoxStore.subscribe('songState*', this.flagSongAsNeedsUpdated.bind(this));
   },
+
   subscribeToPlayState() {
-    musicBoxStore.subscribe('appState.isPlaying', this.toggleSongPlayer.bind(this));
+    musicBoxStore.subscribe('appState.isPlaying', this.toggleAudioPlayer.bind(this));
   }
 }

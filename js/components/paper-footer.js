@@ -10,8 +10,6 @@ export class PaperFooter extends Component {
       element: document.querySelector('#paper-footer')
     });
 
-    this.isInitialRender = true;
-
     // Constants
     this.NUMBER_OF_BARS = 52;
     this.ENDING_GAP = 48;
@@ -73,12 +71,7 @@ export class PaperFooter extends Component {
   }
 
   render() {
-    // A little hack for setting the initial minimum music length on page load. Maybe
-    // someday we can find a clean way to add this to the "Initialize values" in main.js.
-    if (this.isInitialRender) {
-      this.setInitialMusicLength();
-      this.isInitialRender = false;
-    }
+    this.setInitialMusicLength();
 
     const numberOfDividers = this.getNumberOfExposedPages() - 1;
 

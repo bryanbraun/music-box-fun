@@ -1,3 +1,5 @@
+import { isPlainObject, getSegments, isEqual } from './utils.js';
+
 export class Store {
   constructor(initialState) {
     this.events = {};
@@ -5,44 +7,79 @@ export class Store {
   }
 
   /**
-   * A simplified version of _.set(), setting our state instead of an arbitrary object.
+   * Sets a value to the location in state defined by the propertyString. Like Lodash's _.set().
    * Note: it currently doesn't create nonexisting properties on the fly.
+   * Returns 'true' if a mutation happened and events were published. Returns false otherwise.
    */
   setState(propertyString, value) {
-    // This Regex was borrowed from https://github.com/lodash/lodash/blob/4.17.15-es/_stringToPath.js
-    const propertyNameMatcher = /[^.[\]]+|\[(?:(-?\d+(?:\.\d+)?)|(["'])((?:(?!\2)[^\\]|\\.)*?)\2)\]|(?=(?:\.|\[\])(?:\.|\[\]|$))/g;
-    const propertyArray = [];
-    const propertySegments = [];
+    let isObjectWithInternalMutations = false;
+    let isAssignmentIdentical = false;
 
-    // Split our string into an array of values
-    propertyString.replace(propertyNameMatcher, function (match, number) {
-      propertyArray.push(number || match);
-      propertySegments.push(match);
-    });
+    // If we are trying to setState for a whole object, we should first setState on its individual
+    // properties. This ensures that we publish events for each of the actual things that are being
+    // changed, and we don't miss anything that needs to be re-rendered. This is a recursive check.
+    //
+    // Once we are sure that we've triggered events on all changing child properties, we finish by
+    // setting the whole object. This is needed to blow away any data that exists in the old object but
+    // not the new one. By tracking whether changes were made in any child properties, we know whether
+    // we need to fire an event for the parent object (if the old and new objects are identical, no events
+    // will end up being be triggered at all).
+    //
+    // (Note: This doesn't handle arrays containing objects with their own properties.
+    // It's an edge-case we may never need, that would add unnecessary complexity right now.)
+    if (isPlainObject(value)) {
+      Object.keys(value).forEach(key => {
+        let isPropertyChanged = this.setState(`${propertyString}.${key}`, value[key]);
 
-    propertyArray.reduce((accumulator, currentVal, index, array) => {
-      if (index + 1 === array.length) {
-        accumulator[currentVal] = value; // Set our property!
+        if (isPropertyChanged) {
+          isObjectWithInternalMutations = true;
+        }
+      });
+    }
+
+    // Step down into our state object and assign the appropriate value.
+    getSegments(propertyString).reduce((accumulator, currentSegment, index, array) => {
+      let currentKey = currentSegment.charAt(0) === '[' ? currentSegment.replace('[', '').replace(']', '') : currentSegment;
+      let isFinalSegment = (index + 1 === array.length);
+
+      if (isFinalSegment) {
+        if (!isEqual(accumulator[currentKey], value)) {
+          accumulator[currentKey] = value; // Set our property!
+        } else {
+          isAssignmentIdentical = true;
+        }
+
         return true;
       }
 
       // Otherwise, continue stepping down
-      return accumulator && accumulator[currentVal] ? accumulator[currentVal] : null;
+      return accumulator && accumulator[currentKey] ? accumulator[currentKey] : null;
     }, this.state);
 
+    // Exit early if the attempted update was unnecessary.
+    if (isAssignmentIdentical && !isObjectWithInternalMutations) return false;
+
     // Build up a set of event strings to publish, based on the propertyString.
-    // This enables us to do granular re-renders, if we want to.
-    //   example: 'city.street[0].color'
-    //   returns: ['city', 'city.street', 'city.street[0]', 'city.street[0].color']
-    const eventsToPublish = propertySegments.map((item, index, array) => {
-      return array.slice(0, index + 1).reduce((acc, currentVal) => {
-        return currentVal.charAt(0) === '[' ? `${acc}${currentVal}` : `${acc}.${currentVal}`;
+    //
+    //   propertyString: 'city.street[0].color'
+    //   publishes: ['city*', 'city.street*', 'city.street[0]*', 'city.street[0].color']
+    //
+    // Note: The '*' indicates that the change was made to a nested property. In other words,
+    // "Something in me was changed". These "bubbling" events enable some useful re-renders.
+    const eventsToPublish = getSegments(propertyString)
+      .map((item, index, array) => { // Build the array.
+        return array.slice(0, index + 1).reduce((acc, currentVal) => {
+          return currentVal.charAt(0) === '[' ? `${acc}${currentVal}` : `${acc}.${currentVal}`;
+        });
+      }).map((item, index, array) => { // Add the *'s for bubbling events.
+        return (array.length - 1 === index) ? item : `${item}*`;
       });
-    });
 
     // Publish a generic "state was updated" event, followed by the more specific events.
-    this.publish('state');
+    this.publish('state*');
     eventsToPublish.forEach(eventString => this.publish(eventString));
+
+    return true;
   }
 
   publish(event, data = {}) {

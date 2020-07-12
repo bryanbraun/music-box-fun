@@ -5,7 +5,10 @@
 //
 // We save them in state as strings so our proxy can publish
 // the the object keys ("C4", etc) on set() as PubSub events.
+import { DEFAULT_TEMPO } from './common/constants.js';
 
+// Note: this represents an initial state template. We clone
+// it when using it, so we don't end up with new data in it.
 export const state = {
   appState: {
     isSnappingToGrid: true,
@@ -19,7 +22,7 @@ export const state = {
   // OR BACKWARDS COMPATIBLE. SEE "/DOCS/URL-DATA.MD" FOR DETAILS.
   songState: {
     songTitle: '',
-    tempo: 110,
+    tempo: DEFAULT_TEMPO,
     songData: {
       C4: [],
       D4: [],

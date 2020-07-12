@@ -40,3 +40,7 @@ export function getCurrentBoxType() {
 
   return currentBoxType;
 }
+
+export function getCurrentPitchArray() {
+  return boxTypePitches[getCurrentBoxType()];
+}

@@ -9,10 +9,12 @@
   --mb-gray-40: #a9a9a9;
   --mb-gray-50: #777777;
   --mb-gray-60: #444444;
+  --mb-black: #000000;
   --mb-orange-accent: #947000;
 
   /* functional */
   --left-sidebar-color: var(--mb-white);
+  --tabs-ui-color: var(--mb-black);
   --paper-color: var(--mb-white);
   --surface-color: var(--mb-gray-10);
   --music-box-color: var(--mb-gray-30);
@@ -20,20 +22,22 @@
   --shadow-note-color: var(--mb-gray-20);
   --hole-color: var(--mb-gray-60);
   --link-color: var(--mb-orange-accent);
+  --text-color: var(--mb-black);
   --discrete-text: var(--mb-gray-40);
+
 
   /* FONTS */
   --main-font: 'Nunito', 'Helvetica Neue', sans-serif;
 
   /* LENGTHS */
-  --left-sidebar-width: 250px;
+  --left-sidebar-width: 280px;
   --right-sidebar-width: 175px;
   --hole-width: 16px;
   --paper-side-margins: 2rem;
   --music-box-height: 200px; /* the same for all music boxes */
   --music-box-distance-from-top-of-workspace: 120px;
   --playhead-distance-from-top-of-workspace: calc(var(--music-box-distance-from-top-of-workspace) + 44px);
-
+  --tabs-border: 1px;
   /*
 
       52   (# of quarter note bars)
@@ -72,8 +76,8 @@
      I'll also try to keep the pixel values unique, so it's unlikely that any
      other properties will inadvertantly use them.
 
-  --one-to-two-columns: 603px;
-  --two-to-three-columns: 819px;
+  --one-to-two-columns: 720px;
+  --two-to-three-columns: 890px;
   */
 }
 

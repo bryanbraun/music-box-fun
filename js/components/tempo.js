@@ -7,6 +7,10 @@ import { DEFAULT_TEMPO } from '../common/constants.js';
 export class Tempo extends Component {
   constructor() {
     super({
+      // A workaround that allows rerenders for new songs, without needing to make this a controlled component.
+      // (it would be more accurate to use songState.songTitle, but that would "control" these components)
+      renderTrigger: 'songState',
+
       element: document.querySelector('#tempo'),
     });
 

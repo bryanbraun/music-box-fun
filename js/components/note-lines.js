@@ -1,26 +1,27 @@
 import { Component } from '../alt-react/component.js';
-import { musicBoxStore } from '../music-box-store.js';
 import { NoteLine } from './note-line.js';
+import { getCurrentPitchArray } from '../common/box-types.js';
+
 
 export class NoteLines extends Component {
   constructor() {
     super({
       element: document.querySelector('#note-lines'),
-      renderTrigger: 'boxType'
+      renderTrigger: 'songState.songData'
     });
   }
 
   render() {
-    const noteLinesData = musicBoxStore.state.songState.songData;
+    const pitchArray = getCurrentPitchArray();
 
     this.element.innerHTML = `
-      ${Object.keys(noteLinesData)
-        .map(pitchId => `<div class="note-line" data-id="${pitchId}"></div>`)
-        .join('')}
+      ${pitchArray.map(pitchId => (
+        `<div class="note-line" data-id="${pitchId}"></div>`
+      )).join('')}
     `;
 
     // Attach the new NoteLine components to the markup we just added.
-    Object.keys(noteLinesData).forEach(id => {
+    pitchArray.forEach(id => {
       new NoteLine({ id }).render();
     });
   }
