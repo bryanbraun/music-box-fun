@@ -1,4 +1,4 @@
-This folder contains all the "framework code" we need to create our reactive UI.
+This folder contains all the "framework code" we need to create our reactive UI. Nothing in here is specific to Music Box Fun.
 
 It's designed as an ES6 alternative to ReactJS. For more details see this:
 

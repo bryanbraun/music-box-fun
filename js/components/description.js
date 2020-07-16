@@ -4,7 +4,7 @@ import { getCurrentBoxType } from '../common/box-types.js';
 export class Description extends Component {
   constructor() {
     super({
-      renderTrigger: 'boxType',
+      renderTrigger: 'songState.songData',
       element: document.querySelector('#description')
     });
 

@@ -4,7 +4,7 @@ import { isSilentNotePresentInSong } from '../common/silent-notes.js';
 export class Footnote extends Component {
   constructor() {
     super({
-      renderTrigger: 'songState.songData',
+      renderTrigger: 'songState.songData*',
       element: document.querySelector('#footnote')
     });
   }

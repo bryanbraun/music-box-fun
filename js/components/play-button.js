@@ -2,10 +2,10 @@ import { Component } from '../alt-react/component.js';
 import { musicBoxStore } from '../music-box-store.js';
 
 export class PlayButton extends Component {
-  constructor() {
+  constructor(props) {
     super({
       renderTrigger: 'appState.isPlaying',
-      element: document.querySelector('#play-button-wrapper')
+      element: document.getElementById(props.id)
     });
   }
 

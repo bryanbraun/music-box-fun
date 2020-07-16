@@ -16,6 +16,12 @@ export class BrowseTabFeatured extends Component {
     return response.json();
   }
 
+  renderSongCreator(song) {
+    let songCreator = escapeHtml(song.creator);
+    return !song.creator_url ? songCreator :
+      `<a class="featured-song__creator" target="_blank" href="${song.creator_url}">${songCreator}</a>`;
+  }
+
   async render() {
     const featuredSongsData = await this.fetchFeaturedSongs();
 
@@ -25,8 +31,7 @@ export class BrowseTabFeatured extends Component {
         <ul class="featured-songs">
           ${featuredSongsData.map(song => (`
             <li class="featured-song">
-              <a href="${song.url}">${escapeHtml(song.title)}</a> by
-              <a class="featured-song__creator" target="_blank" href="${song.creator_url}">${escapeHtml(song.creator)}</a>
+              <a href="${song.url}">${escapeHtml(song.title)}</a> by ${this.renderSongCreator(song)}
             </li>
           `)).join('')}
         </ul>
