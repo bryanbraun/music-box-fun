@@ -55,7 +55,7 @@ urlManager.getStateFromUrlAsync().then(urlState => {
   new AudioDisabledMessage().render();
   new PageTitle().render();
   new TwitterShareButton().render();
-  new PaperFooter().render();
+  new PaperFooter().render(true);
   new Footnote().render();
 
   new SongUpdatedMessage(); // This element is hidden by default, so it doesn't need to render on page load.

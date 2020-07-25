@@ -6,11 +6,11 @@ import { QUARTER_BAR_GAP, STANDARD_HOLE_RADIUS } from '../common/constants.js';
 export class PaperFooter extends Component {
   constructor(props) {
     super({
-      renderTrigger: 'songState.songData',
+      renderTrigger: 'songState.songData*',
       element: document.querySelector('#paper-footer')
     });
 
-    this.isInitialRender = true;
+    musicBoxStore.subscribe('songState.songData', () => this.render(true)); // see render() for why we subscribe to this separately.
 
     // Constants
     this.NUMBER_OF_BARS = 52;
@@ -61,16 +61,31 @@ export class PaperFooter extends Component {
 
   extendSongPaper() {
     const newNoteLineLength = this.getNoteLineLengthVar() + (this.NUMBER_OF_BARS * QUARTER_BAR_GAP);
-    this.render(newNoteLineLength);
+    this.render(true, newNoteLineLength);
   }
 
   trimSongPaper(event) {
     const newNoteLineLength = this.getNoteLineLengthVar() - (this.NUMBER_OF_BARS * QUARTER_BAR_GAP);
-    this.render(newNoteLineLength);
+    this.render(true, newNoteLineLength);
   }
 
-  render(newNoteLineLength) {
-    this.setNoteLineLengthVar(newNoteLineLength || this.getNoteLineLengthFromSongData());
+  /*
+      There are five cases for rendering this component:
+
+      CASE                                  TRIGGER                        LINE LENGTH CHANGE
+      1. Initial song load                  manual (from main.js)          Yes - Calculate from songData
+      2. Subsequent song load (link click)  songState.songData             Yes - Calculate from songData
+      3. Extend song                        manual (from extendSongPaper)  Yes - Fixed length change
+      4. Trim song                          manual (from trimSongPaper)    Yes - Fixed length change
+      5. Note change (for the divider "×")  songState.songData*            No  - No changes needed
+
+      By giving params to our render function and manually passing values into render() for
+      cases 1, 2, 3, and 4, we can render the LINE LENGTH appropriately in all 5 cases.
+  */
+  render(isUpdatingLineLength, newNoteLineLength) {
+    if (isUpdatingLineLength) {
+      this.setNoteLineLengthVar(newNoteLineLength || this.getNoteLineLengthFromSongData());
+    }
 
     const numberOfDividers = this.getNumberOfExposedPages() - 1;
 
