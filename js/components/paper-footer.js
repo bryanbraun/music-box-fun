@@ -18,9 +18,9 @@ export class PaperFooter extends Component {
     this.FINAL_BAR_LINE = 1;
 
     // Bindings
-    this.setInitialMusicLength = this.setInitialMusicLength.bind(this);
-    this.extendSong = this.extendSong.bind(this);
-    this.trimSong = this.trimSong.bind(this);
+    this.getNoteLineLengthFromSongData = this.getNoteLineLengthFromSongData.bind(this);
+    this.extendSongPaper = this.extendSongPaper.bind(this);
+    this.trimSongPaper = this.trimSongPaper.bind(this);
   }
 
   getNoteLineLengthVar() {
@@ -55,32 +55,22 @@ export class PaperFooter extends Component {
     return (this.getNoteLineLengthVar() - singleUsePixels) / pageDivisor;
   }
 
-  setInitialMusicLength() {
-    const initialNoteLineLength = (this.NUMBER_OF_BARS * QUARTER_BAR_GAP * this.getNumberOfUsedPages()) + this.ENDING_GAP + this.FINAL_BAR_LINE;
-    this.setNoteLineLengthVar(initialNoteLineLength);
+  getNoteLineLengthFromSongData() {
+    return (this.NUMBER_OF_BARS * QUARTER_BAR_GAP * this.getNumberOfUsedPages()) + this.ENDING_GAP + this.FINAL_BAR_LINE;
   }
 
-  extendSong() {
+  extendSongPaper() {
     const newNoteLineLength = this.getNoteLineLengthVar() + (this.NUMBER_OF_BARS * QUARTER_BAR_GAP);
-    this.setNoteLineLengthVar(newNoteLineLength);
-    this.render();
+    this.render(newNoteLineLength);
   }
 
-  trimSong(event) {
+  trimSongPaper(event) {
     const newNoteLineLength = this.getNoteLineLengthVar() - (this.NUMBER_OF_BARS * QUARTER_BAR_GAP);
-    this.setNoteLineLengthVar(newNoteLineLength);
-    this.render();
+    this.render(newNoteLineLength);
   }
 
-  render() {
-    // A little hack for setting the initial minimum music length on page load. If we don't
-    // have this in here, then manual re-renders caused by clicking the "Extend Song" button
-    // will reset the length back to the initial music length, thus failing to extend the song.
-    // Maybe someday we can find a clean way to add this to the "Initialize values" in main.js.
-    if (this.isInitialRender) {
-      this.setInitialMusicLength();
-      this.isInitialRender = false;
-    }
+  render(newNoteLineLength) {
+    this.setNoteLineLengthVar(newNoteLineLength || this.getNoteLineLengthFromSongData());
 
     const numberOfDividers = this.getNumberOfExposedPages() - 1;
 
@@ -101,10 +91,10 @@ export class PaperFooter extends Component {
         dividerNumber: i + 1,
         isTrimmable: this.getNumberOfUsedPages() <= (i + 1),
         yFromBottom: this.ENDING_GAP + ((numberOfDividers - i) * this.NUMBER_OF_BARS * QUARTER_BAR_GAP),
-        trimSong: this.trimSong
+        trimSongPaper: this.trimSongPaper
       }).render();
     }
 
-    this.element.querySelector('.extend-song-button').addEventListener('click', this.extendSong);
+    this.element.querySelector('.extend-song-button').addEventListener('click', this.extendSongPaper);
   }
 }

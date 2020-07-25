@@ -26,6 +26,6 @@ export class PaperDivider extends Component {
       </button>
     `;
 
-    this.element.querySelector('.divider__trim-icon').addEventListener('click', this.props.trimSong);
+    this.element.querySelector('.divider__trim-icon').addEventListener('click', this.props.trimSongPaper);
   }
 }
