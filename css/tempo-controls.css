@@ -1,0 +1,80 @@
+.tempo {
+  --thumb-width: 15px;
+  --thumb-border: 1px solid var(--mb-gray-30);
+  --track-height: 4px;
+  --track-color: var(--mb-gray-50);
+}
+
+.tempo-inputs {
+  display: flex; /* for setting the fields side-by-side */
+}
+.tempo-inputs > div:first-child {
+  display: flex; /* for centering the slider track vertically */
+}
+
+.tempo-field {
+  width: 44px; /* magic number with enough space for three digits and the up/down arrows. */
+  margin-left: 6px;
+  border: 1px solid var(--mb-gray-30);
+  border-radius: 2px;
+}
+
+.tempo-slider {
+  width: 100%;
+  background: var(--controls-button-color);
+  margin: 0;
+}
+
+/* RESET THE DEFAULT SLIDER STYLES ACROSS BROWSERS */
+
+.tempo-slider {
+  -webkit-appearance: none;
+  background: transparent;
+}
+.tempo-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+}
+
+/* ADD NEW CUSTOM STYLES FOR THE THUMB */
+
+.tempo-slider::-webkit-slider-thumb {
+  cursor: grab;
+  border: var(--thumb-border);
+  width: var(--thumb-width);
+  height: var(--thumb-width);
+  border-radius: 50%;
+  background: var(--controls-button-color);
+  margin-top: -6px; /* We need to specify a margin in Chrome, but in Firefox and IE it is automatic */
+}
+.tempo-slider::-webkit-slider-thumb:active {
+  cursor: grabbing;
+}
+
+/* All the same stuff for Firefox */
+.tempo-slider::-moz-range-thumb {
+  cursor: grab;
+  border: var(--thumb-border);
+  width: var(--thumb-width);
+  height: var(--thumb-width);
+  border-radius: 50%;
+  background: var(--controls-button-color);
+}
+.tempo-slider::-moz-range-thumb:active {
+  cursor: grabbing;
+}
+
+/* ADD NEW CUSTOM STYLES FOR THE TRACK */
+
+.tempo-slider::-webkit-slider-runnable-track {
+  margin-top: 1px;
+  height: var(--track-height);
+  background: var(--track-color);
+  border-radius: 9999px;
+}
+
+.tempo-slider::-moz-range-track {
+  height: var(--track-height);
+  background: var(--track-color);
+  border-radius: 9999px;
+}
+

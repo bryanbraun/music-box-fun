@@ -23,7 +23,13 @@ export class TempoSlider extends Component {
     `;
 
     this.element.lastElementChild.addEventListener('input', event => {
-      musicBoxStore.setState('songState.tempo', parseInt(event.target.value));
+      // Fix any values that are outside of the acceptable range.
+      let acceptableValue = parseInt(event.target.value)
+      acceptableValue = Math.max(acceptableValue, this.props.min);
+      acceptableValue = Math.min(acceptableValue, this.props.max);
+      event.currentTarget.value = acceptableValue;
+
+      musicBoxStore.setState('songState.tempo', acceptableValue);
 
       // Publish a one-off event telling the tempo field to re-render. We'd prefer
       // this over having the tempo field subscribe to 'songState.tempo' because

@@ -538,25 +538,6 @@ button {
   border: 1px solid var(--mb-gray-20);
 }
 
-.tempo {
-  display: block;
-}
-
-.tempo-inputs {
-  display: flex;
-  justify-content: space-between;
-}
-.tempo-slider {
-  cursor: pointer;
-  width: 100%;
-}
-.tempo-field {
-  width: 44px;
-  margin-left: 6px;
-  border: 1px solid var(--mb-gray-30);
-  border-radius: 2px;
-}
-
 .footnote p {
   font-size: 12px;
   margin: 0;

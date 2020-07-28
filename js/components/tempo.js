@@ -15,8 +15,8 @@ export class Tempo extends Component {
     });
 
     // Constants
-    this.MIN = 60;
-    this.MAX = 160;
+    this.MIN = 50;
+    this.MAX = 180;
   }
 
   render() {
