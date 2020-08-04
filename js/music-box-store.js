@@ -4,6 +4,4 @@ import { cloneDeep } from './utils/clone.js';
 
 const musicBoxStore = new Store(cloneDeep(state));
 
-window.MusicBoxStore = musicBoxStore; // for easy inspecting
-
 export { musicBoxStore };

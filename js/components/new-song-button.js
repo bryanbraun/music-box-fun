@@ -26,7 +26,7 @@ export class NewSongButton extends Component {
 
   render() {
     this.element.innerHTML = `
-      <button class="new-song">New blank song</button>
+      <button class="new-song" data-testid="new-song">New blank song</button>
     `;
 
     this.element.querySelector('button').addEventListener('click', this.handleClick);

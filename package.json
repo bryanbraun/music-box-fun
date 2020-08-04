@@ -1,0 +1,18 @@
+{
+  "name": "music-box-fun",
+  "version": "1.0.0",
+  "description": "A web app for making music box songs",
+  "author": "Bryan Braun",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bryanbraun/music-box-fun.git"
+  },
+  "scripts": {
+    "test": "cypress run",
+    "test-prod": "cypress run --config baseUrl=https://musicboxfun.com",
+    "test-visual": "cypress open"
+  },
+  "devDependencies": {
+    "cypress": "^4.11.0"
+  }
+}

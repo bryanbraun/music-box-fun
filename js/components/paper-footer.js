@@ -92,10 +92,10 @@ export class PaperFooter extends Component {
     this.element.innerHTML = `
       <div id="dividers">
         ${Array(numberOfDividers).fill()
-          .map((val, index) => `<div id="divider-${index + 1}" class="divider"></div>`)
+          .map((val, index) => `<div id="divider-${index + 1}" class="divider" data-testid="divider"></div>`)
           .join('')}
       </div>
-      <button class="extend-song-button" title="Extend Song"">
+      <button class="extend-song-button" title="Extend Song" data-testid="extend">
         <span class="dashed-line"></span>
         +
       </button>

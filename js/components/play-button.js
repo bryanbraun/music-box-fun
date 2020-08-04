@@ -40,11 +40,10 @@ export class PlayButton extends Component {
 
   render() {
     const isPlaying = musicBoxStore.state.appState.isPlaying;
-    const classes = classNames('play-button', { 'is-playing': isPlaying });
     const buttonText = isPlaying ? 'Pause (Space)' : 'Play (Space)';
 
     this.element.innerHTML = `
-      <button class="${classes}" aria-pressed="${isPlaying}" aria-label="${buttonText}" title="${buttonText}">
+      <button class="play-button" aria-pressed="${isPlaying}" aria-label="${buttonText}" title="${buttonText}" data-testid="play-button">
         ${this.getIconSvg(isPlaying)}
       </button>
     `;

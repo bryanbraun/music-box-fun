@@ -26,6 +26,7 @@ import { holeWidthManager } from './subscribers/hole-width-manager.js';
 import { pageScroller } from './subscribers/page-scroller.js';
 import { audioPlayer } from './subscribers/audio-player.js';
 import { songPauser } from './subscribers/song-pauser.js';
+import { setupTestObjects } from './test.js';
 
 urlManager.getStateFromUrlAsync().then(urlState => {
   // Initialize our global state with song data. We don't need to call setState
@@ -73,3 +74,4 @@ urlManager.getStateFromUrlAsync().then(urlState => {
 setupSampler();
 setupKeyboardEvents();
 setupAudioContextFallbackForRestrictiveBrowsers();
+setupTestObjects();

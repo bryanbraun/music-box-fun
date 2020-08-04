@@ -4,3 +4,7 @@ audio/audacity
 .env
 
 node_modules
+
+# Ignore test files
+cypress/videos
+cypress/screenshots
