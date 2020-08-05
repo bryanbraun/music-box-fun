@@ -115,7 +115,9 @@ export class NoteLine extends Component {
     const pitch = noteLineEl.getAttribute('data-id');
 
     const isShadowNoteOverlappingExistingNote = shadowNoteYPos => (
-      musicBoxStore.state.songState.songData[pitch].includes(shadowNoteYPos)
+      musicBoxStore.state.songState.songData[pitch].includes(
+        this.adjustStoredYPosForHoleSize(shadowNoteYPos)
+      )
     );
 
     const getNoteYPos = element => {
