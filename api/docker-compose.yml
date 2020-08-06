@@ -1,0 +1,51 @@
+version: "3.8"
+services:
+  db:
+    # for convenience in attaching
+    container_name: db
+
+    # Base our container on the official Postgres image at hub.docker.com.
+    # See: https://hub.docker.com/_/postgres/
+    image: postgres:12.3
+
+    # We use the "short" syntax for this "bind volume" because that allows
+    # it to create the "pg" folder on the fly if it doesn't already exist.
+    volumes:
+      # ./pg                      on the host machine
+      # /var/lib/postgresql/data  in the container
+      - ./pg:/var/lib/postgresql/data
+
+    env_file: .env
+
+  api:
+    # for convenience in attaching
+    container_name: api
+
+    # this builds our image off of the Dockerfile in this folder (instead of sourcing it from elsewhere)
+    build: .
+
+    # this names our freshly built image 'musicboxfun'
+    image: musicboxfun
+
+    command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0'"
+
+    volumes:
+      - type: bind
+        source: .                     # on the host machine
+        target: /var/www/musicboxfun  # in the container
+
+    env_file: .env
+
+    # giving access to stdin lets us use things like byebug in development
+    # when we attach to the container with `docker attach <container id>`
+    stdin_open: true
+
+    # allows us to detach without killing the container.
+    # to detach: hold "ctrl", type "p", then type "q"
+    tty: true
+
+    ports:
+      - "3000:3000"
+
+    depends_on:
+      - db

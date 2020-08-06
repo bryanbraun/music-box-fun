@@ -1,10 +1,24 @@
 designs
 audacity
 
-.env
-
+# SITE
 node_modules
 
 # Ignore test files
 cypress/videos
 cypress/screenshots
+
+# RAILS
+.env
+
+# Ignore logfiles, tempfiles and postgres volume files.
+api/log/*
+api/tmp/*
+api/pg/*
+!api/log/.keep
+!api/tmp/.keep
+
+.byebug_history
+.bundle
+
+master.key
