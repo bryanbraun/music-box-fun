@@ -14,7 +14,7 @@ To run this application locally.
 4. From the project root, run `docker-compose up -d`
 5. Create your local database
     - Open a shell in the running Rails application container: `docker exec -it api /bin/bash`
-    - Run `rails db:create`
+    - Run `rails db:setup`
     - (alternatively you could import an existing copy of the database)
 
 

@@ -17,6 +17,11 @@ services:
 
     env_file: .env
 
+    # Allows the host machine to access the database, for database clients.
+    # See also: https://dev.to/kovah/be-careful-with-docker-ports-3pih
+    ports:
+      - "127.0.0.1:3001:5432"
+
   api:
     # for convenience in attaching
     container_name: api
