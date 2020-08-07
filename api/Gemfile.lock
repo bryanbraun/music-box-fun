@@ -92,6 +92,9 @@ GEM
     nokogiri (1.10.10)
       mini_portile2 (~> 2.4.0)
     pg (1.2.3)
+    pg_search (2.3.2)
+      activerecord (>= 5.2)
+      activesupport (>= 5.2)
     puma (4.3.5)
       nio4r (~> 2.0)
     rack (2.2.3)
@@ -156,6 +159,7 @@ DEPENDENCIES
   dotenv-rails (~> 2.7.6)
   listen (~> 3.2)
   pg (>= 0.18, < 2.0)
+  pg_search (~> 2.3.2)
   puma (~> 4.1)
   rails (~> 6.0.3, >= 6.0.3.2)
   spring
