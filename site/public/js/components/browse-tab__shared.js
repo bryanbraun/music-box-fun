@@ -1,7 +1,7 @@
 import { Component } from '../alt-react/component.js';
 import { musicBoxStore } from '../music-box-store.js';
 
-export class BrowseTabRecent extends Component {
+export class BrowseTabSharedSongs extends Component {
   constructor(props) {
     super({
       props,
@@ -11,7 +11,7 @@ export class BrowseTabRecent extends Component {
 
   render() {
     this.element.innerHTML = `
-      <h2 class="browse__title">Recent Songs</h2>
+      <h2 class="browse__title">Shared Songs</h2>
       <a
         class="twitter-timeline"
         data-width="232"

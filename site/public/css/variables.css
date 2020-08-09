@@ -3,6 +3,7 @@
   /* brand */
   --mb-white: white;
   --mb-offwhite: #fcfcfc;
+  --mb-gray-6: #f2f2f2;
   --mb-gray-10: #efefef;
   --mb-gray-20: #dddddd;
   --mb-gray-30: #c0c0c0;
@@ -21,7 +22,7 @@
   --controls-button-color: var(--mb-offwhite);
   --shadow-note-color: var(--mb-gray-20);
   --hole-color: var(--mb-gray-60);
-  --link-color: var(--mb-orange-accent);
+  --link-color: var(--mb-black);
   --text-color: var(--mb-black);
   --discrete-text: var(--mb-gray-40);
 
@@ -65,6 +66,9 @@
   --z-messages: 12;
   --z-twitter-share: 15;
   --z-audio-context-message: 16;
+
+  /* (left-sidebar context) */
+  --z-search-results: 1;
 
   /* OTHER */
   --number-of-notes: 15;

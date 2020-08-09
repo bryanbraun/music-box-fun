@@ -15,7 +15,7 @@ body {
 }
 
 a {
-  color: var(---link-color);
+  color: var(--link-color);
 }
 
 button {
@@ -86,6 +86,107 @@ button {
 }
 .description p {
   margin: 0;
+}
+
+/* Disable browser default interactive search behavior */
+.search__field::-webkit-search-decoration,
+.search__field::-webkit-search-cancel-button,
+.search__field::-webkit-search-results-button,
+.search__field::-webkit-search-results-decoration {
+  display: none;
+}
+
+.search {
+  position: relative;
+  margin-bottom: 1.5rem;
+}
+.search__form {
+  display: flex;
+}
+.search__field {
+  flex: 1 0 auto;
+  padding: 6px;
+  margin: 0;
+
+  border: 1px solid var(--mb-black);
+  border-right: none;
+  border-top-left-radius: 4px;
+  border-bottom-left-radius: 4px;
+  font: var(--main-font);
+  font-size: 13px;
+
+  -webkit-appearance: none; /* for safari */
+}
+/* By making the search field required, we can treat the
+   ":valid" pseudo-class like a ":not-empty" pseudo-class
+   and prevent focus outlines from appearing after a user
+   starts typing. This makes things look nicer. Plus, focus
+   outlines are less useful when there's text because the
+   text gets highlighted on focus, which is noticeable.
+   See https://stackoverflow.com/a/16956610/1154642 */
+.search__field:valid {
+  outline: none;
+}
+.search__field:invalid {
+  box-shadow: none; /* prevents an error shadow in firefox */
+}
+.search__button {
+  background: var(--mb-white);
+  flex: 0 0 auto;
+  display: flex;
+  padding: 5px;
+  margin: 0;
+  width: 32px;
+  cursor: pointer;
+
+  border: 1px solid var(--mb-black);
+  border-left: none;
+  border-top-right-radius: 4px;
+  border-bottom-right-radius: 4px;
+
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+.search__results-container {
+  position: absolute;
+  z-index: var(--z-search-results);
+
+  left: 0;
+  right: 0;
+  top: 100%;
+  box-shadow: 0px -4px 0px -1px white,
+              0px -3px 0px 0px black;
+}
+.search__results-container.is-hidden {
+  display: none;
+}
+.search-all-button {
+  width: 100%;
+  border: none;
+  border-bottom: 1px solid var(--mb-gray-30);
+  background: var(--mb-white);
+  cursor: pointer;
+  text-align: left;
+  font-style: italic;
+
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+.search__results {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+  background: var(--left-sidebar-color);
+  border: 1px solid var(--mb-black);
+}
+.search__result {
+  font-size: 13px;
+  text-decoration: none;
+  display: block;
+  padding: 0.5rem;
+}
+.search__result:hover {
+  background: var(--mb-gray-6);
 }
 
 .browse {
@@ -160,12 +261,12 @@ button {
   box-shadow: inset 0px 6px 7px -11px #444, inset 0px -6px 7px -11px;
 }
 
-.featured-songs {
+.library-songs {
   font-size: 13px;
   padding: 0;
   margin: 1rem 0;
 }
-.featured-song {
+.library-song {
   line-height: 1.25;
   margin-bottom: 0.5rem;
   padding-left: 0.5rem;
@@ -175,10 +276,10 @@ button {
   background-repeat: no-repeat;
   background-position: 0 5px;
 }
-.featured-song__creator {
+.library-song__creator {
   color: var(--discrete-text);
 }
-.featured-note {
+.library-note {
   font-size: 0.75rem;
   color: var(--mb-gray-60);
 }

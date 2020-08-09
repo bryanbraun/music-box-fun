@@ -9,8 +9,8 @@ class SongsController < ApplicationController
       result = Song.search_by_title_fulltext(search_param)
       render json: result
     else
-      # If it's not a search, return the 20 most recent songs
-      render json: Song.order(created_at: :desc).limit(20).as_json(only: [:title, :data])
+      # If it's not a search, return the 100 most recent songs
+      render json: Song.order(created_at: :desc).limit(100).as_json(only: [:title, :data])
     end
   end
 end

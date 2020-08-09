@@ -1,4 +1,5 @@
 import { Description } from './components/description.js';
+import { Search } from './components/search.js';
 import { BrowseTabs } from './components/browse-tabs.js';
 import { SongTitle } from './components/song-title.js';
 import { NoteHeader } from './components/note-header.js';
@@ -42,6 +43,7 @@ urlManager.getStateFromUrlAsync().then(urlState => {
 
   // Initial page render
   new Description().render();
+  new Search().render();
   new BrowseTabs().render();
   new SongTitle().render();
   new NoteHeader().render();

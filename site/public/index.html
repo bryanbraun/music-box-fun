@@ -60,20 +60,34 @@
         href="https://www.amazon.com/Movement-Refill-Strips-Puncher-Customize/dp/B019Z6AJP0/ref=pd_sbs_201_5/147-2607630-6675016">the
         mechanical ones</a>.</p>
     </div>
+    <div id="search" class="search">
+      <form id="search__form" class="search__form">
+        <label for="search__field" class="visuallyhidden">Search Song Library</label>
+        <input type="search" id="search__field" class="search__field" aria-label="Search song library" placeholder="Search Song Library" autocomplete="off">
+        <button type="submit" class="search__button">
+          <svg viewBox="0 0 32 32" width="100%" xmlns="http://www.w3.org/2000/svg">
+            <g stroke="#000" stroke-width="2" fill="none" fill-rule="evenodd">
+              <circle cx="12" cy="12" r="9"/>
+              <path d="M19 19l10.159 10.159" stroke-linecap="square"/>
+            </g>
+          </svg>
+        </button>
+      </form>
+    </div>
     <div class="browse" id="browse">
       <nav id="browse__tabs" class="browse__tabs">
         <ul>
           <li class="browse__tab is-active">
-            <button>Recent</a>
+            <button>Shared Songs</a>
           </li>
           <li class="browse__tab">
-            <button>Featured</a>
+            <button>Song Library</a>
           </li>
         </ul>
       </nav>
 
       <div id="browse__content" class="browse__content">
-        <h2 class="browse__title">Recent Songs</h2>
+        <h2 class="browse__title">Shared Songs</h2>
       </div>
     </div>
     <div class="mini-footer">

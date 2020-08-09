@@ -12,6 +12,7 @@
   border: 1px solid var(--mb-gray-20);
   border-bottom: 1px solid #bbb;
   padding: 0.4rem 1.2rem 0.4rem 0.4rem;
+  cursor: pointer;
 }
 .select::after > .select {
   content: "";
