@@ -3,6 +3,8 @@ class CreateSongs < ActiveRecord::Migration[6.0]
     create_table :songs do |t|
       t.string :title
       t.text :data
+      t.string :creator
+      t.string :creator_url
 
       t.timestamps
     end

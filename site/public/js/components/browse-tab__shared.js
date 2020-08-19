@@ -11,7 +11,7 @@ export class BrowseTabSharedSongs extends Component {
 
   render() {
     this.element.innerHTML = `
-      <h2 class="browse__title">Shared Songs</h2>
+      <h2 class="browse__title">Shared Songs on Twitter</h2>
       <a
         class="twitter-timeline"
         data-width="232"

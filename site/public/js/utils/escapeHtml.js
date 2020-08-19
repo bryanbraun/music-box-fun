@@ -6,3 +6,9 @@ export function escapeHtml(text) {
     .replace(/"/g, "&quot;")
     .replace(/'/g, "&#039;");
 }
+
+export function escapeAndHighlightHtml(text) {
+  return escapeHtml(text)
+    .replace(/\[\[/g, "<b>")
+    .replace(/\]\]/g, "</b>");
+}

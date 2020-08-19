@@ -25,6 +25,7 @@
   --link-color: var(--mb-black);
   --text-color: var(--mb-black);
   --discrete-text: var(--mb-gray-40);
+  --error-text-red: red;
 
 
   /* FONTS */

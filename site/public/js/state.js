@@ -15,6 +15,8 @@ export const state = {
     isPlaying: false,
     isAudioDisabledMessageVisible: false,
     isAudioDisabledMessageResolved: false,
+    activeTab: 'shared-songs',
+    songLibraryQuery: ''
   },
 
   // DANGER! CHANGING THE STRUCTURE OR KEYS OF THE OBJECT BELOW COULD

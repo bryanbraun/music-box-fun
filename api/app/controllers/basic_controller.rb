@@ -4,4 +4,8 @@ class BasicController < ApplicationController
   def home
     render json: { status: 'online'}
   end
+
+  def error
+    render json: {}, status: :gateway_timeout
+  end
 end

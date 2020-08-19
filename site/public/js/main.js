@@ -20,6 +20,7 @@ import { Footnote } from './components/footnote.js';
 import { musicBoxStore } from './music-box-store.js';
 import { setupSampler } from './common/sampler.js';
 import { playheadObserver } from './common/playhead-observer.js';
+import { setupOnClickOutside } from './common/on-click-outside.js';
 import { setupAudioContextFallbackForRestrictiveBrowsers } from './subscribers/audio-context.js';
 import { setupKeyboardEvents } from './subscribers/keyboard-manager.js';
 import { urlManager } from './subscribers/url-manager.js';
@@ -27,6 +28,7 @@ import { holeWidthManager } from './subscribers/hole-width-manager.js';
 import { pageScroller } from './subscribers/page-scroller.js';
 import { audioPlayer } from './subscribers/audio-player.js';
 import { songPauser } from './subscribers/song-pauser.js';
+
 import { setupTestObjects } from './test.js';
 
 urlManager.getStateFromUrlAsync().then(urlState => {
@@ -76,4 +78,5 @@ urlManager.getStateFromUrlAsync().then(urlState => {
 setupSampler();
 setupKeyboardEvents();
 setupAudioContextFallbackForRestrictiveBrowsers();
+setupOnClickOutside();
 setupTestObjects();

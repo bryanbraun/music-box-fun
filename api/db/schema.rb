@@ -10,14 +10,17 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_08_06_201007) do
+ActiveRecord::Schema.define(version: 2020_08_13_032807) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+  enable_extension "unaccent"
 
   create_table "songs", force: :cascade do |t|
     t.string "title"
     t.text "data"
+    t.string "creator"
+    t.string "creator_url"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["data"], name: "index_songs_on_data", unique: true

@@ -9,3 +9,7 @@
   white-space: nowrap;
   border-width: 0;
 }
+
+.hidden {
+  display: none;
+}

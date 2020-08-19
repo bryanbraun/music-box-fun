@@ -7,7 +7,11 @@
 // to discern between song-link clicks and back/forward navigation (which we don't want to jump).
 // The only case this doesn't catch is browser-bookmarked songs, which is a narrow-enough use-case
 // that I'm ok with it falling back to a non-jumping behavior.
-export function jumpToTopForDelegatedSongClicks(event) {
+//
+// @todo: I think this works inconsistently because it jumps before the default link behavior takes
+//        effect (in other words, before the song changes). This seems to result in us not being at
+//        the top of the page after the new song loads. I'll have to look into that.
+export function jumpToTopIfASongWasClicked(event) {
   const clickedEl = event.target;
 
   if (clickedEl.tagName !== 'A') return;

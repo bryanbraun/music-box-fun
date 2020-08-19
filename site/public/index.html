@@ -29,7 +29,7 @@
   <link rel="stylesheet" href="/css/main.css">
 </head>
 
-<body>
+<body class="no-focus">
   <aside class="left-sidebar">
     <div class="title-box">
       <a class="logo-link" href="/">
@@ -73,6 +73,10 @@
           </svg>
         </button>
       </form>
+      <div id="search__results" class="search__results-container is-hidden">
+        <!-- This is empty but we keep it here anyways since it helps us measure the
+            value of var(--search-results-distance-from-top-of-screen) on page load -->
+      </div>
     </div>
     <div class="browse" id="browse">
       <nav id="browse__tabs" class="browse__tabs">
@@ -94,7 +98,8 @@
       <a href="https://www.bryanbraun.com/2019/11/02/music-box-fun/" title="About">About</a>
       <a href="https://github.com/bryanbraun/music-box-fun" title="Source code on Github">Code</a>
       <a href="https://github.com/bryanbraun/music-box-fun/projects/1" title="Planned features">Roadmap</a>
-      <a href="https://twitter.com/BryanEBraun" title="Say Hi">Say Hi</a>
+      <a href="/" title="Legal">Legal</a>
+      <a href="https://twitter.com/BryanEBraun" title="Message me on Twitter">Contact</a>
     </div>
   </aside>
   <main class="workspace">

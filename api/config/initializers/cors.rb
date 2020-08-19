@@ -7,10 +7,21 @@
 
 Rails.application.config.middleware.insert_before 0, Rack::Cors do
   allow do
-    origins 'local.musicboxfun.com:1111', 'musicboxfun.com'
+    origins 'https://musicboxfun.com'
 
     resource '*',
       headers: :any,
       methods: [:get, :post, :put, :patch, :delete, :options, :head]
   end
+
+  if Rails.env.development?
+    allow do
+      origins '*'
+
+      resource '*',
+        headers: :any,
+        methods: [:get, :post, :put, :patch, :delete, :options, :head]
+    end
+  end
+
 end

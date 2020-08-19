@@ -1,8 +1,9 @@
 import { Component } from '../alt-react/component.js';
 import { musicBoxStore } from '../music-box-store.js';
-import { escapeHtml } from '../utils/escapeHtml.js';
-import { jumpToTopForDelegatedSongClicks } from '../common/common-event-handlers.js';
-
+import { escapeHtml, escapeAndHighlightHtml } from '../utils/escapeHtml.js';
+import { jumpToTopIfASongWasClicked } from '../common/common-event-handlers.js';
+import { apiHostname, request } from '../common/api.js';
+import { onClickOutside } from '../common/on-click-outside.js';
 
 export class Search extends Component {
   constructor(props) {
@@ -15,33 +16,47 @@ export class Search extends Component {
     this.state.isResultsContainerVisible = false;
 
     this.handleInput = this.handleInput.bind(this);
+    this.handleSearchFormSubmit = this.handleSearchFormSubmit.bind(this);
     this.handleSearchResultClick = this.handleSearchResultClick.bind(this);
+    this.handleClickOutsideOfSearchResults = this.handleClickOutsideOfSearchResults.bind(this);
     this.setInnerHtmlWithControlledInput = this.setInnerHtmlWithControlledInput.bind(this);
-  }
 
-  async fetchSearchResults(searchString) {
-    const response = await fetch(`http://0.0.0.0:3000/v1/songs?q=${searchString}`);
-    return response.json();
+    onClickOutside('#search__results', this.handleClickOutsideOfSearchResults);
   }
 
   async handleInput(event) {
-    if (event.target.value) {
+    const queryString = event.target.value;
+    let searchResults;
+
+    if (queryString) {
       this.setState({
-        queryString: event.target.value,
+        queryString,
         isResultsContainerVisible: true
       });
     } else {
       this.setState({
-        queryString: event.target.value,
+        queryString,
         isResultsContainerVisible: false
       });
     }
 
-    const results = await this.fetchSearchResults(event.target.value);
+    try {
+      searchResults = await request(`${apiHostname}/v1/songs?q=${queryString}`);
+    } catch(error) {
+      console.error(error);
+      searchResults = [];
+    }
 
-    this.setState({ searchResults: results });
+    this.setState({ searchResults });
+  }
 
-    // @todo: add error handling.
+  handleClickOutsideOfSearchResults(event) {
+    if (this.state.isResultsContainerVisible === true) {
+      this.setState({
+        isResultsContainerVisible: false,
+        searchResults: []
+      });
+    }
   }
 
   handleSearchResultClick(event) {
@@ -50,27 +65,39 @@ export class Search extends Component {
       isResultsContainerVisible: false
     });
 
-    // Note: this doesn't add a listener... it just jumps if the clicked
-    // thing was a song. I may want to rename this to make that more clear.
-    jumpToTopForDelegatedSongClicks(event);
+    jumpToTopIfASongWasClicked(event);
+  }
+
+  handleSearchFormSubmit(event) {
+    event.preventDefault();
+
+    musicBoxStore.setState('appState.songLibraryQuery', this.state.queryString);
+    musicBoxStore.setState('appState.activeTab', 'song-library');
+
+    this.setState({
+      queryString: '',
+      isResultsContainerVisible: false
+    });
   }
 
   // In order to make this controlled component work smoothly, I need to manually replace the
   // cursor whenever I rerender the field. For now, I'll try this as a one-off, but if I need
   // to do this multiple times, I could abstract it into a utility or part of the alt-react framework.
-  setInnerHtmlWithControlledInput(templateString, inputSelector) {
-    const oldInputEl = this.element.querySelector(inputSelector);
+  setInnerHtmlWithControlledInput(templateString, controlledInputSelector) {
+    const oldInputEl = this.element.querySelector(controlledInputSelector);
     const cursorPosition = oldInputEl.selectionStart;
 
     this.element.innerHTML = templateString;
 
-    const newInputEl = this.element.querySelector(inputSelector);
+    const newInputEl = this.element.querySelector(controlledInputSelector);
     newInputEl.focus();
     newInputEl.setSelectionRange(cursorPosition, cursorPosition);
   }
 
   render() {
     const resultsVisibilityClass = this.state.isResultsContainerVisible ? '' : 'is-hidden';
+    const searchResultsDistanceFromTopOfScreen = this.element.querySelector('#search__results').getBoundingClientRect().top;
+    const searchResultsCustomStyles = `--search-results-distance-from-top-of-screen: ${searchResultsDistanceFromTopOfScreen}px;`;
 
     this.setInnerHtmlWithControlledInput(`
       <form id="search__form" class="search__form">
@@ -94,16 +121,14 @@ export class Search extends Component {
           </svg>
         </button>
       </form>
-      <div id="search__results" class="search__results-container ${resultsVisibilityClass}">
+      <div id="search__results" class="search__results-container ${resultsVisibilityClass}" style="${searchResultsCustomStyles}">
+        <button id="search-all" class="search__result search-all-button">
+          Search all "${escapeHtml(this.state.queryString)}"
+        </button>
         <ul class="search__results">
-          <li>
-            <button class="search__result search-all-button">
-              Search all "${escapeHtml(this.state.queryString)}"
-            </button>
-          </li>
           ${this.state.searchResults.map(song => (`
             <li>
-              <a class="search__result" href="#${song.data}">${escapeHtml(song.title)}</a>
+              <a class="search__result" href="#${song.data}">${escapeAndHighlightHtml(song.pg_search_highlight)}</a>
             </li>
           `)).join('')}
         </ul>
@@ -111,6 +136,8 @@ export class Search extends Component {
     `, `#search__field`);
 
     this.element.addEventListener('input', this.handleInput);
-    this.element.querySelector('#search__results').addEventListener('click', this.handleSearchResultClick);
+    this.element.querySelector('#search__form button[type="submit"]').addEventListener('click', this.handleSearchFormSubmit);
+    this.element.querySelector('#search-all').addEventListener('click', this.handleSearchFormSubmit);
+    this.element.querySelector('#search__results ul').addEventListener('click', this.handleSearchResultClick);
   }
 }

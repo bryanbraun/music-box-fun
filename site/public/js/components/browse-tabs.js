@@ -1,11 +1,13 @@
 import { Component } from '../alt-react/component.js';
+import { musicBoxStore } from '../music-box-store.js';
 import { BrowseTabSharedSongs } from './browse-tab__shared.js';
 import { BrowseTabSongLibrary } from './browse-tab__library.js';
 
 export class BrowseTabs extends Component {
   constructor() {
     super({
-      element: document.querySelector('#browse')
+      element: document.querySelector('#browse'),
+      renderTrigger: 'appState.activeTab'
     });
 
     // Static nav data, that we'll use to render our tabs and content
@@ -22,14 +24,11 @@ export class BrowseTabs extends Component {
       }
     ];
 
-    // Set default activeTab state.
-    this.state.activeTab = this.navData[0].id;
-
     this.handleTabClick = this.handleTabClick.bind(this);
   }
 
   isActive(tabId) {
-    return this.state.activeTab === tabId;
+    return musicBoxStore.state.appState.activeTab === tabId;
   }
 
   handleTabClick(event) {
@@ -37,7 +36,7 @@ export class BrowseTabs extends Component {
 
     if (!clickedTabId || this.isActive(clickedTabId)) return;
 
-    this.setState({ activeTab: clickedTabId });
+    musicBoxStore.setState('appState.activeTab', clickedTabId);
   }
 
   render() {
