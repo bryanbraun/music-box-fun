@@ -5,6 +5,8 @@
 
 For the background on this project, see: [https://www.bryanbraun.com/2019/11/02/music-box-fun](https://www.bryanbraun.com/2019/11/02/music-box-fun)
 
+There are also some [docs](/docs).
+
 ## Credits
 
 - The JavaScript architecture was inspired by [Andy Bell's article on state management in vanilla JavaScript](https://css-tricks.com/build-a-state-management-system-with-vanilla-javascript/).
@@ -17,6 +19,6 @@ This project uses the GNU GPLv3 License, amended with [the Commons Clause](https
 
 This means you get [the terms of the GPLv3](https://choosealicense.com/licenses/gpl-3.0/), excluding the permission to use it for commercial use.
 
-![Visual summary of the Permissions Conditions and Limitations of the GPLv3 with a Commons Clause](/images/license-summary.png)
+![Visual summary of the Permissions Conditions and Limitations of the GPLv3 with a Commons Clause](license-summary.png)
 
 
