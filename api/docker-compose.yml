@@ -6,7 +6,7 @@ services:
 
     # Base our container on the official Postgres image at hub.docker.com.
     # See: https://hub.docker.com/_/postgres/
-    image: postgres:12.3
+    image: postgres:12.4
 
     # We use the "short" syntax for this "bind volume" because that allows
     # it to create the "pg" folder on the fly if it doesn't already exist.
@@ -15,7 +15,7 @@ services:
       # /var/lib/postgresql/data  in the container
       - ./pg:/var/lib/postgresql/data
 
-    env_file: .env
+    env_file: .env.dev
 
     # Allows the host machine to access the database, for database clients.
     # See also: https://dev.to/kovah/be-careful-with-docker-ports-3pih
@@ -27,7 +27,11 @@ services:
     container_name: api
 
     # this builds our image off of the Dockerfile in this folder (instead of sourcing it from elsewhere)
-    build: .
+    build:
+      context: .
+      args:
+        # Skips any gems inside a "group :production do" condition, in our Gemfile.
+        BUNDLE_WITHOUT: production
 
     # this names our freshly built image 'musicboxfun'
     image: musicboxfun
@@ -39,7 +43,7 @@ services:
         source: .                     # on the host machine
         target: /var/www/musicboxfun  # in the container
 
-    env_file: .env
+    env_file: .env.dev
 
     # giving access to stdin lets us use things like byebug in development
     # when we attach to the container with `docker attach <container id>`
@@ -54,3 +58,4 @@ services:
 
     depends_on:
       - db
+

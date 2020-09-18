@@ -1,2 +1,6 @@
-node_modules
+# Prevent the Dockerfile from copying the below files when running "COPY . ."
 npm-debug.log
+
+# This ensures the dependencies used are installed from the package-lock.json
+# file (the cannonical reference), instead of copying whatever's on my machine.
+node_modules

@@ -1,6 +1,10 @@
 class SongsController < ApplicationController
 
   def index
+    # Allow requests to be cached at cloudflare unless they expire
+    # or are are manually purged.
+    expires_in 7.days, public: true, must_revalidate: true
+
     # Extract optional query params for search. See
     # https://stackoverflow.com/a/1081720/1154642
     query_param = params[:q]

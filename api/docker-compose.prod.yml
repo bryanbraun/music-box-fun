@@ -1,0 +1,52 @@
+version: "3.8"
+services:
+  db:
+    container_name: db     # for convenience in attaching
+
+    # Base our container on the official Postgres image at hub.docker.com.
+    # See: https://hub.docker.com/_/postgres/
+    image: postgres:12.4
+
+    # We use the "short" syntax for this "bind volume" because that allows
+    # it to create the folders on the fly if it doesn't already exist.
+    #   Format:   [host_machine_path]:[container_path]
+    volumes:
+      - /root/musicboxfun_volumes/pg:/var/lib/postgresql/data
+
+    env_file: .env.prod
+
+    # Allows the host machine to access the database, for database clients.
+    # See also: https://dev.to/kovah/be-careful-with-docker-ports-3pih
+    ports:
+      - "127.0.0.1:3001:5432"
+
+    restart: unless-stopped
+
+  api:
+    container_name: api     # for convenience in attaching
+
+    # this builds our image off of the Dockerfile in this folder (instead of sourcing it from elsewhere)
+    build:
+      context: .
+      args:
+        # Skips any gems inside a "group :development do" condition, in our Gemfile.
+        BUNDLE_WITHOUT: development
+
+    # this names our freshly built image 'musicboxfun'
+    image: musicboxfun
+
+    volumes:
+      - /root/musicboxfun_volumes/log:/var/www/musicboxfun/log
+
+    command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0'"
+
+    env_file: .env.prod
+
+    ports:
+      - "80:3000"
+
+    restart: unless-stopped
+
+    depends_on:
+      - db
+

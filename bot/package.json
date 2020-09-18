@@ -6,9 +6,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node --experimental-modules index.js",
-    "container": "docker build -t music-box-bot . && docker run -d music-box-bot"
+    "start": "node --experimental-modules index.js"
   },
   "dependencies": {
     "twit": "2.2.11",

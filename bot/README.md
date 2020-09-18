@@ -1,16 +1,16 @@
-# Music Box Fun Bot
+# Bot
 
 A twitter bot that watches the Twitter streaming API and retweets anything that contains a Music Box Fun song link.
 
 ## Running it locally
 
-`npm run container`
+From the root project directory:
 
-## Deploying
+- `make dev-bot` - Rebuild and run the bot locally
+- `make stop-bot` - Stop the bot from running locally
 
-It's a manual process for now.
+Currently I need to re-run this with each change, because I don't have a local volume set up. This is because I wanted to simplify by using the same Dockerfile for both development and production. I can change this in the future if I find that I need to do a lot of dev in the future.
 
-1. From within this `bot` folder, send the files up to the server: `scp -r . root@162.243.246.86:./music-box-bot`
-2. SSH up to the server: `ssh root@162.243.246.86`
-3. Stop the existing music box bot container: `docker ps` *copy the container id* `docker stop <container id>`
-4. Rebuild and start the new container: `docker build . -t music-box-bot && docker run -d --restart always music-box-bot`
+## Deploy
+
+See [the deploy docs](../docs/deploys.md).

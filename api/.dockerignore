@@ -1,0 +1,5 @@
+# Don't copy these files into images when building. Specifically for prod.
+.byebug_history
+pg/*
+log/*
+tmp/*

@@ -2,16 +2,14 @@
 
 The Music Box Fun backend API is built with Rails in API-only mode.
 
-It's built on docker-compose, which runs rails in one container and postgres in another.
+It's built on docker-compose, which runs Rails in one container and Postgres in another.
 
-## One-time installation
-
-To run this application locally.
+## Local setup
 
 1. Pull this repo down to your computer.
-2. Duplicate `.env.example`, rename it to `.env`, and populate the local environment variables with their correct values.
+2. Duplicate `.env.example` twice, rename them to `.env.dev` and `.env.prod`, and populate the local environment variables with their correct values.
 3. Install docker (and docker-compose).
-4. From the project root, run `docker-compose up -d`
+4. Run the api containers: `docker-compose up -d`
 5. Create your local database
     - Open a shell in the running Rails application container: `docker exec -it api /bin/bash`
     - Run `rails db:setup`
@@ -20,16 +18,8 @@ To run this application locally.
 
 ## Starting the app
 
-```bash
-## starting the containers
-docker-compose up -d
-
-## test that the API is working:
-curl http://localhost:3000
-
-## when done: stop the containers
-docker-compose down
-```
+1. Run `make dev-api` from the project root.
+2. Test that the API is working: `curl http://localhost:3000`
 
 ## Common tasks
 
@@ -39,6 +29,7 @@ The `rails` cli contains many common tasks. It's best to use it inside the runni
 
 ```bash
 # Open a session in the api container using Bryan's .bash_profile shortcut
+# (alternatively: docker exec -it api /bin/bash)
 dsh api
 
 # Print all the available commands for the rails cli
@@ -61,22 +52,17 @@ docker attach api
 
 2. Insert `byebug` into the code where you want to pause execution.
 3. Load the page, then check your terminal session where you'll see the debugger waiting for you.
+4. To detach: hold `ctrl`, type `p`, then type `q`
 
 You can also view logs in the running container with `docker logs api`.
 
 
 ## Host Server setup
 
-* Ensure it has docker and docker-compose installed
-* Create a `.env` file defining things like SECRET_KEY_BASE, POSTGRES_PASSWORD, and RAILS_ENV.
+* Ensure the server has docker and docker-compose installed
+* [Set up your local environment for deploys](../docs/deploys.md#).
 
 ## Tests
 
-See [our testing approach document](../site/cypress/readme.md).
+See [our testing approach document](../site/cypress/readme.md#first-time-setup-for-deploys).
 
-
-## Deployment instructions
-TBD
-
-## Database Backups
-TBD

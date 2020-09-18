@@ -17,4 +17,5 @@ Here are some architecture decisions based on the goals above.
 - A backend is needed for some things. Backend-as-a-service for everything is expensive, and while serverless is low-stress, serverless development is awkward (plus, our site is small and wouldn't benefit from the scalability aspects). Thus we need a backend framework. We went with Rails in API-only mode because it's productive, easy to automate, and mature (with minimal dependency churn).
 - We're keeping the front-end separate from the backend for now, to simplify frontend development, and keep the site resilient. If the API server were to go down, we'd want the frontend to remain useable.
 - We use a monorepo, because multiple repos tend to make things a big hassle.
+- Lean on Cloudflare to reduce backend complexity. Using their SSL, caching, means I can postpone setting up things like NGINX and Varnish.
 

@@ -1,11 +1,49 @@
 # Music Box Fun
 <a href='http://www.recurse.com' title='Made with love at the Recurse Center'><img src='https://cloud.githubusercontent.com/assets/2883345/11325206/336ea5f4-9150-11e5-9e90-d86ad31993d8.png' height='20px'/></a>
 
-**[musicboxfun.com](https://musicboxfun.com)**
+**[musicboxfun.com](https://musicboxfun.com)** — a web app for making music box songs.
 
 For the background on this project, see: [https://www.bryanbraun.com/2019/11/02/music-box-fun](https://www.bryanbraun.com/2019/11/02/music-box-fun)
 
-There are also some [docs](/docs).
+## Repo Overview
+
+This repo contains three services, each in their own directory:
+
+- `site` - [A static frontend](site), written in plain JavaScript
+- `api` - [A backend API](api), using Rails::API and Postgres
+- `bot` - [A twitter bot](bot), written in NodeJS
+
+Each service has a README. There are also [some project-wide docs here](/docs).
+
+## Contributing
+
+**First Time Setup**
+
+1. Make sure you have [Docker](https://docs.docker.com/desktop/) and [`make`](https://www.gnu.org/software/make/manual/make.html) installed.
+2. IF you want to run the backend, follow the [backend first-time-setup instructions](api/README.md#setup).
+3. IF you want to run tests,
+    - Install node/npm
+    - Run `npm ci --prefix site`, to download cypress.
+
+(You will also need a python 2.x runtime to run SimpleHTTPServer, which is installed by default on Macs)
+
+**Local development**
+
+To run the services locally, you just need to run the make commands:
+
+- `make dev` - Runs development environments for the main app (`site` and `api`)
+- `make stop` - Stops any running environments for the main app (`site` and `api`)
+- `make test` - Run tests
+
+For more commands, see the [Makefile](./Makefile).
+
+**Contributing code**
+
+1. Fork the project on Github.
+2. Create a feature branch for your changes.
+3. Make your changes and commit them to the feature branch.
+4. Ensure the tests still pass locally (`make test`)
+5. Submit your changes as a PR to the `master` branch of the main repo.
 
 ## Credits
 

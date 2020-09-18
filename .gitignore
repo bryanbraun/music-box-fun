@@ -1,15 +1,23 @@
-designs
-audacity
+# BOT
+bot/node_modules
+bot/.env
+
 
 # SITE
-node_modules
+site/node_modules
 
 # Ignore test files
-cypress/videos
-cypress/screenshots
+site/cypress/videos
+site/cypress/screenshots
 
-# RAILS
-.env
+
+# API
+.env.dev
+.env.prod
+.byebug_history
+.bundle
+master.key
+certs
 
 # Ignore logfiles, tempfiles and postgres volume files.
 api/log/*
@@ -18,7 +26,7 @@ api/pg/*
 !api/log/.keep
 !api/tmp/.keep
 
-.byebug_history
-.bundle
 
-master.key
+# OTHER
+designs
+audacity

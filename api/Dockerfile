@@ -21,9 +21,10 @@ WORKDIR $RAILS_ROOT
 COPY Gemfile Gemfile
 COPY Gemfile.lock Gemfile.lock
 
-# Update rubygems to 3.0.0 to prevent this error caused by recent versions of bundler:
-#   "Error installing bundler: bundler requires RubyGems version >= 3.0.0."
-# RUN gem update --system 3.0.0
+# Ensure that we don't bundle gems for incorrect environments. This value is passed by docker-compose.yml.
+# See https://medium.com/@atomaka/a-more-flexible-dockerfile-for-rails-166227af69fc
+ARG BUNDLE_WITHOUT
+ENV BUNDLE_WITHOUT ${BUNDLE_WITHOUT}
 
 # Prevent bundler warnings; ensure that the bundler version executed is >= that which created Gemfile.lock
 RUN gem install bundler
