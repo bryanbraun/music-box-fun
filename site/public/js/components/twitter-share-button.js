@@ -7,9 +7,10 @@ import { musicBoxStore } from '../music-box-store.js';
 export class TwitterShareButton extends Component {
   constructor(props) {
     super({
-      renderTrigger: 'songState*',
       element: document.querySelector('#twitter-share')
     });
+
+    this.updateShareMetadata = this.updateShareMetadata.bind(this);
   }
 
   // This code was borrowed from 'Ridiculously Responsive Social Sharing Buttons' (RRSSB). It
@@ -26,15 +27,25 @@ export class TwitterShareButton extends Component {
 		}
   }
 
-  render() {
+  updateShareMetadata(event) {
     const songTitle = this.encodeString(musicBoxStore.state.songState.songTitle || 'Untitled Song');
     const songUrl = this.encodeString(document.location.href);
+    const newHref = `https://twitter.com/intent/tweet?text=${songTitle}%0A${songUrl}%0A%E2%80%93&related=musicboxfun`;
 
+    event.target.href = newHref;
+  }
+
+  render() {
     this.element.innerHTML = `
-      <a class="share-button" href="https://twitter.com/intent/tweet?text=${songTitle}%0A${songUrl}%0A%E2%80%93&related=musicboxfun">
+      <a class="share-button" href="https://twitter.com/intent/tweet?text=%0A&related=musicboxfun">
         <i></i>
         Share this song
       </a>
     `;
+
+    // We update the share metadata right as the user clicks the share button to ensure that it shares
+    // the latest data. (Previously, we updated the metadata on "songState*" changes, but often, this
+    // twitter-share-button component would update before the URL did, resulting in sharing stale data).
+    this.element.querySelector('.share-button').addEventListener('click', this.updateShareMetadata);
   }
 }
