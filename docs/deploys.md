@@ -2,7 +2,7 @@
 
 Deploys are optimized for simplicity, with the assumption that I'll always be deploying to a single server from my personal machine.
 
-We use docker-context to simplify this process, as described in [rhis blog post](https://www.docker.com/blog/how-to-deploy-on-remote-docker-hosts-with-docker-compose/).
+We use docker-context to simplify this process, as described in [this blog post](https://www.docker.com/blog/how-to-deploy-on-remote-docker-hosts-with-docker-compose/).
 
 ## First time setup for deploys
 

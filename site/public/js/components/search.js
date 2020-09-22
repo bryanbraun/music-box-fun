@@ -40,6 +40,12 @@ export class Search extends Component {
       });
     }
 
+    // setState above re-renders the component, which makes the input lose focus.
+    // Since we are in handleInput, we know the user is actively typing, so we
+    // want to manually restore focus to the search input. We do this here, as
+    // well as below, when the component re-renders after the API response arrives.
+    this.element.querySelector('#search__field').focus();
+
     try {
       searchResults = await request(`${apiHostname}/v1/songs?q=${queryString}`);
     } catch(error) {
@@ -48,6 +54,8 @@ export class Search extends Component {
     }
 
     this.setState({ searchResults });
+
+    this.element.querySelector('#search__field').focus();
   }
 
   handleClickOutsideOfSearchResults(event) {
@@ -81,7 +89,7 @@ export class Search extends Component {
   }
 
   // In order to make this controlled component work smoothly, I need to manually replace the
-  // cursor whenever I rerender the field. For now, I'll try this as a one-off, but if I need
+  // cursor whenever I re-render the field. For now, I'll try this as a one-off, but if I need
   // to do this multiple times, I could abstract it into a utility or part of the alt-react framework.
   setInnerHtmlWithControlledInput(templateString, controlledInputSelector) {
     const oldInputEl = this.element.querySelector(controlledInputSelector);
@@ -90,7 +98,6 @@ export class Search extends Component {
     this.element.innerHTML = templateString;
 
     const newInputEl = this.element.querySelector(controlledInputSelector);
-    newInputEl.focus();
     newInputEl.setSelectionRange(cursorPosition, cursorPosition);
   }
 
