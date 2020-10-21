@@ -1,5 +1,6 @@
 import { Component } from '../alt-react/component.js';
 import { musicBoxStore } from '../music-box-store.js';
+import classNames from '../vendor/classnames.js';
 
 export class AudioDisabledMessage extends Component {
   constructor() {

@@ -34,11 +34,11 @@ test: dev-site
 # the remote host, resulting in some container IDs not being being found. This fixed it.
 deploy-api:
 	docker-compose -c prod -f api/docker-compose.prod.yml build
-	echo "### Stopping Production Containers ###"
+	@echo "### Stopping Production Containers ###"
 	@docker-compose -c prod -f api/docker-compose.prod.yml stop
-	echo "### Running Migrations ###"
+	@echo "### Running Migrations ###"
 	@docker context use prod && docker-compose -f api/docker-compose.prod.yml run --rm --service-ports api rails db:migrate && docker context use default
-	echo "### Starting Production Containers ###"
+	@echo "### Starting Production Containers ###"
 	docker-compose -c prod -f api/docker-compose.prod.yml up -d
 
 deploy-bot:

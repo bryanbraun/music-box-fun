@@ -1,5 +1,6 @@
 import { musicBoxStore } from '../music-box-store.js';
 import { sampler } from './sampler.js';
+import { getContext } from '../vendor/tone.js';
 
 // We had to go with the revealing module pattern here. I tried a plain
 // object but our scroll event handler required us to use bind(). Unfortunately,
@@ -9,6 +10,7 @@ export const playheadObserver = (function () {
   let userHasScrolled = false;
   let playheadPosition;
   let observer;
+  let audioContext = getContext();
 
   function confirmInitialScroll() {
     userHasScrolled = true;
@@ -36,7 +38,7 @@ export const playheadObserver = (function () {
       }
 
       // Exit early if the audio context has been disabled by the browser.
-      if (Tone.context.state !== 'running') {
+      if (audioContext.state !== 'running') {
         if (!musicBoxStore.state.appState.isAudioDisabledMessageVisible) {
           musicBoxStore.setState('appState.isAudioDisabledMessageVisible', true);
         }

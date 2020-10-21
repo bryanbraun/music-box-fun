@@ -10,9 +10,25 @@
   "scripts": {
     "test": "cypress run",
     "test-prod": "cypress run --config baseUrl=https://musicboxfun.com",
-    "test-visual": "cypress open"
+    "test-visual": "cypress open",
+    "build": "npx snowpack@2.9.0"
   },
   "devDependencies": {
-    "cypress": "^4.11.0"
+    "cypress": "^5.2.0"
+  },
+  "dependencies": {
+    "classnames": "^2.2.6",
+    "json-url": "2.4.0",
+    "tone": "^14.7.58"
+  },
+  "snowpack": {
+    "install": [
+      "classnames",
+      "tone",
+      "json-url"
+    ],
+    "installOptions": {
+      "dest": "public/js/vendor"
+    }
   }
 }

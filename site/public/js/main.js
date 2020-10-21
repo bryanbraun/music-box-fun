@@ -75,7 +75,7 @@ urlManager.getStateFromUrlAsync().then(urlState => {
 });
 
 // These things don't need URL data, so they can happen asynchronously.
-setupSampler();
+setupSampler(); // This setup can happen late, since the sampler isn't used until the moment a note is played.
 setupKeyboardEvents();
 setupAudioContextFallbackForRestrictiveBrowsers();
 setupOnClickOutside();

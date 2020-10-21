@@ -1,0 +1,7 @@
+{
+  "imports": {
+    "classnames": "./classnames.js",
+    "json-url": "./json-url.js",
+    "tone": "./tone.js"
+  }
+}

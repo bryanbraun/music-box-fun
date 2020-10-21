@@ -1,5 +1,6 @@
 import { Component } from '../alt-react/component.js';
 import { getCurrentBoxType, getCurrentPitchArray } from '../common/box-types.js';
+import classNames from '../vendor/classnames.js';
 
 export class NoteHeader extends Component {
   constructor() {

@@ -3,6 +3,7 @@ import { minifyMap } from '../state.js';
 import { debounce } from '../utils/debounce.js';
 import { cloneDeepWithRenamedKeys } from '../utils/clone.js';
 import { adaptDataForVersions } from '../version-adapters.js';
+import JsonUrl from '../vendor/json-url.js';
 
 export const urlManager = {
   currentVersion: 1,

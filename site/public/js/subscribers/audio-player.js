@@ -1,7 +1,7 @@
 import { musicBoxStore } from '../music-box-store.js';
 import { sampler } from '../common/sampler.js';
 import { forEachNotes } from '../common/silent-notes.js';
-
+import { Transport, Part } from '../vendor/tone.js';
 
 const TICKS_PER_PIXEL = 4;
 
@@ -35,16 +35,17 @@ export const audioPlayer = {
   },
 
   defineSong() {
-    Tone.Transport.loop = false;
-    Tone.Transport.timeSignature = 4;
-    Tone.Transport.bpm.value = musicBoxStore.state.songState.tempo;
+    Transport.loop = false;
+    Transport.timeSignature = 4;
+    Transport.bpm.value = musicBoxStore.state.songState.tempo;
 
     const sequence = this.buildSequence(musicBoxStore.state.songState.songData);
-    const song = new Tone.Part(function(time, note) {
-      sampler.triggerAttackRelease(note, '8n', time);
-    }, sequence);
 
-    song.start(0);
+    // The "Part" class is built on a base-class that references Tone's default audioContext.
+    // Thus, the Transport is able to see the events in this "song" when it's time to play the timeline.
+    const song = new Part(function(time, note) {
+      sampler.triggerAttackRelease(note, '8n', time);
+    }, sequence).start(0);
   },
 
   toggleAudioPlayer() {
@@ -54,16 +55,16 @@ export const audioPlayer = {
     const songPlayheadPositionTicks = songPlayheadPositionPixels * TICKS_PER_PIXEL;
 
     if (this.isSongNeedsUpdated) {
-      Tone.Transport.cancel();
+      Transport.cancel();
       this.defineSong();
       this.isSongNeedsUpdated = false;
     }
 
     if (musicBoxStore.state.appState.isPlaying) {
-      Tone.Transport.ticks = songPlayheadPositionTicks;
-      Tone.Transport.start();
+      Transport.ticks = songPlayheadPositionTicks;
+      Transport.start();
     } else {
-      Tone.Transport.stop();
+      Transport.stop();
     }
   },
 

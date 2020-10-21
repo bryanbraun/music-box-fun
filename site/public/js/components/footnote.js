@@ -1,5 +1,6 @@
 import { Component } from '../alt-react/component.js';
 import { isSilentNotePresentInSong } from '../common/silent-notes.js';
+import classNames from '../vendor/classnames.js';
 
 export class Footnote extends Component {
   constructor() {
