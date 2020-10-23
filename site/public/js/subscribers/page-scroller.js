@@ -60,6 +60,9 @@ export const pageScroller = {
     });
 
     function scrollPage(timestamp) {
+      // Cease scrolling if the song has been paused.
+      if (!musicBoxStore.state.appState.isPlaying) return;
+
       const isFullyScrolled =
         document.documentElement.scrollHeight -
         document.documentElement.clientHeight -
@@ -71,11 +74,7 @@ export const pageScroller = {
 
       window.scrollTo(0, getTargetScrollTop(timestamp - startTime));
 
-      if (musicBoxStore.state.appState.isPlaying) {
-        requestAnimationFrame(scrollPage);
-      }
-
-      // if isPlaying is not longer true, then we exit the loop here.
+      requestAnimationFrame(scrollPage);
     }
   },
 

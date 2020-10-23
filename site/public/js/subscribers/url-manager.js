@@ -49,7 +49,7 @@ export const urlManager = {
     window.addEventListener('hashchange', async event => {
       const newHash = event.newURL.split('#')[1];
 
-      // Filter our hashchange's caused by a state update, not navigation.
+      // Filter our hashchanges caused by a state update, not navigation.
       if (newHash === this.lastStateUpdateHash) return;
 
       const hashState = await decodeHashString(newHash);

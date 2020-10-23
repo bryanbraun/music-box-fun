@@ -1,3 +1,5 @@
+import { musicBoxStore } from '../music-box-store.js';
+
 // A place for event handlers we're using in multiple components.
 
 // Delegated song-link clicker.
@@ -7,18 +9,21 @@
 // to discern between song-link clicks and back/forward navigation (which we don't want to jump).
 // The only case this doesn't catch is browser-bookmarked songs, which is a narrow-enough use-case
 // that I'm ok with it falling back to a non-jumping behavior.
-//
-// @todo: I think this works inconsistently because it jumps before the default link behavior takes
-//        effect (in other words, before the song changes). This seems to result in us not being at
-//        the top of the page after the new song loads. I'll have to look into that.
 export function jumpToTopIfASongWasClicked(event) {
-  const clickedEl = event.target;
 
-  if (clickedEl.tagName !== 'A') return;
+  // We use "closest" to handle clicks both directly on the link and on child elements of the link.
+  // For details, see: https://javascript.info/event-delegation
+  const clickedLink = event.target.closest('a');
 
-  const leadingHrefChar = clickedEl.outerHTML.split('href="')[1][0];
+  if (!clickedLink) return;
 
-  if (leadingHrefChar === '#') {
-    window.scrollTo(0, 0);
+  const isHashLink = clickedLink.outerHTML.split('href="')[1][0] === '#';
+
+  if (!isHashLink) return;
+
+  if (musicBoxStore.state.appState.isPlaying) {
+    musicBoxStore.setState('appState.isPlaying', false);
   }
+
+  window.scrollTo(0, 0);
 }
