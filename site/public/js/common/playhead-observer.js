@@ -39,6 +39,10 @@ export const playheadObserver = (function () {
 
       // Exit early if the audio context has been disabled by the browser.
       if (audioContext.state !== 'running') {
+        if (musicBoxStore.state.appState.isAudioDisabledMessageResolved) {
+          musicBoxStore.setState('appState.isAudioDisabledMessageResolved', false);
+        }
+
         if (!musicBoxStore.state.appState.isAudioDisabledMessageVisible) {
           musicBoxStore.setState('appState.isAudioDisabledMessageVisible', true);
         }
@@ -63,13 +67,7 @@ export const playheadObserver = (function () {
     // We get the playhead position by querying the playhead directly (instead of looking
     // up the CSS variable) because the variable uses calc which makes it difficult to
     // query. See https://stackoverflow.com/q/56229772/1154642.
-    //
-    // TODO: is this code cleaner if we use getBoundingClientRect().top?
-    playheadPosition = parseInt(
-      getComputedStyle(document.querySelector('.music-box__playhead'))
-        .getPropertyValue('top')
-        .trim()
-    );
+    playheadPosition = document.querySelector('.music-box__playhead').getBoundingClientRect().top;
 
     const options = {
       root: null,
