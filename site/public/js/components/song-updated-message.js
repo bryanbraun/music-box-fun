@@ -29,10 +29,7 @@ export class SongUpdatedMessage extends Component {
   // We don't call this render() on initial page load because it would
   // show the message, which is hidden by default. See main.js for details.
   render() {
-    this.element.innerHTML = `
-        <span class="song-updated__message">Song link updated</span>
-        <button class="song-updated__details question-icon"></button>
-    `;
+    this.element.innerHTML = `Song link updated`;
 
     this.showSongUpdatedMessage();
   }

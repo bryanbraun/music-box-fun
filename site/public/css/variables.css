@@ -64,8 +64,7 @@
   --z-music-box-playhead: 8;
   /* 10-100: Overlays */
   --z-controls: 10;
-  --z-messages: 12;
-  --z-twitter-share: 15;
+  --z-share-box: 15;
   --z-audio-context-message: 16;
 
   /* (left-sidebar context) */

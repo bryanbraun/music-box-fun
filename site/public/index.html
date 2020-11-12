@@ -192,21 +192,34 @@
           </div>
         </div>
       </div>
-      <div id="song-updated-message">
-        <!--
-          we leave this empty by default to prevent it from rendering at opacity 1 (the default)
-          before the CSS is loaded and then transitioning slowly to transparent on page load. For
-          more details, see https://stackoverflow.com/q/14389566/1154642
-        -->
-      </div>
       <div id="audio-disabled-message" class="audio-disabled-message audio-disabled-message--hidden">
         <strong>Not hearing anything?</strong><br>Your browser disabled the sound. Click anywhere to enable it.
       </div>
-      <div id="twitter-share" class="twitter-share">
-        <a class="share-button"
-          href="https://twitter.com/intent/tweet?text=Music%20Box%20Fun%0Ahttps%3A%2F%2Fmusicboxfun.com&related=musicboxfun">
-          Share this song
-        </a>
+      <div id="share-box" class="share-box">
+        <div id="song-updated-message">
+          <!--
+            we leave this empty by default to prevent it from rendering at opacity 1 (the default)
+            before the CSS is loaded and then transitioning slowly to transparent on page load. For
+            more details, see https://stackoverflow.com/q/14389566/1154642
+          -->
+        </div>
+        <div id="song-link">
+          <button class="share-button song-link-button">
+            <svg class="share-icon" width="14" height="18" xmlns="http://www.w3.org/2000/svg">
+              <g fill="none" fill-rule="evenodd">
+                <path d="M0 0h14v18H0z"/>
+                <path d="M10 0H0v14h1V1h9V0zm4 3H3v15h11V3zm-1 14H4V4h9v13z" fill="#000" fill-rule="nonzero"/>
+              </g>
+            </svg>
+            <span class="share-text">Copy song link</span>
+          </button>
+        </div>
+        <div id="twitter-share">
+          <a class="share-button twttr-share-button" href="https://twitter.com/intent/tweet?text=%0A&related=musicboxfun">
+            <i class="share-icon"></i>
+            <span class="share-text">Share this song</span>
+          </a>
+        </div>
       </div>
       <div id="floating-actions" class="floating-actions">
         <div id="back-to-top">

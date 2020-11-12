@@ -5,6 +5,8 @@ bot/.env
 
 # SITE
 site/node_modules
+cert.pem
+key.pem
 
 # Ignore test files
 site/cypress/videos
