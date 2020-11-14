@@ -19,9 +19,16 @@ export class Component {
     };
 
     if (params.renderTrigger) {
+      if (!this.element.id) {
+        // This ensures that we can't create duplicate subscribes for a given component.
+        throw new Error('Components with a renderTrigger must attach to a DOM element with an ID attribute.');
+      }
+
       const renderTriggerArray = [].concat(params.renderTrigger);
+      const renderCallback = () => this.render();
+      renderCallback.id = this.element.id;
       renderTriggerArray.forEach(renderTrigger => {
-        musicBoxStore.subscribe(renderTrigger, () => this.render());
+        musicBoxStore.subscribe(renderTrigger, renderCallback);
       });
     }
   }

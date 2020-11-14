@@ -10,7 +10,7 @@ export class NoteLine extends Component {
     super({
       props,
       renderTrigger: `songState.songData.${props.id}`,
-      element: document.querySelector(`[data-id="${props.id}"]`)
+      element: document.getElementById(props.id)
     });
 
     // We need to bind these in order to use "this" inside of them.
@@ -112,7 +112,7 @@ export class NoteLine extends Component {
   handleClick(event) {
     const noteLineEl = event.currentTarget;
     const shadowNoteEl = noteLineEl.querySelector('.shadow-note');
-    const pitch = noteLineEl.getAttribute('data-id');
+    const pitch = noteLineEl.id;
 
     const isShadowNoteOverlappingExistingNote = shadowNoteYPos => (
       musicBoxStore.state.songState.songData[pitch].includes(

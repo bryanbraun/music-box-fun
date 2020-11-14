@@ -16,7 +16,7 @@ export class NoteLines extends Component {
 
     this.element.innerHTML = `
       ${pitchArray.map(pitchId => (
-        `<div class="note-line" data-id="${pitchId}"></div>`
+        `<div class="note-line" id="${pitchId}"></div>`
       )).join('')}
     `;
 

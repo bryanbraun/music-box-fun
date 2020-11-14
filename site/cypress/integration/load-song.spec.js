@@ -20,7 +20,7 @@ describe('Page load', () => {
     cy.get('#note-lines .hole')
       .should('have.length', 199);
 
-    cy.get('[data-id="C5"] .hole:nth-of-type(2)')
+    cy.get('#C5 .hole:nth-of-type(2)')
       .should('have.attr', 'style', 'transform: translateY(297px)');
   });
 
@@ -39,7 +39,7 @@ describe('Page load', () => {
     cy.get('#note-lines .hole')
       .should('have.length', 140);
 
-    cy.get('[data-id="C5"] .hole').first()
+    cy.get('#C5 .hole').first()
       .should('have.attr', 'style', 'transform: translateY(55px)');
   });
 

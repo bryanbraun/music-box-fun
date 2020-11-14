@@ -33,7 +33,7 @@ describe('Song edits', () => {
           cy.url().should('not.eq', url3);
 
           cy.url().then(url4 => {
-            cy.get('[data-id="C5"]').click(5, newNoteYPos); // left: 5px, top: 55px
+            cy.get('#C5').click(5, newNoteYPos); // left: 5px, top: 55px
             cy.url().should('not.eq', url4);
           });
         });
@@ -51,7 +51,7 @@ describe('Song edits', () => {
     cy.get(tempoFieldSelector)
       .should('have.value', newTempo);
 
-    cy.get('[data-id="C5"] .hole').first()
+    cy.get('#C5 .hole').first()
       .should('have.attr', 'style', `transform: translateY(${newNoteYPos}px)`);
   });
 
@@ -64,15 +64,15 @@ describe('Song edits', () => {
       const note3Ypos = 104;
       const note4Ypos = 128;
 
-      cy.get('[data-id="C5"]').click(5, note1Ypos);
-      cy.get('[data-id="C5"]').click(5, note2Ypos);
-      cy.get('[data-id="C5"]').click(5, note3Ypos);
-      cy.get('[data-id="C5"]').click(5, note4Ypos);
+      cy.get('#C5').click(5, note1Ypos);
+      cy.get('#C5').click(5, note2Ypos);
+      cy.get('#C5').click(5, note3Ypos);
+      cy.get('#C5').click(5, note4Ypos);
 
-      cy.get('[data-id="C5"] .hole:nth-of-type(1)').should('not.have.class', 'silent');
-      cy.get('[data-id="C5"] .hole:nth-of-type(2)').should('have.class', 'silent');
-      cy.get('[data-id="C5"] .hole:nth-of-type(3)').should('not.have.class', 'silent');
-      cy.get('[data-id="C5"] .hole:nth-of-type(4)').should('have.class', 'silent');
+      cy.get('#C5 .hole:nth-of-type(1)').should('not.have.class', 'silent');
+      cy.get('#C5 .hole:nth-of-type(2)').should('have.class', 'silent');
+      cy.get('#C5 .hole:nth-of-type(3)').should('not.have.class', 'silent');
+      cy.get('#C5 .hole:nth-of-type(4)').should('have.class', 'silent');
     });
 
     it('should play when added', () => {
@@ -84,7 +84,7 @@ describe('Song edits', () => {
 
       const note1Ypos = 56;
 
-      cy.get('[data-id="C5"]').click(5, note1Ypos);
+      cy.get('#C5').click(5, note1Ypos);
       cy.window().its('MusicBoxFun.sampler.triggerAttackRelease').should('be.called');
     });
   });
@@ -102,13 +102,13 @@ describe('Song edits', () => {
       cy.get(musicBoxTypeSelector).select('20');
 
       cy.get('#description').should('contain', '20');
-      cy.get('[data-id="C#5"]').should('not.exist');
+      cy.get('#C#5').should('not.exist');
       cy.window().its('confirm').should('not.be.called');
 
       cy.get(musicBoxTypeSelector).select('15');
 
       cy.get('#description').should('contain', '15');
-      cy.get('[data-id="E6"]').should('not.exist');
+      cy.get('#E6').should('not.exist');
       cy.window().its('confirm').should('be.called');
     });
   });

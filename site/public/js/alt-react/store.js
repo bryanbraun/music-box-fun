@@ -82,19 +82,32 @@ export class Store {
     return true;
   }
 
-  publish(event, data = {}) {
-    if (!this.events.hasOwnProperty(event)) {
+  publish(eventString, data = {}) {
+    if (!this.events.hasOwnProperty(eventString)) {
       return [];
     }
 
-    return this.events[event].map(callback => callback(data));
+    this.events[eventString].forEach(callback => callback(data));
   }
 
-  subscribe(event, callback) {
-    if (!this.events.hasOwnProperty(event)) {
-      this.events[event] = [];
+  // Note: if the provided callback has a property of "id" set to a string, this subscribe
+  // function will treat that callback as unique for that eventString. This means that if
+  // another callback with the same ID is subscribed to the same eventString, we'll unsubscribe
+  // the original callback and replace it with the newly added one. This ensures that we can rebuild
+  // components without having events from the previous component instance lingering around.
+  subscribe(eventString, callback) {
+    if (!this.events.hasOwnProperty(eventString)) {
+      this.events[eventString] = [];
     }
 
-    return this.events[event].push(callback);
+    // If we find an existing callback with the same id as the new one, replace it.
+    for (let i = 0; i < this.events[eventString].length; i++) {
+      if (callback.id && callback.id === this.events[eventString][i]['id']) {
+        this.events[eventString][i] = callback;
+        return
+      }
+    }
+
+    this.events[eventString].push(callback);
   }
 }

@@ -39,7 +39,7 @@ describe('Extend song', () => {
     cy.get(extendButtonSelector).click();
     cy.get(extendButtonSelector).click();
 
-    cy.get('[data-id="C5"]').click(5, PAGE_THREE_TEST_LOCATION, { force: true });
+    cy.get('#C5').click(5, PAGE_THREE_TEST_LOCATION, { force: true });
 
     cy.get('[data-testid="divider"]:nth-child(1) button').should('not.be.visible');
     cy.get('[data-testid="divider"]:nth-child(2) button').should('not.be.visible');
@@ -50,7 +50,7 @@ describe('Extend song', () => {
     cy.get(extendButtonSelector).click();
     cy.get(extendButtonSelector).click();
 
-    cy.get('[data-id="C5"]').click(5, PAGE_TWO_TEST_LOCATION, { force: true });
+    cy.get('#C5').click(5, PAGE_TWO_TEST_LOCATION, { force: true });
 
     // This ensures that cypress waits until the hash updates before reloading the page.
     cy.hash().should('not.eq', '');
