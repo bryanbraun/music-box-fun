@@ -12,8 +12,8 @@ export class Example extends Component {
       // If so, assign the state change event to renderTrigger here. For example:
       //
       //   "state" (any change to state)
-      //   "songTitle" (any change to the songTitle)
-      //   (any other key from state.js, like "songData" or "C4")
+      //   "appState.isPlaying" (any change to the isPlaying value)
+      //   (any other key from state.js, like "songState.songData" or "songState.songData.C4")
       renderTrigger: 'state',
 
       // Which DOM element does this component correspond to? Query it here so

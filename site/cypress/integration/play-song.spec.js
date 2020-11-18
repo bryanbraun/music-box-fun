@@ -18,6 +18,8 @@ describe('Playing a song', () => {
       .and('have.attr', 'title', 'Pause (Space)');
     cy.window().its('MusicBoxFun.Transport.start')
       .should('be.called');
+    cy.get('body')
+      .should('have.class', 'no-scroll');
 
     cy.get(sidebarPlayButtonSelector).click(); // pause
     cy.get(sidebarPlayButtonSelector)
@@ -26,12 +28,16 @@ describe('Playing a song', () => {
       .and('have.attr', 'title', 'Play (Space)');
     cy.window().its('MusicBoxFun.Transport.stop')
       .should('be.called');
+    cy.get('body')
+      .should('not.have.class', 'no-scroll');
 
     cy.get('body').type(' '); // play via keyboard
     cy.get(sidebarPlayButtonSelector)
       .should('have.attr', 'aria-pressed', 'true')
       .and('have.attr', 'aria-label', 'Pause (Space)')
       .and('have.attr', 'title', 'Pause (Space)');
+    cy.get('body')
+      .should('have.class', 'no-scroll');
   });
 });
 

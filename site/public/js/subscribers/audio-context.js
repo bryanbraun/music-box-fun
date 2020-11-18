@@ -6,7 +6,6 @@ let audioContext = getContext();
 function setupAudioContextFallbackForRestrictiveBrowsers() {
   document.addEventListener('click', event => {
     if (audioContext.state !== 'running') {
-      // @TODO:
       // This calls the underlying WebAudio context (audioContext._context.resume())
       // instead of the Tone.js wrapper (audioContext.resume()), which wasn't working.
       // If my PR for the Safari issue gets merged, then the problem should be fixed

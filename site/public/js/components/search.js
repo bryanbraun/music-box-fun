@@ -93,7 +93,7 @@ export class Search extends Component {
   // to do this multiple times, I could abstract it into a utility or part of the alt-react framework.
   setInnerHtmlWithControlledInput(templateString, controlledInputSelector) {
     const oldInputEl = this.element.querySelector(controlledInputSelector);
-    const cursorPosition = oldInputEl.selectionStart;
+    const cursorPosition = oldInputEl ? oldInputEl.selectionStart : 0;
 
     this.element.innerHTML = templateString;
 
@@ -101,10 +101,17 @@ export class Search extends Component {
     newInputEl.setSelectionRange(cursorPosition, cursorPosition);
   }
 
+  // We apply some search results box styles dynamically, to constrain the box to the visible screen.
+  getSearchResultsStyles() {
+    const searchResultsEl = this.element.querySelector('#search__results');
+
+    if (!searchResultsEl) return '';
+
+    return `--search-results-distance-from-top-of-screen: ${searchResultsEl.getBoundingClientRect().top}px;`;
+  }
+
   render() {
     const resultsVisibilityClass = this.state.isResultsContainerVisible ? '' : 'is-hidden';
-    const searchResultsDistanceFromTopOfScreen = this.element.querySelector('#search__results').getBoundingClientRect().top;
-    const searchResultsCustomStyles = `--search-results-distance-from-top-of-screen: ${searchResultsDistanceFromTopOfScreen}px;`;
 
     this.setInnerHtmlWithControlledInput(`
       <form id="search__form" class="search__form">
@@ -128,7 +135,7 @@ export class Search extends Component {
           </svg>
         </button>
       </form>
-      <div id="search__results" class="search__results-container ${resultsVisibilityClass}" style="${searchResultsCustomStyles}">
+      <div id="search__results" class="search__results-container ${resultsVisibilityClass}" style="${this.getSearchResultsStyles()}">
         <button id="search-all" class="search__result search-all-button">
           Search all "${escapeHtml(this.state.queryString)}"
         </button>

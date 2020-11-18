@@ -5,6 +5,7 @@ import classNames from '../vendor/classnames.js';
 export class AudioDisabledMessage extends Component {
   constructor() {
     super({
+      // @todo: maybe refactor these two boolean states into one "audioDisabledMessageStatus"?
       renderTrigger: ['appState.isAudioDisabledMessageVisible', 'appState.isAudioDisabledMessageResolved'],
       element: document.querySelector('#audio-disabled-message')
     });

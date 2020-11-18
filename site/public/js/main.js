@@ -1,22 +1,20 @@
-import { Description } from './components/description.js';
-import { Search } from './components/search.js';
-import { BrowseTabs } from './components/browse-tabs.js';
+import { BodyClass } from './components/body-class.js';
+import { LeftSidebar } from './components/left-sidebar.js';
+import { RightSidebar } from './components/right-sidebar.js';
 import { SongTitle } from './components/song-title.js';
 import { NoteHeader } from './components/note-header.js';
 import { NoteLines } from './components/note-lines.js';
 import { PlayButton } from './components/play-button.js';
-import { NewSongButton } from './components/new-song-button.js';
-import { MusicBoxTypeSelect } from './components/music-box-type-select.js';
-import { Tempo } from './components/tempo.js';
-import { SnapToGridToggle } from './components/snap-to-grid-toggle.js';
 import { PageTitle } from './components/page-title.js';
+import { OffCanvasNavIcon } from './components/off-canvas-nav-icon.js';
+import { OffCanvasControlsIcon } from './components/off-canvas-controls-icon.js';
+import { OffCanvasOverlay } from './components/off-canvas-overlay.js';
 import { BackToTopButton } from './components/back-to-top-button.js';
 import { AudioDisabledMessage } from './components/audio-disabled-message.js';
 import { SongUpdatedMessage } from './components/song-updated-message.js';
 import { SongLinkButton } from './components/song-link-button.js';
 import { TwitterShareButton } from  './components/twitter-share-button.js';
 import { PaperFooter } from './components/paper-footer.js';
-import { Footnote } from './components/footnote.js';
 
 import { musicBoxStore } from './music-box-store.js';
 import { setupSampler } from './common/sampler.js';
@@ -45,25 +43,22 @@ urlManager.getStateFromUrlAsync().then(urlState => {
   holeWidthManager.subscribeToBoxTypeChanges(); // because this event needs to fire before note-line-rerenders when state changes.
 
   // Initial page render
-  new Description().render();
-  new Search().render();
-  new BrowseTabs().render();
+  new BodyClass().render();
+  new LeftSidebar().render();
+  new RightSidebar().render();
   new SongTitle().render();
   new NoteHeader().render();
   new NoteLines().render();
-  new PlayButton({ id: 'sidebar-play-button' }).render();
   new PlayButton({ id: 'floating-play-button' }).render();
-  new NewSongButton().render();
-  new MusicBoxTypeSelect().render();
-  new Tempo().render();
-  new SnapToGridToggle().render();
+  new OffCanvasNavIcon().render();
+  new OffCanvasControlsIcon().render();
+  new OffCanvasOverlay().render();
   new BackToTopButton().render();
   new AudioDisabledMessage().render();
   new PageTitle().render();
   new SongLinkButton().render();
   new TwitterShareButton().render();
   new PaperFooter().render(true);
-  new Footnote().render();
 
   new SongUpdatedMessage(); // This element is hidden by default, so it doesn't need to render on page load.
 

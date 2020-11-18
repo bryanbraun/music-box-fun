@@ -14,6 +14,10 @@ body {
   flex-wrap: nowrap;
 }
 
+body.no-scroll {
+  overflow: hidden;
+}
+
 a {
   color: var(--link-color);
 }
@@ -50,7 +54,14 @@ button {
 
 @media (max-width: 720px) { /* --one-to-two-columns */
   .left-sidebar {
-    display: none;
+    /* translated off-canvas */
+    transform: translateX(calc(-1 * var(--left-sidebar-width)));
+    transition: transform 300ms cubic-bezier(.07,.23,.34,1);
+  }
+  .left-sidebar.on-canvas {
+    /* translated on-canvas */
+    transform: translateX(0);
+    z-index: var(--off-canvas-sidebar);
   }
 }
 
@@ -617,8 +628,7 @@ a.twitter-timeline {
   right: 0;
   bottom: 0;
   width: var(--right-sidebar-width);
-  margin: 1rem 0;
-  padding: 0 1rem;
+  padding: 1rem;
   border-left: var(--controls-border);
   background: var(--surface-color);
   font-size: 14px;
@@ -629,7 +639,14 @@ a.twitter-timeline {
 
 @media (max-width: 900px) { /* --two-to-three-columns */
   .right-sidebar {
-    display: none;
+    /* translated off-canvas */
+    transform: translateX(var(--right-sidebar-width));
+    transition: transform 300ms cubic-bezier(.07,.23,.34,1);
+  }
+  .right-sidebar.on-canvas {
+    /* translated on-canvas */
+    transform: translateX(0);
+    z-index: var(--off-canvas-sidebar);
   }
 }
 
@@ -660,7 +677,7 @@ a.twitter-timeline {
 }
 
 .play-button__outer-circle {
-  fill: var(--mb-gray-60);
+  fill: var(--icon-dark);
 }
 .play-button__inner-shape {
   fill: var(--controls-button-color);
@@ -714,6 +731,65 @@ a.twitter-timeline {
   display: none;
 }
 
+.nav-icon {
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+.nav-icon > button {
+  border: none;
+  background: transparent;
+  margin: 0;
+  padding: 1rem;
+  cursor: pointer;
+}
+.nav-icon svg {
+  display: block;
+}
+
+.controls-icon {
+  position: fixed;
+  top: 0;
+  right: 0;
+}
+.controls-icon > button {
+  border: none;
+  background: transparent;
+  margin: 0;
+  padding: 1rem;
+  cursor: pointer;
+}
+.controls-icon svg {
+  display: block;
+}
+
+@media (min-width: 720px) { /* --one-to-two-columns */
+  .nav-icon {
+    display: none;
+  }
+}
+
+@media (min-width: 900px) { /* --two-to-three-columns */
+  .controls-icon {
+    display: none;
+  }
+}
+
+.off-canvas-overlay {
+  opacity: 0;
+  background-color: var(--mb-black);
+  transition: opacity 300ms linear;
+}
+.off-canvas-overlay.is-active {
+  position: fixed;
+  z-index: var(--off-canvas-sidebar-overlay);
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  opacity: 0.6;
+}
+
 .song-updated {
   padding: 4px 0 2px 0;
   font-size: 13px;
@@ -727,6 +803,13 @@ a.twitter-timeline {
   /* fade-out settings */
   transition-property: opacity;
   transition-duration: 3s;
+}
+
+@media (min-width: 720px) { /* --one-to-two-columns */
+  .song-updated {
+    position: fixed;
+    top: 4px;
+  }
 }
 
 .share-box {
@@ -749,7 +832,7 @@ a.twitter-timeline {
   height: 28px;
   width: 100%;
   font-family: 'Helvetica Neue',Arial,sans-serif;
-  font-size: 13px;
+  font-size: 12px;
   text-decoration: none;
   padding: 4px 10px;
   color: #fff;
@@ -772,7 +855,12 @@ a.twitter-timeline {
 .song-link-button {
   background: white;
   color: var(--text-color);
-  box-shadow: 0 1px 1px rgba(0,0,0,.12), 0 1px 3px -1px rgba(0,0,0,.24);
+
+  /* same border treatment as the controls buttons, except
+     with a box shadow to add a tiny bit more depth. */
+  border: 1px solid var(--mb-gray-20);
+  border-bottom: 1px solid #bbb;
+  box-shadow: 0 1px 3px -3px rgba(0,0,0,1);
 }
 
 /*

@@ -26,7 +26,7 @@
   --text-color: var(--mb-black);
   --discrete-text: var(--mb-gray-40);
   --error-text-red: red;
-
+  --icon-dark: var(--mb-gray-60);
 
   /* FONTS */
   --main-font: 'Nunito', 'Helvetica Neue', sans-serif;
@@ -66,6 +66,8 @@
   --z-controls: 10;
   --z-share-box: 15;
   --z-audio-context-message: 16;
+  --off-canvas-sidebar-overlay: 75;
+  --off-canvas-sidebar: 80;
 
   /* (left-sidebar context) */
   --z-search-results: 1;

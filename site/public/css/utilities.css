@@ -13,3 +13,7 @@
 .hidden {
   display: none;
 }
+
+.icon-dark-fill {
+  fill: var(--icon-dark);
+}

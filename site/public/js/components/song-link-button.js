@@ -46,10 +46,10 @@ export class SongLinkButton extends Component {
   render() {
     this.element.innerHTML = `
       <button class="share-button song-link-button">
-        <svg class="share-icon" width="14" height="18" xmlns="http://www.w3.org/2000/svg">
+        <svg width="13" height="17" xmlns="http://www.w3.org/2000/svg">
           <g fill="none" fill-rule="evenodd">
             <path d="M0 0h14v18H0z"/>
-            <path d="M10 0H0v14h1V1h9V0zm4 3H3v15h11V3zm-1 14H4V4h9v13z" fill="#000" fill-rule="nonzero"/>
+            <path d="M9 0H0v13h1V1h8V0zm4 3H3v14h10V3zm-1 13H4V4h8v12z" fill="#000" fill-rule="nonzero"/>
           </g>
         </svg>
         <span class="share-text">${this.state.buttonText}</span>
