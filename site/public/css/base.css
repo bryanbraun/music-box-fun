@@ -1,0 +1,103 @@
+/* Includes element styles and foundational styles that are common between the main app and the guides. */
+
+html {
+  box-sizing: border-box;
+}
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+body {
+  background: var(--surface-color);
+  color: var(--text-color);
+  font-family: var(--main-font);
+  margin: 0;
+  display: flex;
+  flex-wrap: nowrap;
+}
+
+body.no-scroll {
+  overflow: hidden;
+}
+
+a {
+  color: var(--link-color);
+}
+
+button {
+  font-family: var(--main-font);
+}
+
+/*
+  We like focus rings, but only when a person is tabbing (not clicking).
+  Thus, we scope all focus ring suppression to a "no-focus" class, which
+  is added to the body tag when a person is clicking, and removed when a
+  person is tabbing. Same idea as https://github.com/lindsayevans/outline.js
+*/
+.no-focus :focus {
+  outline: 0;
+}
+.no-focus ::-moz-focus-inner {
+  border: 0;
+}
+
+.left-sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: var(--left-sidebar-width);
+  padding: 0 1.5rem;
+  background: var(--left-sidebar-color);
+  box-shadow: 0px 0px 11px -8px #444;
+  display: flex;
+  flex-direction: column;
+}
+
+@media (max-width: 720px) { /* --one-to-two-columns */
+  .left-sidebar {
+    /* translated off-canvas */
+    transform: translateX(calc(-1 * var(--left-sidebar-width)));
+    transition: transform 300ms cubic-bezier(.07,.23,.34,1);
+  }
+  .left-sidebar.on-canvas {
+    /* translated on-canvas */
+    transform: translateX(0);
+    z-index: var(--off-canvas-sidebar);
+  }
+}
+
+.logo-link {
+  text-decoration: none;
+  display: flex;
+}
+.logo {
+  margin-right: 0.75rem;
+}
+
+.title-box {
+  flex: 0 0 auto;
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+.title {
+  margin: 0 0 0.625rem;
+  font-size: 1.75rem;
+  line-height: 1.1;
+}
+.subtitle {
+  margin: 0;
+  font-size: 0.8rem;
+  line-height: 1;
+  color: var(--mb-gray-60);
+}
+.description {
+  flex: 0 0 auto;
+  margin-bottom: 2rem;
+  font-size: 0.875rem;
+  line-height: 1.33;
+}
+.description p {
+  margin: 0;
+}
+
