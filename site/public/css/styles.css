@@ -503,21 +503,12 @@ a.twitter-timeline {
 .audio-disabled-message--hidden {
   display: none;
 }
-.audio-disabled-message--audio-enabled {
+.audio-disabled-message--resolved {
   opacity: 0;
   transition-property: opacity;
-  transition-delay: 1.2s;
-  transition-duration: 1.5s;
+  transition-delay: 1.25s;
+  transition-duration: 1.5s; /* combined time: 2.75s */
   transition-timing-function: linear;
-
-  /* Currently it's possible for this transparent
-     message box to overlap the music paper and
-     prevent clicking. Removing pointer events is
-     a quick solution. Long-term, it might be nice
-     to reapply audio-disabled-message--hidden on
-     a transition event.
-  */
-  pointer-events: none;
 }
 
 .right-sidebar {

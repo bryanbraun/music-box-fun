@@ -13,12 +13,12 @@ function setupAudioContextFallbackForRestrictiveBrowsers() {
       // So next time I upgrade Tone.js, I should see if my fix is merged and in the,
       // new version, and then remove this workaround. See my issue and PR here:
       // https://github.com/Tonejs/Tone.js/issues/767
-      audioContext._context.resume();
+      audioContext._context.resume().then(() => {
+        if (musicBoxStore.state.appState.audioDisabledMessageStatus === 'alerting') {
+          musicBoxStore.setState('appState.audioDisabledMessageStatus', 'resolved');
+        }
+      });
 
-      if (musicBoxStore.state.appState.isAudioDisabledMessageVisible &&
-        !musicBoxStore.state.appState.isAudioDisabledMessageResolved) {
-        musicBoxStore.setState('appState.isAudioDisabledMessageResolved', true);
-      }
     }
   }, true);
 }

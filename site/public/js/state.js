@@ -13,8 +13,7 @@ export const state = {
   appState: {
     isSnappingToGrid: true,
     isPlaying: false,
-    isAudioDisabledMessageVisible: false,
-    isAudioDisabledMessageResolved: false,
+    audioDisabledMessageStatus: 'hidden',
     offCanvasSidebarFocused: 'none',
     activeTab: 'shared-songs',
     songLibraryQuery: ''

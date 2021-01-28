@@ -5,22 +5,39 @@ import classNames from '../vendor/classnames.js';
 export class AudioDisabledMessage extends Component {
   constructor() {
     super({
-      // @todo: maybe refactor these two boolean states into one "audioDisabledMessageStatus"?
-      renderTrigger: ['appState.isAudioDisabledMessageVisible', 'appState.isAudioDisabledMessageResolved'],
+      renderTrigger: 'appState.audioDisabledMessageStatus',
       element: document.querySelector('#audio-disabled-message')
     });
+
+    this.disabledMessageText = '<strong>Not hearing anything?</strong><br>Your browser disabled the sound. Click anywhere to enable it.';
+    this.enabledMessageText = '<strong>Perfecto!</strong><br>Your sound should be working now.';
   }
 
   render() {
-    this.element.className = classNames('audio-disabled-message', {
-      'audio-disabled-message--hidden': !musicBoxStore.state.appState.isAudioDisabledMessageVisible,
-      'audio-disabled-message--audio-enabled': musicBoxStore.state.appState.isAudioDisabledMessageResolved,
-    });
+    let messageBody;
+    let statusClass;
 
-    this.element.innerHTML = !musicBoxStore.state.appState.isAudioDisabledMessageResolved ?
-      `<strong>Not hearing anything?</strong><br>Your browser disabled the sound. Click anywhere to enable it.`
-      :
-      `<strong>Perfecto!</strong><br>Your sound should be working now.`
-      ;
+    // This switch statement documents the three possible states: hidden, alerting, and resolved.
+    switch(musicBoxStore.state.appState.audioDisabledMessageStatus) {
+      case 'hidden':
+        messageBody = this.disabledMessageText;
+        statusClass = 'audio-disabled-message--hidden';
+        break;
+      case 'alerting':
+        messageBody = this.disabledMessageText;
+        statusClass = '';
+        break;
+      case 'resolved':
+        messageBody = this.enabledMessageText;
+        statusClass = 'audio-disabled-message--resolved';
+
+        // automatically change state to 'hidden' after 3 seconds.
+        setTimeout(() => {
+          musicBoxStore.setState('appState.audioDisabledMessageStatus', 'hidden');
+        }, 3000)
+    }
+
+    this.element.className = classNames('audio-disabled-message', statusClass);
+    this.element.innerHTML = messageBody;
   }
 }

@@ -39,12 +39,8 @@ export const playheadObserver = (function () {
 
       // Exit early if the audio context has been disabled by the browser.
       if (audioContext.state !== 'running') {
-        if (musicBoxStore.state.appState.isAudioDisabledMessageResolved) {
-          musicBoxStore.setState('appState.isAudioDisabledMessageResolved', false);
-        }
-
-        if (!musicBoxStore.state.appState.isAudioDisabledMessageVisible) {
-          musicBoxStore.setState('appState.isAudioDisabledMessageVisible', true);
+        if (musicBoxStore.state.appState.audioDisabledMessageStatus === 'hidden') {
+          musicBoxStore.setState('appState.audioDisabledMessageStatus', 'alerting');
         }
         return;
       }
