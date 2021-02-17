@@ -32,53 +32,72 @@ We've gone through several iterations of this code:
 
   This uses the same basic scrolling logic in 3, but we disable the observers from playing notes while
   the play button is enabled. Instead we feed the audio data into ToneJS and it plays the notes as part
-  of the WebAudio scheduler while we run the requestAnimationFrame scrolling at the same position & speed.
+  of the WebAudio scheduler while we run the requestAnimationFrame scrolling at the same position & speed. This
+  uses the more accurate WebAudio clock, which addressed a bunch of tempo issues in edge-case browsers. See
+  also: https://github.com/bryanbraun/music-box-fun/issues/7
 
+5. Scroll with `requestAnimationFrame` but trigger scrolling from events in ToneJS
+
+  We were occasionally running into issues where the scrolling would get slightly out of sync with the audio.
+  Usually, this would happen because appState.isPlaying would trigger audio and scrolling at the same time
+  but audio would take a moment to start playing because the audioContext needed a moment to get enabled.
+  Triggering scrolling with ToneJS events fixes this issue (note, I needed to move away from the single JS
+  object in this file because ToneJS was calling my callback with its "this," making it difficult to lookup
+  the values of internal properties).
 */
-export const pageScroller = {
-  BpmToPixelsPerMillisecond(bpm) {
-    const PIXELS_PER_BEAT = QUARTER_BAR_GAP; // 48
-    const MS_PER_MINUTE = 60000;
 
-    return (bpm * PIXELS_PER_BEAT) / MS_PER_MINUTE;
-  },
+let isScrolling = false;
 
-  startScrolling() {
-    if (!musicBoxStore.state.appState.isPlaying) return;
+function bpmToPixelsPerMillisecond(bpm) {
+  const PIXELS_PER_BEAT = QUARTER_BAR_GAP; // 48
+  const MS_PER_MINUTE = 60000;
 
-    const END_OF_PAGE_BUFFER = 3;
-    const beatsPerMinute = musicBoxStore.state.songState.tempo;
-    const scrollRate = this.BpmToPixelsPerMillisecond(beatsPerMinute);
-    const initialScrollTop = document.documentElement.scrollTop;
-    const getTargetScrollTop = (elapsedTime) => scrollRate * elapsedTime + initialScrollTop;
+  return (bpm * PIXELS_PER_BEAT) / MS_PER_MINUTE;
+}
 
-    let startTime;
-
-    requestAnimationFrame(function(timestamp) {
-      startTime = timestamp;
-      scrollPage(timestamp);
-    });
-
-    function scrollPage(timestamp) {
-      // Cease scrolling if the song has been paused.
-      if (!musicBoxStore.state.appState.isPlaying) return;
-
-      const isFullyScrolled =
-        document.documentElement.scrollHeight -
-        document.documentElement.clientHeight -
-        document.documentElement.scrollTop <= END_OF_PAGE_BUFFER;
-
-      if (isFullyScrolled) {
-        musicBoxStore.setState('appState.isPlaying', false);
-      }
-
-      window.scrollTo(0, getTargetScrollTop(timestamp - startTime));
-
-      requestAnimationFrame(scrollPage);
-    }
-  },
-
-  subscribeToPlayState() {
-    musicBoxStore.subscribe('appState.isPlaying', this.startScrolling.bind(this));
+function startScrolling() {
+  if (isScrolling) {
+    return; // Do not start scrolling if it's already scrolling.
   }
+
+  const END_OF_PAGE_BUFFER = 3;
+  const beatsPerMinute = musicBoxStore.state.songState.tempo;
+  const scrollRate = bpmToPixelsPerMillisecond(beatsPerMinute);
+  const initialScrollTop = document.documentElement.scrollTop;
+  const getTargetScrollTop = (elapsedTime) => scrollRate * elapsedTime + initialScrollTop;
+  let startTime;
+
+  isScrolling = true;
+
+  requestAnimationFrame(function(timestamp) {
+    startTime = timestamp;
+    scrollPage(timestamp);
+  });
+
+  function scrollPage(timestamp) {
+    // Cease scrolling if the song has been paused.
+    if (!isScrolling) return;
+
+    const isFullyScrolled =
+      document.documentElement.scrollHeight -
+      document.documentElement.clientHeight -
+      document.documentElement.scrollTop <= END_OF_PAGE_BUFFER;
+
+    if (isFullyScrolled) {
+      musicBoxStore.setState('appState.isPlaying', false);
+    }
+
+    window.scrollTo(0, getTargetScrollTop(timestamp - startTime));
+
+    requestAnimationFrame(scrollPage);
+  }
+}
+
+function stopScrolling() {
+  isScrolling = false;
+}
+
+export {
+  startScrolling,
+  stopScrolling
 }

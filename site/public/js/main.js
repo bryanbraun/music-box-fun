@@ -24,7 +24,6 @@ import { setupAudioContextFallbackForRestrictiveBrowsers } from './subscribers/a
 import { setupKeyboardEvents } from './subscribers/keyboard-manager.js';
 import { urlManager } from './subscribers/url-manager.js';
 import { holeWidthManager } from './subscribers/hole-width-manager.js';
-import { pageScroller } from './subscribers/page-scroller.js';
 import { audioPlayer } from './subscribers/audio-player.js';
 import { songPauser } from './subscribers/song-pauser.js';
 
@@ -63,7 +62,6 @@ urlManager.getStateFromUrlAsync().then(urlState => {
   new SongUpdatedMessage(); // This element is hidden by default, so it doesn't need to render on page load.
 
   // Things we can set up after rendering components.
-  pageScroller.subscribeToPlayState();
   audioPlayer.subscribeToPlayState();
   audioPlayer.subscribeToSongChanges();
   songPauser.subscribeToSongChanges();
@@ -77,3 +75,4 @@ setupKeyboardEvents();
 setupAudioContextFallbackForRestrictiveBrowsers();
 setupOnClickOutside();
 setupTestObjects();
+audioPlayer.setup();

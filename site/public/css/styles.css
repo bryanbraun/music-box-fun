@@ -729,7 +729,6 @@ a.twitter-timeline {
   border: none;
   border-radius: 4px;
   cursor: pointer;
-  zoom: 1;
 }
 .share-icon {
   flex: 0 0 auto;

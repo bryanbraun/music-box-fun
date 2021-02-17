@@ -11,6 +11,7 @@ export class AudioDisabledMessage extends Component {
 
     this.disabledMessageText = '<strong>Not hearing anything?</strong><br>Your browser disabled the sound. Click anywhere to enable it.';
     this.enabledMessageText = '<strong>Perfecto!</strong><br>Your sound should be working now.';
+    this.lastTimeoutId = 0;
   }
 
   render() {
@@ -31,8 +32,12 @@ export class AudioDisabledMessage extends Component {
         messageBody = this.enabledMessageText;
         statusClass = 'audio-disabled-message--resolved';
 
-        // automatically change state to 'hidden' after 3 seconds.
-        setTimeout(() => {
+        // If an existing timeout hasn't resolved, cancel it before scheduling a new one.
+        // It's unlikely, but good to be safe!
+        clearTimeout(this.lastTimeoutId);
+
+        // Automatically change state to 'hidden' after 3 seconds.
+        this.lastTimeoutId = setTimeout(() => {
           musicBoxStore.setState('appState.audioDisabledMessageStatus', 'hidden');
         }, 3000)
     }

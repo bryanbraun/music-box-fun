@@ -21,7 +21,7 @@ function setupSampler() {
     release: 4
   });
 
-  sampler.toMaster();
+  sampler.toDestination();
 }
 
 export {

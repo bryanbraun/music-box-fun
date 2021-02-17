@@ -1,9 +1,12 @@
 import { musicBoxStore } from '../music-box-store.js';
 import { sampler } from '../common/sampler.js';
+import { startScrolling, stopScrolling } from '../subscribers/page-scroller.js';
 import { forEachNotes } from '../common/silent-notes.js';
-import { Transport, Part } from '../vendor/tone.js';
+import { Transport, Part, getContext } from '../vendor/tone.js';
+import { audioContextResuming } from './audio-context.js';
 
 const TICKS_PER_PIXEL = 4;
+const audioContext = getContext();
 
 export const audioPlayer = {
   isSongNeedsUpdated: true,
@@ -48,6 +51,21 @@ export const audioPlayer = {
     }, sequence).start(0);
   },
 
+  // Check that audio is ready and then toggle the audioPlayer (or otherwise notify the user)
+  checkAndToggleAudioPlayer() {
+    if (audioContext.state === 'running') {
+      this.toggleAudioPlayer();
+    } else if (audioContextResuming) {
+      audioContextResuming.then(this.toggleAudioPlayer.bind(this));
+    } else {
+      // if the context isn't running or in the process of getting running, then we'll need a click to
+      // get it started (it's likely that someone tried to play the song via space-bar when the browser
+      // is expecting a click in order to enable the audioContext). This message will notify the user.
+      musicBoxStore.setState('appState.isPlaying', false);
+      musicBoxStore.setState('appState.audioDisabledMessageStatus', 'alerting');
+    }
+  },
+
   toggleAudioPlayer() {
     const playheadToViewportTop = document.querySelector('.music-box__playhead').getBoundingClientRect().top;
     const songTopToViewportTop = document.querySelector('#note-lines').getBoundingClientRect().top;
@@ -62,10 +80,18 @@ export const audioPlayer = {
 
     if (musicBoxStore.state.appState.isPlaying) {
       Transport.ticks = songPlayheadPositionTicks;
-      Transport.start();
+
+      // We schedule the start 100ms in the future, as recommended here:
+      // https://github.com/Tonejs/Tone.js/wiki/Performance#scheduling-in-advance
+      Transport.start('+0.1');
     } else {
       Transport.stop();
     }
+  },
+
+  setup() {
+    Transport.on('start', startScrolling);
+    Transport.on('stop', stopScrolling);
   },
 
   flagSongAsNeedsUpdated() {
@@ -77,6 +103,6 @@ export const audioPlayer = {
   },
 
   subscribeToPlayState() {
-    musicBoxStore.subscribe('appState.isPlaying', this.toggleAudioPlayer.bind(this));
+    musicBoxStore.subscribe('appState.isPlaying', this.checkAndToggleAudioPlayer.bind(this));
   }
 }
