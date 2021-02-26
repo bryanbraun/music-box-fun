@@ -65,6 +65,7 @@
   /* 10-100: Overlays */
   --z-controls: 10;
   --z-share-box: 15;
+  --z-floating-actions: 15;
   --z-audio-context-message: 16;
   --off-canvas-sidebar-overlay: 75;
   --off-canvas-sidebar: 80;

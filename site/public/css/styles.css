@@ -770,6 +770,7 @@ a.twitter-timeline {
   bottom: 1rem;
   right: calc(var(--right-sidebar-width) + 1rem);
   width: var(--floating-action-button-diameter);
+  z-index: var(--z-floating-actions);
 }
 
 .floating-actions > div + div {
