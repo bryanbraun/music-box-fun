@@ -247,22 +247,6 @@ a.twitter-timeline {
   border-top: 1px solid var(--mb-gray-20);
 }
 
-.mini-footer {
-  font-size: 12px;
-  padding: 0.75rem 0;
-  text-align: center;
-  border-top: var(--tabs-border) solid var(--tabs-ui-color);
-}
-.mini-footer a {
-  color: var(--mb-gray-60);
-}
-.mini-footer a + a {
-  padding-left: 0.5rem;
-  background-image: url('/images/bullet.svg');
-  background-repeat: no-repeat;
-  background-position: 0 7px;
-}
-
 .workspace {
   margin-left: var(--left-sidebar-width);
   margin-right: var(--right-sidebar-width);
@@ -630,22 +614,6 @@ a.twitter-timeline {
   display: none;
 }
 
-.nav-icon {
-  position: fixed;
-  top: 0;
-  left: 0;
-}
-.nav-icon > button {
-  border: none;
-  background: transparent;
-  margin: 0;
-  padding: 1rem;
-  cursor: pointer;
-}
-.nav-icon svg {
-  display: block;
-}
-
 .controls-icon {
   position: fixed;
   top: 0;
@@ -662,31 +630,10 @@ a.twitter-timeline {
   display: block;
 }
 
-@media (min-width: 720px) { /* --one-to-two-columns */
-  .nav-icon {
-    display: none;
-  }
-}
-
 @media (min-width: 900px) { /* --two-to-three-columns */
   .controls-icon {
     display: none;
   }
-}
-
-.off-canvas-overlay {
-  opacity: 0;
-  background-color: var(--mb-black);
-  transition: opacity 300ms linear;
-}
-.off-canvas-overlay.is-active {
-  position: fixed;
-  z-index: var(--off-canvas-sidebar-overlay);
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 0;
-  opacity: 0.6;
 }
 
 .song-updated {

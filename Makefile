@@ -6,7 +6,6 @@ dev-api:
 	@docker-compose -f api/docker-compose.yml up -d
 
 dev-site:
-	@lsof -nti:443 | xargs kill -9;
 	@nohup caddy start --config site/Caddyfile &
 	@echo "Server started at: https://localhost"
 

@@ -1,0 +1,74 @@
+body {
+  --surface-color: var(--mb-gray-3);
+
+  line-height: 1.5;
+}
+
+figure {
+  margin-left: 0;
+  margin-right: 0;
+}
+figure img {
+  padding: 1rem 0;
+}
+figcaption {
+  text-align: center;
+  font-size: 0.875rem;
+  padding-bottom: 1rem;
+}
+
+.guides-box {
+  flex: 1 1 auto;
+}
+.guides-box h2 {
+  margin: 0.5rem 0 1.5rem;
+  line-height: 1;
+}
+.guides-nav {
+  margin-bottom: 2rem;
+}
+.guides-nav ul {
+  padding: 0;
+  list-style-type: none;
+}
+.guides-nav li {
+  margin: 0 0 0.5rem;
+}
+.guides-nav a {
+  line-height: 1.1;
+  font-size: 0.875rem;
+}
+.guides-nav .is-active {
+  font-weight: bold;
+}
+
+.guide {
+  margin-left: var(--left-sidebar-width);
+  width: 100%;
+}
+
+@media (max-width: 720px) { /* --one-to-two-columns */
+  .guide {
+    margin-left: 0;
+  }
+}
+
+.content {
+  padding: 0 2rem;
+  max-width: 45rem; /* 720px */
+  margin: 2.5rem auto;
+  font-size: 19px;
+}
+
+.guide-title {
+  margin: 0 0 2rem;
+  line-height: 1.33;
+  font-size: 2.375rem;
+  text-align: center;
+}
+
+/* One tiny override! If I need to override more than this, I
+   should consider just maintaining two separate sets of styles */
+.nav-icon {
+  position: absolute;
+}

@@ -17,3 +17,17 @@
 .icon-dark-fill {
   fill: var(--icon-dark);
 }
+
+.right {
+  float: right;
+}
+.left {
+  float: left;
+}
+.clear {
+  clear: both;
+}
+
+.center {
+  text-align: center;
+}
