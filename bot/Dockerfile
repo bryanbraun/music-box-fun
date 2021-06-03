@@ -17,6 +17,9 @@ RUN npm ci
 # Bundle app source code inside the Docker image
 COPY . .
 
+# @todo: I think this isn't necessary, because EXPOSE is
+# for communication between containers and we don't need
+# that here.
 EXPOSE 8080
 
 CMD [ "npm", "start" ]

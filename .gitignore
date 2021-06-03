@@ -4,6 +4,7 @@ bot/.env
 
 
 # SITE
+nohup.out
 site/node_modules
 cert.pem
 key.pem

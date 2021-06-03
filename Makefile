@@ -6,10 +6,9 @@ dev-api:
 	@docker-compose -f api/docker-compose.yml up -d
 
 dev-site:
-	@lsof -nti:1111 | xargs kill -9;
-	@pushd site/public &> /dev/null; python -m SimpleHTTPServer 1111 &> /dev/null &
-	@echo "Server at: http://0.0.0.0:1111"
-	@pushd site/public &> /dev/null;
+	@lsof -nti:443 | xargs kill -9;
+	@nohup caddy file-server --root site/public --domain localhost &
+	@echo "Server started at: https://localhost"
 
 dev-bot:
 	docker build bot/ -t music-box-bot
@@ -20,8 +19,8 @@ stop-api:
 	@docker-compose -f api/docker-compose.yml stop
 
 stop-site:
-	@lsof -nti:1111 | xargs kill -9
-	@echo "Server stopped (at http://0.0.0.0:1111)"
+	@lsof -nti:443 | xargs kill -9;
+	@echo "Server stopped (at https://localhost)"
 
 stop-bot:
 	docker stop bot || true && docker rm bot || true

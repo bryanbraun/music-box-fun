@@ -126,7 +126,7 @@ export class Search extends Component {
           required
           value="${escapeHtml(this.state.queryString)}"
         >
-        <button type="submit" class="search__button">
+        <button type="submit" class="search__button" aria-label="Search Button">
           <svg viewBox="0 0 32 32" width="100%" xmlns="http://www.w3.org/2000/svg">
             <g stroke="#000" stroke-width="2" fill="none" fill-rule="evenodd">
               <circle cx="12" cy="12" r="9"/>

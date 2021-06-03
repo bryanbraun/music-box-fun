@@ -1,7 +1,7 @@
 export const apiHostname =
    (location.hostname === 'musicboxfun.com') ?
   'https://api.musicboxfun.com' :
-  `${location.protocol}//${location.hostname}:3000`;
+  `http://${location.hostname}:3000`;
 
 
 /**

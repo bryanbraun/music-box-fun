@@ -28,4 +28,6 @@ describe('Keyboard shortcuts', () => {
       cy.window().its('history.forward').should('be.called');
     });
   });
+
+  // Note: the "Space bar to play" feature is already be tested in play-song.spec.js
 });

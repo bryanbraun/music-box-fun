@@ -19,7 +19,7 @@ export class Description extends Component {
     const currentBoxType = getCurrentBoxType();
     this.element.innerHTML = `
       <p>This is a ${currentBoxType}-note DIY music box, that works just like
-        <a href="${this.boxLinks[currentBoxType]}" target="_blank">the mechanical ones</a>.
+        <a href="${this.boxLinks[currentBoxType]}" target="_blank" rel="noopener noreferrer" >the mechanical ones</a>.
       </p>
     `;
   }

@@ -20,12 +20,11 @@ Each service has a README. There are also [some project-wide docs here](/docs).
 **First Time Setup**
 
 1. Make sure you have [Docker](https://docs.docker.com/desktop/) and [`make`](https://www.gnu.org/software/make/manual/make.html) installed.
-2. IF you want to run the backend, follow the [backend first-time-setup instructions](api/README.md#setup).
-3. IF you want to run tests,
+2. To run the frontend, install the local server: `brew install caddy nss`
+3. IF you want to run the backend, follow the [backend first-time-setup instructions](api/README.md#setup).
+4. IF you want to run frontend tests,
     - Install node/npm
     - Run `npm ci --prefix site`, to download cypress.
-
-(You will also need a python 2.x runtime to run SimpleHTTPServer, which is installed by default on Macs)
 
 **Local development**
 

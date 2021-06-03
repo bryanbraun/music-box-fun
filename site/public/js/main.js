@@ -17,6 +17,7 @@ import { TwitterShareButton } from  './components/twitter-share-button.js';
 import { PaperFooter } from './components/paper-footer.js';
 
 import { musicBoxStore } from './music-box-store.js';
+import { setupServiceWorker } from './subscribers/register-service-worker.js';
 import { setupSampler } from './common/sampler.js';
 import { playheadObserver } from './common/playhead-observer.js';
 import { setupOnClickOutside } from './common/on-click-outside.js';
@@ -71,6 +72,7 @@ urlManager.getStateFromUrlAsync().then(urlState => {
 
 // These things don't need URL data, so they can happen asynchronously.
 setupSampler(); // This setup can happen late, since the sampler isn't used until the moment a note is played.
+setupServiceWorker();
 setupKeyboardEvents();
 setupAudioContextFallbackForRestrictiveBrowsers();
 setupOnClickOutside();
