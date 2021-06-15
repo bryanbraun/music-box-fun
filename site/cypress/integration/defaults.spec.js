@@ -23,7 +23,7 @@ describe('Defaults', () => {
       .should('not.exist');
 
     // Default settings
-    cy.get('#snap-to-grid input[type="checkbox"]')
-      .should('be.checked')
+    cy.get('#snap-to option[selected]')
+    .should('have.value', 'grid');
   });
 });

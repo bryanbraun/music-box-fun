@@ -73,11 +73,14 @@ export class MusicBoxTypeSelect extends Component {
     this.lastSelectedOption = currentBoxType;
 
     this.element.innerHTML = `
-      <select class="select select-music-box-type" data-testid="music-box-type-select">
-        <option ${selected15} value="15">15-note</option>
-        <option ${selected20} value="20">20-note</option>
-        <option ${selected30} value="30">30-note</option>
-      </select>
+      <label>
+        <span class="visuallyhidden">Music Box Type</span>
+        <select class="select select-music-box-type" data-testid="music-box-type-select">
+          <option ${selected15} value="15">15-note</option>
+          <option ${selected20} value="20">20-note</option>
+          <option ${selected30} value="30">30-note</option>
+        </select>
+      </label>
     `;
 
     this.element.querySelector('select').addEventListener('change', this.handleChange);

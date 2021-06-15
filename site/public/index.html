@@ -38,7 +38,6 @@
     @import "css/styles.css";
     @import "css/select.css";
     @import "css/tempo-controls.css";
-    @import "css/toggle.css";
     @import "css/utilities.css";
   </style>
 </head>
@@ -277,10 +276,14 @@
             <button class="new-song">New blank song</button>
           </div>
           <div id="music-box-type">
-            <select class="select select-music-box-type">
-              <option selected="" value="15">15-note</option>
-              <option value="20">20-note</option>
-            </select>
+            <label>
+              <span class="visuallyhidden">Music Box Type</span>
+              <select class="select select-music-box-type">
+                <option selected="" value="15">15-note</option>
+                <option value="20">20-note</option>
+                <option value="30">30-note</option>
+              </select>
+            </label>
           </div>
           <label id="tempo" class="tempo">
             <div>Tempo</div>
@@ -295,13 +298,16 @@
           </label>
         </div>
         <div class="controls__section">
-          <div class="toggle" id="snap-to-grid">
-            <label class="toggle__label">
-              <input class="toggle__input" type="checkbox" checked />
-              <span class="toggle__outer">
-                <span class="toggle__inner"></span>
-              </span>
-              <span class="toggle__text">Snap to grid</span>
+          <div id="snap-to">
+            <label class="snap-to">
+              <span class="snap-to__label">Snap to</span>
+              <select class="select">
+                <option value="none">- none -</option>
+                <option selected="" value="grid">Grid</option>
+                <option value="16th">16ths</option>
+                <option value="¼ triplet">¼ Triplet</option>
+                <option value="⅛ triplet">⅛ Triplet</option>
+              </select>
             </label>
           </div>
         </div>

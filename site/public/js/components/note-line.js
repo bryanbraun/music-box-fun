@@ -3,7 +3,7 @@ import { musicBoxStore } from '../music-box-store.js';
 import { playheadObserver } from '../common/playhead-observer.js';
 import { sampler } from '../common/sampler.js';
 import { forEachNotes } from '../common/silent-notes.js';
-import { QUARTER_BAR_GAP, EIGHTH_BAR_GAP, STANDARD_HOLE_RADIUS } from '../common/constants.js';
+import { QUARTER_BAR_GAP, EIGHTH_BAR_GAP, SIXTEENTH_BAR_GAP, STANDARD_HOLE_RADIUS } from '../common/constants.js';
 
 export class NoteLine extends Component {
   constructor(props) {
@@ -81,32 +81,39 @@ export class NoteLine extends Component {
     this.positionShadowNote(shadowNoteEl, event.pageY);
   }
 
+  snapToInterval(noteYPosition, INTERVAL) {
+    if (!INTERVAL) return noteYPosition;
+
+    const topPixelOffset = this.holeRadius;
+    // I arrived at this formula through trial-and-error with Josiah, and it works!
+    return Math.round((noteYPosition - topPixelOffset) / INTERVAL) * INTERVAL + topPixelOffset;
+  }
+
   positionShadowNote(shadowNoteEl, cursorPositionPageY) {
     // We're building the translateY value for the shadow note, but the web apis aren't ideal so we have to cobble it
     // together from the properties we have. For noteLinesPageOffsetTop, see https://stackoverflow.com/q/34422189/1154642
     const noteLinesPageOffsetTop = document.querySelector('#note-lines').getBoundingClientRect().top + window.scrollY;
     const relativeCursorYPos = cursorPositionPageY - noteLinesPageOffsetTop;
-    let noteYPosition;
 
     // Prevent users from positioning notes too high on the note line.
     if (relativeCursorYPos < this.holeRadius) {
       return false;
     }
 
-    if (musicBoxStore.state.appState.isSnappingToGrid) {
-      const topPixelOffset = this.holeRadius;
+    const snapToIntervals = {
+      'none': 0,
+      'grid': EIGHTH_BAR_GAP,
+      '16ths': SIXTEENTH_BAR_GAP,
+      '¼ triplet': (2 * QUARTER_BAR_GAP) / 3,
+      '⅛ triplet': (2 * EIGHTH_BAR_GAP) / 3,
+    };
 
-      const snapToNearestBar = val => (
-        Math.round((val - topPixelOffset) / EIGHTH_BAR_GAP) * EIGHTH_BAR_GAP + topPixelOffset
-      );
+    const currentSelectedInterval = snapToIntervals[musicBoxStore.state.appState.snapTo];
+    const noteYPositionAdjustedForCentering = relativeCursorYPos - this.holeRadius;
+    const shadowNoteYPosition = this.snapToInterval(noteYPositionAdjustedForCentering, currentSelectedInterval);
 
-      noteYPosition = snapToNearestBar(relativeCursorYPos - this.holeRadius);
-    } else {
-      noteYPosition = relativeCursorYPos - this.holeRadius;
-    }
-
-    this.lastShadowNotePosition = noteYPosition;
-    shadowNoteEl.style = `transform: translateY(${noteYPosition}px)`;
+    this.lastShadowNotePosition = shadowNoteYPosition;
+    shadowNoteEl.style = `transform: translateY(${shadowNoteYPosition}px)`;
   }
 
   handleClick(event) {

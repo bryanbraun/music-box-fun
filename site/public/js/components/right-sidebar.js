@@ -6,7 +6,7 @@ import { PlayButton } from './play-button.js';
 import { NewSongButton } from './new-song-button.js';
 import { MusicBoxTypeSelect } from './music-box-type-select.js';
 import { Tempo } from './tempo.js';
-import { SnapToGridToggle } from './snap-to-grid-toggle.js';
+import { SnapToGridSelect } from './snap-to-grid-select.js';
 import { Footnote } from './footnote.js';
 
 export class RightSidebar extends Component {
@@ -31,7 +31,7 @@ export class RightSidebar extends Component {
           <label id="tempo" class="tempo"></label>
         </div>
         <div class="controls__section">
-          <div class="toggle" id="snap-to-grid"></div>
+          <div id="snap-to"></div>
         </div>
       </div>
       <div id="footnote"></div>
@@ -41,7 +41,7 @@ export class RightSidebar extends Component {
     new NewSongButton().render();
     new MusicBoxTypeSelect().render();
     new Tempo().render();
-    new SnapToGridToggle().render();
+    new SnapToGridSelect().render();
     new Footnote().render();
   }
 }

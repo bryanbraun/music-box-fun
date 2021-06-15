@@ -11,7 +11,7 @@ import { DEFAULT_TEMPO } from './common/constants.js';
 // it when using it, so we don't end up with new data in it.
 export const state = {
   appState: {
-    isSnappingToGrid: true,
+    snapTo: 'grid',
     isPlaying: false,
     audioDisabledMessageStatus: 'hidden',
     offCanvasSidebarFocused: 'none',

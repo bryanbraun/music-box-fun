@@ -2,6 +2,7 @@
 
 const QUARTER_BAR_GAP = 48; // Pixel distance between the black quarter note bars.
 const EIGHTH_BAR_GAP = 24; // Pixel distance between the gray eighth note bars.
+const SIXTEENTH_BAR_GAP = 12; // Pixel distance between 16th notes (half-bars).
 const STANDARD_HOLE_RADIUS = 8; // Used only in calculations on stored note data.
 
 const DEFAULT_TEMPO = 110;
@@ -9,6 +10,7 @@ const DEFAULT_TEMPO = 110;
 export {
   QUARTER_BAR_GAP,
   EIGHTH_BAR_GAP,
+  SIXTEENTH_BAR_GAP,
   STANDARD_HOLE_RADIUS,
   DEFAULT_TEMPO
 }

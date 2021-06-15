@@ -599,6 +599,15 @@ a.twitter-timeline {
   border: 1px solid var(--mb-gray-20);
 }
 
+.snap-to {
+  display: flex;
+  align-items: center;
+}
+.snap-to__label {
+  white-space: nowrap;
+  margin-right: 0.5rem;
+}
+
 .footnote p {
   font-size: 12px;
   margin: 0;
