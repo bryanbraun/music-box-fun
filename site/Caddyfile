@@ -1,0 +1,11 @@
+# This Caddyfile is for our local development server config.
+
+localhost
+
+# This value of "root" assumes that our "caddy start"
+# command is being executed from the project root.
+root site/public
+
+file_server
+
+try_files {path}.html {path}

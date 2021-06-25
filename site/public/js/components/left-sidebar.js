@@ -54,6 +54,7 @@ export class LeftSidebar extends Component {
         <a href="https://github.com/bryanbraun/music-box-fun" title="Source code on Github">Code</a>
         <a href="https://github.com/bryanbraun/music-box-fun/projects/1" title="Planned features">Roadmap</a>
         <a href="https://twitter.com/BryanEBraun" title="Message me on Twitter">Contact</a>
+        <a href="/legal">Legal</a>
       </div>
     `;
 

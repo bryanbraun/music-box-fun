@@ -7,7 +7,7 @@ dev-api:
 
 dev-site:
 	@lsof -nti:443 | xargs kill -9;
-	@nohup caddy file-server --root site/public --domain localhost &
+	@nohup caddy start --config site/Caddyfile &
 	@echo "Server started at: https://localhost"
 
 dev-bot:
@@ -19,7 +19,7 @@ stop-api:
 	@docker-compose -f api/docker-compose.yml stop
 
 stop-site:
-	@lsof -nti:443 | xargs kill -9;
+	@caddy stop;
 	@echo "Server stopped (at https://localhost)"
 
 stop-bot:
