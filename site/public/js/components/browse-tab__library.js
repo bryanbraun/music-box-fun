@@ -35,6 +35,14 @@ export class BrowseTabSongLibrary extends Component {
     musicBoxStore.setState('appState.songLibraryQuery', '');
   }
 
+  updateMailtoLink(event) {
+    const subject = 'Add%20music%20box%20song%20to%20library';
+    const songUrl = document.location.href;
+    const newHref = `mailto:bbraun7@gmail.com?subject=${subject}&body=%0A%0A${songUrl}`;
+
+    event.currentTarget.href = newHref;
+  }
+
   renderSongCreator(song) {
     let songCreator = song.creator ? escapeHtml(song.creator) : 'anonymous';
     return !song.creator_url ?
@@ -69,7 +77,7 @@ export class BrowseTabSongLibrary extends Component {
           `}
         `}
       </div>
-      <p class="library-note">To add your song to the library, just <a href="mailto:bbraun7@gmail.com" target="_blank">email me</a>.</p>
+      <p class="library-note">To add your song to the library, <a id="library-add-mailto" href="mailto:bbraun7@gmail.com?subject=Add%20music%20box%20song%20to%20library" target="_blank">email it to me</a>.</p>
     `;
 
     let backToBrowseLinkEl = this.element.querySelector('#back-to-browse-link');
@@ -77,5 +85,10 @@ export class BrowseTabSongLibrary extends Component {
 
     backToBrowseLinkEl && backToBrowseLinkEl.addEventListener('click', this.handleBackToBrowseClick);
     songsListEl && songsListEl.addEventListener('click', jumpToTopIfASongWasClicked);
+
+    // We update the mailto link right as the user clicks the share button to ensure that it contains
+    // the latest URL data. (If we try to instead rerender the link on "songState*" changes, the link
+    // might update before the URL does, resulting in it putting stale data in the email).
+    this.element.querySelector('#library-add-mailto').addEventListener('click', this.updateMailtoLink);
   }
 }
