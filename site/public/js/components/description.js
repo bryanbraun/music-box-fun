@@ -9,9 +9,9 @@ export class Description extends Component {
     });
 
     this.boxLinks = {
-      '15': 'https://www.amazon.com/dp/B000HAUEFY/ref=psdc_3291682011_t1_B019Z6AJP0?th=1',
+      '15': 'https://amzn.to/3jPCAMG',
       '20': 'https://www.grand-illusions.com/20-note-music-box-set-c2x21140292',
-      '30': 'https://www.amazon.com/Movement-Refill-Strips-Puncher-Customize/dp/B019Z6AJP0/ref=pd_sbs_201_5/147-2607630-6675016'
+      '30': 'https://amzn.to/3xFXLWg'
     };
   }
 
