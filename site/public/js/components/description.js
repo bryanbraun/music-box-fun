@@ -1,7 +1,7 @@
-import { Component } from '../alt-react/component.js';
+import { MBComponent } from '../music-box-component.js';
 import { getCurrentBoxType } from '../common/box-types.js';
 
-export class Description extends Component {
+export class Description extends MBComponent {
   constructor() {
     super({
       renderTrigger: 'songState.songData',

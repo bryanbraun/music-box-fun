@@ -1,9 +1,9 @@
-import { Component } from '../alt-react/component.js';
+import { MBComponent } from '../music-box-component.js';
 import { NoteLine } from './note-line.js';
 import { getCurrentPitchArray } from '../common/box-types.js';
 
 
-export class NoteLines extends Component {
+export class NoteLines extends MBComponent {
   constructor() {
     super({
       element: document.querySelector('#note-lines'),

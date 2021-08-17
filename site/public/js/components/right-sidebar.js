@@ -1,4 +1,4 @@
-import { Component } from '../alt-react/component.js';
+import { MBComponent } from '../music-box-component.js';
 import { musicBoxStore } from '../music-box-store.js';
 import classNames from '../vendor/classnames.js';
 
@@ -9,7 +9,7 @@ import { Tempo } from './tempo.js';
 import { SnapToGridSelect } from './snap-to-grid-select.js';
 import { Footnote } from './footnote.js';
 
-export class RightSidebar extends Component {
+export class RightSidebar extends MBComponent {
   constructor(props) {
     super({
       renderTrigger: 'appState.offCanvasSidebarFocused',

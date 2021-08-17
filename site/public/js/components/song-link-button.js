@@ -1,8 +1,7 @@
 
-import { Component } from '../alt-react/component.js';
-import { musicBoxStore } from '../music-box-store.js';
+import { MBComponent } from '../music-box-component.js';
 
-export class SongLinkButton extends Component {
+export class SongLinkButton extends MBComponent {
   constructor(props) {
     super({
       element: document.querySelector('#song-link')
@@ -14,7 +13,7 @@ export class SongLinkButton extends Component {
     this.copySongLinkToClipboard = this.copySongLinkToClipboard.bind(this);
   }
 
-  async copySongLinkToClipboard(event) {
+  async copySongLinkToClipboard() {
     const songLink = document.location.href;
 
     try {

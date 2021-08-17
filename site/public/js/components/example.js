@@ -1,7 +1,7 @@
-import { Component } from '../alt-react/component.js';
+import { MBComponent } from '../music-box-component.js';
 import { musicBoxStore } from '../music-box-store.js';
 
-export class Example extends Component {
+export class Example extends MBComponent {
   constructor(props) {
     super({
       // Do you want to use props outside the constructor? If so, pass them to

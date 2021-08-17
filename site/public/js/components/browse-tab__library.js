@@ -1,10 +1,10 @@
-import { Component } from '../alt-react/component.js';
+import { MBComponent } from '../music-box-component.js';
 import { musicBoxStore } from '../music-box-store.js';
 import { escapeHtml, escapeAndHighlightHtml } from '../utils/escapeHtml.js';
 import { jumpToTopIfASongWasClicked } from '../common/common-event-handlers.js';
 import { apiHostname, request } from '../common/api.js';
 
-export class BrowseTabSongLibrary extends Component {
+export class BrowseTabSongLibrary extends MBComponent {
   constructor(props) {
     super({
       props,

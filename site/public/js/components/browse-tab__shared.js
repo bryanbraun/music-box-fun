@@ -1,7 +1,7 @@
-import { Component } from '../alt-react/component.js';
+import { MBComponent } from '../music-box-component.js';
 import { musicBoxStore } from '../music-box-store.js';
 
-export class BrowseTabSharedSongs extends Component {
+export class BrowseTabSharedSongs extends MBComponent {
   constructor(props) {
     super({
       props,

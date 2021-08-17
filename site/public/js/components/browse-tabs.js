@@ -1,9 +1,9 @@
-import { Component } from '../alt-react/component.js';
+import { MBComponent } from '../music-box-component.js';
 import { musicBoxStore } from '../music-box-store.js';
 import { BrowseTabSharedSongs } from './browse-tab__shared.js';
 import { BrowseTabSongLibrary } from './browse-tab__library.js';
 
-export class BrowseTabs extends Component {
+export class BrowseTabs extends MBComponent {
   constructor() {
     super({
       element: document.querySelector('#browse'),

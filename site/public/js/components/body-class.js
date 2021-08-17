@@ -1,8 +1,8 @@
-import { Component } from '../alt-react/component.js';
+import { MBComponent } from '../music-box-component.js';
 import { musicBoxStore } from '../music-box-store.js';
 import classNames from '../vendor/classnames.js';
 
-export class BodyClass extends Component {
+export class BodyClass extends MBComponent {
   constructor() {
     super({
       renderTrigger: ['appState.isPlaying', 'appState.offCanvasSidebarFocused'],

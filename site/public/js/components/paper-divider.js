@@ -1,8 +1,8 @@
-import { Component } from '../alt-react/component.js';
+import { MBComponent } from '../music-box-component.js';
 import { musicBoxStore } from '../music-box-store.js';
 import classNames from '../vendor/classnames.js';
 
-export class PaperDivider extends Component {
+export class PaperDivider extends MBComponent {
   constructor(props) {
     super({
       props,

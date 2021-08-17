@@ -1,7 +1,7 @@
-import { Component } from '../alt-react/component.js';
+import { MBComponent } from '../music-box-component.js';
 import { musicBoxStore } from '../music-box-store.js';
 
-export class PageTitle extends Component {
+export class PageTitle extends MBComponent {
   constructor() {
     super({
       renderTrigger: 'songState.songTitle',

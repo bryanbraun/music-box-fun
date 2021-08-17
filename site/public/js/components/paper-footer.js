@@ -1,10 +1,10 @@
-import { Component } from '../alt-react/component.js';
+import { MBComponent } from '../music-box-component.js';
 import { PaperDivider } from './paper-divider.js';
 import { musicBoxStore } from '../music-box-store.js';
 import { QUARTER_BAR_GAP, STANDARD_HOLE_RADIUS } from '../common/constants.js';
 
-export class PaperFooter extends Component {
-  constructor(props) {
+export class PaperFooter extends MBComponent {
+  constructor() {
     super({
       renderTrigger: 'songState.songData*',
       element: document.querySelector('#paper-footer')

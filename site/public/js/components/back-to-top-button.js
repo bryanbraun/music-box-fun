@@ -1,7 +1,7 @@
-import { Component } from '../alt-react/component.js';
+import { MBComponent } from '../music-box-component.js';
 import { musicBoxStore } from '../music-box-store.js';
 
-export class BackToTopButton extends Component {
+export class BackToTopButton extends MBComponent {
   constructor() {
     super({
       element: document.getElementById('back-to-top')

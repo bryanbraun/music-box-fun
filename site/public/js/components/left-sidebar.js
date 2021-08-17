@@ -1,4 +1,4 @@
-import { Component } from '../alt-react/component.js';
+import { MBComponent } from '../music-box-component.js';
 import { musicBoxStore } from '../music-box-store.js';
 import classNames from '../vendor/classnames.js';
 
@@ -6,7 +6,7 @@ import { Description } from './description.js';
 import { Search } from './search.js';
 import { BrowseTabs } from './browse-tabs.js';
 
-export class LeftSidebar extends Component {
+export class LeftSidebar extends MBComponent {
   constructor(props) {
     super({
       renderTrigger: 'appState.offCanvasSidebarFocused',

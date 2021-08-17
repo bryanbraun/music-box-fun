@@ -1,12 +1,12 @@
-import { Component } from '../alt-react/component.js';
+import { MBComponent } from '../music-box-component.js';
 import { musicBoxStore } from '../music-box-store.js';
 import { escapeHtml, escapeAndHighlightHtml } from '../utils/escapeHtml.js';
 import { jumpToTopIfASongWasClicked } from '../common/common-event-handlers.js';
 import { apiHostname, request } from '../common/api.js';
 import { onClickOutside } from '../common/on-click-outside.js';
 
-export class Search extends Component {
-  constructor(props) {
+export class Search extends MBComponent {
+  constructor() {
     super({
       element: document.querySelector('#search')
     });

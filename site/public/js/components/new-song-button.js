@@ -1,9 +1,9 @@
-import { Component } from '../alt-react/component.js';
+import { MBComponent } from '../music-box-component.js';
 import { musicBoxStore } from '../music-box-store.js';
 import { state as initialState } from '../state.js';
 import { cloneDeep } from '../utils/clone.js';
 
-export class NewSongButton extends Component {
+export class NewSongButton extends MBComponent {
   constructor() {
     super({
       element: document.querySelector('#file')

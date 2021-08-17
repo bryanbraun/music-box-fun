@@ -1,8 +1,8 @@
-import { Component } from '../alt-react/component.js';
+import { MBComponent } from '../music-box-component.js';
 import { musicBoxStore } from '../music-box-store.js';
 import { escapeHtml } from '../utils/escapeHtml.js';
 
-export class SongTitle extends Component {
+export class SongTitle extends MBComponent {
   constructor() {
     super({
       // A workaround that allows rerenders for new songs, without needing to make this a controlled component.

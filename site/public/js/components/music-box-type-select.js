@@ -1,9 +1,9 @@
-import { Component } from '../alt-react/component.js';
+import { MBComponent } from '../music-box-component.js';
 import { musicBoxStore } from '../music-box-store.js';
 import { boxTypePitches, getCurrentBoxType } from '../common/box-types.js';
 import { confirmationDialog } from '../common/confirmation-dialog.js';
 
-export class MusicBoxTypeSelect extends Component {
+export class MusicBoxTypeSelect extends MBComponent {
   constructor() {
     super({
       renderTrigger: 'songState.songData',

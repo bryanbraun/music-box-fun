@@ -1,10 +1,10 @@
-import { Component } from '../alt-react/component.js';
+import { MBComponent } from '../music-box-component.js';
 import { musicBoxStore } from '../music-box-store.js';
 
 // This uses the Twitter intents API to create a customized twitter share button. The pop-up is
 // powered by the same Twitter Javascript that loads the timeline. It detects the href value of
 // my button and adds an event listener to the document.
-export class TwitterShareButton extends Component {
+export class TwitterShareButton extends MBComponent {
   constructor(props) {
     super({
       element: document.querySelector('#twitter-share')

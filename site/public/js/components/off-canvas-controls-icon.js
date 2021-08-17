@@ -1,7 +1,7 @@
-import { Component } from '../alt-react/component.js';
+import { MBComponent } from '../music-box-component.js';
 import { musicBoxStore } from '../music-box-store.js';
 
-export class OffCanvasControlsIcon extends Component {
+export class OffCanvasControlsIcon extends MBComponent {
   constructor() {
     super({
       element: document.querySelector('#off-canvas-controls-icon')

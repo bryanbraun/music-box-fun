@@ -1,10 +1,9 @@
-import { Component } from '../alt-react/component.js';
-import { musicBoxStore } from '../music-box-store.js';
+import { MBComponent } from '../music-box-component.js';
 import { TempoField } from './tempo-field.js';
 import { TempoSlider } from './tempo-slider.js';
 import { DEFAULT_TEMPO } from '../common/constants.js';
 
-export class Tempo extends Component {
+export class Tempo extends MBComponent {
   constructor() {
     super({
       // A workaround that allows rerenders for new songs, without needing to make this a controlled component.
