@@ -1,5 +1,6 @@
 {
   "imports": {
+    "anchor-js": "./anchor-js.js",
     "classnames": "./classnames.js",
     "json-url": "./json-url.js",
     "tone": "./tone.js"

@@ -11,17 +11,19 @@
     "test": "cypress run",
     "test-prod": "cypress run --config baseUrl=https://musicboxfun.com",
     "test-visual": "cypress open",
-    "build": "npx snowpack@2.9.0"
+    "build": "node --experimental-modules build-modules.mjs",
+    "postinstall": "npm run build"
   },
   "devDependencies": {
-    "cypress": "^5.2.0"
+    "cypress": "^5.2.0",
+    "esinstall": "^1.1.7"
   },
   "dependencies": {
     "classnames": "^2.2.6",
     "json-url": "2.4.0",
     "tone": "^14.7.58"
   },
-  "snowpack": {
+  "buildModules": {
     "install": [
       "classnames",
       "tone",

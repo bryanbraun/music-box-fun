@@ -552,7 +552,6 @@ const createAddAudioWorkletModule = (cacheTestResult, createNotSupportedError, e
         return promise;
     };
 };
-//# sourceMappingURL=add-audio-worklet-module.js.map
 
 const getValueForKey = (map, key) => {
     const value = map.get(key);
@@ -1442,7 +1441,6 @@ const createAudioListenerFactory = (createAudioParam, createNativeChannelMergerN
         };
     };
 };
-//# sourceMappingURL=audio-listener-factory.js.map
 
 const isAudioNode = (audioNodeOrAudioParam) => {
     return 'context' in audioNodeOrAudioParam;
@@ -1580,7 +1578,6 @@ const testAudioNodeDisconnectMethodSupport = (nativeAudioContext) => {
         source.start();
     });
 };
-//# sourceMappingURL=test-audio-node-disconnect-method-support.js.map
 
 const visitEachAudioNodeOnce = (cycles, visitor) => {
     const counts = new Map();
@@ -2225,7 +2222,6 @@ const createAudioWorkletNodeConstructor = (addUnrenderedAudioWorkletNode, audioN
         }
     };
 };
-//# sourceMappingURL=audio-worklet-node-constructor.js.map
 
 function copyFromChannel(audioBuffer, 
 // @todo There is currently no way to define something like { [ key: number | string ]: Float32Array }
@@ -2285,7 +2281,6 @@ const getAudioWorkletProcessor = (nativeOfflineAudioContext, proxy) => {
     const nativeAudioWorkletNode = getNativeAudioNode(proxy);
     return getValueForKey(nodeToProcessorMap, nativeAudioWorkletNode);
 };
-//# sourceMappingURL=get-audio-worklet-processor.js.map
 
 const processBuffer = async (proxy, renderedBuffer, nativeOfflineAudioContext, options, outputChannelCount, processorConstructor, exposeCurrentFrameAndCurrentTime) => {
     // Ceil the length to the next full render quantum.
@@ -2520,7 +2515,6 @@ const createAudioWorkletNodeRendererFactory = (connectAudioParam, connectMultipl
         };
     };
 };
-//# sourceMappingURL=audio-worklet-node-renderer-factory.js.map
 
 const createBaseAudioContextConstructor = (addAudioWorkletModule, analyserNodeConstructor, audioBufferConstructor, audioBufferSourceNodeConstructor, biquadFilterNodeConstructor, channelMergerNodeConstructor, channelSplitterNodeConstructor, constantSourceNodeConstructor, convolverNodeConstructor, decodeAudioData, delayNodeConstructor, dynamicsCompressorNodeConstructor, gainNodeConstructor, iIRFilterNodeConstructor, minimalBaseAudioContextConstructor, oscillatorNodeConstructor, pannerNodeConstructor, periodicWaveConstructor, stereoPannerNodeConstructor, waveShaperNodeConstructor) => {
     return class BaseAudioContext extends minimalBaseAudioContextConstructor {
@@ -4565,7 +4559,6 @@ const createNativeAudioWorkletNodeFactory = (createInvalidStateError, createNati
         return createNativeAudioWorkletNodeFaker(nativeContext, baseLatency, processorConstructor, options);
     };
 };
-//# sourceMappingURL=native-audio-worklet-node-factory.js.map
 
 const computeBufferSize = (baseLatency, sampleRate) => {
     if (baseLatency === null) {
@@ -4596,7 +4589,6 @@ const createAudioWorkletProcessorPromise = async (processorConstructor, audioWor
     const clonedAudioWorkletNodeOptions = await cloneAudioWorkletNodeOptions(audioWorkletNodeOptions);
     return new processorConstructor(clonedAudioWorkletNodeOptions);
 };
-//# sourceMappingURL=create-audio-worklet-processor-promise.js.map
 
 const createAudioWorkletProcessor = (nativeContext, nativeAudioWorkletNode, processorConstructor, audioWorkletNodeOptions) => {
     let nodeToProcessorMap = NODE_TO_PROCESSOR_MAPS.get(nativeContext);
@@ -4608,7 +4600,6 @@ const createAudioWorkletProcessor = (nativeContext, nativeAudioWorkletNode, proc
     nodeToProcessorMap.set(nativeAudioWorkletNode, audioWorkletProcessorPromise);
     return audioWorkletProcessorPromise;
 };
-//# sourceMappingURL=create-audio-worklet-processor.js.map
 
 const createNativeAudioWorkletNodeFakerFactory = (connectMultipleOutputs, createIndexSizeError, createInvalidStateError, createNativeChannelMergerNode, createNativeChannelSplitterNode, createNativeConstantSourceNode, createNativeGainNode, createNativeScriptProcessorNode, createNotSupportedError, disconnectMultipleOutputs, exposeCurrentFrameAndCurrentTime, getActiveAudioWorkletNodeInputs, monitorConnections) => {
     return (nativeContext, baseLatency, processorConstructor, options) => {
@@ -4997,7 +4988,6 @@ const createNativeAudioWorkletNodeFakerFactory = (connectMultipleOutputs, create
         return monitorConnections(nativeAudioWorkletNodeFaker, whenConnected, whenDisconnected);
     };
 };
-//# sourceMappingURL=native-audio-worklet-node-faker-factory.js.map
 
 const createNativeBiquadFilterNode = (nativeContext, options) => {
     const nativeBiquadFilterNode = nativeContext.createBiquadFilter();
@@ -5401,7 +5391,6 @@ const createNativeIIRFilterNodeFakerFactory = (createInvalidAccessError, createI
         return interceptConnections(nativeIIRFilterNodeFaker, scriptProcessorNode);
     };
 };
-//# sourceMappingURL=native-iir-filter-node-faker-factory.js.map
 
 const createNativeMediaElementAudioSourceNode = (nativeAudioContext, options) => {
     return nativeAudioContext.createMediaElementSource(options.mediaElement);
@@ -5802,7 +5791,6 @@ const createNativePannerNodeFakerFactory = (connectNativeAudioNodeToNativeAudioN
         return monitorConnections(interceptConnections(nativePannerNodeFaker, pannerNode), whenConnected, whenDisconnected);
     };
 };
-//# sourceMappingURL=native-panner-node-faker-factory.js.map
 
 const createNativePeriodicWaveFactory = (createIndexSizeError) => {
     return (nativeContext, { disableNormalization, imag, real }) => {
@@ -5821,7 +5809,6 @@ const createNativePeriodicWaveFactory = (createIndexSizeError) => {
 const createNativeScriptProcessorNode = (nativeContext, bufferSize, numberOfInputChannels, numberOfOutputChannels) => {
     return nativeContext.createScriptProcessor(bufferSize, numberOfInputChannels, numberOfOutputChannels);
 };
-//# sourceMappingURL=native-script-processor-node.js.map
 
 const createNativeStereoPannerNodeFactory = (createNativeStereoPannerNodeFaker, createNotSupportedError) => {
     return (nativeContext, options) => {
@@ -6913,7 +6900,6 @@ const createRenderNativeOfflineAudioContext = (cacheTestResult, createNativeGain
         });
     };
 };
-//# sourceMappingURL=render-native-offline-audio-context.js.map
 
 const createSetActiveAudioWorkletNodeInputs = (activeAudioWorkletNodeInputsStore) => {
     return (nativeAudioWorkletNode, activeInputs) => {
@@ -7199,7 +7185,6 @@ const createTestAudioWorkletProcessorNoOutputsSupport = (nativeAudioWorkletNodeC
         return isCallingProcess;
     };
 };
-//# sourceMappingURL=test-audio-worklet-processor-no-outputs-support.js.map
 
 // Bug #179: Firefox does not allow to transfer any buffer which has been passed to the process() method as an argument.
 const createTestAudioWorkletProcessorPostMessageSupport = (nativeAudioWorkletNodeConstructor, nativeOfflineAudioContextConstructor) => {
@@ -7236,7 +7221,6 @@ const createTestAudioWorkletProcessorPostMessageSupport = (nativeAudioWorkletNod
         return isEmittingMessageEvents && !isEmittingProcessorErrorEvents;
     };
 };
-//# sourceMappingURL=test-audio-worklet-processor-post-message-support.js.map
 
 /**
  * Firefox up to version 69 did not throw an error when setting a different channelCount or channelCountMode.
@@ -7396,7 +7380,6 @@ const createTestStereoPannerNodeDefaultValueSupport = (nativeOfflineAudioContext
         return nativeOfflineAudioContext.startRendering().then((buffer) => buffer.getChannelData(0)[0] !== 1);
     };
 };
-//# sourceMappingURL=test-stereo-panner-node-default-value-support.js.map
 
 const createUnknownError = () => new DOMException('', 'UnknownError');
 
@@ -7962,7 +7945,6 @@ const isAnyAudioNode = createIsAnyAudioNode(AUDIO_NODE_STORE, isNativeAudioNode$
 const isAnyAudioParam = createIsAnyAudioParam(AUDIO_PARAM_STORE, isNativeAudioParam);
 const isAnyOfflineAudioContext = createIsAnyOfflineAudioContext(CONTEXT_STORE, isNativeOfflineAudioContext);
 const isSupported = () => createIsSupportedPromise(cacheTestResult, createTestAudioBufferCopyChannelMethodsSubarraySupport(nativeOfflineAudioContextConstructor), createTestAudioContextCloseMethodSupport(nativeAudioContextConstructor), createTestAudioContextDecodeAudioDataMethodTypeErrorSupport(nativeOfflineAudioContextConstructor), createTestAudioContextOptionsSupport(nativeAudioContextConstructor), createTestAudioNodeConnectMethodSupport(nativeOfflineAudioContextConstructor), createTestAudioWorkletProcessorNoOutputsSupport(nativeAudioWorkletNodeConstructor, nativeOfflineAudioContextConstructor), createTestChannelMergerNodeChannelCountSupport(nativeOfflineAudioContextConstructor), createTestConstantSourceNodeAccurateSchedulingSupport(nativeOfflineAudioContextConstructor), createTestConvolverNodeBufferReassignabilitySupport(nativeOfflineAudioContextConstructor), createTestConvolverNodeChannelCountSupport(nativeOfflineAudioContextConstructor), testDomExceptionConstructorSupport, createTestIsSecureContextSupport(window$1), createTestMediaStreamAudioSourceNodeMediaStreamWithoutAudioTrackSupport(nativeAudioContextConstructor), createTestStereoPannerNodeDefaultValueSupport(nativeOfflineAudioContextConstructor), testTransferablesSupport);
-//# sourceMappingURL=module.js.map
 
 /**
  * Assert that the statement is true, otherwise invoke the error.
@@ -10989,7 +10971,6 @@ class ToneWithContext extends Tone {
         return this;
     }
 }
-//# sourceMappingURL=ToneWithContext.js.map
 
 /**
  * A Timeline State. Provides the methods: `setStateAtTime("state", time)` and `getValueAtTime(time)`
@@ -11824,7 +11805,6 @@ function disconnect(srcNode, dstNode, outputNumber = 0, inputNumber = 0) {
         srcNode.disconnect();
     }
 }
-//# sourceMappingURL=ToneAudioNode.js.map
 
 /**
  * A thin wrapper around the Native Web Audio GainNode.
@@ -15011,7 +14991,6 @@ onContextInit(context => {
 onContextClose(context => {
     context.transport.dispose();
 });
-//# sourceMappingURL=Transport.js.map
 
 /**
  * Base class for sources.
@@ -17836,7 +17815,6 @@ class Zero extends SignalOperator {
         return this;
     }
 }
-//# sourceMappingURL=Zero.js.map
 
 /**
  * LFO stands for low frequency oscillator. LFO produces an output signal
@@ -21183,7 +21161,6 @@ function registerProcessor(name, classDesc) {
 function getWorkletGlobalScope() {
     return Array.from(workletContext).join("\n");
 }
-//# sourceMappingURL=WorkletGlobalScope.js.map
 
 class ToneAudioWorklet extends ToneAudioNode {
     constructor(options) {
@@ -21221,7 +21198,6 @@ class ToneAudioWorklet extends ToneAudioNode {
         return this;
     }
 }
-//# sourceMappingURL=ToneAudioWorklet.js.map
 
 const toneAudioWorkletProcessor = /* javascript */ `
 	/**
@@ -21255,7 +21231,6 @@ const toneAudioWorkletProcessor = /* javascript */ `
 	}
 `;
 addToWorklet(toneAudioWorkletProcessor);
-//# sourceMappingURL=ToneAudioWorkletProcessor.worklet.js.map
 
 const singleIOProcess = /* javascript */ `
 	/**
@@ -21326,7 +21301,6 @@ const singleIOProcess = /* javascript */ `
 	};
 `;
 addToWorklet(singleIOProcess);
-//# sourceMappingURL=SingleIOProcessor.worklet.js.map
 
 const delayLine = /* javascript */ `
 	/**
@@ -21471,7 +21445,6 @@ class FeedbackCombFilter extends ToneAudioWorklet {
         return this;
     }
 }
-//# sourceMappingURL=FeedbackCombFilter.js.map
 
 /**
  * A one pole filter with 6db-per-octave rolloff. Either "highpass" or "lowpass".
@@ -25560,7 +25533,6 @@ class MidSideSplit extends ToneAudioNode {
         return this;
     }
 }
-//# sourceMappingURL=MidSideSplit.js.map
 
 /**
  * MidSideMerge merges the mid and side signal after they've been separated by [[MidSideSplit]]
@@ -25655,7 +25627,6 @@ class MidSideEffect extends Effect {
         return this;
     }
 }
-//# sourceMappingURL=MidSideEffect.js.map
 
 /**
  * Applies a width factor to the mid/side seperation.
