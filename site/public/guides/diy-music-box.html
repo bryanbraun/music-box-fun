@@ -30,6 +30,7 @@
     @import "/css/variables.css";
     @import "/css/base.css";
     @import "/css/guides.css";
+    @import "/css/lory.css";
     @import "/css/utilities.css";
   </style>
 </head>
@@ -72,9 +73,9 @@
 
     <div class="mini-footer">
       <a href="https://www.bryanbraun.com/2019/11/02/music-box-fun/" title="About">About</a>
+      <a href="/guides/diy-music-box" title="Learn more about music boxes">Guides</a>
       <a href="https://github.com/bryanbraun/music-box-fun" title="Source code on Github">Code</a>
       <a href="https://github.com/bryanbraun/music-box-fun/projects/1" title="Planned features">Roadmap</a>
-      <a href="https://twitter.com/BryanEBraun" title="Message me on Twitter">Contact</a>
       <a href="/legal">Legal</a>
     </div>
   </aside>
@@ -90,7 +91,7 @@
       <p>With a DIY music box, you create the song yourself by punching holes into a long strip of paper using a punch tool. When you feed the paper into the music box, it plays the notes that match the locations of the holes. This allows you to play nearly any song with a single music box.</p>
 
       <figure class="center">
-        <img src="/images/guides/15-note-music-box-kit.jpg" alt="A 15-note DIY music box with paper and a punch tool" />
+        <img src="/images/guides/15-note--music-box-kit.jpg" alt="A 15-note DIY music box with paper and a punch tool" />
         <figcaption>The "DIY music box" is also sometimes called a "paper punch music box", because it plays songs that have been created using a strip of paper and a punch tool.</figcaption>
       </figure>
 
@@ -106,22 +107,21 @@
 
       <h3>15-note</h3>
       <p>A 15-note music box has a musical range covering two octaves of the C-major scale (from C<sub>4</sub> to C<sub>6</sub>).</p>
-      <img src="/images/guides/15-note-keys.png" />
-      <img src="/images/guides/15-note--paper.jpg" />
-      <!-- TODO: add more photos, eventually building a gallery for each size -->
-      <img src="/images/guides/15-note--box-and-paper.jpg" />
+      <img src="/images/guides/15-note-keys.png" alt="piano keys, highlighted to show the 15 music box notes" loading="lazy" />
+      <img src="/images/guides/15-note--paper.jpg" alt="a sheet of 15-note music box paper" loading="lazy" />
+      <div id="15-note-gallery"></div>
 
       <h3>20-note</h3>
       <p>A 20-note music box has a musical range covering two and a half octaves of the C-major scale (from C<sub>4</sub> to A<sub>6</sub>).</p>
-      <img src="/images/guides/20-note-keys.png" />
-      <img src="/images/guides/20-note--paper.jpg" />
-      <img src="/images/guides/20-note--box.jpg" />
+      <img src="/images/guides/20-note-keys.png" alt="piano keys, highlighted to show the 20 music box notes" loading="lazy" />
+      <img src="/images/guides/20-note--paper.jpg" alt="a sheet of 20-note music box paper" loading="lazy" />
+      <div id="20-note-gallery"></div>
 
       <h3>30-note</h3>
       <p>A 30-note music box has a musical range covering a non-consecutive collection of 30 notes between C<sub>3</sub> and E<sub>6</sub>. These notes contain chromatic scales but include gaps in some places in order to accommodate the widest variety of songs.</p>
-      <img src="/images/guides/30-note-keys.png" />
-      <img src="/images/guides/30-note--paper.jpg" />
-      <img src="/images/guides/30-note--box-and-paper.jpg" />
+      <img src="/images/guides/30-note-keys.png" alt="piano keys, highlighted to show the 30 music box notes" loading="lazy" />
+      <img src="/images/guides/30-note--paper.jpg" alt="a sheet of 30-note music box paper" loading="lazy" />
+      <div id="30-note-gallery"></div>
 
       <h2>Making DIY music box songs</h2>
 
@@ -176,13 +176,12 @@
 
       <h4>Important tips when composing for a DIY music box</h4>
 
-      <figure class="right" style="width:256px; margin-left: 1.5rem">
-        <img src="/images/guides/repeated-notes.png" alt="A portion of a song showing two repeated eighth notes." width="256" />
-        <figcaption>Placing two repeated eighth notes will make the second one silent because mechanical DIY music boxes can't play notes in close succession.</figcaption>
-      </figure>
-
       <ul>
         <li>It's easiest to start with your song in the key of C. Songs in C tend to have fewer sharps and flats, which aren't available on a 15-note or 20 note box. Even on a 30 note box, it's usually best to stick to C, because the number of available sharps and flats are limited. If your song isn't in C already, consider transposing it into C manually, or using music software.</li>
+        <figure class="repeated-notes-figure">
+          <img src="/images/guides/repeated-notes.png" alt="A portion of a music-box song showing two repeated eighth notes." loading="lazy" />
+          <figcaption>Placing two repeated eighth notes will make the second one silent because mechanical DIY music boxes can't play notes in close succession.</figcaption>
+        </figure>
         <li>Watch out for repeating notes. Notes that repeat in rapid succession are often not playable on DIY music boxes, due to constraints in the mechanical parts. For songs where repeating notes are unavoidable, you can make slight adjustments to the music to work around the problem. These adjustments could include omitting some notes, or substituting a "silent" note with one that's a third, a fifth, or an octave below it.</li>
         <li>Consider the length of your song. Music box paper strips are often limited in length, so you'll want to make sure you don't cut off the last couple notes of your song.</li>
       </ul>
@@ -211,6 +210,9 @@
         <li><a href="https://www.reddit.com/r/Musicbox/" target="_blank">Music Box Subreddit</a></li>
       </ul>
 
+
+
+
     </div>
     <div id="off-canvas-nav-icon" class="nav-icon">
       <button>
@@ -225,27 +227,6 @@
     </div>
     <div id="off-canvas-overlay" class="off-canvas-overlay"></div>
   </main>
-  <script>
-    // Guides should have basically no styles, but I need a tiny bit of JS to open/close the nav on mobile
-    // so I'm putting it here. If I end up needing more scripts I'll break this out into a separate file.
-    (function() {
-      const navIconEl = document.querySelector('#off-canvas-nav-icon');
-      const sidebarEl = document.querySelector('#left-sidebar');
-      const overlayEl = document.querySelector('#off-canvas-overlay');
-      const bodyEl = document.body;
-
-      navIconEl.addEventListener('click', toggleSidebar);
-      overlayEl.addEventListener('click', toggleSidebar);
-
-      function toggleSidebar(e) {
-        sidebarEl.classList.toggle('on-canvas');
-        overlayEl.classList.toggle('is-active');
-        bodyEl.classList.toggle('no-scroll');
-      }
-    })();
-
-
-  </script>
   <script type="module" src="/js/guides-entry.js"></script>
 </body>
 

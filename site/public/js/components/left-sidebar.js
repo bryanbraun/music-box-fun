@@ -51,9 +51,9 @@ export class LeftSidebar extends MBComponent {
 
       <div class="mini-footer">
         <a href="https://www.bryanbraun.com/2019/11/02/music-box-fun/" title="About">About</a>
+        <a href="/guides/diy-music-box" title="Learn more about music boxes">Guides</a>
         <a href="https://github.com/bryanbraun/music-box-fun" title="Source code on Github">Code</a>
         <a href="https://github.com/bryanbraun/music-box-fun/projects/1" title="Planned features">Roadmap</a>
-        <a href="https://twitter.com/BryanEBraun" title="Message me on Twitter">Contact</a>
         <a href="/legal">Legal</a>
       </div>
     `;

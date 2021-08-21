@@ -3,7 +3,7 @@
 // 1. Assigning props for re-use outside the parent component's constructor
 // 2. An element that we can reference via this.element (usually inside render())
 // 3. Local state and a setState function for changing it
-// 4. A renderTrigger, for re-rendering based on centralized state changes
+// 4. A renderTrigger, for re-rendering based on centralized state changes (assuming you pass it a 'store' instance)
 export class BaseComponent {
   constructor(params = {}) {
     this.props = params.props;
@@ -23,7 +23,7 @@ export class BaseComponent {
       }
 
       if (!params.store) {
-        throw new Error('Your BaseComponent must be provided store, in order to use renderTrigger.');
+        throw new Error('Your BaseComponent must be provided a store, in order to use renderTrigger.');
       }
 
       const renderTriggerArray = [].concat(params.renderTrigger);

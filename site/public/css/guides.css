@@ -46,7 +46,6 @@ figcaption {
   margin-left: var(--left-sidebar-width);
   width: 100%;
 }
-
 @media (max-width: 720px) { /* --one-to-two-columns */
   .guide {
     margin-left: 0;
@@ -56,10 +55,13 @@ figcaption {
 .content {
   padding: 0 2rem;
   max-width: 45rem; /* 720px */
-  margin: 2.5rem auto;
+  margin: 4rem auto;
   font-size: 19px;
 }
-
+/* Put a larger space above the heading than below the heading */
+.content h2, .content h3, .content h4, .content h5, .content h6 {
+  margin-block-start: 2em;
+}
 .guide-title {
   margin: 0 0 2rem;
   line-height: 1.33;
@@ -71,4 +73,23 @@ figcaption {
    should consider just maintaining two separate sets of styles */
 .nav-icon {
   position: absolute;
+}
+
+
+/*             CUSTOM STYLES FOR SPECIFIC GUIDES               */
+/* We try to limit these because they load on all guides pages */
+.repeated-notes-figure {
+  margin: 1rem auto 0 ;
+  text-align: center;
+}
+.repeated-notes-figure img {
+  width: 100%;
+  max-width: 512px;
+}
+@media (min-width: 860px) {
+  .repeated-notes-figure {
+    width: 256px;
+    float: right;
+    margin-left: 1.5rem;
+  }
 }

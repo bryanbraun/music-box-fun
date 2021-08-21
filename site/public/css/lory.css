@@ -1,0 +1,117 @@
+/*
+   Lory.js carousel styles, pulled from the docs and adapted to our needs.
+
+   Original styles are here: https://github.com/loryjs/lory#prerequisited-css
+*/
+
+.slider {
+  position: relative;
+  margin: 2rem 0;
+  border: 1px solid black;
+}
+
+.gallery-label::before {
+  content: 'Gallery';
+  display: block;
+  position: absolute;
+  top: -22px;
+  z-index: 1;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 14px;
+}
+
+.frame {
+  width: 100%;
+
+  position: relative;
+  font-size: 0;
+  line-height: 0;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.slides {
+  display: block;
+  padding: 0;
+}
+
+.js_slide {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+}
+
+.prev,
+.next {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  padding: 0 8px;
+  display: block;
+  cursor: pointer;
+  background: none;
+  border: none;
+}
+
+.next {
+  right: 0;
+}
+
+.prev {
+  left: 0;
+}
+
+.next svg,
+.prev svg {
+  width: 50px;
+}
+
+.slider_dots {
+  position: absolute;
+  bottom: 0;
+  margin: 0;
+  padding: 0;
+  text-align: center; /* center the dots */
+  width: 100%; /* full width of the slider */
+  display: flex;
+  justify-content: center;
+}
+.slider_dots li {
+  list-style-type: none;
+  line-height: 0;
+}
+.slider_dots button {
+  position: relative;
+  border: none;
+  background-color: transparent;
+  appearance: none;
+  padding: 28px 16px;
+  cursor: pointer;
+
+  /* suppress pagination numbers */
+  font-size: 0;
+  line-height: 0;
+
+}
+.slider_dots button::before {
+  content: '';
+  display: block;
+  background-color: transparent;
+  border: none;
+  box-shadow: 0 0 0px 1px white, 0 0 0 2px black;
+  border-radius: 50%;
+  height: 13px;
+  width: 13px;
+
+  /* center within the touch target */
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+}
+.slider_dots .active button::before {
+  background-color: white;
+}

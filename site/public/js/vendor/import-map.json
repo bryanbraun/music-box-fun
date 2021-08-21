@@ -3,6 +3,7 @@
     "anchor-js": "./anchor-js.js",
     "classnames": "./classnames.js",
     "json-url": "./json-url.js",
+    "lory.js": "./loryjs.js",
     "tone": "./tone.js"
   }
 }
