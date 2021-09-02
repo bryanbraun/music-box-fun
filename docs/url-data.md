@@ -24,7 +24,7 @@ I tested several algorithms early in the project and here are the results I got:
 
 LZMA was consistently better for all objects large enough to represent songs.
 
-Making changes to the state object we are encoding/decoding could affect compatibilty, as older songs won't include those changes. *Here's what backwards-compatibility looks like for some common state operations*:
+Making changes to the state object we are encoding/decoding could affect compatibility, as older songs won't include those changes. *Here's what backwards-compatibility looks like for some common state operations*:
 
 - Removing an existing key and value from our song state, with code that references it: **Safe**
 - Adding a new key and value to our song state, with code that references it: **Safe, if defaults are provided**
@@ -33,6 +33,8 @@ Making changes to the state object we are encoding/decoding could affect compati
 - Changing the datatype of a value in our song state (like CSV -> Array): **Unsafe**
 - Changing the listed order of keys in our song state: **Safe**
 - Making changes to our app state object, or code that references it: **Safe**
+
+In general, you just have to ask yourself, "If the URL gives me an old state object, can my new version of my app load it properly?"
 
 ### Storage
 
