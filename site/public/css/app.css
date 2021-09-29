@@ -618,6 +618,7 @@ a.twitter-timeline {
   position: fixed;
   top: 0;
   right: 0;
+  z-index: var(--z-nav-icons);
 }
 .controls-icon > button {
   border: none;

@@ -64,6 +64,7 @@
   --z-music-box-note-header: 6;
   --z-music-box-playhead: 8;
   /* 10-100: Overlays */
+  --z-nav-icons: 10;
   --z-controls: 10;
   --z-share-box: 15;
   --z-floating-actions: 15;
