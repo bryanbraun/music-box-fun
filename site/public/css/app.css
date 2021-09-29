@@ -326,8 +326,13 @@ a.twitter-timeline {
 
 .song-title {
   padding: 2rem 0 2.5rem;
+  text-align: center; /* centers the loading indicator */
 }
-
+/* loading indicator */
+.song-title img {
+  width: 20px;
+  height: 19px;
+}
 .song-title input {
   text-align: center;
   border-left: 0;
