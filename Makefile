@@ -30,6 +30,11 @@ test: dev-site
 # I'm using "docker context use" on the migrate command because doing so fixed some errors.
 # I had been using "-c", but it seemed like some parts of the command weren't executing on
 # the remote host, resulting in some container IDs not being being found. This fixed it.
+#
+# Note: last time, I noticed that this "deploy" would build, stop, migrate, and restart the
+# remote containers, but it didn't actually transfer my local image to the remote server.
+# So last time, I did that manually (following these steps: https://stackoverflow.com/a/23938978/1154642),
+# and then ran deploy-api (which worked). I should probably automate this in the near future.
 deploy-api:
 	docker-compose -c prod -f api/docker-compose.prod.yml build
 	@echo "### Stopping Production Containers ###"

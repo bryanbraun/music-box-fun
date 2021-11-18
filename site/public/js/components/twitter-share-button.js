@@ -5,7 +5,7 @@ import { musicBoxStore } from '../music-box-store.js';
 // powered by the same Twitter Javascript that loads the timeline. It detects the href value of
 // my button and adds an event listener to the document.
 export class TwitterShareButton extends MBComponent {
-  constructor(props) {
+  constructor() {
     super({
       element: document.querySelector('#twitter-share')
     });
