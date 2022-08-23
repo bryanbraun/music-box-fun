@@ -218,8 +218,11 @@ a.twitter-timeline {
   */
   flex: 1 1 0px !important;
   min-height: 0 !important;
+  border-top: 1px solid var(--mb-gray-20);
   overflow: auto;
-  box-shadow: inset 0px 6px 7px -11px #444, inset 0px -6px 7px -11px;
+}
+.twitter-timeline-rendered > iframe {
+  margin-top: -1px; /* use the parent's top border line */
 }
 /* Once the timeline is rendering we can hide the placeholder link */
 .twitter-timeline-rendered + .twitter-timeline {
