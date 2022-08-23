@@ -15,7 +15,7 @@
     "postinstall": "npm run build"
   },
   "devDependencies": {
-    "cypress": "^5.2.0",
+    "cypress": "^10.6.0",
     "esinstall": "^1.1.7"
   },
   "dependencies": {
