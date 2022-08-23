@@ -216,9 +216,14 @@ a.twitter-timeline {
      the sidebar. Setting min-height:0 reduces the min-height from
      200px to 150px, but it won't go any smaller, for some reason.
   */
-  flex: 1 1 100% !important;
+  flex: 1 1 0px !important;
   min-height: 0 !important;
+  overflow: auto;
   box-shadow: inset 0px 6px 7px -11px #444, inset 0px -6px 7px -11px;
+}
+/* Once the timeline is rendering we can hide the placeholder link */
+.twitter-timeline-rendered + .twitter-timeline {
+  display: none;
 }
 
 .library-songs {

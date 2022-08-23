@@ -15,7 +15,6 @@ export class BrowseTabSharedSongs extends MBComponent {
       <a
         class="twitter-timeline"
         data-width="232"
-        data-height="100"
         data-dnt="true"
         data-chrome="noheader nofooter transparent"
         href="https://twitter.com/MusicBoxFun?ref_src=twsrc%5Etfw"
@@ -28,7 +27,7 @@ export class BrowseTabSharedSongs extends MBComponent {
     // and https://developer.twitter.com/en/docs/twitter-for-websites/javascript-api/guides/javascript-api .
     //
     // Note: we bind 'this' so we can call this.props.id from within the callback.
-    window.twttr.ready((function(twttr) {
+    window.twttr.ready((function (twttr) {
       twttr.widgets.load(document.getElementById(this.props.id));
     }).bind(this));
   }
