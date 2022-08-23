@@ -620,6 +620,9 @@ a.twitter-timeline {
   top: -2px;
   left: -8px;
 }
+.footnote a {
+  color: var(--mb-gray-50);
+}
 .footnote--hidden {
   display: none;
 }
