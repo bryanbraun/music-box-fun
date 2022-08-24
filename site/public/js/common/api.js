@@ -1,7 +1,6 @@
 export const apiHostname =
-   (location.hostname === 'musicboxfun.com') ?
-  'https://api.musicboxfun.com' :
-  `http://${location.hostname}:3000`;
+  (location.hostname === 'localhost') ?
+    `http://localhost:3000` : `https://api.${location.hostname}`;
 
 
 /**

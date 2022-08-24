@@ -18,7 +18,9 @@ function hasASongUrl(urls) {
     return false;
   }
 
-  const songUrlIndex = urls.findIndex(el => el.expanded_url.includes('musicboxfun.com/#'));
+  const validUrlPatterns = ['musicboxfun.com/#', 'musicbox.fun/#'];
+
+  const songUrlIndex = urls.findIndex(el => validUrlPatterns.some(urlPattern => el.expanded_url.includes(urlPattern)));
 
   if (songUrlIndex === -1) {
     return false;
@@ -29,7 +31,7 @@ function hasASongUrl(urls) {
 
 function runBot() {
   initialize();
-  const stream = T.stream('statuses/filter', { track: ['musicboxfun com'] });
+  const stream = T.stream('statuses/filter', { track: ['musicboxfun com,musicbox fun'] });
 
   console.log('the bot is running');
 
@@ -41,7 +43,7 @@ function runBot() {
       return;
     }
 
-    console.log('Tweet with musicboxfun.com URL detected:', id);
+    console.log('Tweet with musicboxfun.com / musicbox.fun URL detected:', id);
 
     // Look up this tweet ID, so we can confirm that a song is being shared.
     // This requires a call to the JSON API b/c the streaming API doesn't currently

@@ -16,7 +16,7 @@ The `songTitle` is the only property that accepts arbitrary user input. These ti
 I tested several algorithms early in the project and here are the results I got:
 
 |                             | LZW | LZMA | LZSTRING | PACK |
-|-----------------------------|-----|------|----------|------|
+| --------------------------- | --- | ---- | -------- | ---- |
 | Small JS Object (50 bytes)  | 56  | 80   | 75       | 48   |
 | Empty Song (177 bytes)      | 142 | 128  | 142      | 139  |
 | Mid-length Song (441 bytes) | 471 | 371  | 390      | 399  |
@@ -40,9 +40,9 @@ In general, you just have to ask yourself, "If the URL gives me an old state obj
 
 Data is stored as a URL fragment, like this:
 ```
-https://musicboxfun.com/#0XQAAAAJkAAAAAAAAAABBqkpm86JnXhcgipzr6UI7GqNSYF...
-                         ||
-    version number ──────┘└───── Beginning of encoded song data
+https://musicbox.fun/#0XQAAAAJkAAAAAAAAAABBqkpm86JnXhcgipzr6UI7GqNSYF...
+                      ||
+    version number ───┘└───── Beginning of encoded song data
 ```
 
 The version number is intended to be a single character that can be bumped from 0-9 (then a-z, and then A-Z), whenever our URL Encoding/Storage system needs to change. This way, we can continue to support older songs.
