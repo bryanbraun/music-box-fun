@@ -1,4 +1,4 @@
-FROM node:12.12.0
+FROM node:18.7.0
 
 # Create a folder for our bot inside the container
 RUN mkdir -p /root/bot

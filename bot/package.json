@@ -6,13 +6,13 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "start": "node --experimental-modules index.js"
+    "start": "node index.js"
   },
   "dependencies": {
     "twit": "2.2.11",
-    "dotenv": "8.2.0"
+    "dotenv": "16.0.1"
   },
   "engines": {
-    "node": ">=12.0.0"
+    "node": ">=18.0.0"
   }
 }
