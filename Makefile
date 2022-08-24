@@ -27,24 +27,18 @@ stop-bot:
 test: dev-site
 	@npm run test --prefix site
 
-# I'm using "docker context use" on the migrate command because doing so fixed some errors.
-# I had been using "-c", but it seemed like some parts of the command weren't executing on
-# the remote host, resulting in some container IDs not being being found. This fixed it.
-#
-# Note: last time, I noticed that this "deploy" would build, stop, migrate, and restart the
-# remote containers, but it didn't actually transfer my local image to the remote server.
-# So last time, I did that manually (following these steps: https://stackoverflow.com/a/23938978/1154642),
-# and then ran deploy-api (which worked). I should probably automate this in the near future.
-#
-# New note: I tried it again, and it worked like a charm, so maybe it's fine. ¯\_(ツ)_/¯
+# I'm using "docker context use prod" on the docker-compose commands because doing so fixed some
+# errors. I had been using "-c", but it seemed like some parts of the command weren't executing on
+# the remote host, resulting in containers not being transferred to prod and container IDs not being
+# found on prod. This fixed it (though it could probably be simplified)
 deploy-api:
-	docker-compose -c prod -f api/docker-compose.prod.yml build
+	docker context use prod && docker-compose -f api/docker-compose.prod.yml build && docker context use default
 	@echo "### Stopping Production Containers ###"
-	@docker-compose -c prod -f api/docker-compose.prod.yml stop
+	@docker context use prod && docker-compose -f api/docker-compose.prod.yml stop && docker context use default
 	@echo "### Running Migrations ###"
 	@docker context use prod && docker-compose -f api/docker-compose.prod.yml run --rm --service-ports api rails db:migrate && docker context use default
 	@echo "### Starting Production Containers ###"
-	docker-compose -c prod -f api/docker-compose.prod.yml up -d
+	docker context use prod && docker-compose -f api/docker-compose.prod.yml up -d && docker context use default
 
 deploy-bot:
 	docker -c prod build bot/ -t musicboxbot
