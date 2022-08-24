@@ -35,6 +35,8 @@ test: dev-site
 # remote containers, but it didn't actually transfer my local image to the remote server.
 # So last time, I did that manually (following these steps: https://stackoverflow.com/a/23938978/1154642),
 # and then ran deploy-api (which worked). I should probably automate this in the near future.
+#
+# New note: I tried it again, and it worked like a charm, so maybe it's fine. ¯\_(ツ)_/¯
 deploy-api:
 	docker-compose -c prod -f api/docker-compose.prod.yml build
 	@echo "### Stopping Production Containers ###"
