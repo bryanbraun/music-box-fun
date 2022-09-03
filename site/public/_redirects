@@ -1,4 +1,4 @@
 # Domain-level redirects. For details, see:
 # https://docs.netlify.com/routing/redirects/redirect-options/#domain-level-redirects
 
-https://musicboxfun.com/* https://musicbox.fun/:splat 301
+https://musicboxfun.com/* https://musicbox.fun/:splat 301!
