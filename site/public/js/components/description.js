@@ -11,7 +11,7 @@ export class Description extends MBComponent {
     this.boxLinks = {
       '15': 'https://amzn.to/3jPCAMG',
       '20': 'https://www.grand-illusions.com/20-note-music-box-set-c2x21140292',
-      '30': 'https://amzn.to/3xFXLWg'
+      '30': 'https://amzn.com/dp/B0774TSP3T/'
     };
   }
 
