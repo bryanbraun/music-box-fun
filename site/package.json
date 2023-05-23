@@ -11,7 +11,7 @@
     "test": "cypress run",
     "test-prod": "cypress run --config baseUrl=https://musicboxfun.com",
     "test-visual": "cypress open",
-    "build": "node --experimental-modules build-modules.mjs",
+    "build": "node build-modules.mjs",
     "postinstall": "npm run build"
   },
   "devDependencies": {

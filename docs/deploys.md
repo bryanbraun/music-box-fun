@@ -23,7 +23,6 @@ Now, we can use the `-c prod` argument to execute any docker or docker-compose c
 Deploy commands can be found in the Makefile, and are executed from the project root. Examples include:
 
 - `make deploy-api` - Builds an image based on the state of my local `api` codebase and deploys it to prod.
-- `make deploy-bot` - Builds an image based on the state of my local `bot` codebase and deploys it to prod.
 
 The frontend code is currently automatically deployed when the repo is pushed to Github.
 
