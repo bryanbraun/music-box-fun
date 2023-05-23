@@ -15,7 +15,7 @@ export const state = {
     isPlaying: false,
     audioDisabledMessageStatus: 'hidden',
     offCanvasSidebarFocused: 'none',
-    activeTab: 'shared-songs',
+    activeTab: 'song-library',
     songLibraryQuery: ''
   },
 

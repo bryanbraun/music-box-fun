@@ -1,9 +1,7 @@
 import { MBComponent } from '../music-box-component.js';
 import { musicBoxStore } from '../music-box-store.js';
 
-// This uses the Twitter intents API to create a customized twitter share button. The pop-up is
-// powered by the same Twitter Javascript that loads the timeline. It detects the href value of
-// my button and adds an event listener to the document.
+// This uses the Twitter intents API to create a customized twitter share button.
 export class TwitterShareButton extends MBComponent {
   constructor() {
     super({
@@ -17,14 +15,14 @@ export class TwitterShareButton extends MBComponent {
   // recursively decodes the string first, to ensure we aren't double encoding. See the original context:
   // https://github.com/kni-labs/rrssb/blob/270f9273321c86c8d7193a7978727bad3d81ff15/js/rrssb.js#L106
   encodeString(string) {
-		if (string !== undefined && string !== null) {
-			if (string.match(/%[0-9a-f]{2}/i) !== null) {
-				string = decodeURIComponent(string);
-				encodeString(string);
-			} else {
-				return encodeURIComponent(string);
-			}
-		}
+    if (string !== undefined && string !== null) {
+      if (string.match(/%[0-9a-f]{2}/i) !== null) {
+        string = decodeURIComponent(string);
+        encodeString(string);
+      } else {
+        return encodeURIComponent(string);
+      }
+    }
   }
 
   updateShareMetadata(event) {

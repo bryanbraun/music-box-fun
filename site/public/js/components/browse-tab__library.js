@@ -4,6 +4,13 @@ import { escapeHtml, escapeAndHighlightHtml } from '../utils/escapeHtml.js';
 import { jumpToTopIfASongWasClicked } from '../common/common-event-handlers.js';
 import { apiHostname, request } from '../common/api.js';
 
+export function renderSongCreator(song) {
+  let songCreator = song.creator ? escapeHtml(song.creator) : 'anonymous';
+  return !song.creator_url ?
+    `<span class="library-song__creator">${songCreator}</span>` :
+    `<a class="library-song__creator" target="_blank" href="${song.creator_url}">${songCreator}</a>`;
+};
+
 export class BrowseTabSongLibrary extends MBComponent {
   constructor(props) {
     super({
@@ -43,20 +50,13 @@ export class BrowseTabSongLibrary extends MBComponent {
     event.currentTarget.href = newHref;
   }
 
-  renderSongCreator(song) {
-    let songCreator = song.creator ? escapeHtml(song.creator) : 'anonymous';
-    return !song.creator_url ?
-      `<span class="library-song__creator">${songCreator}</span>` :
-      `<a class="library-song__creator" target="_blank" href="${song.creator_url}">${songCreator}</a>`;
-  }
-
   renderHeader(songLibraryQuery) {
     return songLibraryQuery
       ?
-        `<button id="back-to-browse-link" class="browse__back-link"><span class="back-arrow">«</span>Back to Browse</button>
+      `<button id="back-to-browse-link" class="browse__back-link"><span class="back-arrow">«</span>Back to Browse</button>
          <h2 class="browse__title">Search all "${escapeHtml(songLibraryQuery)}"</h2>`
       :
-        `<h2 class="browse__title">Browse Song Library</h2>`
+      `<h2 class="browse__title">Browse Song Library</h2>`
   }
 
   async render() {
@@ -70,7 +70,7 @@ export class BrowseTabSongLibrary extends MBComponent {
             <ul id="library-songs" class="library-songs">
               ${songsData.data.map(song => (`
                 <li class="library-song">
-                  <a href="#${song.data}">${escapeAndHighlightHtml(song.pg_search_highlight || song.title)}</a> by ${this.renderSongCreator(song)}
+                  <a href="#${song.data}">${escapeAndHighlightHtml(song.pg_search_highlight || song.title)}</a> by ${renderSongCreator(song)}
                 </li>
               `)).join('')}
             </ul>

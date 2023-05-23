@@ -9,20 +9,12 @@ dev-site:
 	@nohup caddy start --config site/Caddyfile &
 	@echo "Server started at: https://localhost"
 
-dev-bot:
-	docker build bot/ -t music-box-bot
-	docker stop bot || true && docker rm bot || true
-	docker run -d --name bot music-box-bot:latest
-
 stop-api:
 	@docker-compose -f api/docker-compose.yml stop
 
 stop-site:
 	@caddy stop;
 	@echo "Server stopped (at https://localhost)"
-
-stop-bot:
-	docker stop bot || true && docker rm bot || true
 
 test: dev-site
 	@npm run test --prefix site
@@ -40,13 +32,8 @@ deploy-api:
 	@echo "### Starting Production Containers ###"
 	docker context use prod && docker-compose -f api/docker-compose.prod.yml up -d && docker context use default
 
-deploy-bot:
-	docker -c prod build bot/ -t musicboxbot
-	docker -c prod stop bot || true && docker -c prod rm bot || true
-	docker -c prod run -d --name bot --restart always musicboxbot:latest
-
 deploy-site:
 	@echo "todo: add a command for deploying the frontend site, if that would be useful"
 
 deploy-all:
-	@echo "todo: add a command for deploying the bot, api, and site all at once, if that would be useful"
+	@echo "todo: add a command for deploying the api and site, if that would be useful"

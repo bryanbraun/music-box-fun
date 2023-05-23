@@ -1,6 +1,6 @@
 import { MBComponent } from '../music-box-component.js';
 import { musicBoxStore } from '../music-box-store.js';
-import { BrowseTabSharedSongs } from './browse-tab__shared.js';
+import { BrowseTabFeaturedSongs } from './browse-tab__featured.js';
 import { BrowseTabSongLibrary } from './browse-tab__library.js';
 
 export class BrowseTabs extends MBComponent {
@@ -13,15 +13,15 @@ export class BrowseTabs extends MBComponent {
     // Static nav data, that we'll use to render our tabs and content
     this.navData = [
       {
-        title: "Shared Songs",
-        id: "shared-songs",
-        component: BrowseTabSharedSongs
-      },
-      {
         title: "Song Library",
         id: "song-library",
         component: BrowseTabSongLibrary
-      }
+      },
+      {
+        title: "Featured Songs",
+        id: "featured-songs",
+        component: BrowseTabFeaturedSongs
+      },
     ];
 
     this.handleTabClick = this.handleTabClick.bind(this);

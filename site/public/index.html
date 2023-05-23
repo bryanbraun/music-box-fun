@@ -94,16 +94,18 @@
       <nav id="browse__tabs" class="browse__tabs">
         <ul>
           <li class="browse__tab is-active">
-            <button>Shared Songs</a>
+            <button>Song Library</a>
           </li>
           <li class="browse__tab">
-            <button>Song Library</a>
+            <button>Featured Songs</a>
           </li>
         </ul>
       </nav>
 
       <div id="browse__content" class="browse__content">
-        <h2 class="browse__title">Shared Songs on Twitter</h2>
+        <h2 class="browse__title">Browse Song Library</h2>
+        <div class="browse__songs"></div>
+        <p class="library-note">To add your song to the library, <a id="library-add-mailto" href="mailto:bbraun7@gmail.com?subject=Add%20music%20box%20song%20to%20library" target="_blank">email it to me</a>.</p>
       </div>
     </div>
     <div class="mini-footer">
@@ -315,29 +317,6 @@
       <div id="footnote"></div>
     </div>
   </main>
-  <script>
-    // Load Twitter Javascript for the embedded timeline and tweet button.
-    // Include this snippet before any other JavaScript on your page that
-    // may depend on the twttr.ready asynchronous function queue.
-    // See https://developer.twitter.com/en/docs/twitter-for-websites/javascript-api/guides/set-up-twitter-for-websites
-    window.twttr = (function (d, s, id) {
-      var js, fjs = d.getElementsByTagName(s)[0],
-        t = window.twttr || {};
-      if (d.getElementById(id)) return t;
-      js = d.createElement(s);
-      js.id = id;
-      js.src = "https://platform.twitter.com/widgets.js";
-      fjs.parentNode.insertBefore(js, fjs);
-
-      t._e = [];
-      t.ready = function (f) {
-        t._e.push(f);
-      };
-
-      return t;
-    }(document, "script", "twitter-wjs"));
-  </script>
-
   <script type="module" src="/js/app-entry.js"></script>
 </body>
 

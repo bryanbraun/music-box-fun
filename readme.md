@@ -7,11 +7,10 @@ For the background on this project, see: [https://www.bryanbraun.com/2019/11/02/
 
 ## Repo Overview
 
-This repo contains three services, each in their own directory:
+This repo contains two services, each in their own directory:
 
 - `site` - [A static frontend](site), written in plain JavaScript
 - `api` - [A backend API](api), using Rails::API and Postgres
-- `bot` - [A twitter bot](bot), written in NodeJS
 
 Each service has a README. There are also [some project-wide docs here](/docs).
 

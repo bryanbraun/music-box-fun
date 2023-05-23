@@ -7,7 +7,7 @@ export class Tempo extends MBComponent {
   constructor() {
     super({
       // A workaround that allows rerenders for new songs, without needing to make this a controlled component.
-      // (it would be more accurate to use songState.songTitle, but that would "control" these components)
+      // (it would be more accurate to use songState.tempo, but that would "control" these components)
       renderTrigger: 'songState',
 
       element: document.querySelector('#tempo'),
