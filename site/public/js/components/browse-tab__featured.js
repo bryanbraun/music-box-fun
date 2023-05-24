@@ -1,6 +1,5 @@
 import { MBComponent } from '../music-box-component.js';
 import { renderSongCreator } from './browse-tab__library.js';
-import { musicBoxStore } from '../music-box-store.js';
 
 export class BrowseTabFeaturedSongs extends MBComponent {
   constructor(props) {
@@ -130,6 +129,12 @@ export class BrowseTabFeaturedSongs extends MBComponent {
         data: "1XQAAAAIpAwAAAAAAAABBqEgrk25mdXzARVbtapZW986DZZtYttx8ir-MGC-6SqlbTq-nmMZXDGCZ1JZTuc1NVu6w_cEo_9ZLcmx4hmiThuuGSUAhUEd8wN2vXChn-fdBCIytdXeFGjdFR3uTw3mxaoy47vOphKkorBbx1hRNqwUCVPWRsGydrd9NdHOqfoR1ykorsyeTN9wK8jPRfWbomf2zU92OGRd0apH_AlHZEVUWFAUIzq3RAPRNN3nnPosc_WmYNnalKVBO22opZWZ_GBA8Zi5JSTxfPnoJtu_377yOY7noL_u2tLGLQIu89jC8Yf5xzGEC3U8PE79of_L-lfRrTPbLf2sSUKs3NpN__I8rOm4DtVPOpFftiSLekge9jTM6xQIwNm14qNQFDQ8Td9OjrPzui-LQWGt8OPSKTC3iDC0H4u03wWTnAZ5EPKsHecTFjnBRhNR4PCbwojDL_pWB7r7vPysk024rGtzQ-vsXeALWQucoq5deaftQmcoJddIrOKP36A54EneayRydkfZe027ykYGPzNCxdqb3ZJ4w_z6ivrknLmSOobMKp0GKOmLiftbpBitec5fByavTpHJtchIteuNACQj1m_tH1MFBKsZYyFmCLlR7mmsHhTjDURzM-hwrjqBEfdhqBKKDqH_Qu7lg_yoZeAA",
         creator: "mrs. mochi",
         creator_url: ""
+      },
+      {
+        title: "Bicycle Theme (Pokemon Red & Blue)",
+        data: "1XQAAAAJqAgAAAAAAAABBqEgtkRmZqLo7R713RjtaTATitVgKtAGUZKMmocqGJKIMWiXzkOssDUNcmBwmZU7KR8RXbtodywEAIaLcbI5ku2Cv8aorq0d9lqYlpKV2fpXMAaIkrIuWk98Zb0DgWyS8fly7LpnM0zRGd9ByLjWXoDal_BCuIgl_a2-rq3w0wuDuzYMhhknBWR90o4rMm2EqjtgnrmvSJymrTR1OLcjMXnmDeo_vL0ZPyEYV95NueC2_UBlc6zIwTaGSY0Nc90-pNrNJ30XiFwy8ShCfxmzivwCMmWvw99K8etVvUQYXaPsZMHxhNxJiETEZ8USxRxqlXRIE90bxBUgL5X7gnqzsBuWuBecJ6_HxOojCfR4aFSyshWZch6JPz46Xmorgv7gbspFByglbzj9_7Vhe49ig6PgdiYe55dPy3lAq55Y55YfZKWIuS-p8wYGWaTDHPEfdlr1nJ2cG2-W5I58LshaWZOyNHiPJZItxFvFc53uUhH8hFsIw5C2K6N-dPKyRJWFiQ2ivCvdEiKHcp8Fmn0Nc4xRmPeUW62GydzH_xLDBhQ",
+        creator: "@StevenBraun0",
+        creator_url: "https://twitter.com/StevenBraun0"
       }
     ];
   }
