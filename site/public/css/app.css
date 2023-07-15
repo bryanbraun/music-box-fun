@@ -204,6 +204,13 @@
   font-style: italic;
   color: var(--error-text-red);
 }
+.library-loader {
+  text-align: center;
+}
+.library-loader img {
+  width: 20px;
+  height: 19px;
+}
 
 .library-songs {
   font-size: 13px;

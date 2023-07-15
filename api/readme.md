@@ -4,6 +4,85 @@ The Music Box Fun backend API is built with Rails in API-only mode.
 
 It's built on docker-compose, which runs Rails in one container and Postgres in another.
 
+## Endpoints
+
+<details>
+ <summary><code>GET</code> <code><b>/</b></code> <code>(api status)</code></summary>
+
+### Parameters
+
+none
+
+### Responses
+
+> | http code     | content-type         | response                |
+> |---------------|----------------------|-------------------------|
+> | `200`         | `application/json`   | `{ status: "online" }` |
+
+### Example cURL
+
+> ```bash
+>  curl -X GET -H "Content-Type: application/json" http://localhost:3000
+> ```
+
+</details>
+
+<details>
+ <summary><code>GET</code> <code><b>/v1/songs</b></code> <code>(get songs)</code></summary>
+
+### Parameters
+
+> | name     |  type     | data type | description                                                                 |
+> |----------|-----------|-----------|-----------------------------------------------------------------------------|
+> | `offset` | optional  | number    | The results offset by a specific number. Used for pagination. Default: 0    |
+> | `limit`  | optional  | number    | An upper limit for how many results should be returned. Default: 150        |
+> | `q`      | optional  | string    | A search query string. Can be used for both full results and autocomplete.  |
+
+### Responses
+
+#### 200
+
+```json
+{
+  "songs": [
+    {
+      "title": "Umi No Mieru Machi",
+      "data": "0XQAAAAJ2BAAAAAAAAABBqEgrIsPV…",
+      "creator": "@BryanEBraun",
+      "creator_url": "https://twitter.com/BryanEBraun"
+    },
+    ⋮
+  ],
+  "meta": {
+    "total": 200,
+    "offset": 0,
+    "limit": 150,
+    "next": "/v1/songs?offset=150&limit=150"
+  }
+}
+```
+
+
+### Example cURL
+
+Basic
+
+> ```bash
+>  curl -X GET -H "Content-Type: application/json" http://localhost:3000/v1/songs
+> ```
+
+With search query:
+> ```bash
+>  curl -X GET -H "Content-Type: application/json" http://localhost:3000/v1/songs?q=mario
+> ```
+
+With offset / limit:
+> ```bash
+>  curl -X GET -H "Content-Type: application/json" http://localhost:3000/v1/songs?offset=20&limit=10
+> ```
+
+</details>
+
 ## Local setup
 
 1. Pull this repo down to your computer.

@@ -47,13 +47,13 @@ export class Search extends MBComponent {
     this.element.querySelector('#search__field').focus();
 
     try {
-      searchResults = await request(`${apiHostname}/v1/songs?q=${queryString}`);
-    } catch(error) {
+      searchResults = await request(`${apiHostname}/v1/songs?q=${queryString}&limit=50`);
+    } catch (error) {
       console.error(error);
-      searchResults = [];
+      searchResults = { songs: [] };
     }
 
-    this.setState({ searchResults });
+    this.setState({ searchResults: searchResults.songs });
 
     this.element.querySelector('#search__field').focus();
   }

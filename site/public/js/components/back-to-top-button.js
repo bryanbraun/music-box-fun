@@ -15,7 +15,7 @@ export class BackToTopButton extends MBComponent {
         const buttonEl = this.element.querySelector('.back-to-top-button');
         if (entry.isIntersecting) {
           buttonEl.classList.add('is-transitioning');
-			    buttonEl.classList.add('is-hidden');
+          buttonEl.classList.add('is-hidden');
         } else {
           buttonEl.classList.add('is-transitioning');
 
@@ -29,7 +29,7 @@ export class BackToTopButton extends MBComponent {
     });
   }
 
-  onClick(event) {
+  onClick() {
     if (musicBoxStore.state.appState.isPlaying) {
       musicBoxStore.setState('appState.isPlaying', false);
       // This timeout gives the page-scroller's requestAnimationFrame enough time

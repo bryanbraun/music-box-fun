@@ -82,6 +82,9 @@ describe('Song edits', () => {
         }
       });
 
+      // Wait for the sampler to load before clicking, to ensure triggerAttackRelease is called.
+      cy.get('[data-testid="sampler-loaded"]');
+
       const note1Ypos = 56;
 
       cy.get('#C5').click(5, note1Ypos);

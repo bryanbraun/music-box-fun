@@ -46,7 +46,7 @@ export const audioPlayer = {
 
     // The "Part" class is built on a base-class that references Tone's default audioContext.
     // Thus, the Transport is able to see the events in this "song" when it's time to play the timeline.
-    const song = new Part(function(time, note) {
+    new Part(function (time, note) {
       sampler.triggerAttackRelease(note, '8n', time);
     }, sequence).start(0);
   },

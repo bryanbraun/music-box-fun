@@ -1,5 +1,5 @@
 import { musicBoxStore } from '../music-box-store.js';
-import { sampler } from './sampler.js';
+import { sampler, isSamplerLoaded } from './sampler.js';
 import { getContext } from '../vendor/tone.js';
 
 // We had to go with the revealing module pattern here. I tried a plain
@@ -55,7 +55,7 @@ export const playheadObserver = (function () {
         return;
       }
 
-      sampler.triggerAttackRelease(entry.target.parentElement.id, '8n');
+      isSamplerLoaded && sampler.triggerAttackRelease(entry.target.parentElement.id, '8n');
     });
   }
 

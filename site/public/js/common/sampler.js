@@ -1,6 +1,7 @@
 import { Sampler } from '../vendor/tone.js';
 
 let sampler;
+let isSamplerLoaded = false;
 
 function setupSampler() {
   // ToneJS can extrapolate other values on the scale, given a handful
@@ -17,7 +18,14 @@ function setupSampler() {
     'E6': '/audio/E6.mp3',
     'G6': '/audio/G6.mp3'
   }, {
-    onload: () => console.log(), // for future debugging.
+    onload: () => {
+      // We use this testid to wait for the sampler to load before
+      // triggering sampler usage in Cypress tests. In real usage,
+      // we check isSamplerLoaded and simply don't play the note if
+      // the sampler hasn't loaded yet.
+      document.body.setAttribute('data-testid', 'sampler-loaded');
+      isSamplerLoaded = true;
+    },
     release: 4
   });
 
@@ -27,4 +35,5 @@ function setupSampler() {
 export {
   setupSampler,
   sampler,
+  isSamplerLoaded,
 }

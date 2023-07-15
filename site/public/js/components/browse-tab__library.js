@@ -18,29 +18,74 @@ export class BrowseTabSongLibrary extends MBComponent {
       element: document.getElementById(props.id),
       renderTrigger: 'appState.songLibraryQuery'
     });
+
+    this.handleBrowseSongsScroll = this.handleBrowseSongsScroll.bind(this);
+    this.fetchSongs = this.fetchSongs.bind(this);
+    this.nextPageUrl = null;
+    this.pendingFetch = false;
   }
 
-  async fetchSongs() {
-    const searchQuery = musicBoxStore.state.appState.songLibraryQuery;
-    const params = searchQuery ? `?q=${searchQuery}&searchAll=true` : '';
-    const songsData = {
+  async fetchSongs(apiPath) {
+    let songsData = {
       isError: false,
-      data: []
+      songs: [],
+      meta: {}
     };
 
     try {
-      songsData.data = await request(`${apiHostname}/v1/songs${params}`);
+      this.pendingFetch = true;
+      songsData = {
+        ...songsData,
+        ...(await request(`${apiHostname}${apiPath}`))
+      };
     } catch (error) {
       console.error(error); // Log the error without halting execution
       songsData.isError = true;
+    } finally {
+      this.pendingFetch = false;
     }
 
     return songsData;
   }
 
-  handleBackToBrowseClick(event) {
+  handleBackToBrowseClick() {
     musicBoxStore.setState('appState.songLibraryQuery', '');
   }
+
+  // Scroll handler for loading more songs (infinite scroll).
+  // This is only attached to the listener when we know there are more songs to load.
+  async handleBrowseSongsScroll(event) {
+    const SCROLL_THRESHOLD = 80;
+    const browseEl = event.currentTarget;
+    const scrollPercent = (browseEl.scrollTop / (browseEl.scrollHeight - browseEl.clientHeight)) * 100;
+
+    if (scrollPercent > SCROLL_THRESHOLD && !this.pendingFetch) {
+      const songsData = await this.fetchSongs(this.nextPageUrl);
+
+      if (!songsData.isError) {
+        // In the case of a success, append songs to the song list.
+        const songsListEl = browseEl.querySelector('#library-songs');
+        songsListEl.insertAdjacentHTML("beforeend", this.renderSongs(songsData.songs));
+
+        const isAllSongsLoaded = !songsData.meta.next;
+
+        if (isAllSongsLoaded) {
+          browseEl.querySelector('#library-loader').remove();
+          browseEl.removeEventListener('scroll', this.handleBrowseSongsScroll);
+        } else {
+          this.nextPageUrl = songsData.meta.next;
+        }
+      } else {
+        // In the case of an error:
+        //   - Hide loading indicator to prevent confusion.
+        //   - Stop fetching more songs reduce API load.
+        // The error message will be logged to console as part of this.fetchSongs().
+        browseEl.querySelector('#library-loader').remove();
+        browseEl.removeEventListener('scroll', this.handleBrowseSongsScroll);
+      }
+    }
+  }
+
 
   updateMailtoLink(event) {
     const subject = 'Add%20music%20box%20song%20to%20library';
@@ -59,21 +104,30 @@ export class BrowseTabSongLibrary extends MBComponent {
       `<h2 class="browse__title">Browse Song Library</h2>`
   }
 
+  renderSongs(songs) {
+    return songs.map(song => (`
+      <li class="library-song">
+        <a href="#${song.data}">${escapeAndHighlightHtml(song.pg_search_highlight || song.title)}</a> by ${renderSongCreator(song)}
+      </li>
+    `)).join('');
+  }
+
   async render() {
-    const songsData = await this.fetchSongs();
+    const searchQuery = musicBoxStore.state.appState.songLibraryQuery;
+    const apiPath = `/v1/songs${searchQuery ? `?q=${searchQuery}` : ''}`;
+    const songsData = await this.fetchSongs(apiPath);
+
+    this.nextPageUrl = songsData.meta.next;
 
     this.element.innerHTML = `
       ${this.renderHeader(musicBoxStore.state.appState.songLibraryQuery)}
-      <div class="browse__songs">
+      <div id="browse__songs" class="browse__songs">
         ${songsData.isError ? '<p class="browse__error">A problem occurred while trying to get songs.</p>' : `
-          ${songsData.data.length === 0 ? '<p class="browse__no-results">No results found.</p>' : `
+          ${songsData.songs.length === 0 ? '<p class="browse__no-results">No results found.</p>' : `
             <ul id="library-songs" class="library-songs">
-              ${songsData.data.map(song => (`
-                <li class="library-song">
-                  <a href="#${song.data}">${escapeAndHighlightHtml(song.pg_search_highlight || song.title)}</a> by ${renderSongCreator(song)}
-                </li>
-              `)).join('')}
+              ${this.renderSongs(songsData.songs)}
             </ul>
+            ${songsData.meta.next ? '<div id="library-loader" class="library-loader"><img src="/images/loading.gif" /></div>' : ''}
           `}
         `}
       </div>
@@ -82,9 +136,11 @@ export class BrowseTabSongLibrary extends MBComponent {
 
     let backToBrowseLinkEl = this.element.querySelector('#back-to-browse-link');
     let songsListEl = this.element.querySelector('#library-songs');
+    let browseSongsEl = this.element.querySelector('#browse__songs');
 
     backToBrowseLinkEl && backToBrowseLinkEl.addEventListener('click', this.handleBackToBrowseClick);
     songsListEl && songsListEl.addEventListener('click', jumpToTopIfASongWasClicked);
+    this.nextPageUrl && browseSongsEl && browseSongsEl.addEventListener('scroll', this.handleBrowseSongsScroll);
 
     // We update the mailto link right as the user clicks the share button to ensure that it contains
     // the latest URL data. (If we try to instead rerender the link on "songState*" changes, the link

@@ -1,7 +1,7 @@
 import { MBComponent } from '../music-box-component.js';
 import { musicBoxStore } from '../music-box-store.js';
 import { playheadObserver } from '../common/playhead-observer.js';
-import { sampler } from '../common/sampler.js';
+import { sampler, isSamplerLoaded } from '../common/sampler.js';
 import { forEachNotes } from '../common/silent-notes.js';
 import { QUARTER_BAR_GAP, EIGHTH_BAR_GAP, SIXTEENTH_BAR_GAP, STANDARD_HOLE_RADIUS } from '../common/constants.js';
 
@@ -154,7 +154,7 @@ export class NoteLine extends MBComponent {
         .concat(storedYPos)
         .sort((a, b) => Number(a) - Number(b));
 
-    sampler.triggerAttackRelease(pitch, '8n');
+    isSamplerLoaded && sampler.triggerAttackRelease(pitch, '8n');
     musicBoxStore.setState(`songState.songData.${pitch}`, newPitchArray);
   }
 

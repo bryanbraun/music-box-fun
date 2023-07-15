@@ -7,7 +7,7 @@
 #   Character.create(name: 'Luke', movie: movies.first)
 
 if Song.count == 0
-  path = File.join(File.dirname(__FILE__), "seed_data/featured-songs.json")
+  path = File.join(File.dirname(__FILE__), "seed_data/seed-songs.json")
   records = JSON.parse(File.read(path))
   records.each do |record|
     Song.create!(record)
