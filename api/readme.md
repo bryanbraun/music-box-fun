@@ -15,15 +15,15 @@ none
 
 ### Responses
 
-> | http code     | content-type         | response                |
-> |---------------|----------------------|-------------------------|
-> | `200`         | `application/json`   | `{ status: "online" }` |
+| http code | content-type       | response               |
+| --------- | ------------------ | ---------------------- |
+| `200`     | `application/json` | `{ status: "online" }` |
 
 ### Example cURL
 
-> ```bash
->  curl -X GET -H "Content-Type: application/json" http://localhost:3000
-> ```
+```bash
+curl -X GET -H "Content-Type: application/json" http://localhost:3000
+```
 
 </details>
 
@@ -32,11 +32,11 @@ none
 
 ### Parameters
 
-> | name     |  type     | data type | description                                                                 |
-> |----------|-----------|-----------|-----------------------------------------------------------------------------|
-> | `offset` | optional  | number    | The results offset by a specific number. Used for pagination. Default: 0    |
-> | `limit`  | optional  | number    | An upper limit for how many results should be returned. Default: 150        |
-> | `q`      | optional  | string    | A search query string. Can be used for both full results and autocomplete.  |
+| name     | type     | data type | description                                                                |
+| -------- | -------- | --------- | -------------------------------------------------------------------------- |
+| `offset` | optional | number    | The results offset by a specific number. Used for pagination. Default: 0   |
+| `limit`  | optional | number    | An upper limit for how many results should be returned. Default: 150       |
+| `q`      | optional | string    | A search query string. Can be used for both full results and autocomplete. |
 
 ### Responses
 
@@ -67,19 +67,19 @@ none
 
 Basic
 
-> ```bash
->  curl -X GET -H "Content-Type: application/json" http://localhost:3000/v1/songs
-> ```
+```bash
+curl -X GET -H "Content-Type: application/json" http://localhost:3000/v1/songs
+```
 
 With search query:
-> ```bash
->  curl -X GET -H "Content-Type: application/json" http://localhost:3000/v1/songs?q=mario
-> ```
+```bash
+curl -X GET -H "Content-Type: application/json" http://localhost:3000/v1/songs?q=mario
+```
 
 With offset / limit:
-> ```bash
->  curl -X GET -H "Content-Type: application/json" http://localhost:3000/v1/songs?offset=20&limit=10
-> ```
+```bash
+curl -X GET -H "Content-Type: application/json" http://localhost:3000/v1/songs?offset=20&limit=10
+```
 
 </details>
 
