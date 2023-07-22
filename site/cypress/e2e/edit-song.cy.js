@@ -105,13 +105,28 @@ describe('Song edits', () => {
       cy.get(musicBoxTypeSelector).select('20');
 
       cy.get('#description').should('contain', '20');
-      cy.get('#C#5').should('not.exist');
       cy.window().its('confirm').should('not.be.called');
 
       cy.get(musicBoxTypeSelector).select('15');
 
       cy.get('#description').should('contain', '15');
       cy.get('#E6').should('not.exist');
+      cy.window().its('confirm').should('be.called');
+    });
+
+    it('should cancel changes, if the user declines to drop notes', () => {
+      // Initial state: a test song on a 20-note box, with a single A6 note.
+      cy.visit('/#1XQAAAAJJAAAAAAAAAABBqEgqBUnraBGNqmpkM3PqfbpxB332HFdCo9dbodRyWnxivdT3xWLcmuwTojP0K-TblVEGsmjSquByn_-Y0IAA', {
+        onBeforeLoad(windowObj) {
+          // See https://docs.cypress.io/api/commands/stub.html#Replace-built-in-window-methods-like-prompt
+          cy.stub(windowObj, 'confirm').returns(false)
+        }
+      });
+
+      cy.get(musicBoxTypeSelector).select('30');
+
+      cy.get('#description').should('contain', '20');
+      cy.get('#A6').should('exist');
       cy.window().its('confirm').should('be.called');
     });
   });

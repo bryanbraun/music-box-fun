@@ -19,27 +19,22 @@ export class MusicBoxTypeSelect extends MBComponent {
   }
 
   isDataLoss(currentBoxType, newBoxType) {
-    const isRemovingPitches = boxTypePitches[newBoxType].length < boxTypePitches[currentBoxType].length;
-    if (isRemovingPitches) {
-      const pitchesBeingRemoved = boxTypePitches[currentBoxType].filter(function(el) {
-        return !boxTypePitches[newBoxType].includes(el);
-      }, this);
+    const pitchesBeingRemoved = boxTypePitches[currentBoxType].filter(function (el) {
+      return !boxTypePitches[newBoxType].includes(el);
+    }, this);
 
-      const isRemovingPitchesWithNotes = pitchesBeingRemoved.some(function(el) {
-        return musicBoxStore.state.songState.songData[el].length !== 0;
-      });
+    const isRemovingPitchesWithNotes = pitchesBeingRemoved.some(function (el) {
+      return musicBoxStore.state.songState.songData[el].length !== 0;
+    });
 
-      return isRemovingPitchesWithNotes;
-    }
-
-    return false;
+    return isRemovingPitchesWithNotes;
   }
 
   // Build the new song data by copying over the note arrays for all the pitches we are
   // interested in. If the existing box didn't have a pitch, we copy over an empty array.
   buildNewSongData(newBoxType) {
     let newSongData = {};
-    boxTypePitches[newBoxType].forEach(function(el) {
+    boxTypePitches[newBoxType].forEach(function (el) {
       newSongData[el] = Array.from(musicBoxStore.state.songState.songData[el] || []);
     });
     return newSongData;
