@@ -9,8 +9,9 @@
   },
   "scripts": {
     "test": "cypress run",
-    "test-prod": "cypress run --config baseUrl=https://musicboxfun.com",
-    "test-visual": "cypress open",
+    "test:prod": "cypress run --config baseUrl=https://musicboxfun.com",
+    "test:static": "cypress run --spec 'cypress/e2e/*[!.api].cy.js'",
+    "test:visual": "cypress open",
     "build": "node build-modules.mjs",
     "postinstall": "npm run build"
   },
