@@ -374,8 +374,7 @@
   flex-wrap: nowrap;
   justify-content: space-between;
   align-items: stretch;
-  /* we add the hole-width here to include the starting-gap (which is dynamic) */
-  min-height: calc(var(--default-note-line-length) + var(--hole-width));
+  min-height: calc(var(--note-line-starting-gap) + var(--default-note-line-length));
 }
 
 .note-line {
@@ -384,19 +383,19 @@
   /* We use .gif instead of .svg for repeating background images,
      for performance reasons. See also: https://youtu.be/ptGO2k9uqRM */
   background-image: url('/images/measure-lines.gif');
-  background-position: 0 var(--hole-width);
+  background-position: 0 var(--note-line-starting-gap);
   cursor: pointer;
 }
 
 .note-line:first-child {
   background-image: url('/images/measure-lines.gif');
-  background-position: calc(var(--hole-width) / 2) var(--hole-width);
+  background-position: calc(var(--hole-width) / 2) var(--note-line-starting-gap);
   background-repeat: repeat-y;
 }
 
 .note-line:last-child {
   background-image: url('/images/measure-lines.gif');
-  background-position: right calc(var(--hole-width) / 2) top var(--hole-width);
+  background-position: right calc(var(--hole-width) / 2) top var(--note-line-starting-gap);
   background-repeat: repeat-y;
 }
 
@@ -419,7 +418,7 @@
   margin-right: auto;
   left: 0;
   right: 0;
-  top: var(--hole-width);
+  top: var(--note-line-starting-gap);
   bottom: 0;
   width: 0;
   /* use border instead of background-color because print settings often omit background colors */
@@ -447,6 +446,7 @@
   display: block;
   position: absolute;
   top: 0;
+  /* NEXT: top: var(--y-adjustment-for-hole-width); */
   width: var(--hole-width);
   height: var(--hole-width);
   border-radius: 50%;

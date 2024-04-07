@@ -1,11 +1,11 @@
-import { QUARTER_BAR_GAP, STANDARD_HOLE_RADIUS } from '../common/constants.js';
+import { QUARTER_BAR_GAP } from '../common/constants.js';
 import { musicBoxStore } from '../music-box-store.js';
 
 // The "dead zone" is the region after a note, wherein if a note is placed, it
 // will display as red and will not play a note (due to mechanical limitations).
-// We base this length on the actual boxes, and the STANDARD_HOLE_RADIUS to ensure
-// the dead-zone is the same when we use different hole-sizes.
-const DEAD_ZONE_LENGTH = QUARTER_BAR_GAP - STANDARD_HOLE_RADIUS - 1;
+// We estimate the value of this length from testing on real music boxes. The
+// dead-zone should be the same for all music boxes and hole-sizes.
+const DEAD_ZONE_LENGTH = QUARTER_BAR_GAP - 9;
 
 /**
  * A specialized forEach function that loops over a notesArray, and provides the

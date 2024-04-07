@@ -3,7 +3,7 @@ import { musicBoxStore } from '../music-box-store.js';
 import { playheadObserver } from '../common/playhead-observer.js';
 import { sampler, isSamplerLoaded } from '../common/sampler.js';
 import { forEachNotes } from '../common/silent-notes.js';
-import { QUARTER_BAR_GAP, EIGHTH_BAR_GAP, SIXTEENTH_BAR_GAP, STANDARD_HOLE_RADIUS } from '../common/constants.js';
+import { QUARTER_BAR_GAP, EIGHTH_BAR_GAP, SIXTEENTH_BAR_GAP, NOTE_LINE_STARTING_GAP } from '../common/constants.js';
 
 export class NoteLine extends MBComponent {
   constructor(props) {
@@ -49,12 +49,10 @@ export class NoteLine extends MBComponent {
   // functions allow us to adjust the yPos for display vs storage, so it is always stored using the
   // center value, but displayed using the top value.
   adjustDisplayedYPosForHoleSize(yPos) {
-    const holeSizeDifferenceBeforeTheFirstBar = 2 * (STANDARD_HOLE_RADIUS - this.holeRadius);
-    return yPos - this.holeRadius - holeSizeDifferenceBeforeTheFirstBar;
+    return yPos - this.holeRadius;
   }
   adjustStoredYPosForHoleSize(yPos) {
-    const holeSizeDifferenceBeforeTheFirstBar = 2 * (STANDARD_HOLE_RADIUS - this.holeRadius);
-    return yPos + this.holeRadius + holeSizeDifferenceBeforeTheFirstBar;
+    return yPos + this.holeRadius;
   }
 
   showShadowNote(event) {
@@ -64,6 +62,8 @@ export class NoteLine extends MBComponent {
 
     this.lastShadowNoteVisibilityClass = 'shadow-note--visible';
     shadowNoteEl.classList.add('shadow-note--visible');
+
+    this.positionShadowNote(shadowNoteEl, event.pageY);
   }
 
   hideShadowNote(event) {
@@ -84,20 +84,38 @@ export class NoteLine extends MBComponent {
   snapToInterval(noteYPosition, INTERVAL) {
     if (!INTERVAL) return noteYPosition;
 
-    const topPixelOffset = this.holeRadius;
+    // Represents the difference between the center of the hole and the top, which is needed because
+    // we are using a cursor in the center to calculate a translate value that references the top.
+    const translateReferenceDifference = this.holeRadius;
+
+    // The snap-to formula got off-track when I standardized the starting gap across music box types
+    // and this offset was needed to correct it. I'm not fully sure why it is needed, but it is.
+    const noteLineStartingGapDifference = NOTE_LINE_STARTING_GAP - this.holeWidth;
+
+    const pixelOffset = translateReferenceDifference + noteLineStartingGapDifference;
+
     // I arrived at this formula through trial-and-error with Josiah, and it works!
-    return Math.round((noteYPosition - topPixelOffset) / INTERVAL) * INTERVAL + topPixelOffset;
+    const snappedYPos = Math.round((noteYPosition - pixelOffset) / INTERVAL) * INTERVAL + pixelOffset;
+
+    // We had an edge case where it was possible to snap to negative values (specifically, for 'snap to 16th').
+    // To prevent this, we see if our result is negative, and if so, we force it to snap to the default starting position.
+    return snappedYPos < 0 ? pixelOffset : snappedYPos;
   }
 
   positionShadowNote(shadowNoteEl, cursorPositionPageY) {
     // We're building the translateY value for the shadow note, but the web apis aren't ideal so we have to cobble it
     // together from the properties we have. For noteLinesPageOffsetTop, see https://stackoverflow.com/q/34422189/1154642
     const noteLinesPageOffsetTop = document.querySelector('#note-lines').getBoundingClientRect().top + window.scrollY;
-    const relativeCursorYPos = cursorPositionPageY - noteLinesPageOffsetTop;
+    let relativeCursorYPos = cursorPositionPageY - noteLinesPageOffsetTop;
 
-    // Prevent users from positioning notes too high on the note line.
-    if (relativeCursorYPos < this.holeRadius) {
-      return false;
+    // We define a threshold that shadow notes can't be placed above, to prevent them from
+    // getting cut off by the top of the note line.
+    const SHADOW_NOTE_STARTING_THRESHOLD = NOTE_LINE_STARTING_GAP / 2;
+
+    if (relativeCursorYPos < SHADOW_NOTE_STARTING_THRESHOLD) {
+      // If the cursor is positioned too high on the note line, we pretend that it is
+      // positioned at the starting threshold, making it impossible to place notes any higher.
+      relativeCursorYPos = SHADOW_NOTE_STARTING_THRESHOLD;
     }
 
     const snapToIntervals = {
