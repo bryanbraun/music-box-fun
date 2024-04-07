@@ -16,6 +16,7 @@
   </script>
 
   <style>
+    /* Allows us to break up our css and load the files in parallel */
     @import "css/variables.css";
     @import "css/base.css";
     @import "css/app.css";
@@ -118,7 +119,7 @@
   </aside>
   <main class="workspace">
     <div class="equipment">
-      <div class="music-box-kit fifteen-note">
+      <div class="music-box-kit">
         <div class="music-box">
           <!-- Note to future self: if you want to adjust the music box design, do it in
                sketch first, instead of the browser. Iterating there is so much easier,
@@ -128,7 +129,7 @@
         </div>
         <div class="paper">
           <form id="song-title" class="song-title">
-            <img src="/images/loading.gif" />
+            <img src="/images/loading.gif" alt="loading..." />
           </form>
           <div id="note-header" class="note-header">
             <div class="note-label">C</div>
@@ -195,7 +196,7 @@
             </div>
           </div>
           <div id="paper-footer">
-            <div id="dividers"></div>
+            <div id="dividers" class="dividers"></div>
             <button class="extend-song-button" title="Extend Song">+</button>
           </div>
         </div>
@@ -318,6 +319,7 @@
     </div>
   </main>
   <script type="module" src="/js/app-entry.js"></script>
+  <link rel="stylesheet" href="/css/print.css">
 </body>
 
 </html>

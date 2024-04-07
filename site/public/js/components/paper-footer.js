@@ -90,7 +90,7 @@ export class PaperFooter extends MBComponent {
     const numberOfDividers = this.getNumberOfExposedPages() - 1;
 
     this.element.innerHTML = `
-      <div id="dividers">
+      <div id="dividers" class="dividers">
         ${Array(numberOfDividers).fill()
           .map((val, index) => `<div id="divider-${index + 1}" class="divider" data-testid="divider"></div>`)
           .join('')}

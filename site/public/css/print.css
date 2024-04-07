@@ -1,0 +1,69 @@
+/* see https://voussoir.net/writing/css_for_printing/#page */
+@page {
+    size: Letter portrait;
+    margin: 0;
+}
+
+@media print {
+  /* Hide elements that don't need to be printed */
+  .left-sidebar,
+  .right-sidebar,
+  .music-box,
+  .dividers,
+  .nav-icon,
+  .controls-icon,
+  .audio-disabled-message,
+  .share-box,
+  .floating-actions {
+    display: none;
+  }
+
+  /* Optimize layout for printing */
+  .workspace {
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  /* Design improvements */
+  body {
+    background: var(--mb-white);
+  }
+
+  .paper {
+    /* Better borders */
+    box-shadow: none;
+    border: 1px solid var(--mb-black);
+
+    /* Force background images and colors to print. This overrides the print
+       dialog option "Print backgrounds" (which often defaults to disabled). */
+    -webkit-print-color-adjust: exact !important;
+    color-adjust: exact !important;
+
+    /* Adjust size to be closer to the actual music box paper */
+    transform: scale(var(--print-scale-factor));
+    transform-origin: top;
+
+    /* Removes some trailing whitespace. There is still a bunch of whitespace from the scaling but I'm not sure how to get rid of that. */
+    margin-bottom: 4rem;
+  }
+
+  .paper::after {
+    content: "For best results, print using Edge, Chrome, or Firefox. \A Note positions may shift when printing with Safari.";
+    position: absolute;
+    bottom: -50px;
+    left: 0;
+    right: 0;
+    font-size: 13px;
+    white-space: pre;
+}
+
+  /* Prevent potential border overlap */
+  .extend-song-button {
+    width: 98%;
+  }
+
+  /* Remove sticky headers */
+  .note-header {
+    position: initial;
+  }
+}

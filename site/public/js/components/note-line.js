@@ -173,7 +173,7 @@ export class NoteLine extends MBComponent {
 
     forEachNotes(notesArray, (yPos, isSilent) => {
       const displayedYPos = this.adjustDisplayedYPosForHoleSize(yPos);
-      notesMarkup += `<button class="hole ${isSilent ? 'silent' : ''}" style="transform: translateY(${displayedYPos}px)"></button>`;
+      notesMarkup += `<button class="hole ${isSilent ? 'silent' : ''}" style="transform: translateY(${displayedYPos}px)" aria-label="${pitch}"></button>`;
     })
 
     return notesMarkup;

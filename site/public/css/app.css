@@ -381,6 +381,8 @@
 .note-line {
   position: relative;
   width: var(--hole-width);
+  /* We use .gif instead of .svg for repeating background images,
+     for performance reasons. See also: https://youtu.be/ptGO2k9uqRM */
   background-image: url('/images/measure-lines.gif');
   background-position: 0 var(--hole-width);
   cursor: pointer;
@@ -419,8 +421,9 @@
   right: 0;
   top: var(--hole-width);
   bottom: 0;
-  width: 1px;
-  background-color: black
+  width: 0;
+  /* use border instead of background-color because print settings often omit background colors */
+  border-left: 1px solid var(--mb-black);
 }
 
 .shadow-note {
@@ -799,12 +802,14 @@
 .extend-song-button {
   position: absolute;
   left: 0;
+  right: 0;
   bottom: 0;
   /* We have to set 'width: 100%' instead of 'right: 0'
     to get full width because it's a button. See:
     https://stackoverflow.com/q/29293302/1154642 */
   width: 100%;
-  margin: 0;
+  /* We center the button because to prevent weird overlaps when printing */
+  margin: 0 auto;
   padding: 0;
   border: 0;
   font-family: var(--main-font);
