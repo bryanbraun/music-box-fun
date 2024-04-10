@@ -27,10 +27,6 @@ export class PaperFooter extends MBComponent {
     return parseInt(getComputedStyle(document.documentElement).getPropertyValue('--default-note-line-length').trim());
   }
 
-  getHoleWidthVar() {
-    return parseInt(getComputedStyle(document.documentElement).getPropertyValue('--hole-width').trim());
-  }
-
   setNoteLineLengthVar(newVal) {
     document.documentElement.style.setProperty('--default-note-line-length', `${newVal}px`);
   }

@@ -432,9 +432,8 @@
   border-radius: 50%;
   background-color: var(--shadow-note-color);
 
-  /* prevent these notes from stacking in columns */
   position: absolute;
-  top: 0;
+  top: var(--y-adjustment-for-hole-width);
   z-index: var(--z-music-box-notes);
 }
 
@@ -445,8 +444,7 @@
 .hole {
   display: block;
   position: absolute;
-  top: 0;
-  /* NEXT: top: var(--y-adjustment-for-hole-width); */
+  top: var(--y-adjustment-for-hole-width);
   width: var(--hole-width);
   height: var(--hole-width);
   border-radius: 50%;
