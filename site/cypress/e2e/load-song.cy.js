@@ -21,7 +21,7 @@ describe('Page load', () => {
       .should('have.length', 199);
 
     cy.get('#C5 .hole:nth-of-type(2)')
-      .should('have.attr', 'style', 'transform: translateY(297px)');
+      .should('have.attr', 'style', 'transform: translateY(305px)');
   });
 
   it('should load a v1 song successfully', () => {
@@ -40,7 +40,7 @@ describe('Page load', () => {
       .should('have.length', 140);
 
     cy.get('#C5 .hole').first()
-      .should('have.attr', 'style', 'transform: translateY(55px)');
+      .should('have.attr', 'style', 'transform: translateY(64px)');
   });
 
 });

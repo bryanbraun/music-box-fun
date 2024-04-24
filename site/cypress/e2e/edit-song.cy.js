@@ -14,7 +14,7 @@ describe('Song edits', () => {
     const newSongTitle = 'Example Song Title';
     const newBoxTypeValue = '20';
     const newTempo = '120';
-    const newNoteYPos = 55;
+    const newNoteYPos = 64;
 
     // Make edits one-by-one and compare the URL after each step. To do this, we
     // have to nest the statements. We cannot use async/await, because Cypress's
@@ -33,7 +33,7 @@ describe('Song edits', () => {
           cy.url().should('not.eq', url3);
 
           cy.url().then(url4 => {
-            cy.get('#C5').click(5, newNoteYPos); // left: 5px, top: 55px
+            cy.get('#C5').click(6, newNoteYPos); // left: 6px, top: 64px
             cy.url().should('not.eq', url4);
           });
         });

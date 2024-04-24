@@ -96,7 +96,7 @@ export class PaperFooter extends MBComponent {
       </button>
     `;
 
-    for (var i = 0; i < numberOfDividers; i++) {
+    for (let i = 0; i < numberOfDividers; i++) {
       new PaperDivider({
         dividerNumber: i + 1,
         isTrimmable: this.getNumberOfUsedPages() <= (i + 1),
