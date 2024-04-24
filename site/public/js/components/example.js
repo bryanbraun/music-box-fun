@@ -12,9 +12,11 @@ export class Example extends MBComponent {
       // Do you want this component to re-render based on a global state change?
       // If so, assign the state change event to renderTrigger here. For example:
       //
-      //   "state" (any change to state)
-      //   "appState.isPlaying" (any change to the isPlaying value)
-      //   (any other key from state.js, like "songState.songData" or "songState.songData.C4")
+      //   "state*" (any change to global state)
+      //   "songState.songData*" (any changes within "songState.songData", like "songState.songData.C4")
+      //   "appState.isPlaying" (any change to the "appState.isPlaying" value)
+      //   ["songState.songTitle", "songState.tempo"] (any change to any key in the array)
+      //   …any other key from state.js
       //
       // Note: if you use renderTrigger, your element must have an ID attribute, to
       //       prevent duplicate subscribes. For more info, see base-component.js.
@@ -33,7 +35,7 @@ export class Example extends MBComponent {
   }
 
   incrementCounter() {
-    this.setState({ counter: this.state.counter + 1})
+    this.setState({ counter: this.state.counter + 1 })
   }
 
   render() {
