@@ -1,10 +1,33 @@
 /* see https://voussoir.net/writing/css_for_printing/#page */
 @page {
-    size: Letter portrait;
-    margin: 0;
+  size: Letter portrait;
+  margin: 0;
 }
 
 @media print {
+  html {
+    /* Use a 12px hole width for all music box types. This results in grid dimensions that are most
+       similar to the actual music box paper. */
+    --hole-width: 12px !important; /* we need !important to override the style attribute set in JS */
+
+    /* Rescale the page so the printed paper matches the size of actual music box paper. It works
+       for all music box types as long as the hole width is 12px. Setting the scale on the `html`
+       element ensures there isn't any extra white space at the end in Firefox and Safari (we still
+       see extra white space at the end in Chrome and Edge). I tried using the `zoom` property
+       (instead of scale) because it doesn't produce extra white space) but it was causing the holes
+       to shift off the grid. The magic number (0.63) was identified from manual testing. It's a little
+       big on Safari but perfect on Edge, Chrome, and Firefox. */
+    transform: scale(0.63);
+    transform-origin: top center;
+
+    /* For some reason, this eliminates the blank first page that was appearing in Chrome. */
+    height: 0;
+  }
+
+  body {
+    background: var(--mb-white);
+  }
+
   /* Hide elements that don't need to be printed */
   .left-sidebar,
   .right-sidebar,
@@ -14,7 +37,9 @@
   .controls-icon,
   .audio-disabled-message,
   .share-box,
-  .floating-actions {
+  .floating-actions,
+  .off-canvas-overlay,
+  .back-to-top-observed {
     display: none;
   }
 
@@ -22,11 +47,6 @@
   .workspace {
     margin-left: 0;
     margin-right: 0;
-  }
-
-  /* Design improvements */
-  body {
-    background: var(--mb-white);
   }
 
   .paper {
@@ -39,11 +59,7 @@
     -webkit-print-color-adjust: exact !important;
     color-adjust: exact !important;
 
-    /* Adjust size to be closer to the actual music box paper */
-    transform: scale(var(--print-scale-factor));
-    transform-origin: top;
-
-    /* Removes some trailing whitespace. There is still a bunch of whitespace from the scaling but I'm not sure how to get rid of that. */
+    /* Removes some trailing whitespace. */
     margin-bottom: 4rem;
   }
 
@@ -53,7 +69,7 @@
     bottom: -50px;
     left: 0;
     right: 0;
-    font-size: 13px;
+    font-size: 10px;
     white-space: pre;
 }
 
