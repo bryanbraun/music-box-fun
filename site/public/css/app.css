@@ -374,27 +374,28 @@
   flex-wrap: nowrap;
   justify-content: space-between;
   align-items: stretch;
-  /* we add the hole-width here to include the starting-gap (which is dynamic) */
-  min-height: calc(var(--default-note-line-length) + var(--hole-width));
+  min-height: calc(var(--note-line-starting-gap) + var(--default-note-line-length));
 }
 
 .note-line {
   position: relative;
   width: var(--hole-width);
+  /* We use .gif instead of .svg for repeating background images,
+     for performance reasons. See also: https://youtu.be/ptGO2k9uqRM */
   background-image: url('/images/measure-lines.gif');
-  background-position: 0 var(--hole-width);
+  background-position: 0 var(--note-line-starting-gap);
   cursor: pointer;
 }
 
 .note-line:first-child {
   background-image: url('/images/measure-lines.gif');
-  background-position: calc(var(--hole-width) / 2) var(--hole-width);
+  background-position: calc(var(--hole-width) / 2) var(--note-line-starting-gap);
   background-repeat: repeat-y;
 }
 
 .note-line:last-child {
   background-image: url('/images/measure-lines.gif');
-  background-position: right calc(var(--hole-width) / 2) top var(--hole-width);
+  background-position: right calc(var(--hole-width) / 2) top var(--note-line-starting-gap);
   background-repeat: repeat-y;
 }
 
@@ -417,10 +418,11 @@
   margin-right: auto;
   left: 0;
   right: 0;
-  top: var(--hole-width);
+  top: var(--note-line-starting-gap);
   bottom: 0;
-  width: 1px;
-  background-color: black
+  width: 0;
+  /* use border instead of background-color because print settings often omit background colors */
+  border-left: 1px solid var(--mb-black);
 }
 
 .shadow-note {
@@ -430,9 +432,8 @@
   border-radius: 50%;
   background-color: var(--shadow-note-color);
 
-  /* prevent these notes from stacking in columns */
   position: absolute;
-  top: 0;
+  top: var(--y-adjustment-for-hole-width);
   z-index: var(--z-music-box-notes);
 }
 
@@ -443,7 +444,7 @@
 .hole {
   display: block;
   position: absolute;
-  top: 0;
+  top: var(--y-adjustment-for-hole-width);
   width: var(--hole-width);
   height: var(--hole-width);
   border-radius: 50%;
@@ -799,12 +800,14 @@
 .extend-song-button {
   position: absolute;
   left: 0;
+  right: 0;
   bottom: 0;
   /* We have to set 'width: 100%' instead of 'right: 0'
     to get full width because it's a button. See:
     https://stackoverflow.com/q/29293302/1154642 */
   width: 100%;
-  margin: 0;
+  /* We center the button because to prevent weird overlaps when printing */
+  margin: 0 auto;
   padding: 0;
   border: 0;
   font-family: var(--main-font);

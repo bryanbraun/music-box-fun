@@ -35,24 +35,28 @@
   /* LENGTHS */
   --left-sidebar-width: 286px;
   --right-sidebar-width: 175px;
-  --hole-width: 16px;
   --paper-side-margins: 2rem;
   --music-box-height: 200px; /* the same for all music boxes */
   --music-box-distance-from-top-of-workspace: 120px;
   --playhead-distance-from-top-of-workspace: calc(var(--music-box-distance-from-top-of-workspace) + 44px);
   --tabs-border: 1px;
   --floating-action-button-diameter: 56px;
+  --note-line-starting-gap: 16px; /* the same for all box types and hole sizes */
+  --hole-width: 16px;
+  /* Used to adjust the y-position of the note, centering it on the value defined in songData.
+     Doing this in CSS allows us to make CSS-driven hole-size adjustments (for mobile, print, etc).
+     For more details, see the comments in note-line.js */
+  --y-adjustment-for-hole-width: calc((var(--hole-width) / 2) * -1);
   /*
-
       52   (# of quarter note bars)
-    x 50px (per quarter note bar)
+    x 48px (per quarter note bar)
     ------
     2496px
       48px (space after the last bar, for the add-button preview)
     +  1px (to show the final bar)
     ------
     2545px = Total length of a black note line
-             (not including the starting gap... that's dynamic and added on later)
+             (not including the starting gap... it gets added in separately for the cases that need it)
   */
   --default-note-line-length: 2545px;
 

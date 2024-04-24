@@ -1,7 +1,7 @@
 import { MBComponent } from '../music-box-component.js';
 import { PaperDivider } from './paper-divider.js';
 import { musicBoxStore } from '../music-box-store.js';
-import { QUARTER_BAR_GAP, STANDARD_HOLE_RADIUS } from '../common/constants.js';
+import { QUARTER_BAR_GAP, STANDARD_HOLE_RADIUS, NOTE_LINE_STARTING_GAP } from '../common/constants.js';
 
 export class PaperFooter extends MBComponent {
   constructor() {
@@ -27,10 +27,6 @@ export class PaperFooter extends MBComponent {
     return parseInt(getComputedStyle(document.documentElement).getPropertyValue('--default-note-line-length').trim());
   }
 
-  getHoleWidthVar() {
-    return parseInt(getComputedStyle(document.documentElement).getPropertyValue('--hole-width').trim());
-  }
-
   setNoteLineLengthVar(newVal) {
     document.documentElement.style.setProperty('--default-note-line-length', `${newVal}px`);
   }
@@ -38,8 +34,7 @@ export class PaperFooter extends MBComponent {
   getNumberOfUsedPages() {
     // We use "standard" values instead of dynamic ones for the hole size because these
     // calculations are made against stored note data, which isn't adjusted for hole size.
-    const STANDARD_STARTING_GAP = 16;
-    const singleUsePixels = STANDARD_STARTING_GAP - STANDARD_HOLE_RADIUS + this.FINAL_BAR_LINE;
+    const singleUsePixels = NOTE_LINE_STARTING_GAP - STANDARD_HOLE_RADIUS + this.FINAL_BAR_LINE;
     const pageDivisor = this.NUMBER_OF_BARS * QUARTER_BAR_GAP; // 2496
 
     const finalNoteYPos = Object.values(musicBoxStore.state.songState.songData).reduce((accumulator, currentValue) => {
@@ -90,7 +85,7 @@ export class PaperFooter extends MBComponent {
     const numberOfDividers = this.getNumberOfExposedPages() - 1;
 
     this.element.innerHTML = `
-      <div id="dividers">
+      <div id="dividers" class="dividers">
         ${Array(numberOfDividers).fill()
           .map((val, index) => `<div id="divider-${index + 1}" class="divider" data-testid="divider"></div>`)
           .join('')}

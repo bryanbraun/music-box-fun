@@ -3,7 +3,9 @@ import { musicBoxStore } from '../music-box-store.js';
 import { playheadObserver } from '../common/playhead-observer.js';
 import { sampler, isSamplerLoaded } from '../common/sampler.js';
 import { forEachNotes } from '../common/silent-notes.js';
-import { QUARTER_BAR_GAP, EIGHTH_BAR_GAP, SIXTEENTH_BAR_GAP, STANDARD_HOLE_RADIUS } from '../common/constants.js';
+import { QUARTER_BAR_GAP, EIGHTH_BAR_GAP, SIXTEENTH_BAR_GAP, NOTE_LINE_STARTING_GAP } from '../common/constants.js';
+
+const DEFAULT_SHADOW_NOTE_POSITION = 8;
 
 export class NoteLine extends MBComponent {
   constructor(props) {
@@ -17,61 +19,31 @@ export class NoteLine extends MBComponent {
     this.showShadowNote = this.showShadowNote.bind(this);
     this.haveShadowNoteFollowCursor = this.haveShadowNoteFollowCursor.bind(this);
     this.handleClick = this.handleClick.bind(this);
-    this.adjustStoredYPosForHoleSize = this.adjustStoredYPosForHoleSize.bind(this);
-    this.adjustDisplayedYPosForHoleSize = this.adjustDisplayedYPosForHoleSize.bind(this);
-
-    // Cached Constants
-    this.holeWidth = null;
-    this.holeRadius = null;
 
     // When a note is added or removed, the NoteLine is re-rendered underneath the cursor.
     // In this situation, the mouse events won't fire until you move the mouse again. This
     // led to some edge-cases where the shadow note wasn't being positioned properly during
     // repeated clicks. To fix this, we store the last shadow note position (and visibility)
     // details, so we can use them to set the initial shadow note position during re-renders.
-    this.lastShadowNotePosition = 0;
+    this.lastShadowNotePosition = DEFAULT_SHADOW_NOTE_POSITION;
     this.lastShadowNoteVisibilityClass = '';
-  }
-
-  // We base a lot of our math on the size of the hole, which is a CSS variable. This value
-  // could change in the future to allow us to adjust the size of the paper. When this happens,
-  // we want our math to continue working. Instead of looking up the CSS variable incessantly,
-  // (like on hover) we use this function to look it up at key moments and cache the value in
-  // the class instance. This simplifies our code and may improve performance.
-  updateHoleSize() {
-    this.holeWidth = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--hole-width').trim());
-    this.holeRadius = this.holeWidth / 2;
-  }
-
-  // The yPos value we store in songData is the center of the hole (the moment when the note plays).
-  // This is ideal for ToneJS, and it makes sense for a UI with a variety of hole sizes. But in
-  // order to position these holes with translateY, we need to reference the top of each hole. These
-  // functions allow us to adjust the yPos for display vs storage, so it is always stored using the
-  // center value, but displayed using the top value.
-  adjustDisplayedYPosForHoleSize(yPos) {
-    const holeSizeDifferenceBeforeTheFirstBar = 2 * (STANDARD_HOLE_RADIUS - this.holeRadius);
-    return yPos - this.holeRadius - holeSizeDifferenceBeforeTheFirstBar;
-  }
-  adjustStoredYPosForHoleSize(yPos) {
-    const holeSizeDifferenceBeforeTheFirstBar = 2 * (STANDARD_HOLE_RADIUS - this.holeRadius);
-    return yPos + this.holeRadius + holeSizeDifferenceBeforeTheFirstBar;
   }
 
   showShadowNote(event) {
     const shadowNoteEl = event.currentTarget.querySelector('.shadow-note');
 
-    this.updateHoleSize();
-
     this.lastShadowNoteVisibilityClass = 'shadow-note--visible';
     shadowNoteEl.classList.add('shadow-note--visible');
+
+    this.positionShadowNote(shadowNoteEl, event.pageY);
   }
 
   hideShadowNote(event) {
     const shadowNoteEl = event.currentTarget.querySelector('.shadow-note');
 
-    this.lastShadowNotePosition = 0;
+    this.lastShadowNotePosition = DEFAULT_SHADOW_NOTE_POSITION;
     this.lastShadowNoteVisibilityClass = '';
-    shadowNoteEl.style = `transform: translateY(0px)`;
+    shadowNoteEl.style = `transform: translateY(${DEFAULT_SHADOW_NOTE_POSITION}px)`;
     shadowNoteEl.classList.remove('shadow-note--visible');
   }
 
@@ -81,23 +53,30 @@ export class NoteLine extends MBComponent {
     this.positionShadowNote(shadowNoteEl, event.pageY);
   }
 
-  snapToInterval(noteYPosition, INTERVAL) {
-    if (!INTERVAL) return noteYPosition;
+  snapToInterval(relativeCursorYPos, INTERVAL) {
+    if (!INTERVAL) return relativeCursorYPos;
 
-    const topPixelOffset = this.holeRadius;
     // I arrived at this formula through trial-and-error with Josiah, and it works!
-    return Math.round((noteYPosition - topPixelOffset) / INTERVAL) * INTERVAL + topPixelOffset;
+    const snappedYPos = Math.round((relativeCursorYPos - NOTE_LINE_STARTING_GAP) / INTERVAL) * INTERVAL + NOTE_LINE_STARTING_GAP;
+
+    // This prevents us from snapping notes to positions inside the starting gap.
+    return snappedYPos < NOTE_LINE_STARTING_GAP ? NOTE_LINE_STARTING_GAP : snappedYPos;
   }
 
   positionShadowNote(shadowNoteEl, cursorPositionPageY) {
     // We're building the translateY value for the shadow note, but the web apis aren't ideal so we have to cobble it
     // together from the properties we have. For noteLinesPageOffsetTop, see https://stackoverflow.com/q/34422189/1154642
     const noteLinesPageOffsetTop = document.querySelector('#note-lines').getBoundingClientRect().top + window.scrollY;
-    const relativeCursorYPos = cursorPositionPageY - noteLinesPageOffsetTop;
+    let relativeCursorYPos = cursorPositionPageY - noteLinesPageOffsetTop;
 
-    // Prevent users from positioning notes too high on the note line.
-    if (relativeCursorYPos < this.holeRadius) {
-      return false;
+    // We define a starting threshold that shadow notes can't be placed above, to prevent
+    // them from getting cut off by the top of the note line.
+    const SHADOW_NOTE_STARTING_THRESHOLD = NOTE_LINE_STARTING_GAP / 2;
+
+    if (relativeCursorYPos < SHADOW_NOTE_STARTING_THRESHOLD) {
+      // If the cursor is positioned too high on the note line, we pretend that it is
+      // positioned at the starting threshold, making it impossible to place notes any higher.
+      relativeCursorYPos = SHADOW_NOTE_STARTING_THRESHOLD;
     }
 
     const snapToIntervals = {
@@ -109,8 +88,7 @@ export class NoteLine extends MBComponent {
     };
 
     const currentSelectedInterval = snapToIntervals[musicBoxStore.state.appState.snapTo];
-    const noteYPositionAdjustedForCentering = relativeCursorYPos - this.holeRadius;
-    const shadowNoteYPosition = this.snapToInterval(noteYPositionAdjustedForCentering, currentSelectedInterval);
+    const shadowNoteYPosition = this.snapToInterval(relativeCursorYPos, currentSelectedInterval);
 
     this.lastShadowNotePosition = shadowNoteYPosition;
     shadowNoteEl.style = `transform: translateY(${shadowNoteYPosition}px)`;
@@ -122,9 +100,7 @@ export class NoteLine extends MBComponent {
     const pitch = noteLineEl.id;
 
     const isShadowNoteOverlappingExistingNote = shadowNoteYPos => (
-      musicBoxStore.state.songState.songData[pitch].includes(
-        this.adjustStoredYPosForHoleSize(shadowNoteYPos)
-      )
+      musicBoxStore.state.songState.songData[pitch].includes(shadowNoteYPos)
     );
 
     const getNoteYPos = element => {
@@ -148,40 +124,39 @@ export class NoteLine extends MBComponent {
   }
 
   addNote(pitch, yPos) {
-    const storedYPos = this.adjustStoredYPosForHoleSize(yPos);
-    const newPitchArray =
-      [...musicBoxStore.state.songState.songData[pitch]]
-        .concat(storedYPos)
-        .sort((a, b) => Number(a) - Number(b));
+    const newPitchArray = [...musicBoxStore.state.songState.songData[pitch]]
+      .concat(yPos)
+      .sort((a, b) => Number(a) - Number(b));
 
     isSamplerLoaded && sampler.triggerAttackRelease(pitch, '8n');
     musicBoxStore.setState(`songState.songData.${pitch}`, newPitchArray);
   }
 
   removeNote(pitch, yPos) {
-    const storedYPos = this.adjustStoredYPosForHoleSize(yPos);
-    const newPitchArray =
-      [...musicBoxStore.state.songState.songData[pitch]]
-        .filter(val => val !== storedYPos);
+    const newPitchArray = [...musicBoxStore.state.songState.songData[pitch]]
+      .filter(val => val !== yPos);
 
     musicBoxStore.setState(`songState.songData.${pitch}`, newPitchArray);
   }
 
+  // The yPos value stored in songData is the center of the hole (the moment when the note plays).
+  // This is ideal for ToneJS and makes sense for a UI with a variety of hole sizes. Normally, we
+  // couldn't use this position as a translateY value, because translateY references the top (not
+  // center) of an element. In our case, we use a CSS 'top' offset to adjust all notes (based on
+  // their width), allowing us to use note centers as translateY values. As a result, all yPos
+  // variables in this file refer to the center of the note, not the top.
   renderNotes(pitch) {
     const notesArray = musicBoxStore.state.songState.songData[pitch];
     let notesMarkup = '';
 
     forEachNotes(notesArray, (yPos, isSilent) => {
-      const displayedYPos = this.adjustDisplayedYPosForHoleSize(yPos);
-      notesMarkup += `<button class="hole ${isSilent ? 'silent' : ''}" style="transform: translateY(${displayedYPos}px)"></button>`;
+      notesMarkup += `<button class="hole ${isSilent ? 'silent' : ''}" style="transform: translateY(${yPos}px)" aria-label="${pitch}"></button>`;
     })
 
     return notesMarkup;
   }
 
   render() {
-    this.updateHoleSize();
-
     // Prevent weird bugs by removing observers from any existing notes, before re-rendering.
     this.element.querySelectorAll('.hole').forEach(hole => playheadObserver.get().unobserve(hole));
 

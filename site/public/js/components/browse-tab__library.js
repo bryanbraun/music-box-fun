@@ -127,7 +127,7 @@ export class BrowseTabSongLibrary extends MBComponent {
             <ul id="library-songs" class="library-songs">
               ${this.renderSongs(songsData.songs)}
             </ul>
-            ${songsData.meta.next ? '<div id="library-loader" class="library-loader"><img src="/images/loading.gif" /></div>' : ''}
+            ${songsData.meta.next ? '<div id="library-loader" class="library-loader"><img src="/images/loading.gif" alt="loading..." /></div>' : ''}
           `}
         `}
       </div>
