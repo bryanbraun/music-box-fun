@@ -27,13 +27,8 @@ export const playheadObserver = (function () {
 
   function intersectionHandler(entries) {
     entries.forEach(entry => {
-      // Prevent notes positioned under the playhead during page load from playing.
+      // Prevent notes positioned under the playhead from playing when the page is reloaded.
       if (!userHasScrolled) {
-        return;
-      }
-
-      // Exit early if we are in ToneJS playing mode
-      if (musicBoxStore.state.appState.isPlaying) {
         return;
       }
 
@@ -55,6 +50,17 @@ export const playheadObserver = (function () {
         return;
       }
 
+      // TRIGGER VISUAL FLASH
+      entry.target.classList.add("is-active");
+      void entry.target.offsetWidth; // See: https://css-tricks.com/restart-css-animation/
+      entry.target.classList.remove("is-active");
+
+      // Exit before triggering a sound, if we are in ToneJS playing mode
+      if (musicBoxStore.state.appState.isPlaying) {
+        return;
+      }
+
+      // TRIGGER SOUND
       isSamplerLoaded && sampler.triggerAttackRelease(entry.target.parentElement.id, '8n');
     });
   }

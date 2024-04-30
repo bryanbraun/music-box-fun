@@ -22,6 +22,7 @@
   --music-box-color: var(--mb-gray-30);
   --controls-button-color: var(--mb-offwhite);
   --shadow-note-color: var(--mb-gray-20);
+  --active-hole-color: #ffb500;
   --hole-color: var(--mb-gray-60);
   --link-color: var(--mb-black);
   --text-color: var(--mb-black);

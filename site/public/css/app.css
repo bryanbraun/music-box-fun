@@ -453,6 +453,11 @@
   cursor: pointer;
   z-index: var(--z-music-box-notes);
   padding: 0;
+  transition: background-color 1s;
+}
+.hole.is-active {
+  background-color: var(--active-hole-color);
+  transition: background-color 0s;
 }
 
 .silent {
