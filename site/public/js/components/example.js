@@ -47,6 +47,8 @@ export class Example extends MBComponent {
       <button>${this.state.counter}</button>
     `;
 
+    // You can add event listeners on every render, even on `this.element,` because identical event
+    // listeners will be discarded by the browser. See https://stackoverflow.com/a/10364316/1154642
     this.element.querySelector('button').addEventListener('click', incrementCounter);
   }
 }

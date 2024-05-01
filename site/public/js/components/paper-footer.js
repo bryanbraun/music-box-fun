@@ -1,7 +1,7 @@
 import { MBComponent } from '../music-box-component.js';
 import { PaperDivider } from './paper-divider.js';
 import { musicBoxStore } from '../music-box-store.js';
-import { QUARTER_BAR_GAP, STANDARD_HOLE_RADIUS, NOTE_LINE_STARTING_GAP } from '../common/constants.js';
+import { QUARTER_BAR_GAP, STANDARD_HOLE_RADIUS, NOTE_LINE_STARTING_GAP, FOOTER_BUTTON_HEIGHT } from '../common/constants.js';
 
 export class PaperFooter extends MBComponent {
   constructor() {
@@ -12,9 +12,8 @@ export class PaperFooter extends MBComponent {
 
     musicBoxStore.subscribe('songState.songData', () => this.render(true)); // see render() for why we subscribe to this separately.
 
-    // Constants
+    // Other Constants
     this.NUMBER_OF_BARS = 52;
-    this.ENDING_GAP = 48;
     this.FINAL_BAR_LINE = 1;
 
     // Bindings
@@ -45,13 +44,13 @@ export class PaperFooter extends MBComponent {
   }
 
   getNumberOfExposedPages() {
-    const singleUsePixels = this.ENDING_GAP + this.FINAL_BAR_LINE; // 49
+    const singleUsePixels = FOOTER_BUTTON_HEIGHT + this.FINAL_BAR_LINE; // 49
     const pageDivisor = this.NUMBER_OF_BARS * QUARTER_BAR_GAP; // 2496
     return (this.getNoteLineLengthVar() - singleUsePixels) / pageDivisor;
   }
 
   getNoteLineLengthFromSongData() {
-    return (this.NUMBER_OF_BARS * QUARTER_BAR_GAP * this.getNumberOfUsedPages()) + this.ENDING_GAP + this.FINAL_BAR_LINE;
+    return (this.NUMBER_OF_BARS * QUARTER_BAR_GAP * this.getNumberOfUsedPages()) + FOOTER_BUTTON_HEIGHT + this.FINAL_BAR_LINE;
   }
 
   extendSongPaper() {
@@ -87,8 +86,8 @@ export class PaperFooter extends MBComponent {
     this.element.innerHTML = `
       <div id="dividers" class="dividers">
         ${Array(numberOfDividers).fill()
-          .map((val, index) => `<div id="divider-${index + 1}" class="divider" data-testid="divider"></div>`)
-          .join('')}
+        .map((val, index) => `<div id="divider-${index + 1}" class="divider" data-testid="divider"></div>`)
+        .join('')}
       </div>
       <button class="extend-song-button" title="Extend Song" data-testid="extend">
         <span class="dashed-line"></span>
@@ -100,7 +99,7 @@ export class PaperFooter extends MBComponent {
       new PaperDivider({
         dividerNumber: i + 1,
         isTrimmable: this.getNumberOfUsedPages() <= (i + 1),
-        yFromBottom: this.ENDING_GAP + ((numberOfDividers - i) * this.NUMBER_OF_BARS * QUARTER_BAR_GAP),
+        yFromBottom: FOOTER_BUTTON_HEIGHT + ((numberOfDividers - i) * this.NUMBER_OF_BARS * QUARTER_BAR_GAP),
         trimSongPaper: this.trimSongPaper
       }).render();
     }

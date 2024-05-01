@@ -817,7 +817,7 @@
   border: 0;
   font-family: var(--main-font);
   font-size: 1.25rem;
-  line-height: 3rem;
+  height: var(--footer-button-height);
   background: var(--paper-color);
   cursor: pointer;
   z-index: var(--z-music-box-extend-button);
