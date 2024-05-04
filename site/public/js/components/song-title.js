@@ -23,6 +23,7 @@ export class SongTitle extends MBComponent {
         type="text"
         placeholder="Untitled Song"
         value="${escapeHtml(musicBoxStore.state.songState.songTitle)}"
+        name="song-title"
         maxlength="140"
       />
     `;

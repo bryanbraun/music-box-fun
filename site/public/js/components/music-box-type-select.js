@@ -70,7 +70,7 @@ export class MusicBoxTypeSelect extends MBComponent {
     this.element.innerHTML = `
       <label>
         <span class="visuallyhidden">Music Box Type</span>
-        <select class="select select-music-box-type" data-testid="music-box-type-select">
+        <select class="select select-music-box-type" data-testid="music-box-type-select" name="select-box-type">
           <option ${selected15} value="15">15-note</option>
           <option ${selected20} value="20">20-note</option>
           <option ${selected30} value="30">30-note</option>

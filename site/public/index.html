@@ -283,7 +283,7 @@
           <div id="music-box-type">
             <label>
               <span class="visuallyhidden">Music Box Type</span>
-              <select class="select select-music-box-type">
+              <select class="select select-music-box-type" name="select-box-type">
                 <option selected="" value="15">15-note</option>
                 <option value="20">20-note</option>
                 <option value="30">30-note</option>
@@ -294,10 +294,10 @@
             <div>Tempo</div>
             <div class="tempo-inputs">
               <div id="tempo-slider">
-                <input class="tempo-slider" type="range" />
+                <input class="tempo-slider" type="range" name="tempo-slider" />
               </div>
               <div id="tempo-field">
-                <input class="tempo-field" type="number" value="110" />
+                <input class="tempo-field" type="number" value="110" name="tempo-field" />
               </div>
             </div>
           </label>
@@ -306,7 +306,7 @@
           <div id="snap-to">
             <label class="snap-to">
               <span class="snap-to__label">Snap to</span>
-              <select class="select">
+              <select class="select" name="select-snap">
                 <option value="none">- none -</option>
                 <option selected="" value="grid">Grid</option>
                 <option value="16th">16ths</option>

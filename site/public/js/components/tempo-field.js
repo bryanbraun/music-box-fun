@@ -19,6 +19,7 @@ export class TempoField extends MBComponent {
         min="${this.props.min}"
         max="${this.props.max}"
         value="${tempo}"
+        name="tempo-field"
       />
     `;
 

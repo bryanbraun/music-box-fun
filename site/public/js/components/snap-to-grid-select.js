@@ -23,7 +23,7 @@ export class SnapToGridSelect extends MBComponent {
     this.element.innerHTML = `
       <label class="snap-to">
         <span class="snap-to__label">Snap to</span>
-        <select class="select">
+        <select class="select" name="select-snap">
           <option ${selectedNone} value="none">- none -</option>
           <option ${selectedGrid} value="grid">Grid</option>
           <option ${selected16ths} value="16ths">16ths</option>
