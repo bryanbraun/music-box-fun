@@ -258,10 +258,18 @@
 .equipment {
   position: relative;
   padding: 4rem 0 0 0;
+  /*
+    prevent horizontal scrolling
+    when the paper is wider than
+    the viewport. For some reason,
+    'hidden' breaks the sticky
+    header, but clip doesn't.
+  */
+  overflow-x: clip;
 
   /*
    centers the paper, which
-   is an inline-block element
+   is an inline-block element,
    in order for its width to
    depend on its content.
   */
@@ -270,6 +278,15 @@
 
 .music-box-kit {
   display: inline-block;
+
+  /*
+    A trick for centering the
+    paper when the paper is
+    wider than the viewport
+    (like on small phones). See:
+    https://stackoverflow.com/a/32191236/1154642
+  */
+  margin: 0 -100%;
 }
 
 .music-box {
