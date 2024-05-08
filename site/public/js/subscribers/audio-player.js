@@ -86,12 +86,22 @@ export const audioPlayer = {
       Transport.start('+0.1');
     } else {
       Transport.stop();
+      stopScrolling();
     }
   },
 
   setup() {
     Transport.on('start', startScrolling);
-    Transport.on('stop', stopScrolling);
+    // Transport.on('stop', stopScrolling);
+
+    //  ↑↑↑ Why is this commented? ↑↑↑
+    // We *could* use Transport.on('stop') as our trigger to stopScrolling but we learned that
+    // there is a tiny delay between Transport.stop() and the event firing. The asynchronous
+    // nature of this delay made it difficult to reliably stop a playing song and then jump to
+    // the top of the page (when clicking on a song link in the UI). Instead, we can just call
+    // stopScrolling immediately after Transport.stop() (as shown above). This works because we
+    // only call Transport.stop() in one place, and the timing of stopping isn't as crucial as
+    // the timing of starting.
   },
 
   flagSongAsNeedsUpdated() {

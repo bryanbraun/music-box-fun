@@ -1,5 +1,6 @@
 import { MBComponent } from '../music-box-component.js';
 import { renderSongCreator } from './browse-tab__library.js';
+import { jumpToTopIfASongWasClicked } from '../common/common-event-handlers.js';
 
 export class BrowseTabFeaturedSongs extends MBComponent {
   constructor(props) {
@@ -143,7 +144,7 @@ export class BrowseTabFeaturedSongs extends MBComponent {
     this.element.innerHTML = `
       <h2 class="browse__title">Featured Songs</h2>
       <div class="browse__songs">
-        <ul id="library-songs" class="library-songs">
+        <ul id="featured-songs" class="library-songs">
           ${this.featuredSongs.map(song => (`
             <li class="library-song">
               <a href="#${song.data}">${song.title}</a> by ${renderSongCreator(song)}
@@ -152,5 +153,8 @@ export class BrowseTabFeaturedSongs extends MBComponent {
         </ul>
       </div>
     `;
+
+    const songsListEl = this.element.querySelector('#featured-songs');
+    songsListEl && songsListEl.addEventListener('click', jumpToTopIfASongWasClicked);
   }
 }

@@ -69,7 +69,7 @@ function startScrolling() {
 
   isScrolling = true;
 
-  requestAnimationFrame(function(timestamp) {
+  requestAnimationFrame(function (timestamp) {
     startTime = timestamp;
     scrollPage(timestamp);
   });
