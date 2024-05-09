@@ -46,3 +46,26 @@ export function isSilentNotePresentInSong() {
     }
   })
 }
+
+// Used to determine if a given position in a noteArray will be silent or not.
+export function isNotePositionSilent(yPosToCheck, notesArray) {
+  const testArray = [...notesArray, yPosToCheck].sort((a, b) => Number(a) - Number(b));
+
+  let isPositionToCheckSilent = false;
+  let lastPlayableNoteYPos = 0;
+
+  // We must check all prior notes to determine if the note is silent, after which we can exit.
+  for (let i = 0; i < testArray.length; i++) {
+    let currentYPos = testArray[i];
+    let isNotePlayable = (i === 0) ? true : (currentYPos - lastPlayableNoteYPos > DEAD_ZONE_LENGTH);
+
+    if (currentYPos === yPosToCheck) {
+      isPositionToCheckSilent = !isNotePlayable;
+      break;
+    }
+
+    lastPlayableNoteYPos = isNotePlayable ? currentYPos : lastPlayableNoteYPos;
+  }
+
+  return isPositionToCheckSilent;
+}

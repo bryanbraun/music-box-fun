@@ -19,7 +19,8 @@ export const boxTypeHoleWidths = {
 // Determines the box type based on the pitches in state
 //
 // If we get more "computed" functions like this, we could
-// make a generic service file that contains them all.
+// make a generic service file that contains them all, and
+// add support for memoization, as needed.
 export function getCurrentBoxType() {
   const songDataPitches = Object.keys(musicBoxStore.state.songState.songData);
   const boxTypesKeys = Object.keys(boxTypePitches);

@@ -90,6 +90,23 @@ describe('Song edits', () => {
       cy.get('#C5').click(5, note1Ypos);
       cy.window().its('MusicBoxFun.sampler.triggerAttackRelease').should('be.called');
     });
+
+    it('should not play when added, if silent', () => {
+      // Initial state: a test song on a 15-note box, with a single C4 note positioned at a yPos of 16.
+      cy.visit('/#1XQAAAAI4AAAAAAAAAABBqEgqBUnq6NgEWNOcFXlCeMiRay8RFbecJtWojVLIeTwIeZxeO8C7Rq6EJn8Pn1hv__60KAA', {
+        onLoad(windowObj) {
+          cy.stub(windowObj.MusicBoxFun.sampler, 'triggerAttackRelease');
+        }
+      });
+
+      // Wait for the sampler to load before clicking, to ensure triggerAttackRelease is called.
+      cy.get('[data-testid="sampler-loaded"]');
+
+      const silentNoteYPos = 32;
+
+      cy.get('#C4').click(5, silentNoteYPos);
+      cy.window().its('MusicBoxFun.sampler.triggerAttackRelease').should('not.be.called');
+    });
   });
 
   describe('Box-type changes', () => {

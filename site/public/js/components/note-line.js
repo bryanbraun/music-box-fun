@@ -2,7 +2,7 @@ import { MBComponent } from '../music-box-component.js';
 import { musicBoxStore } from '../music-box-store.js';
 import { playheadObserver } from '../common/playhead-observer.js';
 import { sampler, isSamplerLoaded } from '../common/sampler.js';
-import { forEachNotes } from '../common/silent-notes.js';
+import { forEachNotes, isNotePositionSilent } from '../common/silent-notes.js';
 import { QUARTER_BAR_GAP, EIGHTH_BAR_GAP, SIXTEENTH_BAR_GAP, NOTE_LINE_STARTING_GAP, FOOTER_BUTTON_HEIGHT } from '../common/constants.js';
 
 const DEFAULT_SHADOW_NOTE_POSITION = 8;
@@ -139,7 +139,10 @@ export class NoteLine extends MBComponent {
       .concat(yPos)
       .sort((a, b) => Number(a) - Number(b));
 
-    isSamplerLoaded && sampler.triggerAttackRelease(pitch, '8n');
+    if (!isNotePositionSilent(yPos, newPitchArray)) {
+      isSamplerLoaded && sampler.triggerAttackRelease(pitch, '8n');
+    }
+
     musicBoxStore.setState(`songState.songData.${pitch}`, newPitchArray);
   }
 
