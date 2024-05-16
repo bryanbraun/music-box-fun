@@ -39,7 +39,7 @@ export class NoteLine extends MBComponent {
     this.lastShadowNoteVisibilityClass = 'shadow-note--visible';
     shadowNoteEl.classList.add('shadow-note--visible');
 
-    this.positionShadowNote(shadowNoteEl, event.pageY);
+    this.positionShadowNote(shadowNoteEl, event);
   }
 
   hideShadowNote(event) {
@@ -54,7 +54,7 @@ export class NoteLine extends MBComponent {
   haveShadowNoteFollowCursor(event) {
     const shadowNoteEl = event.currentTarget.querySelector('.shadow-note');
 
-    this.positionShadowNote(shadowNoteEl, event.pageY);
+    this.positionShadowNote(shadowNoteEl, event);
   }
 
   snapToInterval(relativeCursorYPos, INTERVAL) {
@@ -67,11 +67,11 @@ export class NoteLine extends MBComponent {
     return snappedYPos < NOTE_LINE_STARTING_GAP ? NOTE_LINE_STARTING_GAP : snappedYPos;
   }
 
-  positionShadowNote(shadowNoteEl, cursorPositionPageY) {
+  positionShadowNote(shadowNoteEl, mouseEvent) {
     // We're building the translateY value for the shadow note, but the web apis aren't ideal so we have to cobble it
     // together from the properties we have. For noteLinesPageOffsetTop, see https://stackoverflow.com/q/34422189/1154642
     const noteLinesPageOffsetTop = document.querySelector('#note-lines').getBoundingClientRect().top + window.scrollY;
-    let relativeCursorYPos = cursorPositionPageY - noteLinesPageOffsetTop;
+    let relativeCursorYPos = mouseEvent.pageY - noteLinesPageOffsetTop;
 
     // We define thresholds that shadow notes can't be placed above or below. This prevents
     // bugs like the hole getting cut off at the top or being placed below the footer button.
@@ -98,7 +98,7 @@ export class NoteLine extends MBComponent {
       '⅛ triplet': (2 * EIGHTH_BAR_GAP) / 3,
     };
 
-    const currentSelectedInterval = snapToIntervals[musicBoxStore.state.appState.snapTo];
+    const currentSelectedInterval = snapToIntervals[mouseEvent.altKey ? "none" : musicBoxStore.state.appState.snapTo];
     const shadowNoteYPosition = this.snapToInterval(relativeCursorYPos, currentSelectedInterval);
 
     this.lastShadowNotePosition = shadowNoteYPosition;

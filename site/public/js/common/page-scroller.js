@@ -1,5 +1,5 @@
 import { musicBoxStore } from '../music-box-store.js';
-import { QUARTER_BAR_GAP } from '../common/constants.js';
+import { QUARTER_BAR_GAP } from './constants.js';
 
 /* Page Scroller
 

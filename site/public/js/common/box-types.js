@@ -20,7 +20,8 @@ export const boxTypeHoleWidths = {
 //
 // If we get more "computed" functions like this, we could
 // make a generic service file that contains them all, and
-// add support for memoization, as needed.
+// add support for improved performance (like memoization
+// or cached values subscribed to state changes).
 export function getCurrentBoxType() {
   const songDataPitches = Object.keys(musicBoxStore.state.songState.songData);
   const boxTypesKeys = Object.keys(boxTypePitches);

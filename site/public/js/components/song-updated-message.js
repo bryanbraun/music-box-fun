@@ -1,5 +1,4 @@
 import { MBComponent } from '../music-box-component.js';
-import { musicBoxStore } from '../music-box-store.js';
 
 export class SongUpdatedMessage extends MBComponent {
   constructor() {
@@ -29,7 +28,7 @@ export class SongUpdatedMessage extends MBComponent {
   // We don't call this render() on initial page load because it would
   // show the message, which is hidden by default. See main.js for details.
   render() {
-    this.element.innerHTML = `Song link updated`;
+    this.element.innerHTML = 'Song link updated';
 
     this.showSongUpdatedMessage();
   }
