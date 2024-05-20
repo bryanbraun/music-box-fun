@@ -760,6 +760,13 @@
   display: none;
 }
 
+.floating-actions .floating-play-button circle {
+  /* see also: .icon-light-stroke */
+  stroke-width: 2px;
+  paint-order: stroke;
+  stroke: var(--mb-gray-3);
+}
+
 @media (max-width: 900px) { /* --two-to-three-columns */
   .floating-actions {
     right: 1rem;

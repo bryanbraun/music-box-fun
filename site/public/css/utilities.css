@@ -18,6 +18,15 @@
   fill: var(--icon-dark);
 }
 
+.icon-light-stroke {
+  stroke-width: 2px;
+  paint-order: stroke;
+  /* We choose this color because it's about
+     half-way between the color of the paper
+     and the workspace surface. */
+  stroke: var(--mb-gray-3);
+}
+
 .right {
   float: right;
 }

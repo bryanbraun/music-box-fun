@@ -18,9 +18,9 @@ export class OffCanvasNavIcon extends MBComponent {
       <button>
         <svg width="24" height="20" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
           <g class="icon-dark-fill">
-            <rect width="24" height="4" rx="2"/>
-            <rect y="8" width="24" height="4" rx="2"/>
-            <rect y="16" width="24" height="4" rx="2"/>
+            <rect class="icon-light-stroke" y="2" width="24" height="4" rx="2"/>
+            <rect class="icon-light-stroke" y="10" width="24" height="4" rx="2"/>
+            <rect class="icon-light-stroke" y="18" width="24" height="4" rx="2"/>
           </g>
         </svg>
       </button>
