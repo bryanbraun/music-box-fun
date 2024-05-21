@@ -1,3 +1,16 @@
+.box-type-15 {
+  --number-of-notes: 15;
+  --hole-width: 16px;
+}
+.box-type-20 {
+  --number-of-notes: 20;
+  --hole-width: 14px;
+}
+.box-type-30 {
+  --number-of-notes: 30;
+  --hole-width: 12px;
+}
+
 /* Disable browser default interactive search behavior */
 .search__field::-webkit-search-decoration,
 .search__field::-webkit-search-cancel-button,
@@ -365,10 +378,10 @@
   z-index: var(--z-music-box-note-header);
 }
 
-.thirty .note-label:nth-of-type(odd) {
+.box-type-30 .note-label:nth-of-type(odd) {
   margin-top: 1.125rem;
 }
-.thirty .note-label {
+.box-type-30 .note-label {
   font-size: 0.875rem;
 }
 .note-label {

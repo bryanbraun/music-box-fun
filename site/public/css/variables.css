@@ -44,11 +44,6 @@
   --floating-action-button-diameter: 56px;
   --note-line-starting-gap: 16px; /* the same for all box types and hole sizes */
   --footer-button-height: 48px;
-  --hole-width: 16px;
-  /* Used to adjust the y-position of the note, centering it on the value defined in songData.
-     Doing this in CSS allows us to make CSS-driven hole-size adjustments (for mobile, print, etc).
-     For more details, see the comments in note-line.js */
-  --y-adjustment-for-hole-width: calc((var(--hole-width) / 2) * -1);
   /*
       52   (# of quarter note bars)
     x 48px (per quarter note bar)
@@ -82,7 +77,6 @@
   --z-search-results: 1;
 
   /* OTHER */
-  --number-of-notes: 15;
   --controls-border: 1px dashed var(--mb-gray-30);
   --back-to-top-scroll-position: 200px;
 
@@ -96,6 +90,16 @@
   --one-to-two-columns: 720px;
   --two-to-three-columns: 900px;
   */
+}
+
+/* These variables are defined on 'body' so they can be affected by body classes */
+body {
+  --number-of-notes: 15;
+  --hole-width: 16px;
+  /* Used to adjust the y-position of the note, centering it on the value defined in songData.
+     Doing this in CSS allows us to make CSS-driven hole-size adjustments (for mobile, print, etc).
+     For more details, see the comments in note-line.js */
+  --y-adjustment-for-hole-width: calc((var(--hole-width) / 2) * -1);
 }
 
 @font-face {

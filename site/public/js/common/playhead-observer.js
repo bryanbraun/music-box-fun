@@ -19,7 +19,7 @@ export const playheadObserver = (function () {
 
   function isAtPlayhead(entry) {
     const comparisonBuffer = 10;
-    const holeWidth = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--hole-width').trim());
+    const holeWidth = parseInt(getComputedStyle(document.body).getPropertyValue('--hole-width').trim());
     const noteCenterPosition = entry.boundingClientRect.top + (holeWidth / 2);
 
     return Math.abs(noteCenterPosition - playheadPosition) < comparisonBuffer;

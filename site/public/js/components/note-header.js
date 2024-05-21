@@ -13,10 +13,6 @@ export class NoteHeader extends MBComponent {
   render() {
     const pitchArray = getCurrentPitchArray();
 
-    this.element.className = classNames('note-header', {
-      'thirty': getCurrentBoxType() === '30'
-    });
-
     this.element.innerHTML = `
       ${pitchArray.map(pitchId => (
         `<div class="note-label ${pitchId[1] === '#' ? 'sharp' : ''}">

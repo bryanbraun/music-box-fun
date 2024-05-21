@@ -6,10 +6,6 @@
 
 @media print {
   html {
-    /* Use a 12px hole width for all music box types. This results in grid dimensions that are most
-       similar to the actual music box paper. */
-    --hole-width: 12px !important; /* we need !important to override the style attribute set in JS */
-
     /* Rescale the page so the printed paper matches the size of actual music box paper. It works
        for all music box types as long as the hole width is 12px. Setting the scale on the `html`
        element ensures there isn't any extra white space at the end in Firefox and Safari (we still
@@ -26,6 +22,12 @@
 
   body {
     background: var(--mb-white);
+  }
+
+  [class^="box-type-"] {
+    /* Use a 12px hole width for all music box types. This results in grid dimensions that
+       are most similar to the actual music box paper. */
+    --hole-width: 12px;
   }
 
   /* Hide elements that don't need to be printed */

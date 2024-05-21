@@ -32,7 +32,6 @@ import { setupOnClickOutside } from './common/on-click-outside.js';
 import { setupAudioContextFallbackForRestrictiveBrowsers } from './subscribers/audio-context.js';
 import { setupKeyboardEvents } from './subscribers/keyboard-manager.js';
 import { urlManager } from './subscribers/url-manager.js';
-import { holeWidthManager } from './subscribers/hole-width-manager.js';
 import { audioPlayer } from './subscribers/audio-player.js';
 import { songPauser } from './subscribers/song-pauser.js';
 
@@ -47,8 +46,6 @@ urlManager.getStateFromUrlAsync().then(urlState => {
 
   // Things we should set up before rendering components.
   playheadObserver.setup();           // because we observe new notes as they are created.
-  holeWidthManager.setCssVariables(); // because note-lines rely on having the correct CSS variables.
-  holeWidthManager.subscribeToBoxTypeChanges(); // because this event needs to fire before note-line-rerenders when state changes.
 
   // Initial page render
   new BodyClass().render();
