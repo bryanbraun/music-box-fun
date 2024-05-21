@@ -404,7 +404,7 @@
   flex-wrap: nowrap;
   justify-content: space-between;
   align-items: stretch;
-  min-height: calc(var(--note-line-starting-gap) + var(--default-note-line-length));
+  min-height: var(--total-note-line-height);
 }
 
 .note-line {

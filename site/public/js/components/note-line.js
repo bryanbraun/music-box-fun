@@ -3,7 +3,7 @@ import { musicBoxStore } from '../music-box-store.js';
 import { playheadObserver } from '../common/playhead-observer.js';
 import { sampler, isSamplerLoaded } from '../common/sampler.js';
 import { forEachNotes, isNotePositionSilent } from '../common/silent-notes.js';
-import { QUARTER_BAR_GAP, EIGHTH_BAR_GAP, SIXTEENTH_BAR_GAP, NOTE_LINE_STARTING_GAP, FOOTER_BUTTON_HEIGHT } from '../common/constants.js';
+import { QUARTER_BAR_GAP, EIGHTH_BAR_GAP, SIXTEENTH_BAR_GAP, NOTE_LINE_STARTING_GAP, FINAL_BAR_LINE, FOOTER_BUTTON_HEIGHT } from '../common/constants.js';
 
 const DEFAULT_SHADOW_NOTE_POSITION = 8;
 
@@ -29,8 +29,8 @@ export class NoteLine extends MBComponent {
     this.lastShadowNoteVisibilityClass = '';
   }
 
-  getNoteLineLengthVar() {
-    return parseInt(getComputedStyle(document.documentElement).getPropertyValue('--default-note-line-length').trim());
+  getNoteLineHeight() {
+    return parseInt(getComputedStyle(this.element).getPropertyValue('height').trim());
   }
 
   showShadowNote(event) {
@@ -76,7 +76,7 @@ export class NoteLine extends MBComponent {
     // We define thresholds that shadow notes can't be placed above or below. This prevents
     // bugs like the hole getting cut off at the top or being placed below the footer button.
     const SHADOW_NOTE_STARTING_THRESHOLD = NOTE_LINE_STARTING_GAP / 2;
-    const SHADOW_NOTE_ENDING_THRESHOLD = NOTE_LINE_STARTING_GAP + this.getNoteLineLengthVar() - FOOTER_BUTTON_HEIGHT;
+    const SHADOW_NOTE_ENDING_THRESHOLD = this.getNoteLineHeight() - FOOTER_BUTTON_HEIGHT - FINAL_BAR_LINE;
 
     if (relativeCursorYPos < SHADOW_NOTE_STARTING_THRESHOLD) {
       // If the cursor is positioned too high on the note line, we pretend that it is

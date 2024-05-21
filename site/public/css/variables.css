@@ -42,20 +42,21 @@
   --playhead-distance-from-top-of-workspace: calc(var(--music-box-distance-from-top-of-workspace) + 44px);
   --tabs-border: 1px;
   --floating-action-button-diameter: 56px;
+
+  /* page height breakdown */
+  --number-of-bars: 52;
+  --quarter-bar-gap: 48px;
   --note-line-starting-gap: 16px; /* the same for all box types and hole sizes */
+  --final-bar-line: 1px;
   --footer-button-height: 48px;
-  /*
-      52   (# of quarter note bars)
-    x 48px (per quarter note bar)
-    ------
-    2496px
-      48px (space after the last bar, for the add-button preview)
-    +  1px (to show the final bar)
-    ------
-    2545px = Total length of a black note line
-             (not including the starting gap... it gets added in separately for the cases that need it)
-  */
-  --default-note-line-length: 2545px;
+  --total-note-line-height: calc(
+      var(--number-of-bars)
+    * var(--quarter-bar-gap)
+    + var(--note-line-starting-gap)
+    + var(--final-bar-line)
+    + var(--footer-button-height)
+  );
+
 
   /* Z-INDEX (page context) */
   /* -1 - 10: music box */

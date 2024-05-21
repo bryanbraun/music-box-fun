@@ -1,7 +1,7 @@
 import { MBComponent } from '../music-box-component.js';
 import { PaperDivider } from './paper-divider.js';
 import { musicBoxStore } from '../music-box-store.js';
-import { QUARTER_BAR_GAP, STANDARD_HOLE_RADIUS, NOTE_LINE_STARTING_GAP, FOOTER_BUTTON_HEIGHT } from '../common/constants.js';
+import { QUARTER_BAR_GAP, NOTE_LINE_STARTING_GAP, FOOTER_BUTTON_HEIGHT, FINAL_BAR_LINE } from '../common/constants.js';
 
 export class PaperFooter extends MBComponent {
   constructor() {
@@ -13,60 +13,48 @@ export class PaperFooter extends MBComponent {
     musicBoxStore.subscribe('songState.songData', () => this.render(true)); // see render() for why we subscribe to this separately.
 
     // Other Constants
-    this.NUMBER_OF_BARS = 52;
-    this.FINAL_BAR_LINE = 1;
+    this.NUMBER_OF_BARS_PER_PAGE = 52;
+    this.PAGE_DIVISOR = this.NUMBER_OF_BARS_PER_PAGE * QUARTER_BAR_GAP; // 2496
 
     // Bindings
-    this.getNoteLineLengthFromSongData = this.getNoteLineLengthFromSongData.bind(this);
     this.extendSongPaper = this.extendSongPaper.bind(this);
     this.trimSongPaper = this.trimSongPaper.bind(this);
   }
 
-  getNoteLineLengthVar() {
-    return parseInt(getComputedStyle(document.documentElement).getPropertyValue('--default-note-line-length').trim());
+  getNoteLineHeight() {
+    return parseInt(getComputedStyle(document.querySelector('#note-lines')).getPropertyValue('height').trim());
   }
 
-  setNoteLineLengthVar(newVal) {
-    document.documentElement.style.setProperty('--default-note-line-length', `${newVal}px`);
+  setNumberOfPages(numberOfPages) {
+    document.documentElement.style.setProperty('--number-of-bars', numberOfPages * this.NUMBER_OF_BARS_PER_PAGE);
   }
 
-  getNumberOfUsedPages() {
-    // We use "standard" values instead of dynamic ones for the hole size because these
-    // calculations are made against stored note data, which isn't adjusted for hole size.
-    const singleUsePixels = NOTE_LINE_STARTING_GAP - STANDARD_HOLE_RADIUS + this.FINAL_BAR_LINE;
-    const pageDivisor = this.NUMBER_OF_BARS * QUARTER_BAR_GAP; // 2496
-
+  getNumberOfPagesFromSongData() {
     const finalNoteYPos = Object.values(musicBoxStore.state.songState.songData).reduce((accumulator, currentValue) => {
       return Math.max(accumulator, Math.max(...currentValue));
     }, 0);
 
-    return Math.ceil((finalNoteYPos - singleUsePixels) / pageDivisor) || 1;
+    return Math.ceil((finalNoteYPos - NOTE_LINE_STARTING_GAP) / this.PAGE_DIVISOR) || 1;
   }
 
+  // This can include completely blank pages added by the user.
   getNumberOfExposedPages() {
-    const singleUsePixels = FOOTER_BUTTON_HEIGHT + this.FINAL_BAR_LINE; // 49
-    const pageDivisor = this.NUMBER_OF_BARS * QUARTER_BAR_GAP; // 2496
-    return (this.getNoteLineLengthVar() - singleUsePixels) / pageDivisor;
-  }
-
-  getNoteLineLengthFromSongData() {
-    return (this.NUMBER_OF_BARS * QUARTER_BAR_GAP * this.getNumberOfUsedPages()) + FOOTER_BUTTON_HEIGHT + this.FINAL_BAR_LINE;
+    const singleUsePixels = NOTE_LINE_STARTING_GAP + FINAL_BAR_LINE + FOOTER_BUTTON_HEIGHT; // 65
+    return (this.getNoteLineHeight() - singleUsePixels) / this.PAGE_DIVISOR;
   }
 
   extendSongPaper() {
-    const newNoteLineLength = this.getNoteLineLengthVar() + (this.NUMBER_OF_BARS * QUARTER_BAR_GAP);
-    this.render(true, newNoteLineLength);
+    this.render(true, this.getNumberOfExposedPages() + 1);
   }
 
-  trimSongPaper(event) {
-    const newNoteLineLength = this.getNoteLineLengthVar() - (this.NUMBER_OF_BARS * QUARTER_BAR_GAP);
-    this.render(true, newNoteLineLength);
+  trimSongPaper() {
+    this.render(true, this.getNumberOfExposedPages() - 1);
   }
 
   /*
       There are five cases for rendering this component:
 
-      CASE                                  TRIGGER                        LINE LENGTH CHANGE
+      CASE                                  TRIGGER                        PAGE NUMBER CHANGE
       1. Initial song load                  manual (from main.js)          Yes - Calculate from songData
       2. Subsequent song load (link click)  songState.songData             Yes - Calculate from songData
       3. Extend song                        manual (from extendSongPaper)  Yes - Fixed length change
@@ -74,11 +62,11 @@ export class PaperFooter extends MBComponent {
       5. Note change (for the divider "×")  songState.songData*            No  - No changes needed
 
       By giving params to our render function and manually passing values into render() for
-      cases 1, 2, 3, and 4, we can render the LINE LENGTH appropriately in all 5 cases.
+      cases 1, 2, 3, and 4, we can render the PAGE NUMBER appropriately in all 5 cases.
   */
-  render(isUpdatingLineLength, newNoteLineLength) {
-    if (isUpdatingLineLength) {
-      this.setNoteLineLengthVar(newNoteLineLength || this.getNoteLineLengthFromSongData());
+  render(isUpdatingPageCount, newNumberOfPages) {
+    if (isUpdatingPageCount) {
+      this.setNumberOfPages(newNumberOfPages || this.getNumberOfPagesFromSongData());
     }
 
     const numberOfDividers = this.getNumberOfExposedPages() - 1;
@@ -98,8 +86,8 @@ export class PaperFooter extends MBComponent {
     for (let i = 0; i < numberOfDividers; i++) {
       new PaperDivider({
         dividerNumber: i + 1,
-        isTrimmable: this.getNumberOfUsedPages() <= (i + 1),
-        yFromBottom: FOOTER_BUTTON_HEIGHT + ((numberOfDividers - i) * this.NUMBER_OF_BARS * QUARTER_BAR_GAP),
+        isTrimmable: this.getNumberOfPagesFromSongData() <= (i + 1),
+        yFromBottom: FOOTER_BUTTON_HEIGHT + ((numberOfDividers - i) * this.NUMBER_OF_BARS_PER_PAGE * QUARTER_BAR_GAP),
         trimSongPaper: this.trimSongPaper
       }).render();
     }
