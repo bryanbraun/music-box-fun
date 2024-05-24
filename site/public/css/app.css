@@ -6,7 +6,8 @@
   --number-of-notes: 20;
   --hole-width: 14px;
 }
-.box-type-30 {
+.box-type-30,
+.box-type-30F {
   --number-of-notes: 30;
   --hole-width: 12px;
 }
@@ -378,10 +379,10 @@
   z-index: var(--z-music-box-note-header);
 }
 
-.box-type-30 .note-label:nth-of-type(odd) {
+[class^="box-type-30"] .note-label:nth-of-type(odd) {
   margin-top: 1.125rem;
 }
-.box-type-30 .note-label {
+[class^="box-type-30"] .note-label {
   font-size: 0.875rem;
 }
 .note-label {
@@ -537,7 +538,7 @@
   padding: 1rem;
   border-left: var(--controls-border);
   background: var(--surface-color);
-  font-size: 14px;
+  font-size: 13.5px; /* the largest size that won't cut off text in the dropdowns */
   overflow-y: auto;
   display: flex;
   flex-direction: column;

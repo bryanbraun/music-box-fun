@@ -1,6 +1,6 @@
 import { MBComponent } from '../music-box-component.js';
 import { musicBoxStore } from '../music-box-store.js';
-import { boxTypePitches, getCurrentBoxType } from '../common/box-types.js';
+import { boxTypePitches, boxTypeTitles, getCurrentBoxType } from '../common/box-types.js';
 import { confirmationDialog } from '../common/confirmation-dialog.js';
 
 export class MusicBoxTypeSelect extends MBComponent {
@@ -19,11 +19,11 @@ export class MusicBoxTypeSelect extends MBComponent {
   }
 
   isDataLoss(currentBoxType, newBoxType) {
-    const pitchesBeingRemoved = boxTypePitches[currentBoxType].filter(function (el) {
+    const pitchesBeingRemoved = boxTypePitches[currentBoxType].filter((el) => {
       return !boxTypePitches[newBoxType].includes(el);
     }, this);
 
-    const isRemovingPitchesWithNotes = pitchesBeingRemoved.some(function (el) {
+    const isRemovingPitchesWithNotes = pitchesBeingRemoved.some((el) => {
       return musicBoxStore.state.songState.songData[el].length !== 0;
     });
 
@@ -61,9 +61,6 @@ export class MusicBoxTypeSelect extends MBComponent {
 
   render() {
     const currentBoxType = getCurrentBoxType();
-    const selected15 = currentBoxType === '15' ? 'selected=""' : '';
-    const selected20 = currentBoxType === '20' ? 'selected=""' : '';
-    const selected30 = currentBoxType === '30' ? 'selected=""' : '';
 
     this.lastSelectedOption = currentBoxType;
 
@@ -71,9 +68,9 @@ export class MusicBoxTypeSelect extends MBComponent {
       <label>
         <span class="visuallyhidden">Music Box Type</span>
         <select class="select select-music-box-type" data-testid="music-box-type-select" name="select-box-type">
-          <option ${selected15} value="15">15-note</option>
-          <option ${selected20} value="20">20-note</option>
-          <option ${selected30} value="30">30-note</option>
+          ${Object.entries(boxTypeTitles).map(([type, title]) => (
+            `<option ${currentBoxType === type ? 'selected' : ''} value="${type}">${title}</option>`
+          )).join('')}
         </select>
       </label>
     `;

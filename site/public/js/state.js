@@ -87,4 +87,7 @@ export const minifyMap = {
   'G#5': 'I',
   'A#5': 'J',
   tempo: 'K',
+  F3: 'L',
+  'C#6': 'M',
+  'D#6': 'N',
 }
