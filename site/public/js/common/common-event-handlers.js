@@ -21,6 +21,9 @@ export function jumpToTopIfASongWasClicked(event) {
 
   if (!isHashLink) return;
 
+  // Make sure the music box stops *before* we jump to the top of the page.
+  // The box would have paused on state change anyway, but the timing of this
+  // explicit pause ensures the user stays at the top of the page.
   if (musicBoxStore.state.appState.isPlaying) {
     musicBoxStore.setState('appState.isPlaying', false);
   }

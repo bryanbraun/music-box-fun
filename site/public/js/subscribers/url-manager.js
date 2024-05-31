@@ -39,8 +39,9 @@ export const urlManager = {
     musicBoxStore.subscribe('songState*', debouncedUpdateUrlAsync);
   },
 
-  // This rerenders the app (without reloading the page) when a navigation change occurs.
-  // It happens on hashchange, which covers the following use-cases:
+  // This contains things we want to happen during a song navigation
+  // change (mainly, updating the songState from the URL hash). It's
+  // triggered on hashchange, which covers the following use-cases:
   //   - Back Button
   //   - Forward Button
   //   - Browsing to another Music Box Fun song within the app
@@ -51,6 +52,8 @@ export const urlManager = {
 
       // Filter our hashchanges caused by a state update, not navigation.
       if (newHash === this.lastStateUpdateHash) return;
+
+      musicBoxStore.setState('appState.offCanvasSidebarFocused', 'none');
 
       const hashState = await decodeHashString(newHash);
 
