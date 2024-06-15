@@ -9,8 +9,8 @@
   background-repeat: no-repeat;
   background-position: right 7px center;
   border-radius: 5px;
-  border: 1px solid var(--mb-gray-20);
-  border-bottom: 1px solid #bbb;
+  border: 1px solid var(--controls-border-color);
+  border-bottom: 1px solid var(--controls-border-bottom-color);
   padding: 0.4rem 1.2rem 0.4rem 0.4rem;
   cursor: pointer;
 }

@@ -86,11 +86,11 @@ export class BrowseTabSongLibrary extends MBComponent {
     }
   }
 
-
   updateMailtoLink(event) {
-    const subject = 'Add%20music%20box%20song%20to%20library';
+    const subject = 'Add music box song to library';
+    const body = "Hello, I'd like to submit my song. Here are my details:\n\nMy name/username: <enter a username here>\nMy song link: "
     const songUrl = document.location.href;
-    const newHref = `mailto:bbraun7@gmail.com?subject=${subject}&body=Hello%2C%20I%27d%20like%20to%20submit%20my%20song.%20Here%20are%20my%20details%3A%0A%0AMy%20name%2Fusername%3A%20%3Center%20a%20username%20here%3E%0AMy%20song%20link%3A%20${songUrl}`;
+    const newHref = `mailto:bbraun7@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}${songUrl}`;
 
     event.currentTarget.href = newHref;
   }

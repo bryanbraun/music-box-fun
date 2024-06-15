@@ -8,6 +8,7 @@
   --mb-gray-10: #efefef;
   --mb-gray-20: #dddddd;
   --mb-gray-30: #c0c0c0;
+  --mb-gray-35: #bbbbbb;
   --mb-gray-40: #a9a9a9;
   --mb-gray-50: #777777;
   --mb-gray-60: #444444;
@@ -21,6 +22,8 @@
   --surface-color: var(--mb-gray-10);
   --music-box-color: var(--mb-gray-30);
   --controls-button-color: var(--mb-offwhite);
+  --controls-border-color: var(--mb-gray-20);
+  --controls-border-bottom-color: var(--mb-gray-35);
   --shadow-note-color: var(--mb-gray-20);
   --active-hole-color: #ffb500;
   --hole-color: var(--mb-gray-60);
