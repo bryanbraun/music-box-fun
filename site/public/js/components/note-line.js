@@ -120,9 +120,10 @@ export class NoteLine extends MBComponent {
     };
 
     const shadowNoteYPos = getNoteYPos(shadowNoteEl);
+    const clickedEl = event.target;
 
-    if (event.target.classList.contains('hole')) {
-      this.removeNote(pitch, getNoteYPos(event.target));
+    if (clickedEl.classList.contains('hole')) {
+      this.removeNote(pitch, getNoteYPos(clickedEl));
     }
     else if (isShadowNoteOverlappingExistingNote(shadowNoteYPos)) {
       // This case happens when snap-to-grid allows you to click when your

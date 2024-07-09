@@ -306,7 +306,7 @@
 .music-box {
   --left-box-edge-width: 30px;
   --right-box-edge-width: 30px;
-  --paper-width: calc(var(--paper-side-margins) * 2 + var(--number-of-notes) * var(--hole-width));
+  --paper-width: calc(var(--paper-side-margin) * 2 + var(--number-of-notes) * var(--hole-width));
   --music-box-width: calc(var(--left-box-edge-width) + var(--paper-width) + var(--right-box-edge-width));
 }
 
@@ -339,7 +339,7 @@
   position: relative; /* to allow absolute positioning of the add-paper-button */
   display: inline-block; /* to allow its width to depend on its content */
   background: var(--paper-color);
-  padding: 1rem 2rem 0rem;
+  padding-top: 1rem;
   box-shadow: 0px 0px 11px -8px #444;
 
   /* allow the paper to completely move through the box */
@@ -347,7 +347,7 @@
 }
 
 .song-title {
-  padding: 2rem 0 2.5rem;
+  padding: 2rem var(--paper-side-margin) 2.5rem;
   text-align: center; /* centers the loading indicator */
 }
 /* loading indicator */
@@ -374,7 +374,7 @@
   position: sticky;
   top: 0;
   background: rgba(255, 255, 255, 0.95);
-  padding: 4px 0 3px;
+  padding: 4px var(--paper-side-margin) 3px;
   /* Stack our header above the note-lines and holes */
   z-index: var(--z-music-box-note-header);
 }
@@ -397,6 +397,11 @@
   position: absolute;
   top: -2px;
   left: 0px;
+}
+
+.note-range {
+  position: relative;
+  margin: 0 var(--paper-side-margin);
 }
 
 .note-lines {
@@ -497,6 +502,55 @@
   background-size: 80% 80%; /* the SVG is scaled to allow a gap between the image and background lines, regardless of the hole size. */
   background-position: center;
   background-repeat: no-repeat;
+}
+
+.measure-editor-bar {
+  display: block;
+  position: absolute;
+  z-index: var(--z-measure-editor-buttons);
+  top: 0;
+  right: calc(var(--measure-editor-button-width) * -1);
+  width: var(--measure-editor-button-width);
+  background-color: cyan;
+  opacity: 0;
+}
+.measure-editor-bar:hover {
+  /* background-color: tomato; */
+  opacity: 1;
+}
+/* @todo: extract common styles into a .measure-editor-button class ? */
+
+.measure-editor-button {
+  display: block;
+  position: absolute;
+  top: var(--y-adjustment-for-measure-editor-button-width);
+  left: 0;
+  width: var(--measure-editor-button-width);
+  height: var(--measure-editor-button-width);
+  line-height: var(--measure-editor-button-width);
+  padding: 0;
+  cursor: pointer;
+  color: var(--mb-gray-50);
+  background: transparent;
+  border: none;
+  border-radius: 50%;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.measure-add-button:hover { /* green? or maybe just the active state? */
+  background: green;
+  color: var(--mb-white);
+}
+.measure-add-button:hover::before {
+  content: "";
+  height: 5px;
+  width: calc(var(--number-of-notes) * var(--hole-width));
+  background-color: green;
+}
+.measure-remove-button:hover { /* red? or maybe just the active state? */
+  background: red;
+  color: var(--mb-white);
 }
 
 .audio-disabled-message {

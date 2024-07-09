@@ -13,6 +13,7 @@ import { Footnote } from './components/footnote.js';
 import { SongTitle } from './components/song-title.js';
 import { NoteHeader } from './components/note-header.js';
 import { NoteLines } from './components/note-lines.js';
+import { MeasureEditor } from './components/measure-editor.js';
 import { PageTitle } from './components/page-title.js';
 import { OffCanvasNavIcon } from './components/off-canvas-nav-icon.js';
 import { OffCanvasControlsIcon } from './components/off-canvas-controls-icon.js';
@@ -45,7 +46,7 @@ urlManager.getStateFromUrlAsync().then(urlState => {
   }
 
   // Things we should set up before rendering components.
-  playheadObserver.setup();           // because we observe new notes as they are created.
+  playheadObserver.setup(); // because we observe new notes as they are created.
 
   // Initial page render
   new BodyClass().render();
@@ -73,8 +74,9 @@ urlManager.getStateFromUrlAsync().then(urlState => {
   new SongLinkButton().render();
   new ShareButton().render();
   new PaperFooter().render(true);
+  new MeasureEditor().render();
 
-  new SongUpdatedMessage(); // This element is hidden by default, so it doesn't need to render on page load.
+  new SongUpdatedMessage(); // This element is hidden by default, so it doesn't need to .render() on page load.
 
   // Things we can set up after rendering components.
   audioPlayer.subscribeToPlayState();

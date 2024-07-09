@@ -2,7 +2,6 @@ import { MBComponent } from '../music-box-component.js';
 import { NoteLine } from './note-line.js';
 import { getCurrentPitchArray } from '../common/box-types.js';
 
-
 export class NoteLines extends MBComponent {
   constructor() {
     super({
