@@ -504,53 +504,37 @@
   background-repeat: no-repeat;
 }
 
-.measure-editor-bar {
+.space-editor-lane {
   display: block;
   position: absolute;
-  z-index: var(--z-measure-editor-buttons);
+  z-index: var(--z-space-editor-ui);
   top: 0;
-  right: calc(var(--measure-editor-button-width) * -1);
-  width: var(--measure-editor-button-width);
-  background-color: cyan;
+  right: calc(-1 * var(--paper-side-margin));
+  width: var(--paper-side-margin);
   opacity: 0;
 }
-.measure-editor-bar:hover {
-  /* background-color: tomato; */
+.space-editor-lane:hover {
+  cursor: row-resize;
   opacity: 1;
 }
-/* @todo: extract common styles into a .measure-editor-button class ? */
 
-.measure-editor-button {
-  display: block;
+.space-editor-bar {
   position: absolute;
-  top: var(--y-adjustment-for-measure-editor-button-width);
-  left: 0;
-  width: var(--measure-editor-button-width);
-  height: var(--measure-editor-button-width);
-  line-height: var(--measure-editor-button-width);
-  padding: 0;
-  cursor: pointer;
-  color: var(--mb-gray-50);
-  background: transparent;
-  border: none;
-  border-radius: 50%;
-  font-size: 16px;
-  font-weight: bold;
+  right: calc(var(--paper-side-margin) / 2);
+  width: calc((var(--number-of-notes) * var(--hole-width)) + var(--paper-side-margin));
+  height: 4px;
+  top: -2px; /* half the height */
+  border-radius: 5px;
+  background-color: var(--mb-gray-35);
+  pointer-events: none; /* prevents a bug where the bar blocks mouseout */
 }
 
-.measure-add-button:hover { /* green? or maybe just the active state? */
-  background: green;
-  color: var(--mb-white);
-}
-.measure-add-button:hover::before {
-  content: "";
-  height: 5px;
+.space-editor-notes-preview {
+  position: absolute;
+  right: 100%;
   width: calc(var(--number-of-notes) * var(--hole-width));
-  background-color: green;
-}
-.measure-remove-button:hover { /* red? or maybe just the active state? */
-  background: red;
-  color: var(--mb-white);
+  pointer-events: none; /* prevents a bug where the preview blocks mouseout */
+  background: var(--paper-color);
 }
 
 .audio-disabled-message {
@@ -788,7 +772,6 @@
 .share-text {
   flex: 1 0 auto;
 }
-
 
 
 .web-share-button + .email-share-button {

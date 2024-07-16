@@ -26,7 +26,7 @@ export function forEachNotes(notesArray, callback) {
 
     const isSilent = !isNotePlayable;
 
-    callback(yPos, isSilent);
+    callback(yPos, isSilent, i);
   });
 }
 

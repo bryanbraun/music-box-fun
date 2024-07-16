@@ -13,7 +13,7 @@ import { Footnote } from './components/footnote.js';
 import { SongTitle } from './components/song-title.js';
 import { NoteHeader } from './components/note-header.js';
 import { NoteLines } from './components/note-lines.js';
-import { MeasureEditor } from './components/measure-editor.js';
+import { SpaceEditor } from './components/space-editor.js';
 import { PageTitle } from './components/page-title.js';
 import { OffCanvasNavIcon } from './components/off-canvas-nav-icon.js';
 import { OffCanvasControlsIcon } from './components/off-canvas-controls-icon.js';
@@ -74,7 +74,7 @@ urlManager.getStateFromUrlAsync().then(urlState => {
   new SongLinkButton().render();
   new ShareButton().render();
   new PaperFooter().render(true);
-  new MeasureEditor().render();
+  new SpaceEditor().render();
 
   new SongUpdatedMessage(); // This element is hidden by default, so it doesn't need to .render() on page load.
 

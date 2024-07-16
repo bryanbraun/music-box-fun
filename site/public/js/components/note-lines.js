@@ -11,6 +11,8 @@ export class NoteLines extends MBComponent {
   }
 
   render() {
+    // We use this method (instead of iterating over songData directly)
+    // to ensure that the order of the pitches is what we expect.
     const pitchArray = getCurrentPitchArray();
 
     this.element.innerHTML = `
