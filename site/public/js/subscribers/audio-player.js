@@ -1,7 +1,7 @@
 import { musicBoxStore } from '../music-box-store.js';
 import { sampler } from '../common/sampler.js';
 import { startScrolling, stopScrolling } from '../common/page-scroller.js';
-import { forEachNotes } from '../common/silent-notes.js';
+import { forEachNotes } from '../common/notes.js';
 import { Transport, Part, getContext } from '../vendor/tone.js';
 import { audioContextResuming } from './audio-context.js';
 

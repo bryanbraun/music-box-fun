@@ -1,10 +1,57 @@
 import { MBComponent } from '../music-box-component.js';
 import { musicBoxStore } from '../music-box-store.js';
-import { SpaceEditorNoteLinesPreview, transformSongData } from './space-editor-note-lines-preview.js';
+import { SpaceEditorNoteLinesPreview } from './space-editor-note-lines-preview.js';
 import { getRelativeYPos } from '../common/common-event-handlers.js';
+import { getFinalNoteYPos } from '../common/notes.js';
 import { snapToInterval } from "../common/snap-to-interval.js";
+import { getCurrentPitchArray } from '../common/box-types.js';
+import { NOTE_LINE_STARTING_GAP, NUMBER_OF_BARS_PER_PAGE, QUARTER_BAR_GAP } from '../common/constants.js';
 
 const DEFAULT_SPACE_EDITOR_BAR_POSITION = 8;
+
+function transformSongData(dragStartYPos, draggedDistance) {
+  const transformedSongData = {};
+  const noteStatuses = {};
+  const pitchArray = getCurrentPitchArray();
+
+  pitchArray.forEach((pitchId) => {
+    const noteStatusArray = [];
+    const notesArray = musicBoxStore.state.songState.songData[pitchId];
+    const transformedNotes = notesArray.map(noteYPos => {
+      let status = 'unaltered';
+      let newNoteYPos = noteYPos;
+
+      if (noteYPos > dragStartYPos) {
+        status = 'altered';
+        newNoteYPos = noteYPos + draggedDistance;
+      }
+
+      noteStatusArray.push(status);
+      return newNoteYPos;
+    });
+
+    transformedSongData[pitchId] = transformedNotes;
+    noteStatuses[pitchId] = noteStatusArray;
+  });
+
+  return [transformedSongData, noteStatuses];
+}
+
+function dedupeSongData(songData) {
+  const dedupedSongData = {};
+
+  Object.keys(songData).forEach((pitchId) => {
+    const dedupedNotesArray = Array.from(new Set(songData[pitchId]));
+    dedupedSongData[pitchId] = dedupedNotesArray;
+  });
+
+  return dedupedSongData;
+}
+
+// @TODO: A similar calculation is done in paper-footer and note-line.js, so we could possibly consolidate.
+function getNumberOfBars() {
+  return parseInt(getComputedStyle(document.documentElement).getPropertyValue('--number-of-bars'));
+}
 
 export class SpaceEditor extends MBComponent {
   constructor() {
@@ -13,10 +60,6 @@ export class SpaceEditor extends MBComponent {
       element: document.querySelector('#space-editor')
     });
 
-    // Using local state? Set the initial values here in the constructor.
-    // this.state.counter = 0;
-
-    // To use "this" inside of our methods, bind it here in the constructor.
     this.handleMouseMove = this.handleMouseMove.bind(this);
     this.handleMouseDown = this.handleMouseDown.bind(this);
     this.handleMouseUp = this.handleMouseUp.bind(this);
@@ -34,16 +77,6 @@ export class SpaceEditor extends MBComponent {
     this.lastSpaceEditorBarPosition = DEFAULT_SPACE_EDITOR_BAR_POSITION;
   }
 
-  getFinalNoteYPos() {
-    let finalNoteYPos = 0;
-
-    Object.values(musicBoxStore.state.songState.songData).forEach((noteLine) => {
-      finalNoteYPos = Math.max(finalNoteYPos, noteLine[noteLine.length - 1] || 0);
-    });
-
-    return finalNoteYPos; // Returns zero if the song is empty.
-  }
-
   handleDragging(event) {
     const relativeBarYPos = getRelativeYPos(event);
     const snappedBarYPos = snapToInterval(relativeBarYPos, event);
@@ -54,12 +87,32 @@ export class SpaceEditor extends MBComponent {
     this.NoteLinesPreview.show();
 
     // @todo: calculate getFinalNoteYPos only on render (and cache value) for performance?
-    const newFinalNotePosition = this.getFinalNoteYPos() + draggedDistance;
+    const finalNoteYPos = getFinalNoteYPos();
+    const newFinalNotePosition = finalNoteYPos + draggedDistance;
     this.element.style.height = `${newFinalNotePosition}px`;
+    const lastPageThreshold = NOTE_LINE_STARTING_GAP + (getNumberOfBars() * QUARTER_BAR_GAP);
+    // @TODO: this is similar to getNumberOfPagesFromScreen from paper-footer, so maybe consolidate?
+    const currentNumberOfPages = getNumberOfBars() / NUMBER_OF_BARS_PER_PAGE;
+
+    // If final preview note belongs on a new page, and we don't have a new page, add a new page.
+    if (newFinalNotePosition > lastPageThreshold) {
+      // Publish a one-off event telling the PaperFooter to re-render at a bigger size.
+      musicBoxStore.publish('ResizePaper', currentNumberOfPages + 1);
+    }
+
+    const maxFinalNoteYpos = Math.max(finalNoteYPos, newFinalNotePosition);
+    // @TODO: this is similar to getNumberOfPagesFromSongData from paper-footer, so maybe consolidate?
+    const minNumberOfPagesNeeded = Math.ceil((maxFinalNoteYpos - NOTE_LINE_STARTING_GAP) / (NUMBER_OF_BARS_PER_PAGE * QUARTER_BAR_GAP)) || 1;
+
+    if (currentNumberOfPages > minNumberOfPagesNeeded) {
+      // Publish a one-off event telling the PaperFooter to re-render at a smaller size.
+      musicBoxStore.publish('ResizePaper', minNumberOfPagesNeeded);
+    }
   }
 
   // @todo: throttle this for performance?
-  //        OR, only rerender on snap interval changes instead of every pixel dragged?
+  //        ALSO, only rerender on snap interval changes instead of every pixel dragged?
+  //          We can do this by storing the last snappedBarYPos and only rerender if it changes?
   handleMouseMove(event) {
     const relativeBarYPos = getRelativeYPos(event);
     const snappedBarYPos = snapToInterval(relativeBarYPos, event);
@@ -92,7 +145,7 @@ export class SpaceEditor extends MBComponent {
       // Save new song data
       const draggedDistance = snappedBarYPos - this.dragStartYPos;
       const [transformedSongData] = transformSongData(this.dragStartYPos, draggedDistance);
-      musicBoxStore.setState('songState.songData', transformedSongData);
+      musicBoxStore.setState('songState.songData', dedupeSongData(transformedSongData));
 
       // Reset
       this.resetDragging();
@@ -102,7 +155,6 @@ export class SpaceEditor extends MBComponent {
   // @TODO: improve dragging by allowing the bar to be dragged outside of the lane?
   //        That's how google sheets works, but possibly it adds unnecessary complexity.
   handleMouseOut() {
-    // For now: reset dragging when the mouse leaves the lane.
     this.resetDragging();
   }
 
@@ -113,13 +165,13 @@ export class SpaceEditor extends MBComponent {
   resetDragging() {
     this.NoteLinesPreview.hide();
     this.dragStartYPos = null;
-    this.element.style.height = `${this.getFinalNoteYPos()}px`;
+    this.element.style.height = `${getFinalNoteYPos()}px`;
   }
 
   render() {
     console.log('SpaceEditor was rendered');
 
-    this.element.style.height = `${this.getFinalNoteYPos()}px`;
+    this.element.style.height = `${getFinalNoteYPos()}px`;
     this.element.innerHTML = `
       <div class="space-editor-notes-preview"></div>
       <div class="space-editor-bar" style="transform: translateY(${this.lastSpaceEditorBarPosition}px)"></div>

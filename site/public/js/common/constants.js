@@ -14,6 +14,7 @@ const FOOTER_BUTTON_HEIGHT = // 48
   parseInt(getComputedStyle(document.documentElement).getPropertyValue('--footer-button-height').trim());
 
 const DEFAULT_TEMPO = 110;
+const NUMBER_OF_BARS_PER_PAGE = 52;
 
 export {
   QUARTER_BAR_GAP,
@@ -22,5 +23,6 @@ export {
   NOTE_LINE_STARTING_GAP,
   FINAL_BAR_LINE,
   FOOTER_BUTTON_HEIGHT,
-  DEFAULT_TEMPO
+  DEFAULT_TEMPO,
+  NUMBER_OF_BARS_PER_PAGE
 }

@@ -4,7 +4,7 @@ import { playheadObserver } from '../common/playhead-observer.js';
 import { sampler, isSamplerLoaded } from '../common/sampler.js';
 import { getRelativeYPos } from '../common/common-event-handlers.js';
 import { snapToInterval } from '../common/snap-to-interval.js';
-import { forEachNotes, isNotePositionSilent } from '../common/silent-notes.js';
+import { forEachNotes, isNotePositionSilent } from '../common/notes.js';
 import { NOTE_LINE_STARTING_GAP, FINAL_BAR_LINE, FOOTER_BUTTON_HEIGHT } from '../common/constants.js';
 
 const DEFAULT_SHADOW_NOTE_POSITION = 8;

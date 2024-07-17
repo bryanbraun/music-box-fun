@@ -878,13 +878,13 @@
     to get full width because it's a button. See:
     https://stackoverflow.com/q/29293302/1154642 */
   width: 100%;
-  /* We center the button because to prevent weird overlaps when printing */
-  margin: 0 auto;
+  margin: 0 auto; /* This centering prevents weird overlaps when printing */
   padding: 0;
   border: 0;
   font-family: var(--main-font);
   font-size: 1.25rem;
   height: var(--footer-button-height);
+  line-height: var(--footer-button-height); /* for vertical centering */
   background: var(--paper-color);
   cursor: pointer;
   z-index: var(--z-music-box-extend-button);
