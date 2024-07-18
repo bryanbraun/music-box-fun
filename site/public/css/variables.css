@@ -81,11 +81,6 @@
   /* (left-sidebar context) */
   --z-search-results: 1;
 
-  /* (--z-space-editor-ui context, which contains some of the above variables):
-  --z-music-box-extend-button: 2;
-  --z-music-box-notes: 4;
-  */
-
   /* OTHER */
   --controls-border: 1px dashed var(--mb-gray-30);
   --back-to-top-scroll-position: 200px;

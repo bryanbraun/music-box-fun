@@ -529,14 +529,6 @@
   pointer-events: none; /* prevents a bug where the bar blocks mouseout */
 }
 
-.space-editor-notes-preview {
-  position: absolute;
-  right: 100%;
-  width: calc(var(--number-of-notes) * var(--hole-width));
-  pointer-events: none; /* prevents a bug where the preview blocks mouseout */
-  background: var(--paper-color);
-}
-
 .audio-disabled-message {
   display: block;
   position: fixed;
