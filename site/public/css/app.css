@@ -235,7 +235,6 @@
   line-height: 1.25;
   margin-bottom: 0.5rem;
   padding-left: 0.5rem;
-
   list-style-type: none;
   background-image: url('/images/bullet.svg');
   background-repeat: no-repeat;
@@ -401,7 +400,7 @@
 
 .note-range {
   position: relative;
-  margin: 0 var(--paper-side-margin);
+  padding: 0 var(--paper-side-margin);
 }
 
 .note-lines {
@@ -504,29 +503,51 @@
   background-repeat: no-repeat;
 }
 
-.space-editor-lane {
+.space-editor-drag-zone {
   display: block;
   position: absolute;
-  z-index: var(--z-space-editor-ui);
+  z-index: var(--z-space-editor-drag-zone);
   top: 0;
-  right: calc(-1 * var(--paper-side-margin));
+  right: 0;
   width: var(--paper-side-margin);
-  opacity: 0;
 }
-.space-editor-lane:hover {
+.space-editor-drag-zone:hover {
   cursor: row-resize;
-  opacity: 1;
+}
+.space-editor-drag-zone.is-expanded {
+  width: calc(100vw - var(--left-sidebar-width) - var(--right-sidebar-width));
+  transform: translateX(50%);
+  right: 50%;
+}
+@media (max-width: 900px) { /* --two-to-three-columns */
+  .space-editor-drag-zone.is-expanded {
+    width: calc(100vw - var(--left-sidebar-width));
+  }
+}
+@media (max-width: 720px) { /* --one-to-two-columns */
+  .space-editor-drag-zone.is-expanded {
+    width: 100vw;
+  }
 }
 
+.space-editor-drag-zone:hover + .space-editor-bar {
+  opacity: 1;
+}
 .space-editor-bar {
   position: absolute;
-  right: calc(var(--paper-side-margin) / 2);
+  z-index: var(--z-space-editor-bar);
+  top: -2px; /* aligns the bar vertically with the measure line */
   width: calc((var(--number-of-notes) * var(--hole-width)) + var(--paper-side-margin));
-  height: 4px;
-  top: -2px; /* half the height */
+  height: 5px;
   border-radius: 5px;
   background-color: var(--mb-gray-35);
   pointer-events: none; /* prevents a bug where the bar blocks mouseout */
+  opacity: 0;
+
+  /* center horizontally */
+  margin: 0 auto;
+  left: 0;
+  right: 0;
 }
 
 .audio-disabled-message {

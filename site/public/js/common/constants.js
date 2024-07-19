@@ -8,8 +8,6 @@ const SIXTEENTH_BAR_GAP = EIGHTH_BAR_GAP / 2; // 12 - Pixel distance between 16t
 // CSS custom properties that are used in JS and won't change during app use.
 const NOTE_LINE_STARTING_GAP = // 16
   parseInt(getComputedStyle(document.documentElement).getPropertyValue('--note-line-starting-gap').trim());
-const FINAL_BAR_LINE = // 1
-  parseInt(getComputedStyle(document.documentElement).getPropertyValue('--final-bar-line').trim());
 const FOOTER_BUTTON_HEIGHT = // 48
   parseInt(getComputedStyle(document.documentElement).getPropertyValue('--footer-button-height').trim());
 
@@ -21,7 +19,6 @@ export {
   EIGHTH_BAR_GAP,
   SIXTEENTH_BAR_GAP,
   NOTE_LINE_STARTING_GAP,
-  FINAL_BAR_LINE,
   FOOTER_BUTTON_HEIGHT,
   DEFAULT_TEMPO,
   NUMBER_OF_BARS_PER_PAGE

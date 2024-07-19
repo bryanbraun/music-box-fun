@@ -4,6 +4,8 @@ import { getRelativeYPos } from '../common/common-event-handlers.js';
 import { getFinalNoteYPos } from '../common/notes.js';
 import { snapToInterval } from "../common/snap-to-interval.js";
 import { getCurrentPitchArray } from '../common/box-types.js';
+import { getNumberOfPagesOnScreen, getFinalBarLineYPos } from '../common/pages.js';
+import { throttle } from '../utils/throttle.js';
 import { NOTE_LINE_STARTING_GAP, NUMBER_OF_BARS_PER_PAGE, QUARTER_BAR_GAP } from '../common/constants.js';
 
 const DEFAULT_SPACE_EDITOR_BAR_POSITION = 8;
@@ -48,28 +50,19 @@ function formatSongDataForSaving(songData) {
   return formattedSongData;
 }
 
-// @TODO: A similar calculation is done in paper-footer and note-line.js, so we could possibly consolidate.
-// Possibly we could use a "common/pages.js" file for this stuff?
-function getNumberOfBars() {
-  return parseInt(getComputedStyle(document.documentElement).getPropertyValue('--number-of-bars'));
-}
-
 export class SpaceEditor extends MBComponent {
   constructor() {
     super({
-      // TODO: whenever we edit space, this component gets re-rendered once per note line
-      //       containing a moved note. This feels excessive. Is there a way to reduce this?
       renderTrigger: 'songState.songData*',
       element: document.querySelector('#space-editor')
     });
 
-    this.handleMouseMove = this.handleMouseMove.bind(this);
-    this.handleMouseDown = this.handleMouseDown.bind(this);
-    this.handleMouseUp = this.handleMouseUp.bind(this);
-    this.handleMouseOut = this.handleMouseOut.bind(this);
-
     this.dragStartYPos = null;
-    this.editorBarEl = null; // cached to prevent repetitive lookups
+    // cached to prevent unnecessary re-renders
+    this.lastSnappedBarYPos = null;
+    // cached to prevent repetitive DOM queries
+    this.editorDragZoneEl = null;
+    this.editorBarEl = null;
 
     // When space is edited, the SpaceEditor is re-rendered underneath the cursor.
     // In this situation, the mouse events won't fire until you move the mouse again.
@@ -77,23 +70,36 @@ export class SpaceEditor extends MBComponent {
     // on re-renders. To fix this, we store the last space-editor-bar position and use
     // it to set the initial space-editor-bar position during render.
     this.lastSpaceEditorBarPosition = DEFAULT_SPACE_EDITOR_BAR_POSITION;
+
+    // Throttle the dragging event to reduce re-renders (while snapping is set to none).
+    // We could throttle mousemove, but there's little benefit (mousemove alone has very
+    // little processing) and it makes hovering feel a bit less smooth.
+    this.handleDragging = throttle(this.handleDragging.bind(this), 25);
+
+    this.handleMouseDown = this.handleMouseDown.bind(this);
+    this.handleMouseUp = this.handleMouseUp.bind(this);
+    this.handleMouseOut = this.handleMouseOut.bind(this);
+    this.handleMouseMove = this.handleMouseMove.bind(this);
   }
 
-  handleDragging(event) {
-    const relativeBarYPos = getRelativeYPos(event);
-    const snappedBarYPos = snapToInterval(relativeBarYPos, event);
+  handleDragging(snappedBarYPos) {
+    // Prevent unnecessary re-renders
+    if (snappedBarYPos === this.lastSnappedBarYPos) return;
+    this.lastSnappedBarYPos = snappedBarYPos;
+
+    // Render preview lines
     const draggedDistance = snappedBarYPos - this.dragStartYPos;
     const [previewSongData, noteStatuses] = transformSongData(this.dragStartYPos, draggedDistance);
-
     musicBoxStore.publish('SpaceEditorPreview', { previewSongData, noteStatuses });
 
-    // @todo: calculate getFinalNoteYPos only on render (and cache value) for performance?
-    const finalNoteYPos = getFinalNoteYPos();
-    const newFinalNotePosition = finalNoteYPos + draggedDistance;
-    this.element.style.height = `${newFinalNotePosition}px`;
-    const lastPageThreshold = NOTE_LINE_STARTING_GAP + (getNumberOfBars() * QUARTER_BAR_GAP);
-    // @TODO: this is similar to getNumberOfPagesFromScreen from paper-footer, so maybe consolidate?
-    const currentNumberOfPages = getNumberOfBars() / NUMBER_OF_BARS_PER_PAGE;
+    // Resize drag zone
+    const newFinalNotePosition = getFinalNoteYPos() + draggedDistance;
+    this.editorDragZoneEl.style.height = `${newFinalNotePosition}px`;
+    this.editorDragZoneEl.classList.add('is-expanded');
+
+    // Resize paper if necessary
+    const lastPageThreshold = getFinalBarLineYPos();
+    const currentNumberOfPages = getNumberOfPagesOnScreen();
     const minNumberOfPagesNeeded = Math.ceil((newFinalNotePosition - NOTE_LINE_STARTING_GAP) / (NUMBER_OF_BARS_PER_PAGE * QUARTER_BAR_GAP)) || 1;
 
     if (newFinalNotePosition > lastPageThreshold) {
@@ -107,9 +113,6 @@ export class SpaceEditor extends MBComponent {
     }
   }
 
-  // @todo: throttle this for performance?
-  //    ALSO, only rerender on snap interval changes instead of every pixel dragged?
-  //       We can do this by storing the last snappedBarYPos and only rerender if it changes?
   handleMouseMove(event) {
     const relativeBarYPos = getRelativeYPos(event);
     const snappedBarYPos = snapToInterval(relativeBarYPos, event);
@@ -118,7 +121,7 @@ export class SpaceEditor extends MBComponent {
     this.editorBarEl.style = `transform: translateY(${snappedBarYPos}px)`;
 
     if (this.isDragging()) {
-      this.handleDragging(event);
+      this.handleDragging(snappedBarYPos);
     }
   }
 
@@ -128,8 +131,9 @@ export class SpaceEditor extends MBComponent {
     }
 
     const relativeBarYPos = getRelativeYPos(event);
-    this.dragStartYPos = snapToInterval(relativeBarYPos, event);
-    this.handleDragging(event);
+    const snappedBarYPos = snapToInterval(relativeBarYPos, event);
+    this.dragStartYPos = snappedBarYPos;
+    this.handleDragging(snappedBarYPos);
   }
 
   handleMouseUp(event) {
@@ -143,9 +147,8 @@ export class SpaceEditor extends MBComponent {
       const draggedDistance = snappedBarYPos - this.dragStartYPos;
       const [transformedSongData] = transformSongData(this.dragStartYPos, draggedDistance);
       const isSaved = musicBoxStore.setState('songState.songData', formatSongDataForSaving(transformedSongData));
-
       if (!isSaved) {
-        // If no modifications were made, we force-clear the preview lines (which renders normal note-lines).
+        // If no modifications were made, we force-clear the preview lines.
         musicBoxStore.publish('SpaceEditorPreview', null);
       }
 
@@ -154,11 +157,13 @@ export class SpaceEditor extends MBComponent {
     }
   }
 
-  // @TODO: improve dragging by allowing the bar to be dragged outside of the lane?
-  //        That's how google sheets works, but possibly it adds unnecessary complexity.
   handleMouseOut() {
+    if (this.isDragging()) {
+      // If we dragged out of bounds, force-clear the preview lines
+      musicBoxStore.publish('SpaceEditorPreview', null);
+    }
+
     this.resetDragging();
-    musicBoxStore.publish('SpaceEditorPreview', null); // force-clear the preview lines
   }
 
   isDragging() {
@@ -167,22 +172,25 @@ export class SpaceEditor extends MBComponent {
 
   resetDragging() {
     this.dragStartYPos = null;
-    this.element.style.height = `${getFinalNoteYPos()}px`;
+    this.lastSnappedBarYPos = null;
+    this.editorDragZoneEl.style.height = `${getFinalNoteYPos()}px`;
+    this.editorDragZoneEl.classList.remove('is-expanded');
   }
 
   render() {
-    console.log('SpaceEditor was rendered');
-
-    this.element.style.height = `${getFinalNoteYPos()}px`;
     this.element.innerHTML = `
+      <div class="space-editor-drag-zone" title="Add space"></div>
       <div class="space-editor-bar" style="transform: translateY(${this.lastSpaceEditorBarPosition}px)"></div>
     `;
 
-    this.element.addEventListener('mousemove', this.handleMouseMove);
-    this.element.addEventListener('mousedown', this.handleMouseDown);
-    this.element.addEventListener('mouseup', this.handleMouseUp);
-    this.element.addEventListener('mouseout', this.handleMouseOut);
-
+    this.editorDragZoneEl = this.element.querySelector('.space-editor-drag-zone');
     this.editorBarEl = this.element.querySelector('.space-editor-bar');
+
+    this.editorDragZoneEl.style.height = `${getFinalNoteYPos()}px`;
+
+    this.editorDragZoneEl.addEventListener('mousemove', this.handleMouseMove);
+    this.editorDragZoneEl.addEventListener('mousedown', this.handleMouseDown);
+    this.editorDragZoneEl.addEventListener('mouseup', this.handleMouseUp);
+    this.editorDragZoneEl.addEventListener('mouseout', this.handleMouseOut);
   }
 }

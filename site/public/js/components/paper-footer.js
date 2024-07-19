@@ -2,6 +2,7 @@ import { MBComponent } from '../music-box-component.js';
 import { PaperDivider } from './paper-divider.js';
 import { musicBoxStore } from '../music-box-store.js';
 import { getFinalNoteYPos } from '../common/notes.js';
+import { getNumberOfPagesOnScreen } from '../common/pages.js';
 import { QUARTER_BAR_GAP, NOTE_LINE_STARTING_GAP, FOOTER_BUTTON_HEIGHT, NUMBER_OF_BARS_PER_PAGE } from '../common/constants.js';
 
 export class PaperFooter extends MBComponent {
@@ -23,25 +24,20 @@ export class PaperFooter extends MBComponent {
     document.documentElement.style.setProperty('--number-of-bars', numberOfPages * NUMBER_OF_BARS_PER_PAGE);
   }
 
-  // This can include blank pages added by the user.
-  getNumberOfPagesFromScreen() {
-    return parseInt(getComputedStyle(document.documentElement).getPropertyValue('--number-of-bars').trim()) / NUMBER_OF_BARS_PER_PAGE;
-  }
-
   getNumberOfPagesFromSongData() {
     return Math.ceil((getFinalNoteYPos() - NOTE_LINE_STARTING_GAP) / (NUMBER_OF_BARS_PER_PAGE * QUARTER_BAR_GAP)) || 1;
   }
 
   extendSongPaper() {
-    this.render(true, this.getNumberOfPagesFromScreen() + 1);
+    this.render(true, getNumberOfPagesOnScreen() + 1);
   }
 
   trimSongPaper() {
-    this.render(true, this.getNumberOfPagesFromScreen() - 1);
+    this.render(true, getNumberOfPagesOnScreen() - 1);
   }
 
   /*
-      There are five cases for rendering this component:
+      There are six cases for rendering this component:
 
       CASE                                  TRIGGER                        PAGE NUMBER CHANGE
       1. Initial song load                  manual (from main.js)          Yes - Calculate from songData
@@ -49,7 +45,7 @@ export class PaperFooter extends MBComponent {
          or space editor drag release)
       3. Extend song                        manual (from extendSongPaper)  Yes - Fixed length change
       4. Trim song                          manual (from trimSongPaper)    Yes - Fixed length change
-      5. Space editor drag across pages     manual event publish           Yes - Fixed length change
+      5. Space editor drag across pages     "ResizePaper" event publish    Yes - Fixed length change
       6. Note change (for the divider "×")  songState.songData*            No  - No changes needed
 
       By giving params to our render function and manually passing values into render() for
@@ -60,7 +56,7 @@ export class PaperFooter extends MBComponent {
       this.setNumberOfPages(newNumberOfPages || this.getNumberOfPagesFromSongData());
     }
 
-    const numberOfDividers = this.getNumberOfPagesFromScreen() - 1;
+    const numberOfDividers = getNumberOfPagesOnScreen() - 1;
 
     this.element.innerHTML = `
       <div id="dividers">

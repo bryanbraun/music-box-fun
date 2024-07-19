@@ -4,8 +4,8 @@ import { getCurrentPitchArray } from '../common/box-types.js';
 import { forEachNotes } from '../common/notes.js';
 import { musicBoxStore } from '../music-box-store.js';
 
-// This component supports default rendering for the standard note lines (via state)
-// and alternative rendering for the space-editor preview lines (via subscribe).
+// NoteLines supports default rendering for the standard note lines (via state)
+// and alternative rendering for the space-editor's preview lines (via subscribe).
 export class NoteLines extends MBComponent {
   constructor() {
     super({
@@ -17,8 +17,8 @@ export class NoteLines extends MBComponent {
   }
 
   renderSpaceEditorPreview(previewProps) {
-    console.log('preview note lines were rendered');
     // If we're missing preview data, fall back to rendering the real note lines.
+    // We sometimes trigger this intentionally to force-clear the preview lines.
     if (!previewProps) {
       this.render();
       return;
@@ -52,8 +52,8 @@ export class NoteLines extends MBComponent {
 
     this.element.innerHTML = `
       ${pitchArray.map(pitchId => (
-        `<div class="note-line" id="${pitchId}"></div>`
-      )).join('')}
+      `<div class="note-line" id="${pitchId}"></div>`
+    )).join('')}
     `;
 
     // Attach the new NoteLine components to the markup we just added.
