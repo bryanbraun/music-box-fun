@@ -31,6 +31,7 @@ export class Example extends MBComponent {
     this.state.counter = 0;
 
     // To use "this" inside of our methods, bind it here in the constructor.
+    // (otherwise, "this" may refer to the event target, not the class instance).
     this.incrementCounter = this.incrementCounter.bind(this);
   }
 

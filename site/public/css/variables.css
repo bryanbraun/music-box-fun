@@ -1,6 +1,6 @@
 :root {
   /* COLORS */
-  /* brand */
+  /* brand colors */
   --mb-white: white;
   --mb-offwhite: #fcfcfc;
   --mb-gray-3: #f8f8f8;
@@ -15,7 +15,7 @@
   --mb-black: #000000;
   --mb-orange-accent: #947000;
 
-  /* functional */
+  /* functional colors */
   --left-sidebar-color: var(--mb-white);
   --tabs-ui-color: var(--mb-black);
   --paper-color: var(--mb-white);
@@ -39,7 +39,7 @@
   /* LENGTHS */
   --left-sidebar-width: 286px;
   --right-sidebar-width: 175px;
-  --paper-side-margins: 2rem;
+  --paper-side-margin: 2rem;
   --music-box-height: 200px; /* the same for all music boxes */
   --music-box-distance-from-top-of-workspace: 120px;
   --playhead-distance-from-top-of-workspace: calc(var(--music-box-distance-from-top-of-workspace) + 44px);
@@ -66,6 +66,7 @@
   --z-music-box-bottom-plate: -1;
   --z-music-box-extend-button: 2;
   --z-music-box-notes: 4;
+  --z-space-editor-bar: 5;
   --z-music-box-note-header: 6;
   --z-music-box-playhead: 8;
   /* 10-100: Overlays */
@@ -74,6 +75,7 @@
   --z-share-box: 15;
   --z-floating-actions: 15;
   --z-audio-context-message: 16;
+  --z-space-editor-drag-zone: 50;
   --off-canvas-sidebar-overlay: 75;
   --off-canvas-sidebar: 80;
 
@@ -89,7 +91,7 @@
      I'm going to put them here anyway, for documentation. If I ever need
      to change one of these variables, I'll just find/replace the pixel value.
      I'll also try to keep the pixel values unique, so it's unlikely that any
-     other properties will inadvertantly use them.
+     other properties will inadvertently use them.
 
   --one-to-two-columns: 720px;
   --two-to-three-columns: 900px;

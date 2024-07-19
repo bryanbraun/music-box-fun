@@ -19,7 +19,6 @@ export class Gallery extends BaseComponent {
   }
 
   updateDots(event) {
-    console.log("EVENT", event.detail);
     const updatedDotsMarkup = this.renderDots({ activeSlide: event.detail.currentSlide});
 
     this.element.querySelector('.slider_dots').outerHTML = updatedDotsMarkup;

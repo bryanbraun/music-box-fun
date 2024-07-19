@@ -14,6 +14,8 @@ export class SnapToGridSelect extends MBComponent {
 
   render() {
     const snapToSetting = musicBoxStore.state.appState.snapTo;
+
+    // See the list of intervals in snap-to-interval.js
     const selectedNone = snapToSetting === 'none' ? 'selected=""' : '';
     const selectedGrid = snapToSetting === 'grid' ? 'selected=""' : '';
     const selected16ths = snapToSetting === '16ths' ? 'selected=""' : '';

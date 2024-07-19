@@ -1,5 +1,5 @@
 import { MBComponent } from '../music-box-component.js';
-import { isSilentNotePresentInSong } from '../common/silent-notes.js';
+import { isSilentNotePresentInSong } from '../common/notes.js';
 import classNames from '../vendor/classnames.js';
 
 export class Footnote extends MBComponent {

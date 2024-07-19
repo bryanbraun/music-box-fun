@@ -29,7 +29,7 @@ export class BackToTopButton extends MBComponent {
     });
   }
 
-  onClick() {
+  handleClick() {
     if (musicBoxStore.state.appState.isPlaying) {
       musicBoxStore.setState('appState.isPlaying', false);
       // This timeout gives the page-scroller's requestAnimationFrame enough time
@@ -89,7 +89,7 @@ export class BackToTopButton extends MBComponent {
 
     this.createObservedElement(observedElementId);
 
-    this.element.querySelector('.back-to-top-button').addEventListener('click', this.onClick);
+    this.element.querySelector('.back-to-top-button').addEventListener('click', this.handleClick);
     this.element.querySelector('.back-to-top-button').addEventListener('transitionend', this.removeTransitioningClass);
   }
 }
