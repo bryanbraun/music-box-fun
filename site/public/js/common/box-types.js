@@ -40,14 +40,12 @@ export const boxTypeTitles = {
 // or cached values subscribed to state changes).
 export function getCurrentBoxType() {
   const songDataPitches = Object.keys(musicBoxStore.state.songState.songData);
-  const boxTypesKeys = Object.keys(boxTypePitches);
   let currentBoxType = '';
 
-  for (let i = 0; i < boxTypesKeys.length; i++) {
-    const thisBoxTypePitches = boxTypePitches[boxTypesKeys[i]].concat(); // Use concat to create a copy
-
-    if (songDataPitches.sort().join(',') === thisBoxTypePitches.sort().join(',')) {
-      currentBoxType = boxTypesKeys[i];
+  for (const [boxType, boxTypePitchesArr] of Object.entries(boxTypePitches)) {
+    // We use concat() to clone the array and avoid sorting the original pitches array.
+    if (songDataPitches.sort().join(',') === boxTypePitchesArr.concat().sort().join(',')) {
+      currentBoxType = boxType;
       break;
     }
   }

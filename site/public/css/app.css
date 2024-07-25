@@ -365,7 +365,7 @@
   padding-bottom: 2px;
 }
 
-.note-header {
+.pitch-header {
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
@@ -378,16 +378,22 @@
   z-index: var(--z-music-box-note-header);
 }
 
-[class^="box-type-30"] .note-label:nth-of-type(odd) {
+[class^="box-type-30"] .pitch-label:nth-of-type(odd) {
   margin-top: 1.125rem;
 }
-[class^="box-type-30"] .note-label {
+[class^="box-type-30"] .pitch-label:nth-of-type(even) {
+  margin-bottom: 1.125rem;
+}
+[class^="box-type-30"] .pitch-label {
   font-size: 0.875rem;
 }
-.note-label {
+.pitch-label {
   flex: 0 0 var(--hole-width);
   text-align: center;
   position: relative;
+}
+.pitch-label.is-highlighted {
+  background: var(--highlighted-pitch-color);
 }
 .sharp::after {
   display: block;
@@ -470,6 +476,10 @@
   position: absolute;
   top: var(--y-adjustment-for-hole-width);
   z-index: var(--z-music-box-notes);
+
+  /* The shadow notes themselves aren't targets. We're always
+     just hovering or clicking on the note lines below them. */
+  pointer-events: none;
 }
 
 .shadow-note--visible {

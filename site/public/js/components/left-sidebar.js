@@ -3,7 +3,7 @@ import { musicBoxStore } from '../music-box-store.js';
 import classNames from '../vendor/classnames.js';
 
 export class LeftSidebar extends MBComponent {
-  constructor(props) {
+  constructor() {
     super({
       renderTrigger: 'appState.offCanvasSidebarFocused',
       element: document.querySelector('#left-sidebar')

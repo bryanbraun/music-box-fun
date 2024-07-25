@@ -16,7 +16,8 @@ export const state = {
     audioDisabledMessageStatus: 'hidden',
     offCanvasSidebarFocused: 'none',
     activeTab: 'song-library',
-    songLibraryQuery: ''
+    songLibraryQuery: '',
+    highlightedPitch: null,
   },
 
   // DANGER! CHANGING THE STRUCTURE OR KEYS OF THE OBJECT BELOW COULD

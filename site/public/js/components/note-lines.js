@@ -56,6 +56,15 @@ export class NoteLines extends MBComponent {
     )).join('')}
     `;
 
+    this.element.addEventListener('pointerover', (event) => {
+      if (event.pointerType === 'mouse') {
+        musicBoxStore.setState('appState.highlightedPitch', event.target.id);
+      }
+    });
+    this.element.addEventListener('pointerout', () => {
+      musicBoxStore.setState('appState.highlightedPitch', null);
+    })
+
     // Attach the new NoteLine components to the markup we just added.
     pitchArray.forEach(id => {
       new NoteLine({ id }).render();

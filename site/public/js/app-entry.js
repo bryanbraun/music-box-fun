@@ -11,7 +11,7 @@ import { Tempo } from './components/tempo.js';
 import { SnapToGridSelect } from './components/snap-to-grid-select.js';
 import { Footnote } from './components/footnote.js';
 import { SongTitle } from './components/song-title.js';
-import { NoteHeader } from './components/note-header.js';
+import { PitchHeader } from './components/pitch-header.js';
 import { NoteLines } from './components/note-lines.js';
 import { SpaceEditor } from './components/space-editor.js';
 import { PageTitle } from './components/page-title.js';
@@ -62,7 +62,7 @@ urlManager.getStateFromUrlAsync().then(urlState => {
   new SnapToGridSelect().render();
   new Footnote().render();
   new SongTitle().render();
-  new NoteHeader().render();
+  new PitchHeader().render();
   new NoteLines().render();
   new PlayButton({ id: 'floating-play-button' }).render();
   new OffCanvasNavIcon().render();
