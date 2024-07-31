@@ -4,7 +4,7 @@ import { playheadObserver } from '../common/playhead-observer.js';
 import { sampler, isSamplerLoaded } from '../common/sampler.js';
 import { getRelativeYPos } from '../common/common-event-handlers.js';
 import { snapToInterval } from '../common/snap-to-interval.js';
-import { forEachNotes, isNotePositionSilent } from '../common/notes.js';
+import { forEachNotes, isNotePositionSilent, getNoteYPos } from '../common/notes.js';
 import { getFinalBarLineYPos } from '../common/pages.js';
 import { NOTE_LINE_STARTING_GAP } from '../common/constants.js';
 
@@ -24,10 +24,11 @@ export class NoteLine extends MBComponent {
     this.handleClick = this.handleClick.bind(this);
 
     // When a note is added or removed, the NoteLine is re-rendered underneath the cursor.
-    // In this situation, the mouse events won't fire until you move the mouse again. This
-    // led to some edge-cases where the shadow note wasn't being positioned properly during
-    // repeated clicks. To fix this, we store the last shadow note position (and visibility)
-    // details, so we can use them to set the initial shadow note position during re-renders.
+    // In this situation, the mouse events won't fire until you move the mouse again (at
+    // least, in some browsers like Safari). This led to some edge-cases where the shadow
+    // note wasn't being positioned properly during repeated clicks. To fix this, we store
+    // the last shadow note position (and visibility) details, so we can use them to set
+    // the initial shadow note position during re-renders.
     this.lastShadowNotePosition = DEFAULT_SHADOW_NOTE_POSITION;
     this.lastShadowNoteVisibilityClass = '';
   }
@@ -37,6 +38,10 @@ export class NoteLine extends MBComponent {
   }
 
   showShadowNote(event) {
+    // This gives us "invisible shadow notes" on touch devices only. It fixes a bug
+    // where shadow notes would remain visible on touchscreens after removing notes.
+    if (event.pointerType === 'touch') return;
+
     const shadowNoteEl = event.currentTarget.querySelector('.shadow-note');
 
     this.lastShadowNoteVisibilityClass = 'shadow-note--visible';
@@ -89,24 +94,15 @@ export class NoteLine extends MBComponent {
   handleClick(event) {
     const noteLineEl = event.currentTarget;
     const shadowNoteEl = noteLineEl.querySelector('.shadow-note');
-    const pitch = noteLineEl.id;
-
-    const isShadowNoteOverlappingExistingNote = shadowNoteYPos => (
-      musicBoxStore.state.songState.songData[pitch].includes(shadowNoteYPos)
-    );
-
-    const getNoteYPos = element => {
-      const yposMatch = element.style.transform.match(/translateY\((\d+\.?\d*)px\)/); // https://regex101.com/r/49U5Dx/1
-      return (yposMatch && yposMatch[1]) ? parseInt(yposMatch[1]) : console.error("Couldn't find note position");
-    };
-
-    const shadowNoteYPos = getNoteYPos(shadowNoteEl);
     const clickedEl = event.target;
+    const pitch = noteLineEl.id;
+    const shadowNoteYPos = getNoteYPos(shadowNoteEl);
+    const isShadowNoteOverlappingExistingNote = musicBoxStore.state.songState.songData[pitch].includes(shadowNoteYPos);
 
     if (clickedEl.classList.contains('hole')) {
       this.removeNote(pitch, getNoteYPos(clickedEl));
     }
-    else if (isShadowNoteOverlappingExistingNote(shadowNoteYPos)) {
+    else if (isShadowNoteOverlappingExistingNote) {
       // This case happens when snap-to-grid allows you to click when your
       // cursor isn't on an existing note but your shadow note is.
       this.removeNote(pitch, shadowNoteYPos);
@@ -162,7 +158,7 @@ export class NoteLine extends MBComponent {
     `;
 
     this.element.querySelectorAll('.hole').forEach(hole => playheadObserver.get().observe(hole));
-    this.element.addEventListener('mouseenter', this.showShadowNote);
+    this.element.addEventListener('pointerenter', this.showShadowNote);
     this.element.addEventListener('mouseleave', this.hideShadowNote);
     this.element.addEventListener('mousemove', this.haveShadowNoteFollowCursor);
     this.element.addEventListener('click', this.handleClick);

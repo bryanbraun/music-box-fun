@@ -75,3 +75,8 @@ export function getFinalNoteYPos() {
     return Math.max(accumulator, Math.max(...currentValue));
   }, 0);
 }
+
+export function getNoteYPos(element) {
+  const yposMatch = element.style.transform.match(/translateY\((\d+\.?\d*)px\)/); // https://regex101.com/r/49U5Dx/1
+  return (yposMatch && yposMatch[1]) ? parseInt(yposMatch[1]) : console.error("Couldn't find note position");
+};

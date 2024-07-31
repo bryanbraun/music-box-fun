@@ -471,7 +471,8 @@
   width: var(--hole-width);
   height: var(--hole-width);
   border-radius: 50%;
-  background-color: var(--shadow-note-color);
+  background-color: var(--hole-color);
+  opacity: 0.36;
 
   position: absolute;
   top: var(--y-adjustment-for-hole-width);
@@ -610,6 +611,7 @@
     /* translated off-canvas */
     transform: translateX(var(--right-sidebar-width));
     transition: transform 300ms cubic-bezier(.07,.23,.34,1);
+    border-left: transparent;
   }
   .right-sidebar.on-canvas {
     /* translated on-canvas */

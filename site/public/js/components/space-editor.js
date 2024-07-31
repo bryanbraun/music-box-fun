@@ -148,7 +148,8 @@ export class SpaceEditor extends MBComponent {
       const [transformedSongData] = transformSongData(this.dragStartYPos, draggedDistance);
       const isSaved = musicBoxStore.setState('songState.songData', formatSongDataForSaving(transformedSongData));
       if (!isSaved) {
-        // If no modifications were made, we force-clear the preview lines.
+        // If no modifications were made, we force-clear the preview lines. If modifications
+        // were made, then the rerender of the note-lines will clear the preview lines.
         musicBoxStore.publish('SpaceEditorPreview', null);
       }
 
@@ -161,9 +162,9 @@ export class SpaceEditor extends MBComponent {
     if (this.isDragging()) {
       // If we dragged out of bounds, force-clear the preview lines
       musicBoxStore.publish('SpaceEditorPreview', null);
-    }
 
-    this.resetDragging();
+      this.resetDragging();
+    }
   }
 
   isDragging() {
