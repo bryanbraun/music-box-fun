@@ -1,11 +1,15 @@
 import { MBComponent } from '../music-box-component.js';
+import { musicBoxStore } from '../music-box-store.js';
+import { WAIT_FOR_STATE } from '../common/constants.js';
+import { debounce } from '../utils/debounce.js';
 
 export class SongUpdatedMessage extends MBComponent {
   constructor() {
     super({
-      renderTrigger: 'songState*',
       element: document.querySelector('#song-updated-message')
     });
+
+    musicBoxStore.subscribe("songState.songData*", debounce(this.render.bind(this), WAIT_FOR_STATE));
 
     this.timeoutId = null;
   }

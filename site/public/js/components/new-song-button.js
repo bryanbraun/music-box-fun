@@ -12,10 +12,11 @@ export class NewSongButton extends MBComponent {
 
   handleClick() {
     let newSongState = cloneDeep(initialState).songState;
-    newSongState.songData = cloneDeep(musicBoxStore.state.songState.songData);
 
     // Build a new songState using the initial state in
     // state.js, but with the currently-selected box type.
+    newSongState.songData = cloneDeep(musicBoxStore.state.songState.songData);
+
     Object.keys(newSongState.songData).forEach(pitchId => {
       newSongState.songData[pitchId] = [];
     });

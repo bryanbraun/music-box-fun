@@ -1,4 +1,5 @@
 import { musicBoxStore } from '../music-box-store.js';
+import { state as initialState } from '../state.js';
 
 export const boxTypePitches = {
   '15': ['C4', 'D4', 'E4', 'F4', 'G4', 'A4', 'B4', 'C5', 'D5', 'E5', 'F5', 'G5', 'A5', 'B5', 'C6'],
@@ -32,29 +33,45 @@ export const boxTypeTitles = {
   '30F': '30-note (F key)'
 }
 
-// Determines the box type based on the pitches in state
-//
-// If we get more "computed" functions like this, we could
-// make a generic service file that contains them all, and
-// add support for improved performance (like memoization
-// or cached values subscribed to state changes).
-export function getCurrentBoxType() {
-  const songDataPitches = Object.keys(musicBoxStore.state.songState.songData);
-  let currentBoxType = '';
+// We may be able to memoize this function but I'm not sure it would save that much processing.
+export function getBoxType(songDataToCheck) {
+  const songDataPitchesToCheck = Object.keys(songDataToCheck); // Object.keys copies without mutating
+  let exactlyMatchingBoxType = '';
+  let nearestMatchingBoxType = '';
 
   for (const [boxType, boxTypePitchesArr] of Object.entries(boxTypePitches)) {
     // We use concat() to clone the array and avoid sorting the original pitches array.
-    if (songDataPitches.sort().join(',') === boxTypePitchesArr.concat().sort().join(',')) {
-      currentBoxType = boxType;
+    if (songDataPitchesToCheck.sort().join(',') === boxTypePitchesArr.concat().sort().join(',')) {
+      exactlyMatchingBoxType = boxType;
       break;
     }
   }
 
-  if (!currentBoxType) {
-    throw Error('The current Music Box Type could not be identified.');
+  if (!exactlyMatchingBoxType) {
+    let nearMatchingBoxTypes = [];
+
+    for (const [boxType, boxTypePitchesArr] of Object.entries(boxTypePitches)) {
+      boxTypePitchesArr.every(pitch => songDataPitchesToCheck.includes(pitch)) && nearMatchingBoxTypes.push(boxType);
+    }
+
+    nearMatchingBoxTypes.sort((a, b) => boxTypePitches[b].length - boxTypePitches[a].length);
+
+    nearestMatchingBoxType = nearMatchingBoxTypes[0];
+
+    if (!nearestMatchingBoxType) {
+      console.error('The current Music Box Type could not be identified.');
+    }
   }
 
-  return currentBoxType;
+  return exactlyMatchingBoxType || nearestMatchingBoxType || getDefaultBoxType();
+}
+
+function getDefaultBoxType() {
+  return getBoxType(initialState.songState.songData);
+}
+
+export function getCurrentBoxType() {
+  return getBoxType(musicBoxStore.state.songState.songData);
 }
 
 export function getCurrentPitchArray() {

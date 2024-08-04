@@ -1,13 +1,17 @@
+import classNames from '../vendor/classnames.js'
+import { musicBoxStore } from '../music-box-store.js';
 import { MBComponent } from '../music-box-component.js';
 import { isSilentNotePresentInSong } from '../common/notes.js';
-import classNames from '../vendor/classnames.js';
+import { WAIT_FOR_STATE } from '../common/constants.js';
+import { debounce } from '../utils/debounce.js';
 
 export class Footnote extends MBComponent {
   constructor() {
     super({
-      renderTrigger: 'songState.songData*',
       element: document.querySelector('#footnote')
     });
+
+    musicBoxStore.subscribe("songState.songData*", debounce(this.render.bind(this), WAIT_FOR_STATE));
   }
 
   render() {

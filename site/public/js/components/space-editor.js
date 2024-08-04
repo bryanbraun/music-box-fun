@@ -6,7 +6,8 @@ import { snapToInterval } from "../common/snap-to-interval.js";
 import { getCurrentPitchArray } from '../common/box-types.js';
 import { getNumberOfPagesOnScreen, getFinalBarLineYPos } from '../common/pages.js';
 import { throttle } from '../utils/throttle.js';
-import { NOTE_LINE_STARTING_GAP, NUMBER_OF_BARS_PER_PAGE, QUARTER_BAR_GAP } from '../common/constants.js';
+import { debounce } from '../utils/debounce.js';
+import { NOTE_LINE_STARTING_GAP, NUMBER_OF_BARS_PER_PAGE, QUARTER_BAR_GAP, WAIT_FOR_STATE } from '../common/constants.js';
 
 const DEFAULT_SPACE_EDITOR_BAR_POSITION = 8;
 
@@ -53,9 +54,10 @@ function formatSongDataForSaving(songData) {
 export class SpaceEditor extends MBComponent {
   constructor() {
     super({
-      renderTrigger: 'songState.songData*',
       element: document.querySelector('#space-editor')
     });
+
+    musicBoxStore.subscribe("songState.songData*", debounce(this.render.bind(this), WAIT_FOR_STATE));
 
     this.dragStartYPos = null;
     // cached to prevent unnecessary re-renders

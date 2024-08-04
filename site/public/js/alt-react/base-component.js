@@ -3,7 +3,9 @@
 // 1. Assigning props for re-use outside the parent component's constructor
 // 2. An element that we can reference via this.element (usually inside render())
 // 3. Local state and a setState function for changing it
-// 4. A renderTrigger, for re-rendering based on global state changes (assuming you pass it a 'store' instance)
+// 4. A renderTrigger, for re-rendering based on global state changes (assuming you pass
+//    it a 'store' instance). The component could .subscribe() manually, but renderTrigger
+//    adds some protection and niceties (like support for multiple triggers).
 export class BaseComponent {
   constructor(params = {}) {
     this.props = params.props;

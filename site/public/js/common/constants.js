@@ -14,6 +14,12 @@ const FOOTER_BUTTON_HEIGHT = // 48
 const DEFAULT_TEMPO = 110;
 const NUMBER_OF_BARS_PER_PAGE = 52;
 
+// When we subscribe to an "asterisk" state (like "songState*"), it's possible for the callback to be
+// triggered several times in quick succession. For example, this can happen when changing songs (because
+// it updates a big chunk of state at once). In cases like these, the final state is the one that matters,
+// so a brief debounce delay can help reduce processing.
+const WAIT_FOR_STATE = 5;
+
 export {
   QUARTER_BAR_GAP,
   EIGHTH_BAR_GAP,
@@ -21,5 +27,6 @@ export {
   NOTE_LINE_STARTING_GAP,
   FOOTER_BUTTON_HEIGHT,
   DEFAULT_TEMPO,
-  NUMBER_OF_BARS_PER_PAGE
+  NUMBER_OF_BARS_PER_PAGE,
+  WAIT_FOR_STATE
 }

@@ -3,17 +3,19 @@ import { PaperDivider } from './paper-divider.js';
 import { musicBoxStore } from '../music-box-store.js';
 import { getFinalNoteYPos } from '../common/notes.js';
 import { getNumberOfPagesOnScreen } from '../common/pages.js';
-import { QUARTER_BAR_GAP, NOTE_LINE_STARTING_GAP, FOOTER_BUTTON_HEIGHT, NUMBER_OF_BARS_PER_PAGE } from '../common/constants.js';
+import { QUARTER_BAR_GAP, NOTE_LINE_STARTING_GAP, FOOTER_BUTTON_HEIGHT, NUMBER_OF_BARS_PER_PAGE, WAIT_FOR_STATE } from '../common/constants.js';
+import { debounce } from '../utils/debounce.js';
 
 export class PaperFooter extends MBComponent {
   constructor() {
     super({
-      renderTrigger: 'songState.songData*',
       element: document.querySelector('#paper-footer')
     });
 
-    musicBoxStore.subscribe('songState.songData', () => this.render(true)); // see render() for why we subscribe to this separately.
-    musicBoxStore.subscribe('ResizePaper', (newNumberOfPages) => this.render(true, newNumberOfPages)); // see render() for why we subscribe to this separately.
+    // see render() for an explanation of these subscribes.
+    musicBoxStore.subscribe('songState.songData*', debounce(this.render.bind(this, false), WAIT_FOR_STATE));
+    musicBoxStore.subscribe('songState.songData', () => this.render(true));
+    musicBoxStore.subscribe('ResizePaper', (newNumberOfPages) => this.render(true, newNumberOfPages));
 
     // Bindings
     this.extendSongPaper = this.extendSongPaper.bind(this);
