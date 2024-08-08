@@ -15,7 +15,7 @@ export const playheadObserver = {
   isAtPlayhead(entry) {
     const comparisonBuffer = 10;
     const holeWidth = parseInt(getComputedStyle(document.body).getPropertyValue('--hole-width').trim());
-    const noteCenterPosition = entry.boundingClientRect.top + (holeWidth / 2);
+    const noteCenterPosition = entry.boundingClientRect.top + (holeWidth / 2); // @TODO: can I refactor this out now that we use CSS to adjust note centers?
 
     return Math.abs(noteCenterPosition - this.playheadPosition) < comparisonBuffer;
   },

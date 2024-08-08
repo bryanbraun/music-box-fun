@@ -39,7 +39,7 @@
   /* LENGTHS */
   --left-sidebar-width: 286px;
   --right-sidebar-width: 175px;
-  --paper-side-margin: 2rem;
+  --paper-side-margin: 32px;
   --music-box-height: 200px; /* the same for all music boxes */
   --music-box-distance-from-top-of-workspace: 120px;
   --playhead-distance-from-top-of-workspace: calc(var(--music-box-distance-from-top-of-workspace) + 44px);
@@ -67,6 +67,7 @@
   --z-music-box-extend-button: 2;
   --z-music-box-notes: 4;
   --z-space-editor-bar: 5;
+  --z-selection-box: 5;
   --z-music-box-note-header: 6;
   --z-music-box-playhead: 8;
   /* 10-100: Overlays */
@@ -75,7 +76,8 @@
   --z-share-box: 15;
   --z-floating-actions: 15;
   --z-audio-context-message: 16;
-  --z-space-editor-drag-zone: 50;
+  --z-drag-zone: 50; /* for both space-editor and selection */
+  --z-drag-zone--is-dragging: 51;
   --off-canvas-sidebar-overlay: 75;
   --off-canvas-sidebar: 80;
 

@@ -74,6 +74,8 @@ export function getCurrentBoxType() {
   return getBoxType(musicBoxStore.state.songState.songData);
 }
 
+// We use this method when we need the pitches to be in the order defined in
+// boxTypePitches. If order doesn't matter, we can use Object.keys(songData).
 export function getCurrentPitchArray() {
   return boxTypePitches[getCurrentBoxType()];
 }

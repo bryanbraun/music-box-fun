@@ -9,7 +9,7 @@
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-GP0V0P976T"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
+    function gtag() { dataLayer.push(arguments); }
     gtag('js', new Date());
 
     gtag('config', 'G-GP0V0P976T');
@@ -31,7 +31,7 @@
   <meta name="description" content="Make and share music box songs online.">
   <meta name="keywords" content="Music Box, Online Music Box, Music Box Songs">
   <meta name="robots" content="follow, index">
-  <meta name="theme-color" content="#ffffff"/>
+  <meta name="theme-color" content="#ffffff" />
 
   <meta property="og:title" content="Music Box Fun - Online Music Box Maker">
   <meta property="og:description" content="Make and share music box songs online.">
@@ -50,22 +50,25 @@
   <aside id="left-sidebar" class="left-sidebar">
     <div class="title-box">
       <a class="logo-link" href="/">
-        <svg class="logo icon-dark-fill" width="28" height="28" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+        <svg class="logo icon-dark-fill" width="28" height="28" xmlns="http://www.w3.org/2000/svg"
+          xmlns:xlink="http://www.w3.org/1999/xlink">
           <defs>
-            <path id="a" d="M0 25.121L3 28h25V3.001L25.193 0H0z"/>
-            <path id="b" d="M0 0h25v25H0z"/>
+            <path id="a" d="M0 25.121L3 28h25V3.001L25.193 0H0z" />
+            <path id="b" d="M0 0h25v25H0z" />
           </defs>
           <g fill="none" fill-rule="evenodd">
             <g fill-rule="nonzero">
-              <use fill="#FFF" fill-rule="evenodd" xlink:href="#a"/>
-              <path stroke="#000" stroke-width="1.5" d="M.75 24.801V.75h24.117l2.383 2.547V27.25H3.301L.75 24.801z"/>
+              <use fill="#FFF" fill-rule="evenodd" xlink:href="#a" />
+              <path stroke="#000" stroke-width="1.5" d="M.75 24.801V.75h24.117l2.383 2.547V27.25H3.301L.75 24.801z" />
             </g>
-            <path d="M27 27.001L24 24" stroke="#000" stroke-width="1.5"/>
+            <path d="M27 27.001L24 24" stroke="#000" stroke-width="1.5" />
             <g fill-rule="nonzero">
-              <use fill="#FFF" fill-rule="evenodd" xlink:href="#b"/>
-              <path stroke="#000" stroke-width="1.5" d="M.75.75h23.5v23.5H.75z"/>
+              <use fill="#FFF" fill-rule="evenodd" xlink:href="#b" />
+              <path stroke="#000" stroke-width="1.5" d="M.75.75h23.5v23.5H.75z" />
             </g>
-            <path d="M19.185 16.67V4.667L8.496 6.15v11.284c-.529-.132-1.163-.114-1.806.103-1.38.464-2.262 1.632-1.966 2.606.296.976 1.654 1.389 3.034.925 1.38-.465 1.966-1.703 1.966-2.607v-9.92l8.233-1.05v8.152c-.529-.133-1.163-.114-1.807.103-1.379.464-2.261 1.632-1.966 2.606.296.976 1.654 1.389 3.035.925 1.38-.467 1.966-1.704 1.966-2.608z" fill="#000" fill-rule="nonzero"/>
+            <path
+              d="M19.185 16.67V4.667L8.496 6.15v11.284c-.529-.132-1.163-.114-1.806.103-1.38.464-2.262 1.632-1.966 2.606.296.976 1.654 1.389 3.034.925 1.38-.465 1.966-1.703 1.966-2.607v-9.92l8.233-1.05v8.152c-.529-.133-1.163-.114-1.807.103-1.379.464-2.261 1.632-1.966 2.606.296.976 1.654 1.389 3.035.925 1.38-.467 1.966-1.704 1.966-2.608z"
+              fill="#000" fill-rule="nonzero" />
           </g>
         </svg>
         <h1 class="title">Music Box Fun</h1>
@@ -74,17 +77,18 @@
     </div>
     <div id="description" class="description">
       <p>This is a 15-note <a href="/guides/diy-music-box">DIY music box</a>, that works just like <a
-        href="https://amzn.to/3jPCAMG" target="_blank" rel="noopener noreferrer">the mechanical ones</a>.</p>
+          href="https://amzn.to/3jPCAMG" target="_blank" rel="noopener noreferrer">the mechanical ones</a>.</p>
     </div>
     <div id="search" class="search">
       <form id="search__form" class="search__form">
         <label for="search__field" class="visuallyhidden">Search Song Library</label>
-        <input type="search" id="search__field" class="search__field" aria-label="Search song library" placeholder="Search Song Library" autocomplete="off">
+        <input type="search" id="search__field" class="search__field" aria-label="Search song library"
+          placeholder="Search Song Library" autocomplete="off">
         <button type="submit" class="search__button">
           <svg viewBox="0 0 32 32" width="100%" xmlns="http://www.w3.org/2000/svg">
             <g stroke="#000" stroke-width="2" fill="none" fill-rule="evenodd">
-              <circle cx="12" cy="12" r="9"/>
-              <path d="M19 19l10.159 10.159" stroke-linecap="square"/>
+              <circle cx="12" cy="12" r="9" />
+              <path d="M19 19l10.159 10.159" stroke-linecap="square" />
             </g>
           </svg>
         </button>
@@ -109,7 +113,9 @@
       <div id="browse__content" class="browse__content">
         <h2 class="browse__title">Browse Song Library</h2>
         <div class="browse__songs"></div>
-        <p class="library-note">To add your song to the library, <a id="library-add-mailto" href="mailto:bbraun7@gmail.com?subject=Add%20music%20box%20song%20to%20library" target="_blank">email it to me</a>.</p>
+        <p class="library-note">To add your song to the library, <a id="library-add-mailto"
+            href="mailto:bbraun7@gmail.com?subject=Add%20music%20box%20song%20to%20library" target="_blank">email it to
+            me</a>.</p>
       </div>
     </div>
     <div class="mini-footer">
@@ -152,6 +158,7 @@
             <div class="pitch-label">C</div>
           </div>
           <div class="note-range">
+            <div id="selection"></div>
             <div id="note-lines" class="note-lines">
               <div class="note-line">
                 <div class="shadow-note"></div>
@@ -213,18 +220,20 @@
         <button>
           <svg width="24" height="20" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
             <g class="icon-dark-fill">
-              <rect class="icon-light-stroke" y="2" width="24" height="4" rx="2"/>
-              <rect class="icon-light-stroke" y="10" width="24" height="4" rx="2"/>
-              <rect class="icon-light-stroke" y="18" width="24" height="4" rx="2"/>
+              <rect class="icon-light-stroke" y="2" width="24" height="4" rx="2" />
+              <rect class="icon-light-stroke" y="10" width="24" height="4" rx="2" />
+              <rect class="icon-light-stroke" y="18" width="24" height="4" rx="2" />
             </g>
           </svg>
         </button>
       </div>
       <div id="off-canvas-controls-icon" class="controls-icon">
         <button>
-          <svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="24" viewBox="0 0 24 24" width="24">
+          <svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="24" viewBox="0 0 24 24"
+            width="24">
             <g class="icon-dark-fill">
-              <path class="icon-light-stroke" d="M19.14,12.94c0.04-0.3,0.06-0.61,0.06-0.94c0-0.32-0.02-0.64-0.07-0.94l2.03-1.58c0.18-0.14,0.23-0.41,0.12-0.61 l-1.92-3.32c-0.12-0.22-0.37-0.29-0.59-0.22l-2.39,0.96c-0.5-0.38-1.03-0.7-1.62-0.94L14.4,2.81c-0.04-0.24-0.24-0.41-0.48-0.41 h-3.84c-0.24,0-0.43,0.17-0.47,0.41L9.25,5.35C8.66,5.59,8.12,5.92,7.63,6.29L5.24,5.33c-0.22-0.08-0.47,0-0.59,0.22L2.74,8.87 C2.62,9.08,2.66,9.34,2.86,9.48l2.03,1.58C4.84,11.36,4.8,11.69,4.8,12s0.02,0.64,0.07,0.94l-2.03,1.58 c-0.18,0.14-0.23,0.41-0.12,0.61l1.92,3.32c0.12,0.22,0.37,0.29,0.59,0.22l2.39-0.96c0.5,0.38,1.03,0.7,1.62,0.94l0.36,2.54 c0.05,0.24,0.24,0.41,0.48,0.41h3.84c0.24,0,0.44-0.17,0.47-0.41l0.36-2.54c0.59-0.24,1.13-0.56,1.62-0.94l2.39,0.96 c0.22,0.08,0.47,0,0.59-0.22l1.92-3.32c0.12-0.22,0.07-0.47-0.12-0.61L19.14,12.94z M12,15.6c-1.98,0-3.6-1.62-3.6-3.6 s1.62-3.6,3.6-3.6s3.6,1.62,3.6,3.6S13.98,15.6,12,15.6z"/>
+              <path class="icon-light-stroke"
+                d="M19.14,12.94c0.04-0.3,0.06-0.61,0.06-0.94c0-0.32-0.02-0.64-0.07-0.94l2.03-1.58c0.18-0.14,0.23-0.41,0.12-0.61 l-1.92-3.32c-0.12-0.22-0.37-0.29-0.59-0.22l-2.39,0.96c-0.5-0.38-1.03-0.7-1.62-0.94L14.4,2.81c-0.04-0.24-0.24-0.41-0.48-0.41 h-3.84c-0.24,0-0.43,0.17-0.47,0.41L9.25,5.35C8.66,5.59,8.12,5.92,7.63,6.29L5.24,5.33c-0.22-0.08-0.47,0-0.59,0.22L2.74,8.87 C2.62,9.08,2.66,9.34,2.86,9.48l2.03,1.58C4.84,11.36,4.8,11.69,4.8,12s0.02,0.64,0.07,0.94l-2.03,1.58 c-0.18,0.14-0.23,0.41-0.12,0.61l1.92,3.32c0.12,0.22,0.37,0.29,0.59,0.22l2.39-0.96c0.5,0.38,1.03,0.7,1.62,0.94l0.36,2.54 c0.05,0.24,0.24,0.41,0.48,0.41h3.84c0.24,0,0.44-0.17,0.47-0.41l0.36-2.54c0.59-0.24,1.13-0.56,1.62-0.94l2.39,0.96 c0.22,0.08,0.47,0,0.59-0.22l1.92-3.32c0.12-0.22,0.07-0.47-0.12-0.61L19.14,12.94z M12,15.6c-1.98,0-3.6-1.62-3.6-3.6 s1.62-3.6,3.6-3.6s3.6,1.62,3.6,3.6S13.98,15.6,12,15.6z" />
             </g>
           </svg>
         </button>
@@ -242,8 +251,8 @@
           <button class="share-button song-link-button">
             <svg width="13" height="17" xmlns="http://www.w3.org/2000/svg">
               <g fill="none" fill-rule="evenodd">
-                <path d="M0 0h14v18H0z"/>
-                <path d="M9 0H0v13h1V1h8V0zm4 3H3v14h10V3zm-1 13H4V4h8v12z" fill="#000" fill-rule="nonzero"/>
+                <path d="M0 0h14v18H0z" />
+                <path d="M9 0H0v13h1V1h8V0zm4 3H3v14h10V3zm-1 13H4V4h8v12z" fill="#000" fill-rule="nonzero" />
               </g>
             </svg>
             <span class="share-text">Copy song link</span>
@@ -252,8 +261,8 @@
         <div id="share-button">
           <a class="email-share-button share-button" href="#" target="_blank">
             <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none">
-              <rect width="13" height="9" x=".5" y="2.5" stroke="#000" rx=".5"/>
-              <path stroke="#000" d="m1 3 5.445 3.63a1 1 0 0 0 1.11 0L13 3"/>
+              <rect width="13" height="9" x=".5" y="2.5" stroke="#000" rx=".5" />
+              <path stroke="#000" d="m1 3 5.445 3.63a1 1 0 0 0 1.11 0L13 3" />
             </svg>
             <span class="share-text">Share this song</span>
           </a>

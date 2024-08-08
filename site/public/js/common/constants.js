@@ -10,6 +10,8 @@ const NOTE_LINE_STARTING_GAP = // 16
   parseInt(getComputedStyle(document.documentElement).getPropertyValue('--note-line-starting-gap').trim());
 const FOOTER_BUTTON_HEIGHT = // 48
   parseInt(getComputedStyle(document.documentElement).getPropertyValue('--footer-button-height').trim());
+const PAPER_SIDE_MARGIN = // 32
+  parseInt(getComputedStyle(document.documentElement).getPropertyValue('--paper-side-margin').trim());
 
 const DEFAULT_TEMPO = 110;
 const NUMBER_OF_BARS_PER_PAGE = 52;
@@ -26,6 +28,7 @@ export {
   SIXTEENTH_BAR_GAP,
   NOTE_LINE_STARTING_GAP,
   FOOTER_BUTTON_HEIGHT,
+  PAPER_SIDE_MARGIN,
   DEFAULT_TEMPO,
   NUMBER_OF_BARS_PER_PAGE,
   WAIT_FOR_STATE

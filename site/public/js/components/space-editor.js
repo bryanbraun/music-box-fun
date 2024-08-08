@@ -14,6 +14,9 @@ const DEFAULT_SPACE_EDITOR_BAR_POSITION = 8;
 function transformSongData(dragStartYPos, draggedDistance) {
   const transformedSongData = {};
   const noteStatuses = {};
+
+  // @TODO: if order of pitches in pitch Array doesn't matter (and I think it doesn't),
+  //        we can use Object.keys(songData) and potentially save some processing.
   const pitchArray = getCurrentPitchArray();
 
   pitchArray.forEach((pitchId) => {
@@ -97,7 +100,7 @@ export class SpaceEditor extends MBComponent {
     // Resize drag zone
     const newFinalNotePosition = getFinalNoteYPos() + draggedDistance;
     this.editorDragZoneEl.style.height = `${newFinalNotePosition}px`;
-    this.editorDragZoneEl.classList.add('is-expanded');
+    this.editorDragZoneEl.classList.add('is-dragging');
 
     // Resize paper if necessary
     const lastPageThreshold = getFinalBarLineYPos();
@@ -117,6 +120,11 @@ export class SpaceEditor extends MBComponent {
 
   handleMouseMove(event) {
     const relativeBarYPos = getRelativeYPos(event);
+
+    // @TODO: relativeBarYPos seems the exact same as event.offsetY. Can I just use that?
+    //        If so, can I use that everywhere I use getRelativeYPos?
+    console.log({ relativeYPos: relativeBarYPos, offsetY: event.offsetY });
+
     const snappedBarYPos = snapToInterval(relativeBarYPos, event);
 
     // have bar follow cursor
@@ -177,7 +185,7 @@ export class SpaceEditor extends MBComponent {
     this.dragStartYPos = null;
     this.lastSnappedBarYPos = null;
     this.editorDragZoneEl.style.height = `${getFinalNoteYPos()}px`;
-    this.editorDragZoneEl.classList.remove('is-expanded');
+    this.editorDragZoneEl.classList.remove('is-dragging');
   }
 
   render() {

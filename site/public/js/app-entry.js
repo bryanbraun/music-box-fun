@@ -12,6 +12,7 @@ import { SnapToGridSelect } from './components/snap-to-grid-select.js';
 import { Footnote } from './components/footnote.js';
 import { SongTitle } from './components/song-title.js';
 import { PitchHeader } from './components/pitch-header.js';
+import { Selection } from './components/selection.js';
 import { NoteLines } from './components/note-lines.js';
 import { SpaceEditor } from './components/space-editor.js';
 import { PageTitle } from './components/page-title.js';
@@ -75,6 +76,7 @@ urlManager.getStateFromUrlAsync().then(urlState => {
   new ShareButton().render();
   new PaperFooter().render(true);
   new SpaceEditor().render();
+  new Selection().render();
 
   new SongUpdatedMessage(); // This element is hidden by default, so it doesn't need to .render() on page load.
 
