@@ -541,13 +541,15 @@
   background-color: var(--active-hole-color);
   transition: background-color 0s;
 }
-
-.silent {
+.hole.is-silent {
   background-color: var(--mb-white);
   background-image: url('/images/asterisk.svg');
   background-size: 80% 80%; /* the SVG is scaled to allow a gap between the image and background lines, regardless of the hole size. */
   background-position: center;
   background-repeat: no-repeat;
+}
+.hole.is-selected {
+  box-shadow:inset 0px 0px 0px 2px #FF0;
 }
 
 .space-editor-drag-zone {

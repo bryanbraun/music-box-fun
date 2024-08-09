@@ -1,9 +1,12 @@
 import { MBComponent } from '../music-box-component.js';
 import { musicBoxStore } from '../music-box-store.js';
 import { throttle } from '../utils/throttle.js';
+import { cloneDeep } from '../utils/clone.js';
 import { getCurrentPitchArray } from '../common/box-types.js';
 import { PAPER_SIDE_MARGIN } from '../common/constants.js';
+import { onClickOutside } from '../common/on-click-outside.js';
 
+// We use this (instead of offsetX) because we need XPos relative to the CSS "position: relative" parent.
 function getRelativeXPos(mouseEvent) {
   const offsetParentElPageLeft = mouseEvent.currentTarget.offsetParent.getBoundingClientRect().left;
   return mouseEvent.pageX - offsetParentElPageLeft;
@@ -32,17 +35,20 @@ export class Selection extends MBComponent {
     this.handleMouseUp = this.handleMouseUp.bind(this);
     this.handleMouseOut = this.handleMouseOut.bind(this);
     this.handleMouseMove = this.handleMouseMove.bind(this);
+
+    onClickOutside('.selection-drag-zone', this.deselectAllNotes);
   }
 
   handleDragging(event) {
     // Resize drag zone
     this.selectionZoneEl.classList.add('is-dragging');
 
-    // Draw selection box
     const relativeYPos = event.offsetY;
     const relativeXPos = getRelativeXPos(event);
     const isYInverted = relativeYPos < this.dragStartYPos;
     const isXInverted = relativeXPos < this.dragStartXPos;
+
+    // Draw selection box in CSS
     this.selectionBoxEl.style = `
       top: ${isYInverted ? relativeYPos : this.dragStartYPos}px;
       left: ${isXInverted ? relativeXPos : this.dragStartXPos}px;
@@ -51,37 +57,35 @@ export class Selection extends MBComponent {
       opacity: 0.65;
     `;
 
-    // Determine if notes are selected
-    // @TODO: this currently assumes that the selection box is NOT inverted.
-    //        Next step: add support for invertedY (since that's easy to test).
-    const yMin = this.dragStartYPos;
-    const yMax = relativeYPos;
-    const xMin = this.dragStartXPos - PAPER_SIDE_MARGIN;
-    const xMax = relativeXPos - PAPER_SIDE_MARGIN;
+    // Find selection box bounds (using note-line positions)
+    let yMin = this.dragStartYPos;
+    let yMax = relativeYPos;
+    let xMin = this.dragStartXPos - PAPER_SIDE_MARGIN;
+    let xMax = relativeXPos - PAPER_SIDE_MARGIN;
 
-    const holeWidth = parseInt(getComputedStyle(document.body).getPropertyValue('--hole-width').trim());
-
-    console.log({ xMin, xMax, CNoteXPos: holeWidth / 2, ENoteXPos: (holeWidth / 2) + 2 * holeWidth });
-
-    const isNoteSelected = (noteLineIndex, noteYPos) => {
-      const noteXPos = (holeWidth / 2) + (noteLineIndex * holeWidth);
-      return noteYPos >= yMin && noteYPos <= yMax && noteXPos >= xMin && noteXPos <= xMax;
+    if (isYInverted) {
+      [yMin, yMax] = [yMax, yMin];
+    }
+    if (isXInverted) {
+      [xMin, xMax] = [xMax, xMin];
     }
 
+    // Identify all notes within the selection box
     const selectedNotes = {};
-
+    const holeWidth = parseInt(getComputedStyle(document.body).getPropertyValue('--hole-width').trim());
     const pitchArray = getCurrentPitchArray();
+
     pitchArray.forEach((pitchId, noteLineIndex) => {
       const notesArray = musicBoxStore.state.songState.songData[pitchId];
+
       selectedNotes[pitchId] = notesArray.filter((noteYPos) => {
-        return isNoteSelected(noteLineIndex, noteYPos);
+        const noteXPos = (holeWidth / 2) + (noteLineIndex * holeWidth);
+        const isNoteInSelectionBox = noteYPos >= yMin && noteYPos <= yMax && noteXPos >= xMin && noteXPos <= xMax;
+        return isNoteInSelectionBox;
       });
     });
 
-    console.log(selectedNotes);
-
-    // TODO: set selected notes to appState.
-
+    musicBoxStore.setState('appState.selectedNotes', selectedNotes);
   }
 
   handleMouseMove(event) {
@@ -122,6 +126,16 @@ export class Selection extends MBComponent {
     this.dragStartYPos = null;
     this.selectionBoxEl.style = '';
     this.selectionZoneEl.classList.remove('is-dragging');
+  }
+
+  deselectAllNotes() {
+    let newSelectedNotes = cloneDeep(musicBoxStore.state.appState.selectedNotes);
+
+    Object.keys(newSelectedNotes).forEach(pitch => {
+      newSelectedNotes[pitch] = [];
+    });
+
+    musicBoxStore.setState('appState.selectedNotes', newSelectedNotes);
   }
 
   render() {

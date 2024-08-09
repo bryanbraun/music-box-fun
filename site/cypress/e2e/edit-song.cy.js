@@ -69,10 +69,10 @@ describe('Song edits', () => {
       cy.get('#C5').click(5, note3Ypos);
       cy.get('#C5').click(5, note4Ypos);
 
-      cy.get('#C5 .hole:nth-of-type(1)').should('not.have.class', 'silent');
-      cy.get('#C5 .hole:nth-of-type(2)').should('have.class', 'silent');
-      cy.get('#C5 .hole:nth-of-type(3)').should('not.have.class', 'silent');
-      cy.get('#C5 .hole:nth-of-type(4)').should('have.class', 'silent');
+      cy.get('#C5 .hole:nth-of-type(1)').should('not.have.class', 'is-silent');
+      cy.get('#C5 .hole:nth-of-type(2)').should('have.class', 'is-silent');
+      cy.get('#C5 .hole:nth-of-type(3)').should('not.have.class', 'is-silent');
+      cy.get('#C5 .hole:nth-of-type(4)').should('have.class', 'is-silent');
     });
 
     it('should play when added', () => {

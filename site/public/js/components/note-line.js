@@ -1,3 +1,4 @@
+import classNames from '../vendor/classnames.js';
 import { MBComponent } from '../music-box-component.js';
 import { musicBoxStore } from '../music-box-store.js';
 import { playheadObserver } from '../common/playhead-observer.js';
@@ -14,12 +15,13 @@ export class NoteLine extends MBComponent {
   constructor(props) {
     super({
       props,
-      renderTrigger: `songState.songData.${props.id}`,
+      renderTrigger: [`songState.songData.${props.id}`, `appState.selectedNotes.${props.id}`],
       element: document.getElementById(props.id)
     });
 
     // We need to bind these in order to use "this" inside of them.
     this.showShadowNote = this.showShadowNote.bind(this);
+    this.hideShadowNote = this.hideShadowNote.bind(this);
     this.haveShadowNoteFollowCursor = this.haveShadowNoteFollowCursor.bind(this);
     this.handleClick = this.handleClick.bind(this);
 
@@ -139,10 +141,16 @@ export class NoteLine extends MBComponent {
   // variables in this file refer to the center of the note, not the top.
   renderNotes(pitch) {
     const notesArray = musicBoxStore.state.songState.songData[pitch];
+    const selectedNotesArray = musicBoxStore.state.appState.selectedNotes[pitch];
     let notesMarkup = '';
 
     forEachNotes(notesArray, (yPos, isSilent) => {
-      notesMarkup += `<button class="hole ${isSilent ? 'silent' : ''}" style="transform: translateY(${yPos}px)" aria-label="${pitch}"></button>`;
+      const noteClasses = classNames('hole', {
+        "is-selected": selectedNotesArray && selectedNotesArray.includes(yPos),
+        "is-silent": isSilent,
+      });
+
+      notesMarkup += `<button class="${noteClasses}" style="transform: translateY(${yPos}px)" aria-label="${pitch}"></button>`;
     })
 
     return notesMarkup;

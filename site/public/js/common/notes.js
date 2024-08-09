@@ -80,3 +80,9 @@ export function getNoteYPos(element) {
   const yposMatch = element.style.transform.match(/translateY\((\d+\.?\d*)px\)/); // https://regex101.com/r/49U5Dx/1
   return (yposMatch && yposMatch[1]) ? parseInt(yposMatch[1]) : console.error("Couldn't find note position");
 };
+
+export function hasSelectedNotes() {
+  return Object.keys(musicBoxStore.state.appState.selectedNotes).some(pitchId => (
+    musicBoxStore.state.appState.selectedNotes[pitchId].length > 0
+  ));
+};
