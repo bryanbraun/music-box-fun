@@ -80,8 +80,9 @@
     width: 98%;
   }
 
-  /* Remove sticky headers */
-  .note-header {
+  /* Disable sticky headers and prevent border overlap */
+  .pitch-header {
     position: initial;
+    background: transparent;
   }
 }
