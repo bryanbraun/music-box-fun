@@ -150,14 +150,14 @@ export class NoteLine extends MBComponent {
 
   render() {
     // Prevent weird bugs by removing observers from any existing notes, before re-rendering.
-    this.element.querySelectorAll('.hole').forEach(hole => playheadObserver.get().unobserve(hole));
+    this.element.querySelectorAll('.hole').forEach(hole => playheadObserver.observer.unobserve(hole));
 
     this.element.innerHTML = `
       <div class="shadow-note ${this.lastShadowNoteVisibilityClass}" style="transform: translateY(${this.lastShadowNotePosition}px)"></div>
       ${this.renderNotes(this.props.id)}
     `;
 
-    this.element.querySelectorAll('.hole').forEach(hole => playheadObserver.get().observe(hole));
+    this.element.querySelectorAll('.hole').forEach(hole => playheadObserver.observeWithIntermission(hole));
     this.element.addEventListener('pointerenter', this.showShadowNote);
     this.element.addEventListener('mouseleave', this.hideShadowNote);
     this.element.addEventListener('mousemove', this.haveShadowNoteFollowCursor);

@@ -1,39 +1,33 @@
 import { musicBoxStore } from '../music-box-store.js';
 import { sampler, isSamplerLoaded } from './sampler.js';
 import { getContext } from '../vendor/tone.js';
+import { debounce } from '../utils/debounce.js';
 
-// We had to go with the revealing module pattern here. I tried a plain
-// object but our scroll event handler required us to use bind(). Unfortunately,
-// bind() returns an anonymous function and we can't remove event handlers
-// of anonymous functions (see https://stackoverflow.com/a/3120623/1154642)
-export const playheadObserver = (function () {
-  let userHasScrolled = false;
-  let playheadPosition;
-  let observer;
-  let audioContext = getContext();
+const INTERMISSION_TIME = 10; // in milliseconds
 
-  function confirmInitialScroll() {
-    userHasScrolled = true;
-    window.removeEventListener('scroll', confirmInitialScroll);
-  }
+export const playheadObserver = {
+  playheadPosition: null,
+  observer: null,
+  isInIntermission: false,
+  endIntermissionAfterDelay: null,
+  audioContext: getContext(),
 
-  function isAtPlayhead(entry) {
+  isAtPlayhead(entry) {
     const comparisonBuffer = 10;
     const holeWidth = parseInt(getComputedStyle(document.body).getPropertyValue('--hole-width').trim());
     const noteCenterPosition = entry.boundingClientRect.top + (holeWidth / 2);
 
-    return Math.abs(noteCenterPosition - playheadPosition) < comparisonBuffer;
-  }
+    return Math.abs(noteCenterPosition - this.playheadPosition) < comparisonBuffer;
+  },
 
-  function intersectionHandler(entries) {
+  intersectionHandler(entries) {
     entries.forEach(entry => {
-      // Prevent notes positioned under the playhead from playing when the page is reloaded.
-      if (!userHasScrolled) {
+      if (this.isInIntermission) {
         return;
       }
 
       // Exit early if the audio context has been disabled by the browser.
-      if (audioContext.state !== 'running') {
+      if (this.audioContext.state !== 'running') {
         if (musicBoxStore.state.appState.audioDisabledMessageStatus === 'hidden') {
           musicBoxStore.setState('appState.audioDisabledMessageStatus', 'alerting');
         }
@@ -41,7 +35,7 @@ export const playheadObserver = (function () {
       }
 
       // Reject events firing for notes that aren't at the playhead.
-      if (!isAtPlayhead(entry)) {
+      if (!this.isAtPlayhead(entry)) {
         return;
       }
 
@@ -63,30 +57,41 @@ export const playheadObserver = (function () {
       // TRIGGER SOUND
       isSamplerLoaded && sampler.triggerAttackRelease(entry.target.parentElement.id, '8n');
     });
-  }
+  },
 
-  function setup() {
+  // When we observe a note, the callback is triggered immediately by default (see
+  // https://stackoverflow.com/a/53385264/1154642). This was causing notes under the playhead
+  // to play whenever their note line was re-rendered (like during page load, song change, or
+  // note selection). To prevent this, we observe notes with this function, which defines an
+  // intermission period during which we don't play sounds.
+  observeWithIntermission(element) {
+    if (!this.isInIntermission) {
+      this.isInIntermission = true;
+    }
+
+    this.endIntermissionAfterDelay();
+
+    this.observer.observe(element);
+  },
+
+  setup() {
+    // We assign this method in setup because the 'this' that our debounce function needs isn't
+    // available during object definition (see https://stackoverflow.com/a/13441344/1154642).
+    this.endIntermissionAfterDelay = debounce(function () {
+      this.isInIntermission = false;
+    }.bind(this), INTERMISSION_TIME);
+
     // We get the playhead position by querying the playhead directly (instead of looking
     // up the CSS variable) because the variable uses calc which makes it difficult to
     // query. See https://stackoverflow.com/q/56229772/1154642.
-    playheadPosition = document.querySelector('.music-box__playhead').getBoundingClientRect().top;
+    this.playheadPosition = document.querySelector('.music-box__playhead').getBoundingClientRect().top;
 
     const options = {
       root: null,
-      rootMargin: `-${playheadPosition}px 0px 0px 0px`,
+      rootMargin: `-${this.playheadPosition}px 0px 0px 0px`,
       threshold: 0.5, // trigger event when 50% of the note crosses the threshold.
     }
-    window.addEventListener('scroll', confirmInitialScroll);
 
-    observer = new IntersectionObserver(intersectionHandler, options);
-  }
-
-  function get() {
-    return observer;
-  }
-
-  return {
-    setup,
-    get,
-  }
-})();
+    this.observer = new IntersectionObserver(this.intersectionHandler.bind(this), options);
+  },
+};

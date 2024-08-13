@@ -2,10 +2,8 @@ import { musicBoxStore } from '../music-box-store.js';
 import { sampler } from '../common/sampler.js';
 import { startScrolling, stopScrolling } from '../common/page-scroller.js';
 import { forEachNotes } from '../common/notes.js';
-import { WAIT_FOR_STATE } from '../common/constants.js';
 import { Transport, Part, getContext } from '../vendor/tone.js';
 import { audioContextResuming } from './audio-context.js';
-import { debounce } from '../utils/debounce.js';
 
 const TICKS_PER_PIXEL = 4;
 const audioContext = getContext();
