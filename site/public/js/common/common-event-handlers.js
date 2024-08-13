@@ -30,10 +30,3 @@ export function jumpToTopIfASongWasClicked(event) {
 
   window.scrollTo(0, 0);
 }
-
-// There's no built-in way to the yPos of the cursor relative to it's parent element,
-// so we have to cobble it together. See https://stackoverflow.com/q/34422189/1154642
-export function getRelativeYPos(mouseEvent) {
-  const parentElPageOffsetTop = mouseEvent.currentTarget.getBoundingClientRect().top + window.scrollY;
-  return mouseEvent.pageY - parentElPageOffsetTop;
-}

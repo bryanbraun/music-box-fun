@@ -32,6 +32,7 @@
   --discrete-text: var(--mb-gray-40);
   --error-text-red: red;
   --icon-dark: var(--mb-gray-60);
+  --selection-color: 19, 131, 254; /* rgb values, so we can add alpha as needed */
 
   /* FONTS */
   --main-font: 'Nunito', 'Helvetica Neue', sans-serif;

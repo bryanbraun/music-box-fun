@@ -3,7 +3,6 @@ import { MBComponent } from '../music-box-component.js';
 import { musicBoxStore } from '../music-box-store.js';
 import { playheadObserver } from '../common/playhead-observer.js';
 import { sampler, isSamplerLoaded } from '../common/sampler.js';
-import { getRelativeYPos } from '../common/common-event-handlers.js';
 import { snapToInterval } from '../common/snap-to-interval.js';
 import { forEachNotes, isNotePositionSilent, getNoteYPos } from '../common/notes.js';
 import { getFinalBarLineYPos } from '../common/pages.js';
@@ -68,7 +67,7 @@ export class NoteLine extends MBComponent {
   }
 
   positionShadowNote(shadowNoteEl, mouseEvent) {
-    let relativeCursorYPos = getRelativeYPos(mouseEvent);
+    let relativeCursorYPos = mouseEvent.offsetY;
 
     // We define thresholds that shadow notes can't be placed above or below. This prevents
     // bugs like the hole getting cut off at the top or being placed below the footer button.

@@ -54,7 +54,7 @@ export class Selection extends MBComponent {
       left: ${isXInverted ? relativeXPos : this.dragStartXPos}px;
       width: ${Math.abs(relativeXPos - this.dragStartXPos)}px;
       height: ${Math.abs(relativeYPos - this.dragStartYPos)}px;
-      opacity: 0.65;
+      opacity: 1;
     `;
 
     // Find selection box bounds (using note-line positions)

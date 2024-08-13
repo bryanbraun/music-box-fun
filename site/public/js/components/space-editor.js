@@ -1,9 +1,7 @@
 import { MBComponent } from '../music-box-component.js';
 import { musicBoxStore } from '../music-box-store.js';
-import { getRelativeYPos } from '../common/common-event-handlers.js';
 import { getFinalNoteYPos } from '../common/notes.js';
 import { snapToInterval } from "../common/snap-to-interval.js";
-import { getCurrentPitchArray } from '../common/box-types.js';
 import { getNumberOfPagesOnScreen, getFinalBarLineYPos } from '../common/pages.js';
 import { throttle } from '../utils/throttle.js';
 import { debounce } from '../utils/debounce.js';
@@ -14,10 +12,7 @@ const DEFAULT_SPACE_EDITOR_BAR_POSITION = 8;
 function transformSongData(dragStartYPos, draggedDistance) {
   const transformedSongData = {};
   const noteStatuses = {};
-
-  // @TODO: if order of pitches in pitch Array doesn't matter (and I think it doesn't),
-  //        we can use Object.keys(songData) and potentially save some processing.
-  const pitchArray = getCurrentPitchArray();
+  const pitchArray = Object.keys(musicBoxStore.state.songState.songData);
 
   pitchArray.forEach((pitchId) => {
     const noteStatusArray = [];
@@ -119,12 +114,7 @@ export class SpaceEditor extends MBComponent {
   }
 
   handleMouseMove(event) {
-    const relativeBarYPos = getRelativeYPos(event);
-
-    // @TODO: relativeBarYPos seems the exact same as event.offsetY. Can I just use that?
-    //        If so, can I use that everywhere I use getRelativeYPos?
-    console.log({ relativeYPos: relativeBarYPos, offsetY: event.offsetY });
-
+    const relativeBarYPos = event.offsetY;
     const snappedBarYPos = snapToInterval(relativeBarYPos, event);
 
     // have bar follow cursor
@@ -140,7 +130,7 @@ export class SpaceEditor extends MBComponent {
       musicBoxStore.setState('appState.isPlaying', false);
     }
 
-    const relativeBarYPos = getRelativeYPos(event);
+    const relativeBarYPos = event.offsetY;
     const snappedBarYPos = snapToInterval(relativeBarYPos, event);
     this.dragStartYPos = snappedBarYPos;
     this.handleDragging(snappedBarYPos);
@@ -149,7 +139,7 @@ export class SpaceEditor extends MBComponent {
   handleMouseUp(event) {
     if (this.isDragging()) {
       // Save editor bar position
-      const relativeBarYPos = getRelativeYPos(event);
+      const relativeBarYPos = event.offsetY;
       const snappedBarYPos = snapToInterval(relativeBarYPos, event);
       this.lastSpaceEditorBarPosition = snappedBarYPos;
 

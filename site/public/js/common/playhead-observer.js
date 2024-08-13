@@ -3,7 +3,7 @@ import { sampler, isSamplerLoaded } from './sampler.js';
 import { getContext } from '../vendor/tone.js';
 import { debounce } from '../utils/debounce.js';
 
-const INTERMISSION_TIME = 10; // in milliseconds
+const INTERMISSION_TIME = 50; // in milliseconds
 
 export const playheadObserver = {
   playheadPosition: null,
@@ -40,7 +40,7 @@ export const playheadObserver = {
       }
 
       // Reject events firing for "silent" (red) notes
-      if (entry.target.classList.contains('silent')) {
+      if (entry.target.classList.contains('is-silent')) {
         return;
       }
 

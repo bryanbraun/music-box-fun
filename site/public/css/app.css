@@ -440,8 +440,8 @@
 .selection-box {
   position: absolute;
   z-index: var(--z-selection-box);
-  background-color: #BEC;
-  border: 1px solid #8B9;
+  border: 1px solid rgb(var(--selection-color));
+  background-color: rgba(var(--selection-color), 0.1);
   opacity: 0;
 }
 
@@ -549,7 +549,7 @@
   background-repeat: no-repeat;
 }
 .hole.is-selected {
-  box-shadow:inset 0px 0px 0px 2px #FF0;
+  box-shadow: inset 0px 0px 0px 2px rgb(var(--selection-color)), inset 0px 0px 0px 2.5px rgba(255,255,255,0.85);
 }
 
 .space-editor-drag-zone {
