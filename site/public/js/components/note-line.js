@@ -6,7 +6,7 @@ import { sampler, isSamplerLoaded } from '../common/sampler.js';
 import { snapToInterval } from '../common/snap-to-interval.js';
 import { forEachNotes, isNotePositionSilent, getNoteYPos } from '../common/notes.js';
 import { getFinalBarLineYPos } from '../common/pages.js';
-import { NOTE_LINE_STARTING_GAP } from '../common/constants.js';
+import { NOTE_STARTING_THRESHOLD } from '../common/constants.js';
 
 const DEFAULT_SHADOW_NOTE_POSITION = 8;
 
@@ -71,13 +71,12 @@ export class NoteLine extends MBComponent {
 
     // We define thresholds that shadow notes can't be placed above or below. This prevents
     // bugs like the hole getting cut off at the top or being placed below the footer button.
-    const SHADOW_NOTE_STARTING_THRESHOLD = NOTE_LINE_STARTING_GAP / 2;
     const SHADOW_NOTE_ENDING_THRESHOLD = getFinalBarLineYPos();
 
-    if (relativeCursorYPos < SHADOW_NOTE_STARTING_THRESHOLD) {
+    if (relativeCursorYPos < NOTE_STARTING_THRESHOLD) {
       // If the cursor is positioned too high on the note line, we pretend that it is
       // positioned at the starting threshold, making it impossible to place notes any higher.
-      relativeCursorYPos = SHADOW_NOTE_STARTING_THRESHOLD;
+      relativeCursorYPos = NOTE_STARTING_THRESHOLD;
     }
 
     if (relativeCursorYPos > SHADOW_NOTE_ENDING_THRESHOLD) {

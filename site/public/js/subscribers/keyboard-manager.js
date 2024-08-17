@@ -1,6 +1,9 @@
 import { musicBoxStore } from '../music-box-store.js';
-import { hasSelectedNotes } from '../common/notes.js';
+import { hasSelectedNotes, getFinalNoteYPos } from '../common/notes.js';
 import { cloneDeep } from '../utils/clone.js';
+import { NOTE_STARTING_THRESHOLD } from '../common/constants.js';
+import { resizePaperIfNeeded } from '../common/pages.js';
+import { snapToNextInterval, snapToPreviousInterval } from '../common/snap-to-interval.js';
 
 function setupKeyboardEvents() {
   document.addEventListener('keydown', event => {
@@ -12,11 +15,12 @@ function setupKeyboardEvents() {
     if (isInsideTextInput) return;
 
     switch (event.key) {
-      case " ":
+      case " ": {
         event.preventDefault(); // Prevent default space bar page scroll.
         musicBoxStore.setState('appState.isPlaying', !musicBoxStore.state.appState.isPlaying);
         break;
-      case "z":
+      }
+      case "z": {
         const isMacUndo = event.metaKey && !event.shiftKey;
         const isMacRedo = event.metaKey && event.shiftKey;
         const isWindowsUndo = event.ctrlKey && !event.shiftKey;
@@ -31,12 +35,28 @@ function setupKeyboardEvents() {
           history.forward();
         }
         break;
-      case "Escape":
+      }
+      case "Escape": {
         if (musicBoxStore.state.appState.offCanvasSidebarFocused !== 'none') {
           musicBoxStore.setState('appState.offCanvasSidebarFocused', 'none');
         }
         break;
-      case "Backspace":
+      }
+      case "ArrowUp": {
+        if (!hasSelectedNotes()) return; // only nudge if there are selected notes.
+        event.preventDefault(); // nudge selected notes instead of scrolling the page.
+        nudgeSelectedNotes("up", event);
+
+        break;
+      }
+      case "ArrowDown": {
+        if (!hasSelectedNotes()) return; // only nudge if there are selected notes.
+        event.preventDefault(); // nudge selected notes instead of scrolling the page.
+        nudgeSelectedNotes("down", event);
+
+        break;
+      }
+      case "Backspace": {
         if (!hasSelectedNotes()) return;
 
         let updatedSongData = cloneDeep(musicBoxStore.state.songState.songData);
@@ -49,10 +69,61 @@ function setupKeyboardEvents() {
 
         musicBoxStore.setState('songState.songData', updatedSongData);
         break;
-      default:
+      }
+      default: {
         return;
+      }
     }
   });
+
+
+  function nudgeSelectedNotes(direction, event) {
+    let pixelAmount = null;
+    let snapToDirectionalInterval = null
+
+    switch (direction) {
+      case "up": {
+        pixelAmount = -1;
+        snapToDirectionalInterval = snapToPreviousInterval;
+        break;
+      }
+      case "down": {
+        pixelAmount = 1;
+        snapToDirectionalInterval = snapToNextInterval;
+        break;
+      }
+    }
+
+    let updatedSongData = cloneDeep(musicBoxStore.state.songState.songData);
+    let updatedSelectedNotes = cloneDeep(musicBoxStore.state.appState.selectedNotes);
+
+    Object.keys(musicBoxStore.state.appState.selectedNotes).forEach(pitchId => {
+      // Delete selected notes from songData.
+      updatedSongData[pitchId] = updatedSongData[pitchId].filter(noteYPos => {
+        return !musicBoxStore.state.appState.selectedNotes[pitchId].includes(noteYPos);
+      });
+
+      // Move selected notes. Math.max prevents notes from moving above the starting threshold.
+      updatedSelectedNotes[pitchId] = updatedSelectedNotes[pitchId].map(noteYPos => {
+        const newNoteYPos = snapToDirectionalInterval(noteYPos + pixelAmount, event);
+        return Math.max(NOTE_STARTING_THRESHOLD, newNoteYPos);
+      });
+
+      // Add selected notes back into songData
+      updatedSongData[pitchId] = updatedSongData[pitchId].concat(updatedSelectedNotes[pitchId]).sort((a, b) => a - b);
+
+      // Set state for this pitch. Note: By setting musicBoxStore.state.appState.selectedNotes
+      // directly (instead of calling setState) we update that state without triggering any
+      // re-renders. This is usually not what we want, but in this case we do it because we
+      // know the note line will be re-rendered in the next line of code, and we don't want to
+      // trigger double-renders for no reason.
+      musicBoxStore.state.appState.selectedNotes[pitchId] = updatedSelectedNotes[pitchId];
+      musicBoxStore.setState(`songState.songData.${pitchId}`, updatedSongData[pitchId]);
+
+      // Update the number of pages, if needed.
+      resizePaperIfNeeded(getFinalNoteYPos());
+    });
+  }
 }
 
 export {

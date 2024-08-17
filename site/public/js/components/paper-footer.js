@@ -48,10 +48,11 @@ export class PaperFooter extends MBComponent {
       3. Extend song                        manual (from extendSongPaper)  Yes - Fixed length change
       4. Trim song                          manual (from trimSongPaper)    Yes - Fixed length change
       5. Space editor drag across pages     "ResizePaper" event publish    Yes - Fixed length change
-      6. Note change (for the divider "×")  songState.songData*            No  - No changes needed
+      6. Nudge notes across pages           "ResizePaper" event publish    Yes - Fixed length change
+      7. Note change (for the divider "×")  songState.songData*            No  - No changes needed
 
       By giving params to our render function and manually passing values into render() for
-      cases 1, 2, 3, 4, and 5 we can render the PAGE NUMBER appropriately in all 6 cases.
+      cases 1-6 we can render the PAGE NUMBER appropriately in all 7 cases.
   */
   render(isUpdatingPageCount, newNumberOfPages) {
     if (isUpdatingPageCount) {

@@ -2,23 +2,27 @@ import { musicBoxStore } from '../music-box-store.js';
 import { sampler, isSamplerLoaded } from './sampler.js';
 import { getContext } from '../vendor/tone.js';
 import { debounce } from '../utils/debounce.js';
+import { PLAYHEAD_TO_VIEWPORT_TOP } from './constants.js';
 
 const INTERMISSION_TIME = 50; // in milliseconds
+const audioContext = getContext();
+
+function isAtPlayhead(entry) {
+  const comparisonBuffer = 10; // determined by testing
+  const holeWidth = parseInt(getComputedStyle(document.body).getPropertyValue('--hole-width').trim());
+  const noteCenterToViewportTop = entry.boundingClientRect.top + (holeWidth / 2);
+
+  return Math.abs(noteCenterToViewportTop - PLAYHEAD_TO_VIEWPORT_TOP) < comparisonBuffer;
+}
 
 export const playheadObserver = {
-  playheadPosition: null,
   observer: null,
   isInIntermission: false,
-  endIntermissionAfterDelay: null,
-  audioContext: getContext(),
 
-  isAtPlayhead(entry) {
-    const comparisonBuffer = 10;
-    const holeWidth = parseInt(getComputedStyle(document.body).getPropertyValue('--hole-width').trim());
-    const noteCenterPosition = entry.boundingClientRect.top + (holeWidth / 2); // @TODO: can I refactor this out now that we use CSS to adjust note centers?
+  endIntermissionAfterDelay: debounce((thisPlayHeadObserver) => {
+    thisPlayHeadObserver.isInIntermission = false;
+  }, INTERMISSION_TIME),
 
-    return Math.abs(noteCenterPosition - this.playheadPosition) < comparisonBuffer;
-  },
 
   intersectionHandler(entries) {
     entries.forEach(entry => {
@@ -27,7 +31,7 @@ export const playheadObserver = {
       }
 
       // Exit early if the audio context has been disabled by the browser.
-      if (this.audioContext.state !== 'running') {
+      if (audioContext.state !== 'running') {
         if (musicBoxStore.state.appState.audioDisabledMessageStatus === 'hidden') {
           musicBoxStore.setState('appState.audioDisabledMessageStatus', 'alerting');
         }
@@ -35,7 +39,7 @@ export const playheadObserver = {
       }
 
       // Reject events firing for notes that aren't at the playhead.
-      if (!this.isAtPlayhead(entry)) {
+      if (!isAtPlayhead(entry)) {
         return;
       }
 
@@ -69,26 +73,15 @@ export const playheadObserver = {
       this.isInIntermission = true;
     }
 
-    this.endIntermissionAfterDelay();
+    this.endIntermissionAfterDelay(this);
 
     this.observer.observe(element);
   },
 
   setup() {
-    // We assign this method in setup because the 'this' that our debounce function needs isn't
-    // available during object definition (see https://stackoverflow.com/a/13441344/1154642).
-    this.endIntermissionAfterDelay = debounce(function () {
-      this.isInIntermission = false;
-    }.bind(this), INTERMISSION_TIME);
-
-    // We get the playhead position by querying the playhead directly (instead of looking
-    // up the CSS variable) because the variable uses calc which makes it difficult to
-    // query. See https://stackoverflow.com/q/56229772/1154642.
-    this.playheadPosition = document.querySelector('.music-box__playhead').getBoundingClientRect().top;
-
     const options = {
       root: null,
-      rootMargin: `-${this.playheadPosition}px 0px 0px 0px`,
+      rootMargin: `-${PLAYHEAD_TO_VIEWPORT_TOP}px 0px 0px 0px`,
       threshold: 0.5, // trigger event when 50% of the note crosses the threshold.
     }
 

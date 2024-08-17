@@ -2,10 +2,10 @@ import { MBComponent } from '../music-box-component.js';
 import { musicBoxStore } from '../music-box-store.js';
 import { getFinalNoteYPos } from '../common/notes.js';
 import { snapToInterval } from "../common/snap-to-interval.js";
-import { getNumberOfPagesOnScreen, getFinalBarLineYPos } from '../common/pages.js';
+import { resizePaperIfNeeded } from '../common/pages.js';
 import { throttle } from '../utils/throttle.js';
 import { debounce } from '../utils/debounce.js';
-import { NOTE_LINE_STARTING_GAP, NUMBER_OF_BARS_PER_PAGE, QUARTER_BAR_GAP, WAIT_FOR_STATE } from '../common/constants.js';
+import { WAIT_FOR_STATE } from '../common/constants.js';
 
 const DEFAULT_SPACE_EDITOR_BAR_POSITION = 8;
 
@@ -98,19 +98,7 @@ export class SpaceEditor extends MBComponent {
     this.editorDragZoneEl.classList.add('is-dragging');
 
     // Resize paper if necessary
-    const lastPageThreshold = getFinalBarLineYPos();
-    const currentNumberOfPages = getNumberOfPagesOnScreen();
-    const minNumberOfPagesNeeded = Math.ceil((newFinalNotePosition - NOTE_LINE_STARTING_GAP) / (NUMBER_OF_BARS_PER_PAGE * QUARTER_BAR_GAP)) || 1;
-
-    if (newFinalNotePosition > lastPageThreshold) {
-      // Publish a one-off event telling the PaperFooter to re-render at a bigger size.
-      musicBoxStore.publish('ResizePaper', currentNumberOfPages + 1);
-    }
-
-    if (currentNumberOfPages > minNumberOfPagesNeeded) {
-      // Publish a one-off event telling the PaperFooter to re-render at a smaller size.
-      musicBoxStore.publish('ResizePaper', minNumberOfPagesNeeded);
-    }
+    resizePaperIfNeeded(newFinalNotePosition);
   }
 
   handleMouseMove(event) {

@@ -12,9 +12,14 @@ const FOOTER_BUTTON_HEIGHT = // 48
   parseInt(getComputedStyle(document.documentElement).getPropertyValue('--footer-button-height').trim());
 const PAPER_SIDE_MARGIN = // 32
   parseInt(getComputedStyle(document.documentElement).getPropertyValue('--paper-side-margin').trim());
+// We want to look up --playhead-distance-from-top-of-workspace, but the custom property uses calc which
+// makes it difficult. Instead, we can query the playhead directly to look up it's calculated value. See:
+// https://stackoverflow.com/q/56229772/1154642.
+const PLAYHEAD_TO_VIEWPORT_TOP = document.querySelector('.music-box__playhead').getBoundingClientRect().top;
 
 const DEFAULT_TEMPO = 110;
 const NUMBER_OF_BARS_PER_PAGE = 52;
+const NOTE_STARTING_THRESHOLD = NOTE_LINE_STARTING_GAP / 2;
 
 // When we subscribe to an "asterisk" state (like "songState*"), it's possible for the callback to be
 // triggered several times in quick succession. For example, this can happen when changing songs (because
@@ -27,9 +32,11 @@ export {
   EIGHTH_BAR_GAP,
   SIXTEENTH_BAR_GAP,
   NOTE_LINE_STARTING_GAP,
+  NOTE_STARTING_THRESHOLD,
   FOOTER_BUTTON_HEIGHT,
   PAPER_SIDE_MARGIN,
   DEFAULT_TEMPO,
   NUMBER_OF_BARS_PER_PAGE,
-  WAIT_FOR_STATE
+  WAIT_FOR_STATE,
+  PLAYHEAD_TO_VIEWPORT_TOP
 }

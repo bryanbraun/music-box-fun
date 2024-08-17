@@ -22,3 +22,25 @@ export function snapToInterval(relativeCursorYPos, mouseEvent) {
   // This prevents us from snapping notes to positions inside the starting gap.
   return snappedYPos < NOTE_LINE_STARTING_GAP ? NOTE_LINE_STARTING_GAP : snappedYPos;
 }
+
+export function snapToNextInterval(yPos, event) {
+  const INTERVAL = snapToIntervals[event?.altKey ? "none" : musicBoxStore.state.appState.snapTo];
+
+  if (!INTERVAL) return yPos;
+
+  const snappedYPos = Math.ceil((yPos - NOTE_LINE_STARTING_GAP) / INTERVAL) * INTERVAL + NOTE_LINE_STARTING_GAP;
+
+  // This prevents us from snapping notes to positions inside the starting gap.
+  return snappedYPos < NOTE_LINE_STARTING_GAP ? NOTE_LINE_STARTING_GAP : snappedYPos;
+}
+
+export function snapToPreviousInterval(yPos, event) {
+  const INTERVAL = snapToIntervals[event?.altKey ? "none" : musicBoxStore.state.appState.snapTo];
+
+  if (!INTERVAL) return yPos;
+
+  const snappedYPos = Math.floor((yPos - NOTE_LINE_STARTING_GAP) / INTERVAL) * INTERVAL + NOTE_LINE_STARTING_GAP;
+
+  // This prevents us from snapping notes to positions inside the starting gap.
+  return snappedYPos < NOTE_LINE_STARTING_GAP ? NOTE_LINE_STARTING_GAP : snappedYPos;
+}
