@@ -20,6 +20,8 @@ export class TempoField extends MBComponent {
         max="${this.props.max}"
         value="${tempo}"
         name="tempo-field"
+        pattern="[0-9]*"
+        inputmode="numeric"
       />
     `;
 
