@@ -9,7 +9,7 @@ export class SongUpdatedMessage extends MBComponent {
       element: document.querySelector('#song-updated-message')
     });
 
-    musicBoxStore.subscribe("songState.songData*", debounce(this.render.bind(this), WAIT_FOR_STATE));
+    musicBoxStore.subscribe("songState*", debounce(this.render.bind(this), WAIT_FOR_STATE));
 
     this.timeoutId = null;
   }

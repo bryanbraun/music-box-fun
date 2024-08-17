@@ -35,7 +35,7 @@ export class NoteLines extends MBComponent {
         if (noteStatuses[pitchId][i] === 'altered') {
           previewMarkup += `<div class="shadow-note shadow-note--visible" style="transform: translateY(${yPos}px)"></div>`;
         } else {
-          previewMarkup += `<div class="hole ${isSilent ? 'silent' : ''}" style="transform: translateY(${yPos}px)"></div>`;
+          previewMarkup += `<div class="hole ${isSilent ? 'is-silent' : ''}" style="transform: translateY(${yPos}px)"></div>`;
         }
       });
 
