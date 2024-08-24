@@ -111,6 +111,7 @@ function setupKeyboardEvents() {
 
       // Add selected notes back into songData
       updatedSongData[pitchId] = updatedSongData[pitchId].concat(updatedSelectedNotes[pitchId]).sort((a, b) => a - b);
+      updatedSongData[pitchId] = Array.from(new Set(updatedSongData[pitchId])); // Dedupe notes
 
       // Set state for this pitch. Note: By setting musicBoxStore.state.appState.selectedNotes
       // directly (instead of calling setState) we update that state without triggering any
