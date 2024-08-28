@@ -1,5 +1,5 @@
 import { musicBoxStore } from '../music-box-store.js';
-import { WAIT_FOR_STATE } from '../common/constants.js';
+import { WAIT_FOR_STATE } from '../constants.js';
 import { debounce } from '../utils/debounce.js';
 
 // For programmatically pausing the song. This is in it's own file because we

@@ -2,7 +2,7 @@ import { musicBoxStore } from '../music-box-store.js';
 import { sampler, isSamplerLoaded } from './sampler.js';
 import { getContext } from '../vendor/tone.js';
 import { debounce } from '../utils/debounce.js';
-import { PLAYHEAD_TO_VIEWPORT_TOP } from './constants.js';
+import { PLAYHEAD_TO_VIEWPORT_TOP } from '../constants.js';
 
 const INTERMISSION_TIME = 50; // in milliseconds
 const audioContext = getContext();

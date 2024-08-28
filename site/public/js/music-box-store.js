@@ -1,7 +1,7 @@
 import { Store } from './alt-react/store.js';
-import { state } from './state.js';
+import { initialState } from './state.js';
 import { cloneDeep } from './utils/clone.js';
 
-const musicBoxStore = new Store(cloneDeep(state));
+const musicBoxStore = new Store(cloneDeep(initialState));
 
 export { musicBoxStore };

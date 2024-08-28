@@ -1,4 +1,4 @@
-import { MBComponent } from '../music-box-component.js';
+import { MBComponent } from './music-box-component.js';
 import { musicBoxStore } from '../music-box-store.js';
 import { escapeHtml } from '../utils/escapeHtml.js';
 

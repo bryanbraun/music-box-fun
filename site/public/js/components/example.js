@@ -1,4 +1,4 @@
-import { MBComponent } from '../music-box-component.js';
+import { MBComponent } from './music-box-component.js';
 import { musicBoxStore } from '../music-box-store.js';
 
 // An example component you can copy-and-paste when creating new components.

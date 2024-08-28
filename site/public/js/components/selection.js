@@ -1,9 +1,9 @@
-import { MBComponent } from '../music-box-component.js';
+import { MBComponent } from './music-box-component.js';
 import { musicBoxStore } from '../music-box-store.js';
 import { throttle } from '../utils/throttle.js';
 import { cloneDeep } from '../utils/clone.js';
 import { getCurrentPitchArray } from '../common/box-types.js';
-import { PAPER_SIDE_MARGIN } from '../common/constants.js';
+import { PAPER_SIDE_MARGIN } from '../constants.js';
 import { onClickOutside } from '../common/on-click-outside.js';
 
 // We use this (instead of offsetX) because we need XPos relative to the CSS "position: relative" parent.

@@ -1,4 +1,4 @@
-import { MBComponent } from '../music-box-component.js';
+import { MBComponent } from './music-box-component.js';
 import { musicBoxStore } from '../music-box-store.js';
 import classNames from '../vendor/classnames.js';
 
@@ -19,7 +19,7 @@ export class AudioDisabledMessage extends MBComponent {
     let statusClass;
 
     // This switch statement documents the three possible states: hidden, alerting, and resolved.
-    switch(musicBoxStore.state.appState.audioDisabledMessageStatus) {
+    switch (musicBoxStore.state.appState.audioDisabledMessageStatus) {
       case 'hidden':
         messageBody = this.disabledMessageText;
         statusClass = 'audio-disabled-message--hidden';

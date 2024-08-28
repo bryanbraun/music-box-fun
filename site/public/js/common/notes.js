@@ -1,4 +1,4 @@
-import { QUARTER_BAR_GAP } from './constants.js';
+import { QUARTER_BAR_GAP } from '../constants.js';
 import { musicBoxStore } from '../music-box-store.js';
 
 // The "dead zone" is the region after a note, wherein if a note is placed, it

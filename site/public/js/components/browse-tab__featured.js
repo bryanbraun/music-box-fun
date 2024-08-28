@@ -1,4 +1,4 @@
-import { MBComponent } from '../music-box-component.js';
+import { MBComponent } from './music-box-component.js';
 import { renderSongCreator } from './browse-tab__library.js';
 import { jumpToTopIfASongWasClicked } from '../common/common-event-handlers.js';
 

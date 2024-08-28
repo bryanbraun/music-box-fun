@@ -14,7 +14,7 @@ const PAPER_SIDE_MARGIN = // 32
   parseInt(getComputedStyle(document.documentElement).getPropertyValue('--paper-side-margin').trim());
 // We want to look up --playhead-distance-from-top-of-workspace, but the custom property uses calc which
 // makes it difficult. Instead, we can query the playhead directly to look up it's calculated value. See:
-// https://stackoverflow.com/q/56229772/1154642.
+// https://stackoverflow.com/q/56229772/1154642. This should't change during app use.
 const PLAYHEAD_TO_VIEWPORT_TOP = document.querySelector('.music-box__playhead').getBoundingClientRect().top;
 
 const DEFAULT_TEMPO = 110;

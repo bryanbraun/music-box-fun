@@ -1,4 +1,4 @@
-import { MBComponent } from '../music-box-component.js';
+import { MBComponent } from './music-box-component.js';
 import { musicBoxStore } from '../music-box-store.js';
 import { escapeHtml, escapeAndHighlightHtml } from '../utils/escapeHtml.js';
 import { jumpToTopIfASongWasClicked } from '../common/common-event-handlers.js';

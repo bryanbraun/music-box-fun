@@ -1,8 +1,8 @@
 import classNames from '../vendor/classnames.js'
 import { musicBoxStore } from '../music-box-store.js';
-import { MBComponent } from '../music-box-component.js';
+import { MBComponent } from './music-box-component.js';
 import { isSilentNotePresentInSong } from '../common/notes.js';
-import { WAIT_FOR_STATE } from '../common/constants.js';
+import { WAIT_FOR_STATE } from '../constants.js';
 import { debounce } from '../utils/debounce.js';
 
 export class Footnote extends MBComponent {

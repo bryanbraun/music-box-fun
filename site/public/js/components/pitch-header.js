@@ -1,4 +1,4 @@
-import { MBComponent } from '../music-box-component.js';
+import { MBComponent } from './music-box-component.js';
 import { getCurrentPitchArray } from '../common/box-types.js';
 import classNames from '../vendor/classnames.js';
 import { musicBoxStore } from '../music-box-store.js';
@@ -17,10 +17,10 @@ export class PitchHeader extends MBComponent {
 
     this.element.innerHTML = `
       ${pitchArray.map(pitchId => (
-        `<div class="${classNames('pitch-label', { 'is-highlighted': pitchId === highlightedPitch, 'sharp': pitchId[1] === '#' })}">
+      `<div class="${classNames('pitch-label', { 'is-highlighted': pitchId === highlightedPitch, 'sharp': pitchId[1] === '#' })}">
           ${pitchId[0]}
         </div>`
-      )).join('')}
+    )).join('')}
     `;
   }
 }

@@ -1,4 +1,4 @@
-import { MBComponent } from '../music-box-component.js';
+import { MBComponent } from './music-box-component.js';
 import { musicBoxStore } from '../music-box-store.js';
 import { BrowseTabFeaturedSongs } from './browse-tab__featured.js';
 import { BrowseTabSongLibrary } from './browse-tab__library.js';

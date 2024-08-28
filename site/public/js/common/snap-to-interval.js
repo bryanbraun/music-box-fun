@@ -1,4 +1,4 @@
-import { EIGHTH_BAR_GAP, QUARTER_BAR_GAP, SIXTEENTH_BAR_GAP, NOTE_LINE_STARTING_GAP } from './constants.js';
+import { EIGHTH_BAR_GAP, QUARTER_BAR_GAP, SIXTEENTH_BAR_GAP, NOTE_LINE_STARTING_GAP } from '../constants.js';
 import { musicBoxStore } from '../music-box-store.js';
 
 const snapToIntervals = {

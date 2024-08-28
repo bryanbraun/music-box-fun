@@ -1,4 +1,4 @@
-import { NUMBER_OF_BARS_PER_PAGE, NOTE_LINE_STARTING_GAP, QUARTER_BAR_GAP } from "./constants.js";
+import { NUMBER_OF_BARS_PER_PAGE, NOTE_LINE_STARTING_GAP, QUARTER_BAR_GAP } from "../constants.js";
 import { musicBoxStore } from "../music-box-store.js";
 
 export function getNumberOfBars() {

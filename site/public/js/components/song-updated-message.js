@@ -1,6 +1,6 @@
-import { MBComponent } from '../music-box-component.js';
+import { MBComponent } from './music-box-component.js';
 import { musicBoxStore } from '../music-box-store.js';
-import { WAIT_FOR_STATE } from '../common/constants.js';
+import { WAIT_FOR_STATE } from '../constants.js';
 import { debounce } from '../utils/debounce.js';
 
 export class SongUpdatedMessage extends MBComponent {

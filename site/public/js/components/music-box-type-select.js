@@ -1,4 +1,4 @@
-import { MBComponent } from '../music-box-component.js';
+import { MBComponent } from './music-box-component.js';
 import { musicBoxStore } from '../music-box-store.js';
 import { boxTypePitches, boxTypeTitles, getCurrentBoxType } from '../common/box-types.js';
 import { confirmationDialog } from '../common/confirmation-dialog.js';
@@ -69,8 +69,8 @@ export class MusicBoxTypeSelect extends MBComponent {
         <span class="visuallyhidden">Music Box Type</span>
         <select class="select select-music-box-type" data-testid="music-box-type-select" name="select-box-type">
           ${Object.entries(boxTypeTitles).map(([type, title]) => (
-            `<option ${currentBoxType === type ? 'selected' : ''} value="${type}">${title}</option>`
-          )).join('')}
+      `<option ${currentBoxType === type ? 'selected' : ''} value="${type}">${title}</option>`
+    )).join('')}
         </select>
       </label>
     `;

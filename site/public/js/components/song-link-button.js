@@ -1,5 +1,5 @@
 
-import { MBComponent } from '../music-box-component.js';
+import { MBComponent } from './music-box-component.js';
 
 export class SongLinkButton extends MBComponent {
   constructor(props) {
@@ -27,7 +27,7 @@ export class SongLinkButton extends MBComponent {
       setTimeout(() => {
         this.setState({ buttonText: this.defaultButtonText });
       }, 2000);
-    } catch(error) {
+    } catch (error) {
       if (!navigator.clipboard) {
         console.error("Error: navigator.clipboard is undefined. This can happen if the site isn't being served over https.");
       } else {

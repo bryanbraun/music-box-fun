@@ -1,4 +1,4 @@
-import { MBComponent } from '../music-box-component.js';
+import { MBComponent } from './music-box-component.js';
 import { musicBoxStore } from '../music-box-store.js';
 import { getCurrentBoxType } from '../common/box-types.js';
 import classNames from '../vendor/classnames.js';

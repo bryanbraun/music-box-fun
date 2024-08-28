@@ -1,12 +1,12 @@
 import classNames from '../vendor/classnames.js';
-import { MBComponent } from '../music-box-component.js';
+import { MBComponent } from './music-box-component.js';
 import { musicBoxStore } from '../music-box-store.js';
 import { playheadObserver } from '../common/playhead-observer.js';
 import { sampler, isSamplerLoaded } from '../common/sampler.js';
 import { snapToInterval } from '../common/snap-to-interval.js';
 import { forEachNotes, isNotePositionSilent, getNoteYPos } from '../common/notes.js';
 import { getFinalBarLineYPos } from '../common/pages.js';
-import { NOTE_STARTING_THRESHOLD } from '../common/constants.js';
+import { NOTE_STARTING_THRESHOLD } from '../constants.js';
 
 const DEFAULT_SHADOW_NOTE_POSITION = 8;
 

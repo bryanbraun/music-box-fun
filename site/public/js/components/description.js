@@ -1,4 +1,4 @@
-import { MBComponent } from '../music-box-component.js';
+import { MBComponent } from './music-box-component.js';
 import { getCurrentBoxType, boxTypeTitles, boxTypeLinks } from '../common/box-types.js';
 
 export class Description extends MBComponent {

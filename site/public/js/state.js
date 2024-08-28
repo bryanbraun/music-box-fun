@@ -1,11 +1,11 @@
-import { DEFAULT_TEMPO } from './common/constants.js';
+import { DEFAULT_TEMPO } from './constants.js';
 
 // Note: this represents an initial global state template. We clone it
 // when using it, so we don't end up with new data in it.
 //
 // Don't add arrays containing objects to global state, without first
 // consulting the comments in store.js, to ensure it works as expected.
-export const state = {
+export const initialState = {
   appState: {
     snapTo: 'grid',
     isPlaying: false,
