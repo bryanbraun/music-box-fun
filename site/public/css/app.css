@@ -271,6 +271,7 @@
 .equipment {
   position: relative;
   padding: 4rem 0 0 0;
+  cursor: crosshair;
   /*
     prevent horizontal scrolling
     when the paper is wider than
@@ -287,6 +288,10 @@
    depend on its content.
   */
   text-align: center;
+}
+/* TODO: consider renaming equipment to workspace, and workspace to layout */
+.equipment > * {
+  cursor: initial;
 }
 
 .music-box-kit {
@@ -415,14 +420,15 @@
   z-index: var(--z-drag-zone);
   top: 0;
   left: 0;
-  bottom: var(--footer-button-height);
-  width: var(--paper-side-margin);
+  background: cyan;
+  opacity: 0.5;
 }
 .selection-drag-zone:hover {
   cursor: crosshair;
 }
 .selection-drag-zone.is-dragging {
   width: calc(100vw - var(--left-sidebar-width) - var(--right-sidebar-width));
+  bottom: 0;
   transform: translateX(-50%);
   left: 50%;
   z-index: var(--z-drag-zone--is-dragging);
@@ -438,7 +444,7 @@
   }
 }
 .selection-box {
-  position: absolute;
+  position: fixed;
   z-index: var(--z-selection-box);
   border: 1px solid rgb(var(--selection-color));
   background-color: rgba(var(--selection-color), 0.1);
