@@ -14,6 +14,7 @@ export const initialState = {
     activeTab: 'song-library',
     songLibraryQuery: '',
     highlightedPitch: null,
+    isTextSelectionEnabled: true,
     selectedNotes: {
       C4: [],
       D4: [],

@@ -12,7 +12,7 @@ import { SnapToGridSelect } from './components/snap-to-grid-select.js';
 import { Footnote } from './components/footnote.js';
 import { SongTitle } from './components/song-title.js';
 import { PitchHeader } from './components/pitch-header.js';
-import { Selection } from './components/selection.js';
+import { WorkspaceSelection } from './components/workspace-selection.js';
 import { NoteLines } from './components/note-lines.js';
 import { SpaceEditor } from './components/space-editor.js';
 import { PageTitle } from './components/page-title.js';
@@ -27,15 +27,16 @@ import { ShareButton } from './components/share-button.js';
 import { PaperFooter } from './components/paper-footer.js';
 
 import { musicBoxStore } from './music-box-store.js';
-import { setupServiceWorker } from './subscribers/register-service-worker.js';
 import { setupSampler } from './common/sampler.js';
 import { playheadObserver } from './common/playhead-observer.js';
-import { setupOnClickOutside } from './common/on-click-outside.js';
+import { setupDocumentClickManager } from './subscribers/document-click-manager.js';
+import { setupServiceWorker } from './subscribers/register-service-worker.js';
 import { setupAudioContextFallbackForRestrictiveBrowsers } from './subscribers/audio-context.js';
 import { setupKeyboardEvents } from './subscribers/keyboard-manager.js';
 import { urlManager } from './subscribers/url-manager.js';
 import { audioPlayer } from './subscribers/audio-player.js';
 import { songPauser } from './subscribers/song-pauser.js';
+import { setupTextSelectionListener } from './subscribers/text-selection-listener.js';
 
 import { setupTestObjects } from './test.js';
 
@@ -76,7 +77,7 @@ urlManager.getStateFromUrlAsync().then(urlState => {
   new ShareButton().render();
   new PaperFooter().render(true);
   new SpaceEditor().render();
-  new Selection().render();
+  new WorkspaceSelection().render();
 
   new SongUpdatedMessage(); // This element is hidden by default, so it doesn't need to .render() on page load.
 
@@ -93,6 +94,7 @@ setupSampler(); // This setup can happen late, since the sampler isn't used unti
 setupServiceWorker();
 setupKeyboardEvents();
 setupAudioContextFallbackForRestrictiveBrowsers();
-setupOnClickOutside();
+setupDocumentClickManager();
 setupTestObjects();
 audioPlayer.setup();
+setupTextSelectionListener();

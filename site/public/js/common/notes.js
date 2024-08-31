@@ -82,7 +82,5 @@ export function getNoteYPos(element) {
 };
 
 export function hasSelectedNotes() {
-  return Object.keys(musicBoxStore.state.appState.selectedNotes).some(pitchId => (
-    musicBoxStore.state.appState.selectedNotes[pitchId].length > 0
-  ));
+  return Object.values(musicBoxStore.state.appState.selectedNotes).some(notesArray => notesArray.length > 0);
 };

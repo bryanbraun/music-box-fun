@@ -60,6 +60,7 @@ export class SpaceEditor extends MBComponent {
     this.dragStartYPos = null;
     // cached to prevent unnecessary re-renders
     this.lastSnappedBarYPos = null;
+
     // cached to prevent repetitive DOM queries
     this.editorDragZoneEl = null;
     this.editorBarEl = null;
@@ -69,7 +70,8 @@ export class SpaceEditor extends MBComponent {
     // This led to an edge-case where the space-editor-bar wasn't positioned properly
     // on re-renders. To fix this, we store the last space-editor-bar position and use
     // it to set the initial space-editor-bar position during render.
-    this.lastSpaceEditorBarPosition = DEFAULT_SPACE_EDITOR_BAR_POSITION;
+    this.lastEditorBarPosition = DEFAULT_SPACE_EDITOR_BAR_POSITION;
+    this.lastEditorBarVisibilityClass = '';
 
     // Throttle the dragging event to reduce re-renders (while snapping is set to none).
     // We could throttle mousemove, but there's little benefit (mousemove alone has very
@@ -80,6 +82,7 @@ export class SpaceEditor extends MBComponent {
     this.handleMouseUp = this.handleMouseUp.bind(this);
     this.handleMouseOut = this.handleMouseOut.bind(this);
     this.handleMouseMove = this.handleMouseMove.bind(this);
+    this.showEditorBar = this.showEditorBar.bind(this);
   }
 
   handleDragging(snappedBarYPos) {
@@ -114,6 +117,9 @@ export class SpaceEditor extends MBComponent {
   }
 
   handleMouseDown(event) {
+    if (musicBoxStore.state.appState.isTextSelectionEnabled) {
+      musicBoxStore.setState('appState.isTextSelectionEnabled', false);
+    }
     if (musicBoxStore.state.appState.isPlaying) {
       musicBoxStore.setState('appState.isPlaying', false);
     }
@@ -124,12 +130,26 @@ export class SpaceEditor extends MBComponent {
     this.handleDragging(snappedBarYPos);
   }
 
+  // Originally we managed editor bar visible with CSS only, but we ran into
+  // some edge-cases which required JS to resolve (specifically, visibility on
+  // mobile and incorrect editor bar position when exiting a note selection box).
+  showEditorBar(event) {
+    // Keep the editor bar hidden on touch devices for now.
+    if (event.pointerType === 'touch') return;
+
+    this.editorBarEl.classList.add('is-visible');
+    this.lastEditorBarVisibilityClass = 'is-visible';
+
+    // Ensures the bar is positioned correctly
+    this.handleMouseMove(event);
+  }
+
   handleMouseUp(event) {
     if (this.isDragging()) {
       // Save editor bar position
       const relativeBarYPos = event.offsetY;
       const snappedBarYPos = snapToInterval(relativeBarYPos, event);
-      this.lastSpaceEditorBarPosition = snappedBarYPos;
+      this.lastEditorBarPosition = snappedBarYPos;
 
       // Save new song data
       const draggedDistance = snappedBarYPos - this.dragStartYPos;
@@ -153,6 +173,9 @@ export class SpaceEditor extends MBComponent {
 
       this.resetDragging();
     }
+
+    this.editorBarEl.classList.remove('is-visible');
+    this.lastEditorBarVisibilityClass = '';
   }
 
   isDragging() {
@@ -164,12 +187,16 @@ export class SpaceEditor extends MBComponent {
     this.lastSnappedBarYPos = null;
     this.editorDragZoneEl.style.height = `${getFinalNoteYPos()}px`;
     this.editorDragZoneEl.classList.remove('is-dragging');
+
+    if (!musicBoxStore.state.appState.isTextSelectionEnabled) {
+      musicBoxStore.setState('appState.isTextSelectionEnabled', true);
+    }
   }
 
   render() {
     this.element.innerHTML = `
       <div class="space-editor-drag-zone" title="Add space"></div>
-      <div class="space-editor-bar" style="transform: translateY(${this.lastSpaceEditorBarPosition}px)"></div>
+      <div class="space-editor-bar ${this.lastEditorBarVisibilityClass}" style="transform: translateY(${this.lastEditorBarPosition}px)"></div>
     `;
 
     this.editorDragZoneEl = this.element.querySelector('.space-editor-drag-zone');
@@ -177,6 +204,7 @@ export class SpaceEditor extends MBComponent {
 
     this.editorDragZoneEl.style.height = `${getFinalNoteYPos()}px`;
 
+    this.editorDragZoneEl.addEventListener('pointerenter', this.showEditorBar);
     this.editorDragZoneEl.addEventListener('mousemove', this.handleMouseMove);
     this.editorDragZoneEl.addEventListener('mousedown', this.handleMouseDown);
     this.editorDragZoneEl.addEventListener('mouseup', this.handleMouseUp);

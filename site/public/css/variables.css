@@ -68,7 +68,6 @@
   --z-music-box-extend-button: 2;
   --z-music-box-notes: 4;
   --z-space-editor-bar: 5;
-  --z-selection-box: 5;
   --z-music-box-note-header: 6;
   --z-music-box-playhead: 8;
   /* 10-100: Overlays */
@@ -77,6 +76,7 @@
   --z-share-box: 15;
   --z-floating-actions: 15;
   --z-audio-context-message: 16;
+  --z-selection-box: 40;
   --z-drag-zone: 50; /* for both space-editor and selection */
   --z-drag-zone--is-dragging: 51;
   --off-canvas-sidebar-overlay: 75;

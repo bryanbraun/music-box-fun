@@ -39,8 +39,8 @@ export class NoteLine extends MBComponent {
   }
 
   showShadowNote(event) {
-    // This gives us "invisible shadow notes" on touch devices only. It fixes a bug
-    // where shadow notes would remain visible on touchscreens after removing notes.
+    // This keeps shadow notes hidden on touch devices, fixing a bug where
+    // shadow notes would remain visible on touchscreens after removing notes.
     if (event.pointerType === 'touch') return;
 
     const shadowNoteEl = event.currentTarget.querySelector('.shadow-note');
@@ -164,7 +164,7 @@ export class NoteLine extends MBComponent {
     `;
 
     this.element.querySelectorAll('.hole').forEach(hole => playheadObserver.observeWithIntermission(hole));
-    this.element.addEventListener('pointerenter', this.showShadowNote);
+    this.element.addEventListener('pointerenter', this.showShadowNote); // pointerenter enables event.pointerType for this callback.
     this.element.addEventListener('mouseleave', this.hideShadowNote);
     this.element.addEventListener('mousemove', this.haveShadowNoteFollowCursor);
     this.element.addEventListener('click', this.handleClick);

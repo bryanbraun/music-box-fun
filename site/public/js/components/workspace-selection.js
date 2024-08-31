@@ -3,12 +3,13 @@ import { musicBoxStore } from '../music-box-store.js';
 import { throttle } from '../utils/throttle.js';
 import { cloneDeep } from '../utils/clone.js';
 import { getCurrentPitchArray } from '../common/box-types.js';
-import { onClickOutside } from '../common/on-click-outside.js';
+import { addDocumentClickListener } from '../subscribers/document-click-manager.js';
+import { hasSelectedNotes } from '../common/notes.js';
 
-export class Selection extends MBComponent {
+export class WorkspaceSelection extends MBComponent {
   constructor() {
     super({
-      element: document.querySelector('#equipment')
+      element: document.querySelector('#workspace')
     });
 
     // drag positions relative to the offsetParent (the CSS "position: relative" parent)
@@ -30,32 +31,32 @@ export class Selection extends MBComponent {
     this.handleMouseOut = this.handleMouseOut.bind(this);
     this.handleMouseMove = this.handleMouseMove.bind(this);
 
-    onClickOutside('#equipment', this.deselectAllNotes);
+    addDocumentClickListener(this.handleNoteDeselection);
   }
 
   handleDragging(event) {
     // Resize drag zone
     this.selectionZoneEl.classList.add('is-dragging');
 
-    const isYInverted = event.pageY < this.dragStartYPos;
-    const isXInverted = event.pageX < this.dragStartXPos;
+    const isYInverted = event.clientY < this.dragStartYPos;
+    const isXInverted = event.clientX < this.dragStartXPos;
 
     // Draw selection box in CSS
     this.selectionBoxEl.style = `
-      top: ${isYInverted ? event.pageY : this.dragStartYPos}px;
-      left: ${isXInverted ? event.pageX : this.dragStartXPos}px;
-      width: ${Math.abs(event.pageX - this.dragStartXPos)}px;
-      height: ${Math.abs(event.pageY - this.dragStartYPos)}px;
+      top: ${isYInverted ? event.clientY : this.dragStartYPos}px;
+      left: ${isXInverted ? event.clientX : this.dragStartXPos}px;
+      width: ${Math.abs(event.clientX - this.dragStartXPos)}px;
+      height: ${Math.abs(event.clientY - this.dragStartYPos)}px;
       opacity: 1;
     `;
 
-    // Find selection box bounds (using note-line positions)
+    // Find selection box bounds, with coordinates relative to note-line positions
     const { x: noteLinesX, y: noteLinesY } = this.noteLinesEl.getBoundingClientRect();
 
     let yMin = this.dragStartYPos - noteLinesY;
-    let yMax = event.pageY - noteLinesY;
+    let yMax = event.clientY - noteLinesY;
     let xMin = this.dragStartXPos - noteLinesX;
-    let xMax = event.pageX - noteLinesX;
+    let xMax = event.clientX - noteLinesX;
 
     if (isYInverted) {
       [yMin, yMax] = [yMax, yMin];
@@ -89,13 +90,15 @@ export class Selection extends MBComponent {
   }
 
   handleMouseDown(event) {
+    if (musicBoxStore.state.appState.isTextSelectionEnabled) {
+      musicBoxStore.setState('appState.isTextSelectionEnabled', false);
+    }
     if (musicBoxStore.state.appState.isPlaying) {
       musicBoxStore.setState('appState.isPlaying', false);
     }
 
-    // @TODO NEXT: fix the bug where pageY isn't correct when the page is scrolled
-    this.dragStartYPos = event.pageY;
-    this.dragStartXPos = event.pageX;
+    this.dragStartYPos = event.clientY;
+    this.dragStartXPos = event.clientX;
 
     this.handleDragging(event);
   }
@@ -122,10 +125,20 @@ export class Selection extends MBComponent {
     this.dragStartYPos = null;
     this.selectionBoxEl.style = '';
     this.selectionZoneEl.classList.remove('is-dragging');
+
+    if (!musicBoxStore.state.appState.isTextSelectionEnabled) {
+      musicBoxStore.setState('appState.isTextSelectionEnabled', true);
+    }
   }
 
-  deselectAllNotes() {
-    console.log('deselecting all notes');
+  handleNoteDeselection(event) {
+    // Don't manually deselect notes if it's a #workspace click, because the
+    // workspace's handleDragging function will run and select/deselect notes
+    // when appropriate.
+    if (event.target.id === 'workspace') return;
+
+    if (!hasSelectedNotes()) return;
+
     let newSelectedNotes = cloneDeep(musicBoxStore.state.appState.selectedNotes);
 
     Object.keys(newSelectedNotes).forEach(pitch => {
@@ -141,7 +154,7 @@ export class Selection extends MBComponent {
     // works because this component never re-renders.
     this.element.insertAdjacentHTML('afterbegin', `
       <div class="selection">
-        <div class="selection-drag-zone" title="Select notes"></div>
+        <div class="selection-drag-zone"></div>
         <div class="selection-box"></div>
       </div>
     `);
@@ -150,7 +163,6 @@ export class Selection extends MBComponent {
     this.selectionBoxEl = this.element.querySelector('.selection-box');
 
     this.selectionZoneEl.addEventListener('mousemove', this.handleMouseMove);
-    this.selectionZoneEl.addEventListener('mousedown', this.handleMouseDown);
     this.selectionZoneEl.addEventListener('mouseup', this.handleMouseUp);
     this.selectionZoneEl.addEventListener('mouseout', this.handleMouseOut);
 

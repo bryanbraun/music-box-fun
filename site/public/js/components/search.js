@@ -3,7 +3,7 @@ import { musicBoxStore } from '../music-box-store.js';
 import { escapeHtml, escapeAndHighlightHtml } from '../utils/escapeHtml.js';
 import { jumpToTopIfASongWasClicked } from '../common/common-event-handlers.js';
 import { apiHostname, request } from '../common/api.js';
-import { onClickOutside } from '../common/on-click-outside.js';
+import { registerIsolationLayer } from '../subscribers/document-click-manager.js';
 
 export class Search extends MBComponent {
   constructor() {
@@ -21,7 +21,7 @@ export class Search extends MBComponent {
     this.handleClickOutsideOfSearchResults = this.handleClickOutsideOfSearchResults.bind(this);
     this.setInnerHtmlWithControlledInput = this.setInnerHtmlWithControlledInput.bind(this);
 
-    onClickOutside('#search__results', this.handleClickOutsideOfSearchResults);
+    registerIsolationLayer('#search__results', this.handleClickOutsideOfSearchResults);
   }
 
   async handleInput(event) {
@@ -58,7 +58,7 @@ export class Search extends MBComponent {
     this.element.querySelector('#search__field').focus();
   }
 
-  handleClickOutsideOfSearchResults(event) {
+  handleClickOutsideOfSearchResults() {
     if (this.state.isResultsContainerVisible === true) {
       this.setState({
         isResultsContainerVisible: false,

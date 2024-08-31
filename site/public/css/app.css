@@ -251,24 +251,24 @@
   border-top: 1px solid var(--mb-gray-20);
 }
 
-.workspace {
+.greater-workspace {
   margin-left: var(--left-sidebar-width);
   margin-right: var(--right-sidebar-width);
   width: 100%;
 }
 
 @media (max-width: 900px) { /* --two-to-three-columns */
-  .workspace {
+  .greater-workspace {
     margin-right: 0;
   }
 }
 @media (max-width: 720px) { /* --one-to-two-columns */
-  .workspace {
+  .greater-workspace {
     margin-left: 0;
   }
 }
 
-.equipment {
+.workspace {
   position: relative;
   padding: 4rem 0 0 0;
   cursor: crosshair;
@@ -289,8 +289,8 @@
   */
   text-align: center;
 }
-/* TODO: consider renaming equipment to workspace, and workspace to layout */
-.equipment > * {
+.workspace > * {
+  /* ensure that crosshairs only appear on the workspace surface itself. */
   cursor: initial;
 }
 
@@ -416,21 +416,14 @@
 
 .selection-drag-zone {
   display: block;
-  position: absolute;
-  z-index: var(--z-drag-zone);
-  top: 0;
-  left: 0;
-  background: cyan;
-  opacity: 0.5;
-}
-.selection-drag-zone:hover {
   cursor: crosshair;
 }
 .selection-drag-zone.is-dragging {
-  width: calc(100vw - var(--left-sidebar-width) - var(--right-sidebar-width));
+  position: absolute;
+  top: 0;
+  left: 0;
   bottom: 0;
-  transform: translateX(-50%);
-  left: 50%;
+  right: 0;
   z-index: var(--z-drag-zone--is-dragging);
 }
 @media (max-width: 900px) { /* --two-to-three-columns */
@@ -565,8 +558,6 @@
   top: 0;
   right: 0;
   width: var(--paper-side-margin);
-}
-.space-editor-drag-zone:hover {
   cursor: row-resize;
 }
 .space-editor-drag-zone.is-dragging {
@@ -586,9 +577,6 @@
   }
 }
 
-.space-editor-drag-zone:hover + .space-editor-bar {
-  opacity: 1;
-}
 .space-editor-bar {
   position: absolute;
   z-index: var(--z-space-editor-bar);
@@ -604,6 +592,9 @@
   margin: 0 auto;
   left: 0;
   right: 0;
+}
+.space-editor-bar.is-visible {
+  opacity: 1;
 }
 
 .audio-disabled-message {
