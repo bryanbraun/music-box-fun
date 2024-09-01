@@ -282,12 +282,12 @@
   overflow-x: clip;
 
   /*
-   centers the paper, which
-   is an inline-block element,
-   in order for its width to
-   depend on its content.
+    for centering the paper, even
+    when the paper is wider than
+    the viewport.
   */
-  text-align: center;
+  display: flex;
+  justify-content: center;
 }
 .workspace > * {
   /* ensure that crosshairs only appear on the workspace surface itself. */
@@ -295,6 +295,11 @@
 }
 
 .music-box-kit {
+  /*
+   This is an inline-block element,
+   in order for its width to depend
+   on its content.
+  */
   display: inline-block;
 
   /*
@@ -797,13 +802,19 @@
 .share-box {
   position: fixed;
   bottom: 0;
-  margin: 0 0 0.75rem 1rem;
+  left: 0;
   z-index: var(--z-share-box);
+  margin: 0 0 0.75rem 1rem;
   display: flex;
   flex-direction: column;
 }
 .share-box > div + div {
   margin-top: 0.375rem;
+}
+@media (min-width: 720px) { /* --one-to-two-columns */
+  .share-box {
+    left: var(--left-sidebar-width);
+  }
 }
 
 .share-button {
