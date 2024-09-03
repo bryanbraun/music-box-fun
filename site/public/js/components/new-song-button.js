@@ -2,6 +2,7 @@ import { MBComponent } from './music-box-component.js';
 import { musicBoxStore } from '../music-box-store.js';
 import { initialState } from '../state.js';
 import { cloneDeep } from '../utils/clone.js';
+import { clearAllExistingNotes } from '../common/notes.js';
 
 export class NewSongButton extends MBComponent {
   constructor() {
@@ -13,15 +14,10 @@ export class NewSongButton extends MBComponent {
   handleClick() {
     let newSongState = cloneDeep(initialState).songState;
 
-    // Build a new songState using the initial state in
-    // state.js, but with the currently-selected box type.
-    newSongState.songData = cloneDeep(musicBoxStore.state.songState.songData);
-
-    Object.keys(newSongState.songData).forEach(pitchId => {
-      newSongState.songData[pitchId] = [];
-    });
+    newSongState.songData = clearAllExistingNotes(musicBoxStore.state.songState.songData);
 
     musicBoxStore.setState('songState', newSongState);
+
     window.scrollTo(0, 0);
   }
 

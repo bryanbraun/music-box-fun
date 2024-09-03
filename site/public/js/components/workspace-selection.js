@@ -1,10 +1,8 @@
 import { MBComponent } from './music-box-component.js';
 import { musicBoxStore } from '../music-box-store.js';
 import { throttle } from '../utils/throttle.js';
-import { cloneDeep } from '../utils/clone.js';
 import { getCurrentPitchArray } from '../common/box-types.js';
-import { addDocumentClickListener } from '../subscribers/document-click-manager.js';
-import { hasSelectedNotes } from '../common/notes.js';
+import { hasSelectedNotes, dedupeAndSortSongData, clearAllExistingNotes } from '../common/notes.js';
 
 export class WorkspaceSelection extends MBComponent {
   constructor() {
@@ -31,7 +29,9 @@ export class WorkspaceSelection extends MBComponent {
     this.handleMouseOut = this.handleMouseOut.bind(this);
     this.handleMouseMove = this.handleMouseMove.bind(this);
 
-    addDocumentClickListener(this.handleNoteDeselection);
+    // We'd use addDocumentClickListener for this, except we need it to run on mousedown,
+    // on the capturing phase, in order to intervene before a new selection is started.
+    document.addEventListener('mousedown', this.handleNoteDeselection, { capture: true });
   }
 
   handleDragging(event) {
@@ -132,20 +132,17 @@ export class WorkspaceSelection extends MBComponent {
   }
 
   handleNoteDeselection(event) {
-    // Don't manually deselect notes if it's a #workspace click, because the
-    // workspace's handleDragging function will run and select/deselect notes
-    // when appropriate.
-    if (event.target.id === 'workspace') return;
-
     if (!hasSelectedNotes()) return;
 
-    let newSelectedNotes = cloneDeep(musicBoxStore.state.appState.selectedNotes);
-
-    Object.keys(newSelectedNotes).forEach(pitch => {
-      newSelectedNotes[pitch] = [];
+    // During deselect, we remove duplicate notes (which can occur when nudging or
+    // dragging selected notes). It should only rerender a note-line if it was modified.
+    const dedupedSongData = dedupeAndSortSongData(musicBoxStore.state.songState.songData);
+    Object.entries(dedupedSongData).forEach(([pitchId, dedupedNotesArray]) => {
+      musicBoxStore.setState(`songState.songData[${pitchId}]`, dedupedNotesArray);
     });
 
-    musicBoxStore.setState('appState.selectedNotes', newSelectedNotes);
+    const clearedSelectedNotes = clearAllExistingNotes(musicBoxStore.state.appState.selectedNotes);
+    musicBoxStore.setState('appState.selectedNotes', clearedSelectedNotes);
   }
 
   render() {

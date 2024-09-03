@@ -1,6 +1,6 @@
 import { MBComponent } from './music-box-component.js';
 import { musicBoxStore } from '../music-box-store.js';
-import { getFinalNoteYPos } from '../common/notes.js';
+import { getFinalNoteYPos, dedupeAndSortSongData } from '../common/notes.js';
 import { snapToInterval } from "../common/snap-to-interval.js";
 import { resizePaperIfNeeded } from '../common/pages.js';
 import { throttle } from '../utils/throttle.js';
@@ -35,18 +35,6 @@ function transformSongData(dragStartYPos, draggedDistance) {
   });
 
   return [transformedSongData, noteStatuses];
-}
-
-function formatSongDataForSaving(songData) {
-  const formattedSongData = {};
-
-  Object.keys(songData).forEach((pitchId) => {
-    const dedupedNotesArray = Array.from(new Set(songData[pitchId]));
-    const sortedNotesArray = dedupedNotesArray.sort((a, b) => a - b);
-    formattedSongData[pitchId] = sortedNotesArray;
-  });
-
-  return formattedSongData;
 }
 
 export class SpaceEditor extends MBComponent {
@@ -154,7 +142,7 @@ export class SpaceEditor extends MBComponent {
       // Save new song data
       const draggedDistance = snappedBarYPos - this.dragStartYPos;
       const [transformedSongData] = transformSongData(this.dragStartYPos, draggedDistance);
-      const isSaved = musicBoxStore.setState('songState.songData', formatSongDataForSaving(transformedSongData));
+      const isSaved = musicBoxStore.setState('songState.songData', dedupeAndSortSongData(transformedSongData));
       if (!isSaved) {
         // If no modifications were made, we force-clear the preview lines. If modifications
         // were made, then the rerender of the note-lines will clear the preview lines.

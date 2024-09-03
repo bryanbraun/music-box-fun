@@ -21,7 +21,8 @@ export function forEachNotes(notesArray, callback) {
   let lastPlayableNoteYPos = 0;
 
   notesArray.forEach((yPos, i) => {
-    const isNotePlayable = (i === 0) ? true : (yPos - lastPlayableNoteYPos > DEAD_ZONE_LENGTH);
+    const gapToLastPlayableNote = yPos - lastPlayableNoteYPos;
+    const isNotePlayable = (i === 0) || (gapToLastPlayableNote === 0) || (gapToLastPlayableNote > DEAD_ZONE_LENGTH);
     lastPlayableNoteYPos = isNotePlayable ? yPos : lastPlayableNoteYPos;
 
     const isSilent = !isNotePlayable;
@@ -30,21 +31,18 @@ export function forEachNotes(notesArray, callback) {
   });
 }
 
-// A "computed" function that returns true if a silent note is present in the song
-// (and false, if not).
 export function isSilentNotePresentInSong() {
-  return Object.keys(musicBoxStore.state.songState.songData).some(pitchId => {
-    let notesArray = musicBoxStore.state.songState.songData[pitchId];
+  return Object.values(musicBoxStore.state.songState.songData).some(notesArray => {
     let lastPlayableNoteYPos = 0;
 
-    for (let i = 0; i < notesArray.length; i++) {
-      let yPos = notesArray[i];
-      let isNotePlayable = (i === 0) ? true : (yPos - lastPlayableNoteYPos > DEAD_ZONE_LENGTH);
+    return notesArray.some((yPos, i) => {
+      const gapToLastPlayableNote = yPos - lastPlayableNoteYPos;
+      const isNotePlayable = (i === 0) || (gapToLastPlayableNote === 0) || (gapToLastPlayableNote > DEAD_ZONE_LENGTH);
       lastPlayableNoteYPos = isNotePlayable ? yPos : lastPlayableNoteYPos;
 
-      if (!isNotePlayable) return true;
-    }
-  })
+      return !isNotePlayable;
+    });
+  });
 }
 
 // Used to determine if a given position in a noteArray will be silent or not.
@@ -57,7 +55,8 @@ export function isNotePositionSilent(yPosToCheck, notesArray) {
   // We must check all prior notes to determine if the note is silent, after which we can exit.
   for (let i = 0; i < testArray.length; i++) {
     let currentYPos = testArray[i];
-    let isNotePlayable = (i === 0) ? true : (currentYPos - lastPlayableNoteYPos > DEAD_ZONE_LENGTH);
+    const gapToLastPlayableNote = currentYPos - lastPlayableNoteYPos;
+    const isNotePlayable = (i === 0) || (gapToLastPlayableNote === 0) || (gapToLastPlayableNote > DEAD_ZONE_LENGTH);
 
     if (currentYPos === yPosToCheck) {
       isPositionToCheckSilent = !isNotePlayable;
@@ -84,3 +83,27 @@ export function getNoteYPos(element) {
 export function hasSelectedNotes() {
   return Object.values(musicBoxStore.state.appState.selectedNotes).some(notesArray => notesArray.length > 0);
 };
+
+// Return a copy of the notesObject with all notes removed.
+export function clearAllExistingNotes(notesObject) {
+  const clearedNotesObject = {};
+
+  Object.keys(notesObject).forEach(pitchId => {
+    clearedNotesObject[pitchId] = [];
+  });
+
+  return clearedNotesObject;
+}
+
+// Return a copy of songData with all notes deduped and sorted. This
+// is useful when we want to save a bunch of note changes at once.
+export function dedupeAndSortSongData(songData) {
+  const dedupedAndSortedSongData = {};
+
+  Object.keys(songData).forEach((pitchId) => {
+    const dedupedNotesArray = Array.from(new Set(songData[pitchId]));
+    dedupedAndSortedSongData[pitchId] = dedupedNotesArray.sort((a, b) => a - b);
+  });
+
+  return dedupedAndSortedSongData;
+}

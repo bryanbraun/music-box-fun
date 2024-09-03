@@ -1,5 +1,5 @@
 import { musicBoxStore } from '../music-box-store.js';
-import { hasSelectedNotes, getFinalNoteYPos } from '../common/notes.js';
+import { hasSelectedNotes, getFinalNoteYPos, clearAllExistingNotes } from '../common/notes.js';
 import { cloneDeep } from '../utils/clone.js';
 import { NOTE_STARTING_THRESHOLD } from '../constants.js';
 import { resizePaperIfNeeded } from '../common/pages.js';
@@ -43,15 +43,15 @@ function setupKeyboardEvents() {
         break;
       }
       case "ArrowUp": {
-        if (!hasSelectedNotes()) return; // only nudge if there are selected notes.
-        event.preventDefault(); // nudge selected notes instead of scrolling the page.
+        if (!hasSelectedNotes()) return;
+        event.preventDefault(); // don't scroll the page
         nudgeSelectedNotes("up", event);
 
         break;
       }
       case "ArrowDown": {
-        if (!hasSelectedNotes()) return; // only nudge if there are selected notes.
-        event.preventDefault(); // nudge selected notes instead of scrolling the page.
+        if (!hasSelectedNotes()) return;
+        event.preventDefault(); // don't scroll the page
         nudgeSelectedNotes("down", event);
 
         break;
@@ -59,15 +59,20 @@ function setupKeyboardEvents() {
       case "Backspace": {
         if (!hasSelectedNotes()) return;
 
-        let updatedSongData = cloneDeep(musicBoxStore.state.songState.songData);
-
-        Object.keys(musicBoxStore.state.appState.selectedNotes).forEach(pitchId => {
-          updatedSongData[pitchId] = updatedSongData[pitchId].filter(noteYPos => {
-            return !musicBoxStore.state.appState.selectedNotes[pitchId].includes(noteYPos);
+        Object.entries(musicBoxStore.state.appState.selectedNotes).forEach(([pitchId, selectedNotesArray]) => {
+          const updatedNotesArray = musicBoxStore.state.songState.songData[pitchId].filter(noteYPos => {
+            return !selectedNotesArray.includes(noteYPos);
           });
+
+          // Reset selected notes. By setting musicBoxStore.state.appState.selectedNotes[pitchId]
+          // directly (instead of calling setState) we update that state without triggering any
+          // re-renders. This is usually not what we want, but in this case we do it because we
+          // know the note line will be re-rendered in the following line of code, and we don't
+          // want to trigger double-renders for no reason.
+          musicBoxStore.state.appState.selectedNotes[pitchId] = [];
+          musicBoxStore.setState(`songState.songData.${pitchId}`, updatedNotesArray);
         });
 
-        musicBoxStore.setState('songState.songData', updatedSongData);
         break;
       }
       default: {
@@ -98,9 +103,12 @@ function setupKeyboardEvents() {
     let updatedSelectedNotes = cloneDeep(musicBoxStore.state.appState.selectedNotes);
 
     Object.keys(musicBoxStore.state.appState.selectedNotes).forEach(pitchId => {
-      // Delete selected notes from songData.
-      updatedSongData[pitchId] = updatedSongData[pitchId].filter(noteYPos => {
-        return !musicBoxStore.state.appState.selectedNotes[pitchId].includes(noteYPos);
+      // Delete selected notes from songData. Uses splice to avoid over-deleting duplicate notes.
+      updatedSelectedNotes[pitchId].forEach(selectedNoteYPos => {
+        const noteToDeleteIndex = updatedSongData[pitchId].findIndex(noteYPos => noteYPos === selectedNoteYPos);
+        if (noteToDeleteIndex !== -1) {
+          updatedSongData[pitchId].splice(noteToDeleteIndex, 1);
+        }
       });
 
       // Move selected notes. Math.max prevents notes from moving above the starting threshold.
@@ -111,9 +119,8 @@ function setupKeyboardEvents() {
 
       // Add selected notes back into songData
       updatedSongData[pitchId] = updatedSongData[pitchId].concat(updatedSelectedNotes[pitchId]).sort((a, b) => a - b);
-      updatedSongData[pitchId] = Array.from(new Set(updatedSongData[pitchId])); // Dedupe notes
 
-      // Set state for this pitch. Note: By setting musicBoxStore.state.appState.selectedNotes
+      // Set state for this pitch. By setting musicBoxStore.state.appState.selectedNotes[pitchId]
       // directly (instead of calling setState) we update that state without triggering any
       // re-renders. This is usually not what we want, but in this case we do it because we
       // know the note line will be re-rendered in the next line of code, and we don't want to
