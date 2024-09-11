@@ -15,6 +15,7 @@ export const initialState = {
     songLibraryQuery: '',
     highlightedPitch: null,
     isTextSelectionEnabled: true,
+    selectedNotesDragStartPos: null,
     selectedNotes: {
       C4: [],
       D4: [],

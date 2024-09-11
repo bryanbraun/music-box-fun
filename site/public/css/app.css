@@ -449,6 +449,29 @@
   opacity: 0;
 }
 
+.note-drag-zone {
+  display: block;
+  cursor: move;
+}
+.note-drag-zone.is-dragging {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  z-index: var(--z-drag-zone--is-dragging);
+}
+@media (max-width: 900px) { /* --two-to-three-columns */
+  .selection-drag-zone.is-dragging {
+    width: calc(100vw - var(--left-sidebar-width));
+  }
+}
+@media (max-width: 720px) { /* --one-to-two-columns */
+  .selection-drag-zone.is-dragging {
+    width: 100vw;
+  }
+}
+
 .note-lines {
   display: flex;
   flex-direction: row;
@@ -511,8 +534,7 @@
   width: var(--hole-width);
   height: var(--hole-width);
   border-radius: 50%;
-  background-color: var(--hole-color);
-  opacity: 0.36;
+  background-color: rgba(var(--hole-color), 0.36);
 
   position: absolute;
   top: var(--y-adjustment-for-hole-width);
@@ -521,6 +543,9 @@
   /* The shadow notes themselves aren't targets. We're always
      just hovering or clicking on the note lines below them. */
   pointer-events: none;
+}
+.shadow-note.is-selected {
+  box-shadow: inset 0px 0px 0px 2px rgb(var(--selection-color)), inset 0px 0px 0px 2.5px rgba(255,255,255,0.85);
 }
 
 .shadow-note--visible {
@@ -535,7 +560,7 @@
   height: var(--hole-width);
   border-radius: 50%;
   border: none;
-  background-color: var(--hole-color);
+  background-color: rgb(var(--hole-color));
   cursor: pointer;
   z-index: var(--z-music-box-notes);
   padding: 0;
@@ -554,6 +579,7 @@
 }
 .hole.is-selected {
   box-shadow: inset 0px 0px 0px 2px rgb(var(--selection-color)), inset 0px 0px 0px 2.5px rgba(255,255,255,0.85);
+  cursor: move;
 }
 
 .space-editor-drag-zone {

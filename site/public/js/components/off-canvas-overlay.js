@@ -9,7 +9,7 @@ export class OffCanvasOverlay extends MBComponent {
       element: document.querySelector('#off-canvas-overlay')
     });
 
-    // We set this in the constructor because the the event doesn't get destroyed on re-render.
+    // We set this in the constructor because otherwise this event wouldn't get destroyed on re-render.
     this.element.addEventListener('click', () => musicBoxStore.setState('appState.offCanvasSidebarFocused', 'none'));
   }
 

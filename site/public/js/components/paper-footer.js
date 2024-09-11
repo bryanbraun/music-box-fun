@@ -39,7 +39,7 @@ export class PaperFooter extends MBComponent {
   }
 
   /*
-      There are six cases for rendering this component:
+      There are eight cases for rendering this component:
 
       CASE                                  TRIGGER                        PAGE NUMBER CHANGE
       1. Initial song load                  manual (from main.js)          Yes - Calculate from songData
@@ -49,10 +49,11 @@ export class PaperFooter extends MBComponent {
       4. Trim song                          manual (from trimSongPaper)    Yes - Fixed length change
       5. Space editor drag across pages     "ResizePaper" event publish    Yes - Fixed length change
       6. Nudge notes across pages           "ResizePaper" event publish    Yes - Fixed length change
-      7. Note change (for the divider "×")  songState.songData*            No  - No changes needed
+      7. Drag notes across pages            "ResizePaper" event publish    Yes - Fixed length change
+      8. Note change (for the divider "×")  songState.songData*            No  - No changes needed
 
       By giving params to our render function and manually passing values into render() for
-      cases 1-6 we can render the PAGE NUMBER appropriately in all 7 cases.
+      cases 1-7 we can render the PAGE NUMBER appropriately in all 8 cases.
   */
   render(isUpdatingPageCount, newNumberOfPages) {
     if (isUpdatingPageCount) {

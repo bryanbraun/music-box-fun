@@ -10,7 +10,6 @@ export class WorkspaceSelection extends MBComponent {
       element: document.querySelector('#workspace')
     });
 
-    // drag positions relative to the offsetParent (the CSS "position: relative" parent)
     this.dragStartXPos = null;
     this.dragStartYPos = null;
 
@@ -24,7 +23,7 @@ export class WorkspaceSelection extends MBComponent {
     // little processing) and it makes hovering feel a bit less smooth.
     this.handleDragging = throttle(this.handleDragging.bind(this), 25);
 
-    this.handleMouseDown = this.handleMouseDown.bind(this);
+    this.handleWorkspaceMouseDown = this.handleWorkspaceMouseDown.bind(this);
     this.handleMouseUp = this.handleMouseUp.bind(this);
     this.handleMouseOut = this.handleMouseOut.bind(this);
     this.handleMouseMove = this.handleMouseMove.bind(this);
@@ -83,13 +82,10 @@ export class WorkspaceSelection extends MBComponent {
     musicBoxStore.setState('appState.selectedNotes', selectedNotes);
   }
 
-  handleMouseMove(event) {
-    if (this.isDragging()) {
-      this.handleDragging(event);
-    }
-  }
+  handleWorkspaceMouseDown(event) {
+    // Ignore clicks on #workspace children (like the paper).
+    if (event.currentTarget !== event.target) return;
 
-  handleMouseDown(event) {
     if (musicBoxStore.state.appState.isTextSelectionEnabled) {
       musicBoxStore.setState('appState.isTextSelectionEnabled', false);
     }
@@ -101,6 +97,12 @@ export class WorkspaceSelection extends MBComponent {
     this.dragStartXPos = event.clientX;
 
     this.handleDragging(event);
+  }
+
+  handleMouseMove(event) {
+    if (this.isDragging()) {
+      this.handleDragging(event);
+    }
   }
 
   handleMouseUp() {
@@ -134,9 +136,13 @@ export class WorkspaceSelection extends MBComponent {
   handleNoteDeselection(event) {
     if (!hasSelectedNotes()) return;
 
+    // Don't deselect if the user is trying to drag notes.
+    if (event.target.matches('.hole.is-selected')) return;
+
     // During deselect, we remove duplicate notes (which can occur when nudging or
     // dragging selected notes). It should only rerender a note-line if it was modified.
     const dedupedSongData = dedupeAndSortSongData(musicBoxStore.state.songState.songData);
+
     Object.entries(dedupedSongData).forEach(([pitchId, dedupedNotesArray]) => {
       musicBoxStore.setState(`songState.songData[${pitchId}]`, dedupedNotesArray);
     });
@@ -163,10 +169,6 @@ export class WorkspaceSelection extends MBComponent {
     this.selectionZoneEl.addEventListener('mouseup', this.handleMouseUp);
     this.selectionZoneEl.addEventListener('mouseout', this.handleMouseOut);
 
-    this.element.addEventListener('mousedown', (event) => {
-      if (event.currentTarget !== event.target) return;
-
-      this.handleMouseDown(event);
-    });
+    this.element.addEventListener('mousedown', this.handleWorkspaceMouseDown);
   }
 }

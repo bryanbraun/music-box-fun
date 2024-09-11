@@ -50,6 +50,8 @@ export class Example extends MBComponent {
 
     // You can add event listeners on every render, even on `this.element,` because identical event
     // listeners will be discarded by the browser. See https://stackoverflow.com/a/10364316/1154642
+    // Just don't use create anonymous functions inside of these event listeners, b/c they won't be
+    // identical and will accumulate: .addEventListener('click', () => console.log("don't do this"));
     this.element.querySelector('button').addEventListener('click', incrementCounter);
   }
 }

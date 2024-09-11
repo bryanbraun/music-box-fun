@@ -6,6 +6,7 @@ import { sampler, isSamplerLoaded } from '../common/sampler.js';
 import { snapToInterval } from '../common/snap-to-interval.js';
 import { forEachNotes, isNotePositionSilent, getNoteYPos } from '../common/notes.js';
 import { getFinalBarLineYPos } from '../common/pages.js';
+import { getRelativeYPos } from '../common/common-event-handlers.js';
 import { NOTE_STARTING_THRESHOLD } from '../constants.js';
 
 const DEFAULT_SHADOW_NOTE_POSITION = 8;
@@ -67,7 +68,7 @@ export class NoteLine extends MBComponent {
   }
 
   positionShadowNote(shadowNoteEl, mouseEvent) {
-    let relativeCursorYPos = mouseEvent.offsetY;
+    let relativeCursorYPos = getRelativeYPos(mouseEvent);
 
     // We define thresholds that shadow notes can't be placed above or below. This prevents
     // bugs like the hole getting cut off at the top or being placed below the footer button.
@@ -110,6 +111,12 @@ export class NoteLine extends MBComponent {
     else {
       this.addNote(pitch, shadowNoteYPos)
     }
+  }
+
+  handleDragStart(event) {
+    if (!event.target.matches('.hole.is-selected')) return;
+
+    musicBoxStore.setState(`appState.selectedNotesDragStartPos`, getNoteYPos(event.target));
   }
 
   addNote(pitch, yPos) {
@@ -167,6 +174,7 @@ export class NoteLine extends MBComponent {
     this.element.addEventListener('pointerenter', this.showShadowNote); // pointerenter enables event.pointerType for this callback.
     this.element.addEventListener('mouseleave', this.hideShadowNote);
     this.element.addEventListener('mousemove', this.haveShadowNoteFollowCursor);
+    this.element.addEventListener('mousedown', this.handleDragStart);
     this.element.addEventListener('click', this.handleClick);
   }
 }

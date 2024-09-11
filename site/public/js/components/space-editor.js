@@ -74,7 +74,7 @@ export class SpaceEditor extends MBComponent {
   }
 
   handleDragging(snappedBarYPos) {
-    // Prevent unnecessary re-renders
+    // Prevent unnecessary SpaceEditorPreview re-renders
     if (snappedBarYPos === this.lastSnappedBarYPos) return;
     this.lastSnappedBarYPos = snappedBarYPos;
 

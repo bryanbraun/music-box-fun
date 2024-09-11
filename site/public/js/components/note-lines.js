@@ -16,6 +16,16 @@ export class NoteLines extends MBComponent {
     musicBoxStore.subscribe('SpaceEditorPreview', (previewProps) => this.renderSpaceEditorPreview(previewProps));
   }
 
+  highlightPitch(event) {
+    if (event.pointerType === 'mouse') {
+      musicBoxStore.setState('appState.highlightedPitch', event.target.id);
+    }
+  }
+
+  unhighlightPitch() {
+    musicBoxStore.setState('appState.highlightedPitch', null);
+  }
+
   renderSpaceEditorPreview(previewProps) {
     // If we're missing preview data, fall back to rendering the real note lines.
     // We sometimes trigger this intentionally to force-clear the preview lines.
@@ -34,6 +44,8 @@ export class NoteLines extends MBComponent {
       forEachNotes(previewSongData[pitchId], (yPos, isSilent, i) => {
         if (noteStatuses[pitchId][i] === 'altered') {
           previewMarkup += `<div class="shadow-note shadow-note--visible" style="transform: translateY(${yPos}px)"></div>`;
+        } else if (noteStatuses[pitchId][i] === 'altered_selected') {
+          previewMarkup += `<div class="shadow-note shadow-note--visible is-selected" style="transform: translateY(${yPos}px)"></div>`;
         } else {
           previewMarkup += `<div class="hole ${isSilent ? 'is-silent' : ''}" style="transform: translateY(${yPos}px)"></div>`;
         }
@@ -54,14 +66,8 @@ export class NoteLines extends MBComponent {
     )).join('')}
     `;
 
-    this.element.addEventListener('pointerover', (event) => {
-      if (event.pointerType === 'mouse') {
-        musicBoxStore.setState('appState.highlightedPitch', event.target.id);
-      }
-    });
-    this.element.addEventListener('pointerout', () => {
-      musicBoxStore.setState('appState.highlightedPitch', null);
-    })
+    this.element.addEventListener('pointerover', this.highlightPitch);
+    this.element.addEventListener('pointerout', this.unhighlightPitch)
 
     // Attach the new NoteLine components to the markup we just added.
     pitchArray.forEach(id => {

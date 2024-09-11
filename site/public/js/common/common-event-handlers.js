@@ -30,3 +30,12 @@ export function jumpToTopIfASongWasClicked(event) {
 
   window.scrollTo(0, 0);
 }
+
+// Get the relative Y position within the note-line. We cannot use event.offsetY because
+// that value changes when hovering over notes. We cannot use event.target.offsetParent
+// because occasionally the events being triggered are leftover from an old, orphaned
+// note-line. Thus, it's best to target the current active #note-lines element in the DOM.
+export function getRelativeYPos(event) {
+  const { y: noteLinesY } = document.querySelector('#note-lines').getBoundingClientRect();
+  return event.clientY - noteLinesY;
+}

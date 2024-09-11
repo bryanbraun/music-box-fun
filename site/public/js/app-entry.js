@@ -25,6 +25,7 @@ import { SongUpdatedMessage } from './components/song-updated-message.js';
 import { SongLinkButton } from './components/song-link-button.js';
 import { ShareButton } from './components/share-button.js';
 import { PaperFooter } from './components/paper-footer.js';
+import { NoteDragZone } from './components/note-drag-zone.js';
 
 import { musicBoxStore } from './music-box-store.js';
 import { setupSampler } from './common/sampler.js';
@@ -39,6 +40,9 @@ import { songPauser } from './subscribers/song-pauser.js';
 import { setupTextSelectionListener } from './subscribers/text-selection-listener.js';
 
 import { setupTestObjects } from './test.js';
+
+// Things we should set up first.
+setupDocumentClickManager();
 
 urlManager.getStateFromUrlAsync().then(urlState => {
   // Initialize our global state with song data. We don't need to call setState
@@ -78,6 +82,7 @@ urlManager.getStateFromUrlAsync().then(urlState => {
   new PaperFooter().render(true);
   new SpaceEditor().render();
   new WorkspaceSelection().render();
+  new NoteDragZone().render();
 
   new SongUpdatedMessage(); // This element is hidden by default, so it doesn't need to .render() on page load.
 
@@ -89,12 +94,11 @@ urlManager.getStateFromUrlAsync().then(urlState => {
   urlManager.subscribeAppToNavigationChanges();
 });
 
-// These things don't need URL data, so they can happen asynchronously.
+// These things don't need global state from URL data to setup, so they can happen asynchronously.
 setupSampler(); // This setup can happen late, since the sampler isn't used until the moment a note is played.
 setupServiceWorker();
 setupKeyboardEvents();
 setupAudioContextFallbackForRestrictiveBrowsers();
-setupDocumentClickManager();
 setupTestObjects();
 audioPlayer.setup();
 setupTextSelectionListener();

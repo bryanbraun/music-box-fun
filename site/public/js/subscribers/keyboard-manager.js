@@ -17,6 +17,10 @@ function setupKeyboardEvents() {
     switch (event.key) {
       case " ": {
         event.preventDefault(); // Prevent default space bar page scroll.
+
+        // Prevent song from playing if the user is actively dragging notes.
+        if (musicBoxStore.state.appState.selectedNotesDragStartPos !== null) return;
+
         musicBoxStore.setState('appState.isPlaying', !musicBoxStore.state.appState.isPlaying);
         break;
       }

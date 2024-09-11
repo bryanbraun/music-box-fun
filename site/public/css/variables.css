@@ -26,12 +26,12 @@
   --controls-border-bottom-color: var(--mb-gray-35);
   --active-hole-color: #ffb500;
   --highlighted-pitch-color: #eaeaa4;
-  --hole-color: var(--mb-gray-60);
   --link-color: var(--mb-black);
   --text-color: var(--mb-black);
   --discrete-text: var(--mb-gray-40);
   --error-text-red: red;
   --icon-dark: var(--mb-gray-60);
+  --hole-color: 68, 68, 68; /* rgb values for --mb-gray-60, so we can add alpha as needed */
   --selection-color: 19, 131, 254; /* rgb values, so we can add alpha as needed */
 
   /* FONTS */
