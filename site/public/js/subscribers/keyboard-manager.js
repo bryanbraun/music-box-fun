@@ -1,5 +1,5 @@
 import { musicBoxStore } from '../music-box-store.js';
-import { hasSelectedNotes, getFinalNoteYPos, clearAllExistingNotes } from '../common/notes.js';
+import { hasSelectedNotes, getFinalNoteYPos } from '../common/notes.js';
 import { cloneDeep } from '../utils/clone.js';
 import { NOTE_STARTING_THRESHOLD } from '../constants.js';
 import { resizePaperIfNeeded } from '../common/pages.js';
