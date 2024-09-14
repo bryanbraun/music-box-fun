@@ -1,6 +1,7 @@
 import { MBComponent } from './music-box-component.js';
 import { musicBoxStore } from '../music-box-store.js';
 import { throttle } from '../utils/throttle.js';
+import { cloneDeep } from '../utils/clone.js';
 import { getCurrentPitchArray } from '../common/box-types.js';
 import { hasSelectedNotes, dedupeAndSortSongData, clearAllExistingNotes } from '../common/notes.js';
 
@@ -12,6 +13,7 @@ export class WorkspaceSelection extends MBComponent {
 
     this.dragStartXPos = null;
     this.dragStartYPos = null;
+    this.previouslySelectedNotes = null;
 
     // cached to prevent repetitive DOM queries
     this.selectionZoneEl = null;
@@ -27,6 +29,7 @@ export class WorkspaceSelection extends MBComponent {
     this.handleMouseUp = this.handleMouseUp.bind(this);
     this.handleMouseOut = this.handleMouseOut.bind(this);
     this.handleMouseMove = this.handleMouseMove.bind(this);
+    this.handleNoteDeselection = this.handleNoteDeselection.bind(this);
 
     // We'd use addDocumentClickListener for this, except we need it to run on mousedown,
     // on the capturing phase, in order to intervene before a new selection is started.
@@ -64,7 +67,7 @@ export class WorkspaceSelection extends MBComponent {
       [xMin, xMax] = [xMax, xMin];
     }
 
-    // Identify all notes within the selection box
+    // Add any notes within the selection box to selectedNotes.
     const selectedNotes = {};
     const holeWidth = parseInt(getComputedStyle(document.body).getPropertyValue('--hole-width').trim());
     const pitchArray = getCurrentPitchArray();
@@ -78,6 +81,13 @@ export class WorkspaceSelection extends MBComponent {
         return isNoteInSelectionBox;
       });
     });
+
+    // Merge all multi-select notes into selectedNotes.
+    if (this.multiSelectNotes) {
+      Object.entries(this.multiSelectNotes).forEach(([pitchId, multiSelectNotesArray]) => {
+        selectedNotes[pitchId] = [...selectedNotes[pitchId] || [], ...multiSelectNotesArray].sort((a, b) => a - b);
+      });
+    }
 
     musicBoxStore.setState('appState.selectedNotes', selectedNotes);
   }
@@ -138,6 +148,15 @@ export class WorkspaceSelection extends MBComponent {
 
     // Don't deselect if the user is trying to drag notes.
     if (event.target.matches('.hole.is-selected')) return;
+
+    // If the user is holding shift, they are trying to use multi-select. Here, we save all
+    // previously selected notes as "multi-select notes," so we know to keep them selected.
+    if (event.shiftKey) {
+      this.multiSelectNotes = cloneDeep(musicBoxStore.state.appState.selectedNotes);
+      return; // We don't deselect anything when the user is trying to multi-select.
+    } else {
+      this.multiSelectNotes = null;
+    }
 
     // During deselect, we remove duplicate notes (which can occur when nudging or
     // dragging selected notes). It should only rerender a note-line if it was modified.
