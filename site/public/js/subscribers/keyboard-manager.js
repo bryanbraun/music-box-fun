@@ -1,7 +1,7 @@
 import { musicBoxStore } from '../music-box-store.js';
 import { hasSelectedNotes, getFinalNoteYPos } from '../common/notes.js';
 import { cloneDeep } from '../utils/clone.js';
-import { NOTE_STARTING_THRESHOLD } from '../constants.js';
+import { NOTE_LINE_STARTING_GAP } from '../constants.js';
 import { resizePaperIfNeeded } from '../common/pages.js';
 import { snapToNextInterval, snapToPreviousInterval } from '../common/snap-to-interval.js';
 
@@ -97,8 +97,15 @@ function setupKeyboardEvents() {
     }
   });
 
+  function isTryingToNudgeSelectedNoteAboveThreshold(direction) {
+    return Object.values(musicBoxStore.state.appState.selectedNotes).some((selectedNotesArray) => {
+      return direction === "up" && selectedNotesArray.some((yPos) => yPos === NOTE_LINE_STARTING_GAP);
+    });
+  }
 
   function nudgeSelectedNotes(direction, event) {
+    if (isTryingToNudgeSelectedNoteAboveThreshold(direction)) return;
+
     let pixelAmount = null;
     let snapToDirectionalInterval = null
 
@@ -127,10 +134,9 @@ function setupKeyboardEvents() {
         }
       });
 
-      // Move selected notes. Math.max prevents notes from moving above the starting threshold.
+      // Move selected notes.
       updatedSelectedNotes[pitchId] = updatedSelectedNotes[pitchId].map(noteYPos => {
-        const newNoteYPos = snapToDirectionalInterval(noteYPos + pixelAmount, event);
-        return Math.max(NOTE_STARTING_THRESHOLD, newNoteYPos);
+        return snapToDirectionalInterval(noteYPos + pixelAmount, event);
       });
 
       // Add selected notes back into songData
