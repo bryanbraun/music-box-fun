@@ -24,6 +24,18 @@ function setupKeyboardEvents() {
         musicBoxStore.setState('appState.isPlaying', !musicBoxStore.state.appState.isPlaying);
         break;
       }
+      case "a": {
+        event.preventDefault(); // Prevent browser from selecting all text on the page.
+
+        const isMacSelectAll = event.metaKey;
+        const isWindowsSelectAll = event.ctrlKey;
+
+        if (isMacSelectAll || isWindowsSelectAll) {
+          musicBoxStore.setState('appState.selectedNotes', cloneDeep(musicBoxStore.state.songState.songData));
+        }
+
+        break;
+      }
       case "z": {
         const isMacUndo = event.metaKey && !event.shiftKey;
         const isMacRedo = event.metaKey && event.shiftKey;
