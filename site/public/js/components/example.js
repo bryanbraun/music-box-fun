@@ -18,6 +18,9 @@ export class Example extends MBComponent {
       //   ["songState.songTitle", "songState.tempo"] (any change to any key in the array)
       //   …any other key from state.js
       //
+      // We recommend using setState/renderTrigger over raw publish/subscribe events,
+      // (unless you cannot accomplish the task with setState values and renderTrigger).
+      //
       // Note: if you use renderTrigger, your element must have an ID attribute, to
       //       prevent duplicate subscribes. For more info, see base-component.js.
       renderTrigger: 'state',
@@ -30,7 +33,7 @@ export class Example extends MBComponent {
     // Using local state? Set the initial values here in the constructor.
     this.state.counter = 0;
 
-    // To use "this" inside of our methods, bind it here in the constructor.
+    // To use "this" inside of an event callback, bind it here in the constructor.
     // (otherwise, "this" may refer to the event target, not the class instance).
     this.incrementCounter = this.incrementCounter.bind(this);
   }
