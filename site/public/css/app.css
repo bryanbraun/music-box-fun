@@ -534,7 +534,15 @@
   width: var(--hole-width);
   height: var(--hole-width);
   border-radius: 50%;
-  background-color: rgba(var(--hole-color), 0.36);
+
+  /* We create two layers of dimming for shadow notes:
+       background color → dimmed dark gray,
+       box shadow → dimmed white,
+    This ensures the we see dimming over both light backgrounds (like the notes lines)
+    and dark backgrounds (like when a dragged note is overlapping an existing note).
+  */
+  background-color: rgba(var(--hole-color), 0.4);
+  box-shadow: inset 0px 0px 0px 8px rgba(255,255,255,0.30);
 
   position: absolute;
   top: var(--y-adjustment-for-hole-width);
@@ -545,11 +553,23 @@
   pointer-events: none;
 }
 .shadow-note.is-selected {
-  box-shadow: inset 0px 0px 0px 2px rgb(var(--selection-color)), inset 0px 0px 0px 2.5px rgba(255,255,255,0.85);
+  box-shadow:
+    inset 0px 0px 0px 2px rgb(var(--selection-color)), inset 0px 0px 0px 2.5px rgba(255,255,255,0.85), /* selection ring */
+    inset 0 0 0 100px rgba(255,255,255,0.30); /* ensures we don't override this part of the shadow-note's dimming */
+
+  z-index: var(--z-music-box-selected-notes); /* if notes are stacked, ensure that the selected one is on top */
 }
 
-.shadow-note--visible {
+.shadow-note.is-visible {
   display: block;
+}
+.shadow-note.is-silent {
+  background-color: var(--mb-white);
+  background-image: var(--asterisk-svg);
+  background-size: 80% 80%;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-blend-mode: luminosity; /* grayscale the svg */
 }
 
 .hole {
@@ -572,7 +592,7 @@
 }
 .hole.is-silent {
   background-color: var(--mb-white);
-  background-image: url('/images/asterisk.svg');
+  background-image: var(--asterisk-svg);
   background-size: 80% 80%; /* the SVG is scaled to allow a gap between the image and background lines, regardless of the hole size. */
   background-position: center;
   background-repeat: no-repeat;
@@ -580,6 +600,7 @@
 .hole.is-selected {
   box-shadow: inset 0px 0px 0px 2px rgb(var(--selection-color)), inset 0px 0px 0px 2.5px rgba(255,255,255,0.85);
   cursor: move;
+  z-index: var(--z-music-box-selected-notes);
 }
 
 .space-editor-drag-zone {
@@ -767,7 +788,7 @@
   width: 10px;
   height: 10px;
   position: absolute;
-  background-image: url('/images/asterisk.svg');
+  background-image: var(--asterisk-svg);
   background-repeat: no-repeat;
   background-size: 100%;
   top: -2px;

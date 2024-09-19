@@ -42,15 +42,16 @@ export class NoteLines extends MBComponent {
       previewMarkup += `<div class="note-line" id="${pitchId}">`;
 
       forEachNotes(previewSongData[pitchId], (yPos, isSilent, i) => {
+        const silentClass = isSilent ? 'is-silent' : '';
         switch (noteStatuses[pitchId][i]) {
           case 'altered':
-            previewMarkup += `<div class="shadow-note shadow-note--visible" style="transform: translateY(${yPos}px)"></div>`;
+            previewMarkup += `<div class="shadow-note is-visible ${silentClass}" style="transform: translateY(${yPos}px)"></div>`;
             break;
           case 'altered_selected':
-            previewMarkup += `<div class="shadow-note shadow-note--visible is-selected" style="transform: translateY(${yPos}px)"></div>`;
+            previewMarkup += `<div class="shadow-note is-visible is-selected ${silentClass}" style="transform: translateY(${yPos}px)"></div>`;
             break;
           default:
-            previewMarkup += `<div class="hole" style="transform: translateY(${yPos}px)"></div>`;
+            previewMarkup += `<div class="hole ${silentClass}" style="transform: translateY(${yPos}px)"></div>`;
             break;
         }
       });

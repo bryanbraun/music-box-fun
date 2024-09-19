@@ -1,6 +1,6 @@
 import { MBComponent } from './music-box-component.js';
 import { musicBoxStore } from '../music-box-store.js';
-import { getFinalNoteYPos, dedupeAndSortSongData } from '../common/notes.js';
+import { getFinalNoteYPos, dedupeAndSortSongData, forEachNotes, isNotePositionSilent } from '../common/notes.js';
 import { snapToInterval } from "../common/snap-to-interval.js";
 import { resizePaperIfNeeded } from '../common/pages.js';
 import { throttle } from '../utils/throttle.js';
@@ -16,8 +16,10 @@ function transformSongData(dragStartYPos, draggedDistance) {
 
   pitchArray.forEach((pitchId) => {
     const noteStatusArray = [];
+    const transformedNotesArray = [];
     const notesArray = musicBoxStore.state.songState.songData[pitchId];
-    const transformedNotes = notesArray.map(noteYPos => {
+
+    notesArray.forEach(noteYPos => {
       let status = 'unaltered';
       let newNoteYPos = noteYPos;
 
@@ -26,11 +28,24 @@ function transformSongData(dragStartYPos, draggedDistance) {
         newNoteYPos = noteYPos + draggedDistance;
       }
 
-      noteStatusArray.push(status);
-      return newNoteYPos;
+      transformedNotesArray.push(newNoteYPos);
+
+      const newNoteIndex = transformedNotesArray.sort((a, b) => a - b).lastIndexOf(newNoteYPos);
+
+      noteStatusArray.splice(newNoteIndex, 0, status);
     });
 
-    transformedSongData[pitchId] = transformedNotes;
+    // After moving all notes, check whether any non-moved notes were altered.
+    forEachNotes(transformedNotesArray, (noteYPos, isSilent, index) => {
+      // Only focus on notes that weren't moved.
+      if (notesArray.includes(noteYPos)) {
+        if (isSilent !== isNotePositionSilent(noteYPos, notesArray)) {
+          noteStatusArray[index] = 'altered';
+        }
+      }
+    });
+
+    transformedSongData[pitchId] = transformedNotesArray;
     noteStatuses[pitchId] = noteStatusArray;
   });
 

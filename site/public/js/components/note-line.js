@@ -46,8 +46,8 @@ export class NoteLine extends MBComponent {
 
     const shadowNoteEl = event.currentTarget.querySelector('.shadow-note');
 
-    this.lastShadowNoteVisibilityClass = 'shadow-note--visible';
-    shadowNoteEl.classList.add('shadow-note--visible');
+    this.lastShadowNoteVisibilityClass = 'is-visible';
+    shadowNoteEl.classList.add('is-visible');
 
     this.positionShadowNote(shadowNoteEl, event);
   }
@@ -58,7 +58,7 @@ export class NoteLine extends MBComponent {
     this.lastShadowNotePosition = DEFAULT_SHADOW_NOTE_POSITION;
     this.lastShadowNoteVisibilityClass = '';
     shadowNoteEl.style = `transform: translateY(${DEFAULT_SHADOW_NOTE_POSITION}px)`;
-    shadowNoteEl.classList.remove('shadow-note--visible');
+    shadowNoteEl.classList.remove('is-visible');
   }
 
   haveShadowNoteFollowCursor(event) {
@@ -88,8 +88,12 @@ export class NoteLine extends MBComponent {
 
     const shadowNoteYPosition = snapToInterval(relativeCursorYPos, mouseEvent);
 
+    const isShadowNoteSilent = isNotePositionSilent(shadowNoteYPosition, musicBoxStore.state.songState.songData[this.props.id]);
+
     this.lastShadowNotePosition = shadowNoteYPosition;
+
     shadowNoteEl.style = `transform: translateY(${shadowNoteYPosition}px)`;
+    shadowNoteEl.classList.toggle('is-silent', isShadowNoteSilent);
   }
 
   handleClick(event) {

@@ -1,6 +1,6 @@
 import { MBComponent } from './music-box-component.js';
 import { musicBoxStore } from '../music-box-store.js';
-import { getFinalNoteYPos, sortSongData } from '../common/notes.js';
+import { forEachNotes, getFinalNoteYPos, sortSongData, isNotePositionSilent } from '../common/notes.js';
 import { snapToInterval } from "../common/snap-to-interval.js";
 import { resizePaperIfNeeded } from '../common/pages.js';
 import { getRelativeYPos } from '../common/common-event-handlers.js';
@@ -14,9 +14,11 @@ function transformSongData(draggedDistance) {
 
   pitchArray.forEach((pitchId) => {
     const noteStatusArray = [];
+    const transformedNotesArray = [];
     const notesArray = musicBoxStore.state.songState.songData[pitchId];
     const selectedNotesArray = [...musicBoxStore.state.appState.selectedNotes[pitchId]];
-    const transformedNotes = notesArray.map(noteYPos => {
+
+    notesArray.forEach(noteYPos => {
       let status = 'unaltered';
       let newNoteYPos = noteYPos;
 
@@ -26,11 +28,24 @@ function transformSongData(draggedDistance) {
         selectedNotesArray.splice(selectedNotesArray.indexOf(noteYPos), 1);
       }
 
-      noteStatusArray.push(status);
-      return newNoteYPos;
+      transformedNotesArray.push(newNoteYPos);
+
+      const newNoteIndex = transformedNotesArray.sort((a, b) => a - b).lastIndexOf(newNoteYPos);
+
+      noteStatusArray.splice(newNoteIndex, 0, status);
     });
 
-    transformedSongData[pitchId] = transformedNotes;
+    // After moving all notes, check whether any non-dragged notes were altered.
+    forEachNotes(transformedNotesArray, (noteYPos, isSilent, index) => {
+      // Only focus on notes that weren't dragged.
+      if (notesArray.includes(noteYPos)) {
+        if (isSilent !== isNotePositionSilent(noteYPos, notesArray)) {
+          noteStatusArray[index] = 'altered';
+        }
+      }
+    });
+
+    transformedSongData[pitchId] = transformedNotesArray;
     noteStatuses[pitchId] = noteStatusArray;
   });
 
@@ -141,7 +156,9 @@ export class NoteDragZone extends MBComponent {
   }
 
   render() {
-    if (musicBoxStore.state.appState.selectedNotesDragStartPos !== null) {
+    const isDragging = musicBoxStore.state.appState.selectedNotesDragStartPos !== null;
+
+    if (isDragging) {
       // One-time dragging set-up. We run this code here (instead of on mouseenter) b/c Safari
       // doesn't trigger mouseenter when an element appears behind a stationary cursor.
       this.setupDragging();
