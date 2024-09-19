@@ -1,7 +1,7 @@
 import { MBComponent } from './music-box-component.js';
 import { musicBoxStore } from '../music-box-store.js';
 import { forEachNotes, getFinalNoteYPos, sortSongData, isNotePositionSilent } from '../common/notes.js';
-import { snapToInterval } from "../common/snap-to-interval.js";
+import { snapToInterval, snapToNextInterval } from "../common/snap-to-interval.js";
 import { resizePaperIfNeeded } from '../common/pages.js';
 import { getRelativeYPos } from '../common/common-event-handlers.js';
 import { throttle } from '../utils/throttle.js';
@@ -36,12 +36,16 @@ function transformSongData(draggedDistance) {
     });
 
     // After moving all notes, check whether any non-dragged notes were altered.
-    forEachNotes(transformedNotesArray, (noteYPos, isSilent, index) => {
-      // Only focus on notes that weren't dragged.
-      if (notesArray.includes(noteYPos)) {
-        if (isSilent !== isNotePositionSilent(noteYPos, notesArray)) {
-          noteStatusArray[index] = 'altered';
-        }
+    forEachNotes(transformedNotesArray, (transformedNoteYPos, transformedNoteIsSilent, index) => {
+      // Only check notes that weren't dragged.
+      if (!notesArray.includes(transformedNoteYPos)) return;
+
+      // Ignore this note if the silent-status was unchanged.
+      if (transformedNoteIsSilent === isNotePositionSilent(transformedNoteYPos, notesArray)) return;
+
+      // Mark this note as altered (without overriding any 'altered_selected' statuses).
+      if (noteStatusArray[index] === 'unaltered') {
+        noteStatusArray[index] = 'altered';
       }
     });
 
@@ -73,7 +77,13 @@ export class NoteDragZone extends MBComponent {
     const relativeCursorYpos = getRelativeYPos(event);
     const grabbedNoteUpperThreshold = grabbedNoteStartYpos + NOTE_STARTING_THRESHOLD - this.firstSelectedNoteYPos;
     const thresholdedCursorYPos = Math.max(relativeCursorYpos, grabbedNoteUpperThreshold);
-    const snappedCursorYPos = snapToInterval(thresholdedCursorYPos, event);
+    let snappedCursorYPos = snapToInterval(thresholdedCursorYPos, event);
+
+    // Prevent snap-to-interval from snapping notes above the starting threshold.
+    if (snappedCursorYPos < grabbedNoteUpperThreshold) {
+      snappedCursorYPos = snapToNextInterval(thresholdedCursorYPos, event);
+    }
+
     const draggedDistance = snappedCursorYPos - grabbedNoteStartYpos;
     return draggedDistance;
   }

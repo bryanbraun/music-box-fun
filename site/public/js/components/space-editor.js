@@ -36,13 +36,14 @@ function transformSongData(dragStartYPos, draggedDistance) {
     });
 
     // After moving all notes, check whether any non-moved notes were altered.
-    forEachNotes(transformedNotesArray, (noteYPos, isSilent, index) => {
-      // Only focus on notes that weren't moved.
-      if (notesArray.includes(noteYPos)) {
-        if (isSilent !== isNotePositionSilent(noteYPos, notesArray)) {
-          noteStatusArray[index] = 'altered';
-        }
-      }
+    forEachNotes(transformedNotesArray, (transformedNoteYPos, isTransformedNoteSilent, index) => {
+      // Only check notes that weren't moved.
+      if (!notesArray.includes(transformedNoteYPos)) return;
+
+      // Ignore this note if the silent-status is unchanged.
+      if (isTransformedNoteSilent === isNotePositionSilent(transformedNoteYPos, notesArray)) return;
+
+      noteStatusArray[index] = 'altered';
     });
 
     transformedSongData[pitchId] = transformedNotesArray;
