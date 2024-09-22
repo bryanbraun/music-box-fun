@@ -69,8 +69,9 @@ export function isNotePositionSilent(yPosToCheck, notesArray) {
   return isPositionToCheckSilent;
 }
 
-export function getFinalNoteYPos() {
-  return Object.values(musicBoxStore.state.songState.songData).reduce((accumulator, currentValue) => {
+export function getFinalNoteYPos(songData) {
+  const songDataToCheck = songData || musicBoxStore.state.songState.songData;
+  return Object.values(songDataToCheck).reduce((accumulator, currentValue) => {
     return Math.max(accumulator, Math.max(...currentValue));
   }, 0);
 }
@@ -80,8 +81,16 @@ export function getNoteYPos(element) {
   return (yposMatch && yposMatch[1]) ? parseInt(yposMatch[1]) : console.error("Couldn't find note position");
 };
 
+function hasAnyNotes(notesObject) {
+  return Object.values(notesObject).some(notesArray => notesArray.length > 0);
+}
+
 export function hasSelectedNotes() {
-  return Object.values(musicBoxStore.state.appState.selectedNotes).some(notesArray => notesArray.length > 0);
+  return hasAnyNotes(musicBoxStore.state.appState.selectedNotes);
+};
+
+export function isNotesClipboardEmpty() {
+  return !hasAnyNotes(musicBoxStore.state.appState.notesClipboard);
 };
 
 // Return a copy of the notesObject with all notes removed.
@@ -116,4 +125,17 @@ export function sortSongData(songData) {
   });
 
   return sortedSongData;
+}
+
+// Set the selectedNotes and songData for a specific pitch.
+//
+// We have a special function for this because we're doing some performance optimizations.
+// By setting musicBoxStore.state.appState.selectedNotes[pitchId] directly (instead of
+// calling setState) we update that state without triggering any re-renders. This is
+// usually an anti-pattern, but in this case we do it because we know the note line will
+// be re-rendered in the next line of code, and we don't want to trigger double-renders
+// for no reason.
+export function setSelectedNotesAndSongDataState(pitchId, updatedSelectedNotes, updatedSongData) {
+  musicBoxStore.state.appState.selectedNotes[pitchId] = updatedSelectedNotes;
+  musicBoxStore.setState(`songState.songData.${pitchId}`, updatedSongData);
 }

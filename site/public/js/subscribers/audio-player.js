@@ -4,6 +4,7 @@ import { startScrolling, stopScrolling } from '../common/page-scroller.js';
 import { forEachNotes } from '../common/notes.js';
 import { Transport, Part, getContext } from '../vendor/tone.js';
 import { audioContextResuming } from './audio-context.js';
+import { PLAYHEAD_TO_VIEWPORT_TOP } from '../constants.js';
 
 const TICKS_PER_PIXEL = 4;
 const audioContext = getContext();
@@ -67,9 +68,8 @@ export const audioPlayer = {
   },
 
   toggleAudioPlayer() {
-    const playheadToViewportTop = document.querySelector('.music-box__playhead').getBoundingClientRect().top;
     const songTopToViewportTop = document.querySelector('#note-lines').getBoundingClientRect().top;
-    const songPlayheadPositionPixels = playheadToViewportTop - songTopToViewportTop;
+    const songPlayheadPositionPixels = PLAYHEAD_TO_VIEWPORT_TOP - songTopToViewportTop;
     const songPlayheadPositionTicks = songPlayheadPositionPixels * TICKS_PER_PIXEL;
 
     if (this.isSongNeedsUpdated) {

@@ -1,6 +1,6 @@
 import { MBComponent } from './music-box-component.js';
 import { musicBoxStore } from '../music-box-store.js';
-import { forEachNotes, getFinalNoteYPos, sortSongData, isNotePositionSilent } from '../common/notes.js';
+import { forEachNotes, getFinalNoteYPos, sortSongData, isNotePositionSilent, setSelectedNotesAndSongDataState } from '../common/notes.js';
 import { snapToInterval, snapToNextInterval } from "../common/snap-to-interval.js";
 import { resizePaperIfNeeded } from '../common/pages.js';
 import { getRelativeYPos } from '../common/common-event-handlers.js';
@@ -100,7 +100,7 @@ export class NoteDragZone extends MBComponent {
     musicBoxStore.publish('SpaceEditorPreview', { previewSongData, noteStatuses });
 
     // Resize paper if needed
-    const newFinalNotePosition = getFinalNoteYPos() + draggedDistance;
+    const newFinalNotePosition = getFinalNoteYPos(previewSongData);
     resizePaperIfNeeded(newFinalNotePosition);
   }
 
@@ -116,20 +116,16 @@ export class NoteDragZone extends MBComponent {
     // Calculate new song data
     const [transformedSongData] = transformSongData(draggedDistance);
 
-    // Calculate new selected notes
-    let newSelectedNotes = {};
     Object.entries(musicBoxStore.state.appState.selectedNotes).forEach(([pitchId, selectedNotesArray]) => {
-      newSelectedNotes[pitchId] = selectedNotesArray.map(noteYPos => noteYPos + draggedDistance);
+      // Calculate new selected notes
+      const newSelectedNotesArray = selectedNotesArray.map(noteYPos => noteYPos + draggedDistance);
+
+      // Save new selected notes and song data
+      setSelectedNotesAndSongDataState(pitchId, newSelectedNotesArray, transformedSongData[pitchId]);
     });
 
-    // Save new data
-    // By setting musicBoxStore.state.appState.selectedNotes directly (instead of calling
-    // setState) we update that state without triggering any re-renders. This is usually
-    // not what we want, but in this case we do it because we know the note lines will be
-    // re-rendered when we save the new song data below. This way we don't trigger double-
-    // renders for no reason.
-    musicBoxStore.state.appState.selectedNotes = newSelectedNotes;
-    musicBoxStore.setState('songState.songData', sortSongData(transformedSongData));
+    // Remove preview lines.
+    musicBoxStore.publish('SpaceEditorPreview', null);
 
     // Reset dragging.
     this.resetDragging();

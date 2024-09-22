@@ -40,7 +40,7 @@ function transformSongData(dragStartYPos, draggedDistance) {
       // Only check notes that weren't moved.
       if (!notesArray.includes(transformedNoteYPos)) return;
 
-      // Ignore this note if the silent-status is unchanged.
+      // Ignore this note if the silent-status was unchanged.
       if (isTransformedNoteSilent === isNotePositionSilent(transformedNoteYPos, notesArray)) return;
 
       noteStatusArray[index] = 'altered';
@@ -100,7 +100,7 @@ export class SpaceEditor extends MBComponent {
     musicBoxStore.publish('SpaceEditorPreview', { previewSongData, noteStatuses });
 
     // Resize drag zone
-    const newFinalNotePosition = getFinalNoteYPos() + draggedDistance;
+    const newFinalNotePosition = getFinalNoteYPos(previewSongData);
     this.editorDragZoneEl.style.height = `${newFinalNotePosition}px`;
     this.editorDragZoneEl.classList.add('is-dragging');
 

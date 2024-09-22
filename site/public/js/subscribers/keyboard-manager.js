@@ -1,7 +1,7 @@
 import { musicBoxStore } from '../music-box-store.js';
-import { hasSelectedNotes, getFinalNoteYPos } from '../common/notes.js';
+import { hasSelectedNotes, isNotesClipboardEmpty, getFinalNoteYPos, setSelectedNotesAndSongDataState } from '../common/notes.js';
 import { cloneDeep } from '../utils/clone.js';
-import { NOTE_LINE_STARTING_GAP } from '../constants.js';
+import { NOTE_LINE_STARTING_GAP, PLAYHEAD_TO_VIEWPORT_TOP } from '../constants.js';
 import { resizePaperIfNeeded } from '../common/pages.js';
 import { snapToNextInterval, snapToPreviousInterval } from '../common/snap-to-interval.js';
 
@@ -52,6 +52,61 @@ function setupKeyboardEvents() {
         }
         break;
       }
+      case "c": {
+        const isMacCopy = event.metaKey;
+        const isWindowsCopy = event.ctrlKey;
+
+        if (isMacCopy || isWindowsCopy) {
+          if (!hasSelectedNotes()) return;
+          event.preventDefault();
+
+          musicBoxStore.setState('appState.notesClipboard', cloneDeep(musicBoxStore.state.appState.selectedNotes));
+        }
+        break;
+      }
+      case "x": {
+        const isMacCut = event.metaKey;
+        const isWindowsCut = event.ctrlKey;
+
+        if (isMacCut || isWindowsCut) {
+          if (!hasSelectedNotes()) return;
+          event.preventDefault();
+
+          musicBoxStore.setState('appState.notesClipboard', cloneDeep(musicBoxStore.state.appState.selectedNotes));
+          deleteSelectedNotesAndUpdateState();
+        }
+        break;
+      }
+      case "v": {
+        const isMacPaste = event.metaKey;
+        const isWindowsPaste = event.ctrlKey;
+
+        if (isMacPaste || isWindowsPaste) {
+          if (isNotesClipboardEmpty()) return;
+          event.preventDefault();
+
+          const firstClipboardNoteYPos = Object.values(musicBoxStore.state.appState.notesClipboard).reduce((accumulator, currentValue) => {
+            return Math.min(accumulator, Math.min(...currentValue));
+          }, Infinity);
+
+          const songTopToViewportTop = document.querySelector('#note-lines').getBoundingClientRect().top;
+          const relativePlayHeadPosition = PLAYHEAD_TO_VIEWPORT_TOP - songTopToViewportTop;
+          const pastedNotesStartingYPos = snapToNextInterval(relativePlayHeadPosition, event);
+          const pasteDistanceDifference = pastedNotesStartingYPos - firstClipboardNoteYPos;
+
+          Object.entries(musicBoxStore.state.appState.notesClipboard).forEach(([pitchId, clipboardPitchArray]) => {
+            // Dedupe data before pasting, to prevent excessive duplicate stacking via repeated pasting.
+            const dedupedSongDataArray = Array.from(new Set(musicBoxStore.state.songState.songData[pitchId]));
+            const pastedNotesArray = clipboardPitchArray.map(noteYPos => noteYPos + pasteDistanceDifference);
+            const finalNotesArray = dedupedSongDataArray.concat(pastedNotesArray).sort((a, b) => a - b);
+
+            setSelectedNotesAndSongDataState(pitchId, pastedNotesArray, finalNotesArray);
+          });
+
+          resizePaperIfNeeded(getFinalNoteYPos());
+        }
+        break;
+      }
       case "Escape": {
         if (musicBoxStore.state.appState.offCanvasSidebarFocused !== 'none') {
           musicBoxStore.setState('appState.offCanvasSidebarFocused', 'none');
@@ -75,19 +130,7 @@ function setupKeyboardEvents() {
       case "Backspace": {
         if (!hasSelectedNotes()) return;
 
-        Object.entries(musicBoxStore.state.appState.selectedNotes).forEach(([pitchId, selectedNotesArray]) => {
-          const updatedNotesArray = musicBoxStore.state.songState.songData[pitchId].filter(noteYPos => {
-            return !selectedNotesArray.includes(noteYPos);
-          });
-
-          // Reset selected notes. By setting musicBoxStore.state.appState.selectedNotes[pitchId]
-          // directly (instead of calling setState) we update that state without triggering any
-          // re-renders. This is usually not what we want, but in this case we do it because we
-          // know the note line will be re-rendered in the following line of code, and we don't
-          // want to trigger double-renders for no reason.
-          musicBoxStore.state.appState.selectedNotes[pitchId] = [];
-          musicBoxStore.setState(`songState.songData.${pitchId}`, updatedNotesArray);
-        });
+        deleteSelectedNotesAndUpdateState();
 
         break;
       }
@@ -96,64 +139,71 @@ function setupKeyboardEvents() {
       }
     }
   });
+}
 
-  function isTryingToNudgeSelectedNoteAboveThreshold(direction) {
-    return Object.values(musicBoxStore.state.appState.selectedNotes).some((selectedNotesArray) => {
-      return direction === "up" && selectedNotesArray.some((yPos) => yPos === NOTE_LINE_STARTING_GAP);
+// SUPPORTING FUNCTIONS
+
+function deleteSelectedNotesAndUpdateState() {
+  Object.entries(musicBoxStore.state.appState.selectedNotes).forEach(([pitchId, selectedNotesArray]) => {
+    const updatedSelectedNotesArray = [];
+    const updatedNotesArray = musicBoxStore.state.songState.songData[pitchId].filter(noteYPos => {
+      return !selectedNotesArray.includes(noteYPos);
     });
-  }
 
-  function nudgeSelectedNotes(direction, event) {
-    if (isTryingToNudgeSelectedNoteAboveThreshold(direction)) return;
+    setSelectedNotesAndSongDataState(pitchId, updatedSelectedNotesArray, updatedNotesArray);
+  });
+}
 
-    let pixelAmount = null;
-    let snapToDirectionalInterval = null
+function isTryingToNudgeSelectedNoteAboveThreshold(direction) {
+  return Object.values(musicBoxStore.state.appState.selectedNotes).some((selectedNotesArray) => {
+    return direction === "up" && selectedNotesArray.some((yPos) => yPos === NOTE_LINE_STARTING_GAP);
+  });
+}
 
-    switch (direction) {
-      case "up": {
-        pixelAmount = -1;
-        snapToDirectionalInterval = snapToPreviousInterval;
-        break;
-      }
-      case "down": {
-        pixelAmount = 1;
-        snapToDirectionalInterval = snapToNextInterval;
-        break;
-      }
+function nudgeSelectedNotes(direction, event) {
+  if (isTryingToNudgeSelectedNoteAboveThreshold(direction)) return;
+
+  let pixelAmount = null;
+  let snapToDirectionalInterval = null
+
+  switch (direction) {
+    case "up": {
+      pixelAmount = -1;
+      snapToDirectionalInterval = snapToPreviousInterval;
+      break;
     }
-
-    let updatedSongData = cloneDeep(musicBoxStore.state.songState.songData);
-    let updatedSelectedNotes = cloneDeep(musicBoxStore.state.appState.selectedNotes);
-
-    Object.keys(musicBoxStore.state.appState.selectedNotes).forEach(pitchId => {
-      // Delete selected notes from songData. Uses splice to avoid over-deleting duplicate notes.
-      updatedSelectedNotes[pitchId].forEach(selectedNoteYPos => {
-        const noteToDeleteIndex = updatedSongData[pitchId].findIndex(noteYPos => noteYPos === selectedNoteYPos);
-        if (noteToDeleteIndex !== -1) {
-          updatedSongData[pitchId].splice(noteToDeleteIndex, 1);
-        }
-      });
-
-      // Move selected notes.
-      updatedSelectedNotes[pitchId] = updatedSelectedNotes[pitchId].map(noteYPos => {
-        return snapToDirectionalInterval(noteYPos + pixelAmount, event);
-      });
-
-      // Add selected notes back into songData
-      updatedSongData[pitchId] = updatedSongData[pitchId].concat(updatedSelectedNotes[pitchId]).sort((a, b) => a - b);
-
-      // Set state for this pitch. By setting musicBoxStore.state.appState.selectedNotes[pitchId]
-      // directly (instead of calling setState) we update that state without triggering any
-      // re-renders. This is usually not what we want, but in this case we do it because we
-      // know the note line will be re-rendered in the next line of code, and we don't want to
-      // trigger double-renders for no reason.
-      musicBoxStore.state.appState.selectedNotes[pitchId] = updatedSelectedNotes[pitchId];
-      musicBoxStore.setState(`songState.songData.${pitchId}`, updatedSongData[pitchId]);
-
-      // Update the number of pages, if needed.
-      resizePaperIfNeeded(getFinalNoteYPos());
-    });
+    case "down": {
+      pixelAmount = 1;
+      snapToDirectionalInterval = snapToNextInterval;
+      break;
+    }
   }
+
+  Object.entries(musicBoxStore.state.appState.selectedNotes).forEach(([pitchId, selectedNotesArray]) => {
+    let updatedNotesArray = [...musicBoxStore.state.songState.songData[pitchId]];
+
+    // Delete selected notes from notesArray.
+    // Using splice ensures we only delete the first instance of a note (useful if there are duplicate notes).
+    selectedNotesArray.forEach(selectedNoteYPos => {
+      const noteToDeleteIndex = updatedNotesArray.findIndex(noteYPos => noteYPos === selectedNoteYPos);
+      if (noteToDeleteIndex !== -1) {
+        updatedNotesArray.splice(noteToDeleteIndex, 1);
+      }
+    });
+
+    // Move selected notes.
+    const updatedSelectedNotesArray = selectedNotesArray.map(noteYPos => {
+      return snapToDirectionalInterval(noteYPos + pixelAmount, event);
+    });
+
+    // Add selected notes back into notesArray.
+    updatedNotesArray = updatedNotesArray.concat(updatedSelectedNotesArray).sort((a, b) => a - b);
+
+    setSelectedNotesAndSongDataState(pitchId, updatedSelectedNotesArray, updatedNotesArray);
+  });
+
+  // Update the number of pages, if needed.
+  resizePaperIfNeeded(getFinalNoteYPos());
 }
 
 export {
