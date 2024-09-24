@@ -63,7 +63,7 @@
 
 
   /* Z-INDEX (page context) */
-  /* -1 - 10: music box */
+  /* -1-20: music box */
   --z-music-box-bottom-plate: -1;
   --z-music-box-extend-button: 2;
   --z-music-box-notes: 4;
@@ -71,15 +71,15 @@
   --z-space-editor-bar: 7;
   --z-music-box-note-header: 8;
   --z-music-box-playhead: 10;
-  /* 11-100: Overlays */
-  --z-nav-icons: 11;
-  --z-controls: 11;
-  --z-share-box: 15;
-  --z-floating-actions: 15;
-  --z-audio-context-message: 16;
+  --z-drag-zone: 15;
+  /* 21-100: Overlays */
+  --z-nav-icons: 22;
+  --z-controls: 22;
+  --z-share-box: 28;
+  --z-floating-actions: 28;
+  --z-audio-context-message: 30;
   --z-selection-box: 40;
-  --z-drag-zone: 50; /* for both space-editor and selection */
-  --z-drag-zone--is-dragging: 51;
+  --z-drag-zone--is-dragging: 50;
   --off-canvas-sidebar-overlay: 75;
   --off-canvas-sidebar: 80;
 

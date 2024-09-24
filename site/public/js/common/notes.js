@@ -104,6 +104,20 @@ export function clearAllExistingNotes(notesObject) {
   return clearedNotesObject;
 }
 
+// Return a copy of the notesObject with populated pitches only.
+export function cloneExistingNotesOnly(notesObject) {
+  const clonedNotesObject = {};
+
+  Object.entries(notesObject).forEach(([pitchId, notesArray]) => {
+    if (notesArray.length > 0) {
+      clonedNotesObject[pitchId] = [...notesArray];
+    }
+  });
+
+  return clonedNotesObject;
+
+}
+
 // Return a copy of songData with all notes deduped and sorted. This
 // is useful when we want to save a bunch of note changes at once.
 export function dedupeAndSortSongData(songData) {
