@@ -79,6 +79,7 @@ function setupKeyboardEvents() {
         }
         break;
       }
+      case "√": //  This is the event.key for "⌥ + v" on mac
       case "v": {
         const isMacPaste = event.metaKey;
         const isWindowsPaste = event.ctrlKey;
