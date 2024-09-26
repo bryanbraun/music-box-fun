@@ -3,8 +3,7 @@ import { musicBoxStore } from '../music-box-store.js';
 import { getFinalNoteYPos, dedupeAndSortSongData, forEachNotes, isNotePositionSilent } from '../common/notes.js';
 import { snapToInterval } from "../common/snap-to-interval.js";
 import { resizePaperIfNeeded } from '../common/pages.js';
-import { throttle } from '../utils/throttle.js';
-import { debounce } from '../utils/debounce.js';
+import { throttle, debounce } from '../utils.js';
 import { WAIT_FOR_STATE } from '../constants.js';
 
 const DEFAULT_SPACE_EDITOR_BAR_POSITION = 8;

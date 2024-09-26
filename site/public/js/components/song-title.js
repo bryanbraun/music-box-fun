@@ -1,6 +1,6 @@
 import { MBComponent } from './music-box-component.js';
 import { musicBoxStore } from '../music-box-store.js';
-import { escapeHtml } from '../utils/escapeHtml.js';
+import { escapeHtml } from '../utils.js';
 
 export class SongTitle extends MBComponent {
   constructor() {

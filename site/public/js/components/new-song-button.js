@@ -1,7 +1,7 @@
 import { MBComponent } from './music-box-component.js';
 import { musicBoxStore } from '../music-box-store.js';
 import { initialState } from '../state.js';
-import { cloneDeep } from '../utils/clone.js';
+import { cloneDeep } from '../utils.js';
 import { clearAllExistingNotes } from '../common/notes.js';
 
 export class NewSongButton extends MBComponent {

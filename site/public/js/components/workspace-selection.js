@@ -1,7 +1,6 @@
 import { MBComponent } from './music-box-component.js';
 import { musicBoxStore } from '../music-box-store.js';
-import { throttle } from '../utils/throttle.js';
-import { cloneDeep } from '../utils/clone.js';
+import { throttle, cloneDeep } from '../utils.js';
 import { getCurrentPitchArray } from '../common/box-types.js';
 import { hasSelectedNotes, dedupeAndSortSongData, clearAllExistingNotes } from '../common/notes.js';
 

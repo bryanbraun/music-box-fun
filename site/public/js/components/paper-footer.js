@@ -4,7 +4,7 @@ import { musicBoxStore } from '../music-box-store.js';
 import { getFinalNoteYPos } from '../common/notes.js';
 import { getNumberOfPagesOnScreen } from '../common/pages.js';
 import { QUARTER_BAR_GAP, NOTE_LINE_STARTING_GAP, FOOTER_BUTTON_HEIGHT, NUMBER_OF_BARS_PER_PAGE, WAIT_FOR_STATE } from '../constants.js';
-import { debounce } from '../utils/debounce.js';
+import { debounce } from '../utils.js';
 
 export class PaperFooter extends MBComponent {
   constructor() {

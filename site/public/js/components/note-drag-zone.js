@@ -4,7 +4,7 @@ import { forEachNotes, getFinalNoteYPos, sortSongData, isNotePositionSilent, set
 import { snapToInterval, snapToNextInterval } from "../common/snap-to-interval.js";
 import { resizePaperIfNeeded } from '../common/pages.js';
 import { getRelativeYPos } from '../common/common-event-handlers.js';
-import { throttle } from '../utils/throttle.js';
+import { throttle } from '../utils.js';
 import { NOTE_STARTING_THRESHOLD } from '../constants.js';
 
 function transformSongData(draggedDistance) {

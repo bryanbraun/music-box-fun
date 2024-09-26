@@ -1,5 +1,5 @@
 import { musicBoxStore } from '../music-box-store.js';
-import { cloneDeep } from '../utils/clone.js';
+import { cloneDeep } from '../utils.js';
 import { NOTE_LINE_STARTING_GAP, PLAYHEAD_TO_VIEWPORT_TOP } from '../constants.js';
 import { resizePaperIfNeeded } from '../common/pages.js';
 import { boxTypePitches, getCurrentBoxType } from '../common/box-types.js';
