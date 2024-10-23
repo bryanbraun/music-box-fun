@@ -1,6 +1,6 @@
 import { MBComponent } from './music-box-component.js';
 import { musicBoxStore } from '../music-box-store.js';
-import { forEachNotes, getFinalNoteYPos, sortSongData, isNotePositionSilent, setSelectedNotesAndSongDataState } from '../common/notes.js';
+import { forEachNotes, getFinalNoteYPos, isNotePositionSilent, setSelectedNotesAndSongDataState } from '../common/notes.js';
 import { snapToInterval, snapToNextInterval } from "../common/snap-to-interval.js";
 import { resizePaperIfNeeded } from '../common/pages.js';
 import { getRelativeYPos } from '../common/common-event-handlers.js';

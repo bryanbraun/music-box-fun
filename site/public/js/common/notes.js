@@ -131,16 +131,6 @@ export function dedupeAndSortSongData(songData) {
   return dedupedAndSortedSongData;
 }
 
-export function sortSongData(songData) {
-  const sortedSongData = {};
-
-  Object.keys(songData).forEach((pitchId) => {
-    sortedSongData[pitchId] = [...songData[pitchId]].sort((a, b) => a - b);
-  });
-
-  return sortedSongData;
-}
-
 // Set the selectedNotes and songData for a specific pitch.
 //
 // We have a special function for this because we're doing some performance optimizations.
