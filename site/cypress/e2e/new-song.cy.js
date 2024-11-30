@@ -11,7 +11,7 @@ describe('New blank song', () => {
   });
 
   it('should reset the existing song to the correct state', () => {
-    cy.get('[data-testid="new-song"]').click();
+    cy.get('[data-testid="file-select"]').select('new-song');
 
     cy.get('#song-title input')
       .should('have.value', '');

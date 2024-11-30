@@ -41,7 +41,8 @@
   .share-box,
   .floating-actions,
   .off-canvas-overlay,
-  .back-to-top-observed {
+  .back-to-top-observed,
+  .selection {
     display: none;
   }
 

@@ -19,8 +19,8 @@
     /* Allows us to break up our css and load the files in parallel */
     @import "css/variables.css";
     @import "css/base.css";
-    @import "css/app.css";
     @import "css/select.css";
+    @import "css/app.css";
     @import "css/tempo-controls.css";
     @import "css/utilities.css";
   </style>
@@ -288,12 +288,19 @@
         </div>
         <div class="controls__section">
           <div id="file">
-            <button class="new-song">New blank song</button>
+            <label>
+              <span class="visuallyhidden">File</span>
+              <select class="select file-select" name="file-select">
+                <option selected disabled value="file">File</option>
+                <option value="new-song">New blank song</option>
+                <option value="print-song">Print song</option>
+              </select>
+            </label>
           </div>
           <div id="music-box-type">
             <label>
               <span class="visuallyhidden">Music Box Type</span>
-              <select class="select select-music-box-type" name="select-box-type">
+              <select class="select music-box-type-select" name="select-box-type">
                 <option selected="" value="15">15-note</option>
                 <option value="20">20-note</option>
                 <option value="30">30-note</option>

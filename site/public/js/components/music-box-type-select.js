@@ -67,7 +67,7 @@ export class MusicBoxTypeSelect extends MBComponent {
     this.element.innerHTML = `
       <label>
         <span class="visuallyhidden">Music Box Type</span>
-        <select class="select select-music-box-type" data-testid="music-box-type-select" name="select-box-type">
+        <select class="select music-box-type-select" data-testid="music-box-type-select" name="select-box-type">
           ${Object.entries(boxTypeTitles).map(([type, title]) => (
       `<option ${currentBoxType === type ? 'selected' : ''} value="${type}">${title}</option>`
     )).join('')}

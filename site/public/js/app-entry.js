@@ -5,7 +5,7 @@ import { Search } from './components/search.js';
 import { BrowseTabs } from './components/browse-tabs.js';
 import { RightSidebar } from './components/right-sidebar.js';
 import { PlayButton } from './components/play-button.js';
-import { NewSongButton } from './components/new-song-button.js';
+import { FileSelect } from './components/file-select.js';
 import { MusicBoxTypeSelect } from './components/music-box-type-select.js';
 import { Tempo } from './components/tempo.js';
 import { SnapToGridSelect } from './components/snap-to-grid-select.js';
@@ -62,7 +62,7 @@ urlManager.getStateFromUrlAsync().then(urlState => {
   new BrowseTabs().render();
   new RightSidebar().render();
   new PlayButton({ id: 'sidebar-play-button' }).render();
-  new NewSongButton().render();
+  new FileSelect().render();
   new MusicBoxTypeSelect().render();
   new Tempo().render();
   new SnapToGridSelect().render();

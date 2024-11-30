@@ -741,30 +741,21 @@
   fill: var(--controls-button-color);
 }
 
-.new-song {
-  width: 100%;
-  font-family: inherit;
-  font-size: inherit;
-  background-color: var(--controls-button-color);
-  background-image: url('/images/new-blank-song.svg');
-  background-repeat: no-repeat;
-  background-position: 7px 50%;
-  border-radius: 5px;
-  border: 1px solid var(--controls-border-color);
-  border-bottom: 1px solid var(--controls-border-bottom-color);
-  padding: 0.4rem 0.4rem 0.4rem 1.8rem;
-  display: flex;
-  align-items: center;
-  justify-content: left;
-  cursor: pointer;
+.file-select {
+  padding-left: 1.8rem;
+  padding-bottom: 0.3rem;
+  background-image: url(/images/file.svg), url(/images/select-down.svg);
+  background-position: 7px center, right 7px center;
+  background-repeat: no-repeat, no-repeat;
 }
 
-.new-song:hover {
-  background-color: #f8f8f8;
-}
-
-.new-song:active {
-  border: 1px solid var(--controls-border-color);
+.music-box-type-select {
+  padding-left: 1.8rem;
+  padding-bottom: 0.3rem; /* remove some padding because this text has no descenders (and we don't expect it to) */
+  background-image: url(/images/music-box-type.svg),
+                    url(/images/select-down.svg);
+  background-position: 7px center, right 7px center;
+  background-repeat: no-repeat, no-repeat;
 }
 
 .snap-to {
