@@ -9,6 +9,7 @@ describe('Song edits', () => {
     // Selectors
     const songTitleSelector = '#song-title input';
     const tempoFieldSelector = '#tempo-field input';
+    const songUpdatedSelector = '#song-updated-message';
 
     // Song Content
     const newSongTitle = 'Example Song Title';
@@ -23,18 +24,22 @@ describe('Song edits', () => {
     cy.url().then(url1 => {
       cy.get(songTitleSelector).type(newSongTitle)
       cy.url().should('not.eq', url1);
+      cy.get(songUpdatedSelector).should('be.visible');
 
       cy.url().then(url2 => {
         cy.get(musicBoxTypeSelector).select(newBoxTypeValue);
         cy.url().should('not.eq', url2);
+        cy.get(songUpdatedSelector).should('be.visible');
 
         cy.url().then(url3 => {
           cy.get(tempoFieldSelector).clear().type(newTempo);
           cy.url().should('not.eq', url3);
+          cy.get(songUpdatedSelector).should('be.visible');
 
           cy.url().then(url4 => {
             cy.get('#C5').click(6, newNoteYPos); // left: 6px, top: 64px
             cy.url().should('not.eq', url4);
+            cy.get(songUpdatedSelector).should('be.visible');
           });
         });
       });
@@ -145,6 +150,189 @@ describe('Song edits', () => {
       cy.get('#description').should('contain', '20');
       cy.get('#A6').should('exist');
       cy.window().its('confirm').should('be.called');
+    });
+  });
+
+  describe('Selection zone', () => {
+    it('exists', () => {
+      cy.visit('/');
+
+      cy.get('[data-testid="selection-drag-zone"]').should('exist');
+    });
+  });
+
+  describe('Selected notes', () => {
+    const snapToSelector = '#snap-to select';
+
+    it('should render with selection rings', () => {
+      cy.visit('/');
+
+      cy.get('#C5').click(5, 40);
+      cy.get('#C5').click(5, 64); // silent note
+      cy.get('#E5').click(5, 40);
+
+      cy.window().then((win) => {
+        const newSelectedNotes = { 'C5': [40, 64] };
+
+        win.MusicBoxFun.store.setState('appState.selectedNotes', newSelectedNotes);
+
+        cy.get('#C5 .hole').first().should('have.class', 'is-selected');
+        cy.get('#C5 .hole').last().should('have.class', 'is-selected');
+        cy.get('#E5 .hole').first().should('not.have.class', 'is-selected');
+      });
+    });
+
+    it('should be deleted when tapping the backspace key', () => {
+      cy.visit('/');
+
+      cy.get('#C5').click(5, 40);
+      cy.get('#C5').click(5, 64); // silent note
+      cy.get('#E5').click(5, 40);
+
+      cy.window().then((win) => {
+        const newSelectedNotes = { 'C5': [40, 64] };
+
+        win.MusicBoxFun.store.setState('appState.selectedNotes', newSelectedNotes);
+
+        cy.get('body').type('{backspace}');
+
+        cy.get('#C5 .hole').should('not.exist');
+        cy.get('#E5 .hole').should('exist');
+      });
+    });
+
+    it('should select all notes when CMD+A is pressed', () => {
+      cy.visit('/');
+
+      cy.get('#C5').click(5, 40);
+      cy.get('#C5').click(5, 64); // silent note
+      cy.get('#E5').click(5, 40);
+
+      cy.get('body').type('{cmd}a');
+
+      cy.get('.hole.is-selected').should('have.length', 3);
+    });
+
+    it('should deselect all notes when clicking the page', () => {
+      cy.visit('/');
+
+      cy.get('#C5').click(5, 40);
+      cy.get('#C5').click(5, 64); // silent note
+      cy.get('#E5').click(5, 40);
+
+      cy.get('body').type('{cmd}a');
+
+      cy.get('.hole.is-selected').should('exist');
+
+      cy.get('#workspace').click(5, 5);
+
+      cy.get('.hole.is-selected').should('not.exist');
+    });
+
+    it('should remove duplicates on deselect', () => {
+      cy.visit('/');
+
+      cy.get('#C5').click(5, 40);
+      cy.get('#C5').click(5, 64); // silent note (and future duplicate)
+
+      cy.window().then((win) => {
+        win.MusicBoxFun.store.setState('appState.selectedNotes', { 'C5': [40] });
+
+        cy.get('body').type('{downArrow}');
+
+        cy.get('#workspace').click(5, 5);
+
+        cy.get('.hole').should('have.length', 1);
+      });
+    });
+
+    it('should be nudged by their snap increment when arrow keys are pressed', () => {
+      const originalYPos = 16;
+      const yPosWith16thNudge = `transform: translateY(${originalYPos + 12}px)`;
+      const yPosWithGridNudge = `transform: translateY(${originalYPos + 24}px)`;
+      const yPosWithNoSnappingNudge = `transform: translateY(${originalYPos + 1}px)`;
+      const yPosWithEighthTripletNudge = `transform: translateY(${originalYPos + 16}px)`;
+      const yPosWithQuarterTripletNudge = `transform: translateY(${originalYPos + 32}px)`;
+
+      cy.visit('/');
+
+      cy.get('#C5').click(5, 16);
+
+      cy.get(snapToSelector).select("grid");
+      cy.get('body').type('{cmd}a');
+      cy.get('body').type('{downArrow}');
+      cy.get('#C5 .hole').first().should('have.attr', 'style', yPosWithGridNudge);
+      cy.get('body').type('{upArrow}');
+
+      cy.get(snapToSelector).select("16ths");
+      cy.get('body').type('{cmd}a');
+      cy.get('body').type('{downArrow}');
+      cy.get('#C5 .hole').first().should('have.attr', 'style', yPosWith16thNudge);
+      cy.get('body').type('{upArrow}');
+
+      cy.get(snapToSelector).select("none");
+      cy.get('body').type('{cmd}a');
+      cy.get('body').type('{downArrow}');
+      cy.get('#C5 .hole').first().should('have.attr', 'style', yPosWithNoSnappingNudge);
+      cy.get('body').type('{upArrow}');
+
+      cy.get(snapToSelector).select("⅛ triplet");
+      cy.get('body').type('{cmd}a');
+      cy.get('body').type('{downArrow}');
+      cy.get('#C5 .hole').first().should('have.attr', 'style', yPosWithEighthTripletNudge);
+      cy.get('body').type('{upArrow}');
+
+      cy.get(snapToSelector).select("¼ triplet");
+      cy.get('body').type('{cmd}a');
+      cy.get('body').type('{downArrow}');
+      cy.get('#C5 .hole').first().should('have.attr', 'style', yPosWithQuarterTripletNudge);
+      cy.get('body').type('{upArrow}');
+    });
+
+    it('should ignore snapping when nudged while holding option/alt', () => {
+      const originalYPos = 16;
+      const yPosWithNudge = `transform: translateY(${originalYPos + 1}px)`;
+
+      cy.visit('/');
+
+      cy.get('#C5').click(5, 16);
+
+      cy.get(snapToSelector).select("grid");
+      cy.get('body').type('{cmd}a');
+      cy.get('body').type('{alt}{downArrow}');
+      cy.get('#C5 .hole').first().should('have.attr', 'style', yPosWithNudge);
+    });
+
+    it('should allow nudged notes to overlap and pass through existing notes without erasing them', () => {
+      cy.visit('/');
+
+      cy.get('#C5').click(5, 16);
+      cy.get('#C5').click(5, 40);
+
+      cy.window().then((win) => {
+        win.MusicBoxFun.store.setState('appState.selectedNotes', { 'C5': [16] });
+        cy.get('body').type('{downArrow}');
+        cy.get('#C5 .hole').should('have.length', 2);
+        cy.get('body').type('{downArrow}');
+        cy.get('#C5 .hole').should('have.length', 2);
+        cy.get('#C5 .hole').last().should('have.attr', 'style', 'transform: translateY(64px)');
+      });
+    });
+
+    it('should create a new page when nudged off the bottom of an existing page', () => {
+      const dividersSelector = '[data-testid="divider"]';
+      const FINAL_NOTE_LINE_Y_POS = 2512;
+
+      cy.visit('/');
+
+      cy.get('#C5').click({ scrollBehavior: 'bottom', x: 5, y: FINAL_NOTE_LINE_Y_POS });
+
+      cy.get(dividersSelector).should('have.length', 0);
+
+      cy.get('body').type('{cmd}a');
+      cy.get('body').type('{downArrow}');
+
+      cy.get(dividersSelector).should('have.length', 1);
     });
   });
 });

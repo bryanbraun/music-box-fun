@@ -41,3 +41,16 @@ describe('Playing a song', () => {
   });
 });
 
+describe('Back to top', () => {
+  it('clicking the TOP button scrolls to the top of the page', () => {
+    cy.visit('/');
+
+    cy.window().scrollTo(0, 300);
+
+    cy.contains('[aria-label="Back to Top"]', 'Top').should('be.visible');
+
+    cy.get('[aria-label="Back to Top"]').click();
+    cy.window().its('scrollY')
+      .should('equal', 0);
+  });
+});

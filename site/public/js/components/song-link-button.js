@@ -44,7 +44,7 @@ export class SongLinkButton extends MBComponent {
 
   render() {
     this.element.innerHTML = `
-      <button class="share-button song-link-button">
+      <button class="share-button song-link-button" data-testid="song-link-button">
         <svg width="13" height="17" xmlns="http://www.w3.org/2000/svg">
           <g fill="none" fill-rule="evenodd">
             <path d="M0 0h14v18H0z"/>

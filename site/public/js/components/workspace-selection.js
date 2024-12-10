@@ -175,7 +175,7 @@ export class WorkspaceSelection extends MBComponent {
     // works because this component never re-renders.
     this.element.insertAdjacentHTML('afterbegin', `
       <div class="selection">
-        <div class="selection-drag-zone"></div>
+        <div class="selection-drag-zone" data-testid="selection-drag-zone"></div>
         <div class="selection-box"></div>
       </div>
     `);
