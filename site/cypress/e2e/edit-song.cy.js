@@ -2,6 +2,9 @@
 
 describe('Song edits', () => {
   const musicBoxTypeSelector = '[data-testid="music-box-type-select"]';
+  const songUpdatedSelector = '#song-updated-message';
+  const dividersSelector = '[data-testid="divider"]';
+  const snapToSelector = '#snap-to select';
 
   it('should store data in the URL', () => {
     cy.visit('/');
@@ -9,7 +12,6 @@ describe('Song edits', () => {
     // Selectors
     const songTitleSelector = '#song-title input';
     const tempoFieldSelector = '#tempo-field input';
-    const songUpdatedSelector = '#song-updated-message';
 
     // Song Content
     const newSongTitle = 'Example Song Title';
@@ -162,8 +164,6 @@ describe('Song edits', () => {
   });
 
   describe('Selected notes', () => {
-    const snapToSelector = '#snap-to select';
-
     it('should render with selection rings', () => {
       cy.visit('/');
 
@@ -213,7 +213,7 @@ describe('Song edits', () => {
       cy.get('.hole.is-selected').should('have.length', 3);
     });
 
-    it('should deselect all notes when clicking the page', () => {
+    it('should become deselected clicking the page', () => {
       cy.visit('/');
 
       cy.get('#C5').click(5, 40);
@@ -292,15 +292,18 @@ describe('Song edits', () => {
     it('should ignore snapping when nudged while holding option/alt', () => {
       const originalYPos = 16;
       const yPosWithNudge = `transform: translateY(${originalYPos + 1}px)`;
+      const yPosFinal = `transform: translateY(${originalYPos}px)`;
 
       cy.visit('/');
 
-      cy.get('#C5').click(5, 16);
+      cy.get('#C5').click(5, originalYPos);
 
       cy.get(snapToSelector).select("grid");
       cy.get('body').type('{cmd}a');
       cy.get('body').type('{alt}{downArrow}');
       cy.get('#C5 .hole').first().should('have.attr', 'style', yPosWithNudge);
+      cy.get('body').type('{alt}{upArrow}');
+      cy.get('#C5 .hole').first().should('have.attr', 'style', yPosFinal);
     });
 
     it('should allow nudged notes to overlap and pass through existing notes without erasing them', () => {
@@ -320,7 +323,6 @@ describe('Song edits', () => {
     });
 
     it('should create a new page when nudged off the bottom of an existing page', () => {
-      const dividersSelector = '[data-testid="divider"]';
       const FINAL_NOTE_LINE_Y_POS = 2512;
 
       cy.visit('/');
@@ -333,6 +335,166 @@ describe('Song edits', () => {
       cy.get('body').type('{downArrow}');
 
       cy.get(dividersSelector).should('have.length', 1);
+    });
+  });
+
+  describe('copy/paste', () => {
+    const fileSelectSelector = '[data-testid="file-select"]';
+
+    it('should enable a user to copy selected notes and paste them into the song.', () => {
+      cy.visit('/');
+
+      cy.get('#C5').click(5, 40);
+      cy.get('#E5').click(5, 40);
+
+      cy.window().then((win) => {
+        const newSelectedNotes = { 'C5': [40] };
+
+        win.MusicBoxFun.store.setState('appState.selectedNotes', newSelectedNotes);
+
+        // Position the page for copy/pasting
+        cy.window().scrollTo(0, 0);
+
+        // Copy and paste the selected note.
+        cy.get('body').type('{cmd}c');
+        cy.get('body').type('{cmd}v');
+
+        // Verify that a new note was added.
+        cy.get('#C5 .hole').should('have.length', 2);
+
+        // Verify the location of the new note (the uppermost allowed paste location).
+        cy.get('#C5 .hole').first().should('have.attr', 'style', `transform: translateY(16px)`);
+
+        // Verify that existing selections are deselected and the newly pasted note is selected.
+        cy.get('#C5 .hole').first().should('have.class', 'is-selected');
+        cy.get('#C5 .hole').last().should('not.have.class', 'is-selected');
+
+        // Verify the silent status of newly pasted notes.
+        cy.get('#C5 .hole').first().should('not.have.class', 'is-silent');
+        cy.get('#C5 .hole').last().should('have.class', 'is-silent');
+
+        // Verify that the song update message is displayed.
+        cy.get(songUpdatedSelector).should('be.visible');
+      });
+    });
+
+    it('should warn the user of dropped notes when pasting notes into an unsupported music box type', () => {
+      cy.visit('/', {
+        onBeforeLoad(windowObj) {
+          // See https://docs.cypress.io/api/commands/stub.html#Replace-built-in-window-methods-like-prompt
+          cy.stub(windowObj, 'confirm').returns(true)
+        }
+      });
+
+      cy.get(musicBoxTypeSelector).select('30');
+
+      cy.get('#C3').click(5, 40); // Unsupported on 15-note box
+      cy.get('#C5').click(5, 40); // Supported on 15-note box
+
+      cy.get('body').type('{cmd}a');
+      cy.get('body').type('{cmd}c');
+
+      cy.get(fileSelectSelector).select('new-song');
+
+      cy.get(musicBoxTypeSelector).select('15');
+
+      cy.get('body').type('{cmd}v');
+
+      cy.window().its('confirm').should('be.called');
+
+      // Only one note should have been pasted.
+      cy.get('.hole').should('have.length', 1);
+      cy.get('#C5 .hole').should('have.length', 1);
+    });
+
+    it('should create a new page if the users pastes beyond the bottom of the current page', () => {
+      cy.visit('/');
+
+      cy.get('#C5').click(5, 40);
+
+      cy.get('body').type('{cmd}a');
+      cy.get('body').type('{cmd}c');
+
+      cy.get(dividersSelector).should('have.length', 0);
+
+      cy.window().scrollTo(0, '100%');
+
+      cy.get('body').type('{cmd}v');
+
+      cy.get(dividersSelector).should('have.length', 1);
+    });
+
+    it('should drop pasted notes on the next snap-location after the playhead', () => {
+      cy.visit('/');
+
+      cy.get('#C5').click(5, 40);
+
+      cy.get('body').type('{cmd}a');
+      cy.get('body').type('{cmd}c');
+
+      cy.get(fileSelectSelector).select('new-song');
+      cy.get(snapToSelector).select("grid");
+      cy.window().scrollTo(0, '100%');
+      cy.get('body').type('{cmd}v');
+      cy.get('#C5 .hole').should('have.attr', 'style', `transform: translateY(2560px)`);
+
+      cy.get(fileSelectSelector).select('new-song');
+      cy.get(snapToSelector).select("16ths");
+      cy.window().scrollTo(0, '100%');
+      cy.get('body').type('{cmd}v');
+      cy.get('#C5 .hole').should('have.attr', 'style', `transform: translateY(2548px)`);
+
+      cy.get(fileSelectSelector).select('new-song');
+      cy.get(snapToSelector).select("none");
+      cy.window().scrollTo(0, '100%');
+      cy.get('body').type('{cmd}v');
+      cy.get('#C5 .hole').should('have.attr', 'style', `transform: translateY(2545px)`);
+
+      cy.get(fileSelectSelector).select('new-song');
+      cy.get(snapToSelector).select("⅛ triplet");
+      cy.window().scrollTo(0, '100%');
+      cy.get('body').type('{cmd}v');
+      cy.get('#C5 .hole').should('have.attr', 'style', `transform: translateY(2560px)`);
+
+      cy.get(fileSelectSelector).select('new-song');
+      cy.get(snapToSelector).select("¼ triplet");
+      cy.window().scrollTo(0, '100%');
+      cy.get('body').type('{cmd}v');
+      cy.get('#C5 .hole').should('have.attr', 'style', `transform: translateY(2576px)`);
+    });
+  });
+
+  describe('cut/paste', () => {
+    it('should enable a user to cut selected notes and paste them into the song.', () => {
+      cy.visit('/');
+
+      cy.get('#C5').click(5, 40);
+      cy.get('#E5').click(5, 40);
+
+      cy.window().then((win) => {
+        const newSelectedNotes = { 'C5': [40] };
+
+        win.MusicBoxFun.store.setState('appState.selectedNotes', newSelectedNotes);
+
+        // Position the page for cut/pasting
+        cy.window().scrollTo(0, 0);
+
+        // Cut and paste the selected note.
+        cy.get('body').type('{cmd}x');
+        cy.get('body').type('{cmd}v');
+
+        // Verify that two notes total remain (the unselected one and the pasted one).
+        cy.get('.hole').should('have.length', 2);
+
+        // Verify that the cut note was deleted, leaving only one C5 note (the pasted one).
+        cy.get('#C5 .hole').should('have.length', 1);
+
+        // Verify the location of the remaining note (the uppermost allowed paste location).
+        cy.get('#C5 .hole').should('have.attr', 'style', `transform: translateY(16px)`);
+
+        // Verify that the newly pasted note is selected.
+        cy.get('#C5 .hole').should('have.class', 'is-selected');
+      });
     });
   });
 });

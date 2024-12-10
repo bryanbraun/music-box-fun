@@ -7,6 +7,6 @@ describe('Copy song link button', () => {
     // assertion works for Electron browser only. For details, see:
     // https://stackoverflow.com/a/69571115/1154642
     cy.window().its('navigator.clipboard')
-      .invoke('readText').should('equal', 'https://localhost/')
+      .invoke('readText').should('equal', `${Cypress.config('baseUrl')}/`);
   });
 });
