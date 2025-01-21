@@ -704,7 +704,7 @@
   .right-sidebar.on-canvas {
     /* translated on-canvas */
     transform: translateX(0);
-    z-index: var(--off-canvas-sidebar);
+    z-index: var(--z-off-canvas-sidebar);
   }
 }
 
@@ -835,6 +835,23 @@
     position: fixed;
     top: 4px;
   }
+}
+
+.overlay-message {
+  position: fixed;
+  margin-top: -0.5rem; /* minor adjustment to prevent awkward overlap on top */
+  z-index: var(--z-overlay-message);
+}
+.overlay-message__content {
+  padding: 1rem 2.5rem;
+  background: var(--mb-black);
+  color: var(--mb-white);
+  text-align: center;
+  opacity: 0.85;
+  transition: opacity 1.5s;
+}
+.overlay-message__content.is-fading {
+  opacity: 0;
 }
 
 .share-box {

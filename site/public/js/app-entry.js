@@ -21,6 +21,7 @@ import { OffCanvasControlsIcon } from './components/off-canvas-controls-icon.js'
 import { OffCanvasOverlay } from './components/off-canvas-overlay.js';
 import { BackToTopButton } from './components/back-to-top-button.js';
 import { AudioDisabledMessage } from './components/audio-disabled-message.js';
+import { OverlayMessage } from './components/overlay-message.js';
 import { SongUpdatedMessage } from './components/song-updated-message.js';
 import { SongLinkButton } from './components/song-link-button.js';
 import { ShareButton } from './components/share-button.js';
@@ -84,7 +85,9 @@ urlManager.getStateFromUrlAsync().then(urlState => {
   new WorkspaceSelection().render();
   new NoteDragZone().render();
 
-  new SongUpdatedMessage(); // This element is hidden by default, so it doesn't need to .render() on page load.
+  // These are hidden by default so they don't need to .render() on page load.
+  new OverlayMessage();
+  new SongUpdatedMessage();
 
   // Things we can set up after rendering components.
   audioPlayer.subscribeToPlayState();

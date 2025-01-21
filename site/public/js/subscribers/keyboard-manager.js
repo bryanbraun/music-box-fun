@@ -5,7 +5,7 @@ import { resizePaperIfNeeded } from '../common/pages.js';
 import { boxTypePitches, getCurrentBoxType } from '../common/box-types.js';
 import { snapToNextInterval, snapToPreviousInterval } from '../common/snap-to-interval.js';
 import { confirmationDialog } from '../common/confirmation-dialog.js';
-import { hasSelectedNotes, isNotesClipboardEmpty, getFinalNoteYPos, cloneExistingNotesOnly, setSelectedNotesAndSongDataState } from '../common/notes.js';
+import { hasSelectedNotes, isNotesClipboardEmpty, getFinalNoteYPos, cloneExistingNotesOnly, setSelectedNotesAndSongDataState, getNotesCount } from '../common/notes.js';
 
 function setupKeyboardEvents() {
   document.addEventListener('keydown', async event => {
@@ -62,7 +62,10 @@ function setupKeyboardEvents() {
           if (!hasSelectedNotes()) return;
           event.preventDefault();
 
-          musicBoxStore.setState('appState.notesClipboard', cloneExistingNotesOnly(musicBoxStore.state.appState.selectedNotes));
+          const copiedNotes = cloneExistingNotesOnly(musicBoxStore.state.appState.selectedNotes);
+          const s = getNotesCount(copiedNotes) === 1 ? '' : 's';
+          musicBoxStore.setState('appState.notesClipboard', copiedNotes);
+          musicBoxStore.publish('OverlayMessage', `${getNotesCount(copiedNotes)} note${s} copied to clipboard`);
         }
         break;
       }
@@ -74,8 +77,11 @@ function setupKeyboardEvents() {
           if (!hasSelectedNotes()) return;
           event.preventDefault();
 
-          musicBoxStore.setState('appState.notesClipboard', cloneExistingNotesOnly(musicBoxStore.state.appState.selectedNotes));
+          const cutNotes = cloneExistingNotesOnly(musicBoxStore.state.appState.selectedNotes);
+          const s = getNotesCount(cutNotes) === 1 ? '' : 's';
+          musicBoxStore.setState('appState.notesClipboard', cutNotes);
           deleteSelectedNotesAndUpdateState();
+          musicBoxStore.publish('OverlayMessage', `${getNotesCount(cutNotes)} note${s} cut and added to clipboard`);
         }
         break;
       }
@@ -89,7 +95,8 @@ function setupKeyboardEvents() {
           event.preventDefault();
 
           const currentBoxType = getCurrentBoxType();
-          const isClipboardContainingUnsupportedNotes = Object.keys(musicBoxStore.state.appState.notesClipboard).some(pitchId => {
+          const clipboardNotes = musicBoxStore.state.appState.notesClipboard;
+          const isClipboardContainingUnsupportedNotes = Object.keys(clipboardNotes).some(pitchId => {
             return !boxTypePitches[currentBoxType].includes(pitchId);
           });
           if (isClipboardContainingUnsupportedNotes) {
@@ -100,7 +107,7 @@ function setupKeyboardEvents() {
             }
           }
 
-          const firstClipboardNoteYPos = Object.values(musicBoxStore.state.appState.notesClipboard).reduce((accumulator, currentValue) => {
+          const firstClipboardNoteYPos = Object.values(clipboardNotes).reduce((accumulator, currentValue) => {
             return Math.min(accumulator, Math.min(...currentValue));
           }, Infinity);
 
@@ -108,8 +115,9 @@ function setupKeyboardEvents() {
           const relativePlayHeadPosition = PLAYHEAD_TO_VIEWPORT_TOP - songTopToViewportTop;
           const pastedNotesStartingYPos = snapToNextInterval(relativePlayHeadPosition, event);
           const pasteDistanceDifference = pastedNotesStartingYPos - firstClipboardNoteYPos;
+          let pasteCount = 0;
 
-          Object.entries(musicBoxStore.state.appState.notesClipboard).forEach(([pitchId, clipboardPitchArray]) => {
+          Object.entries(clipboardNotes).forEach(([pitchId, clipboardPitchArray]) => {
             // Skip pitch if the current music box doesn't support it.
             if (!boxTypePitches[currentBoxType].includes(pitchId)) return;
 
@@ -117,9 +125,15 @@ function setupKeyboardEvents() {
             const dedupedSongDataArray = Array.from(new Set(musicBoxStore.state.songState.songData[pitchId]));
             const pastedNotesArray = clipboardPitchArray.map(noteYPos => noteYPos + pasteDistanceDifference);
             const finalNotesArray = dedupedSongDataArray.concat(pastedNotesArray).sort((a, b) => a - b);
+            pasteCount += pastedNotesArray.length;
 
             setSelectedNotesAndSongDataState(pitchId, pastedNotesArray, finalNotesArray);
           });
+
+          const message = (pasteCount === 1) ? '1 note pasted (click & drag to move it)'
+            : `${pasteCount} notes pasted (click & drag to move them)`;
+
+          musicBoxStore.publish('OverlayMessage', message);
 
           resizePaperIfNeeded(getFinalNoteYPos());
         }

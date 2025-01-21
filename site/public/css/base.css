@@ -67,7 +67,7 @@ img {
   .left-sidebar.on-canvas {
     /* translated on-canvas */
     transform: translateX(0);
-    z-index: var(--off-canvas-sidebar);
+    z-index: var(--z-off-canvas-sidebar);
   }
 }
 
@@ -152,7 +152,7 @@ img {
 }
 .off-canvas-overlay.is-active {
   position: fixed;
-  z-index: var(--off-canvas-sidebar-overlay);
+  z-index: var(--z-off-canvas-sidebar-overlay);
   left: 0;
   right: 0;
   top: 0;

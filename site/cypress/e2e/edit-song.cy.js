@@ -2,6 +2,7 @@
 
 describe('Song edits', () => {
   const musicBoxTypeSelector = '[data-testid="music-box-type-select"]';
+  const overlayMessageSelector = '.overlay-message__content';
   const songUpdatedSelector = '#song-updated-message';
   const dividersSelector = '[data-testid="divider"]';
   const snapToSelector = '#snap-to select';
@@ -378,6 +379,86 @@ describe('Song edits', () => {
       });
     });
 
+    it('should display the expected overlay message when copying one note', () => {
+      cy.visit('/');
+
+      cy.get('#C5').click(5, 40);
+      cy.get('#E5').click(5, 40);
+
+      cy.window().then((win) => {
+        const selectedNote = { 'C5': [40] };
+
+        win.MusicBoxFun.store.setState('appState.selectedNotes', selectedNote);
+
+        cy.window().scrollTo(0, 0);
+
+        cy.get('body').type('{cmd}c');
+
+        cy.get(overlayMessageSelector).should('be.visible')
+          .and('contain', '1 note copied to clipboard');
+      });
+    });
+
+    it('should display the expected overlay message when copying multiple notes', () => {
+      cy.visit('/');
+
+      cy.get('#C5').click(5, 40);
+      cy.get('#E5').click(5, 40);
+
+      cy.window().then((win) => {
+        const selectedNotes = { 'C5': [40], 'E5': [40] };
+
+        win.MusicBoxFun.store.setState('appState.selectedNotes', selectedNotes);
+
+        cy.window().scrollTo(0, 0);
+
+        cy.get('body').type('{cmd}c');
+
+        cy.get(overlayMessageSelector).should('be.visible')
+          .and('contain', '2 notes copied to clipboard');
+      });
+    });
+
+    it('should display the expected overlay message when pasting one note', () => {
+      cy.visit('/');
+
+      cy.get('#C5').click(5, 40);
+      cy.get('#E5').click(5, 40);
+
+      cy.window().then((win) => {
+        const copiedNote = { 'C5': [40] };
+
+        win.MusicBoxFun.store.setState('appState.notesClipboard', copiedNote);
+
+        cy.window().scrollTo(0, 0);
+
+        cy.get('body').type('{cmd}v');
+
+        cy.get(overlayMessageSelector).should('be.visible')
+          .and('contain', '1 note pasted (click & drag to move it)');
+      });
+    });
+
+    it('should display the expected overlay message when pasting multiple notes', () => {
+      cy.visit('/');
+
+      cy.get('#C5').click(5, 40);
+      cy.get('#E5').click(5, 40);
+
+      cy.window().then((win) => {
+        const copiedNotes = { 'C5': [40], 'E5': [40] };
+
+        win.MusicBoxFun.store.setState('appState.notesClipboard', copiedNotes);
+
+        cy.window().scrollTo(0, 0);
+
+        cy.get('body').type('{cmd}v');
+
+        cy.get(overlayMessageSelector).should('be.visible')
+          .and('contain', '2 notes pasted (click & drag to move them)');
+      });
+    });
+
     it('should warn the user of dropped notes when pasting notes into an unsupported music box type', () => {
       cy.visit('/', {
         onBeforeLoad(windowObj) {
@@ -494,6 +575,46 @@ describe('Song edits', () => {
 
         // Verify that the newly pasted note is selected.
         cy.get('#C5 .hole').should('have.class', 'is-selected');
+      });
+    });
+
+    it('should display the expected overlay message when cutting one note', () => {
+      cy.visit('/');
+
+      cy.get('#C5').click(5, 40);
+      cy.get('#E5').click(5, 40);
+
+      cy.window().then((win) => {
+        const selectedNote = { 'C5': [40] };
+
+        win.MusicBoxFun.store.setState('appState.selectedNotes', selectedNote);
+
+        cy.window().scrollTo(0, 0);
+
+        cy.get('body').type('{cmd}x');
+
+        cy.get(overlayMessageSelector).should('be.visible')
+          .and('contain', '1 note cut and added to clipboard');
+      });
+    });
+
+    it('should display the expected overlay message when cutting multiple notes', () => {
+      cy.visit('/');
+
+      cy.get('#C5').click(5, 40);
+      cy.get('#E5').click(5, 40);
+
+      cy.window().then((win) => {
+        const selectedNotes = { 'C5': [40], 'E5': [40] };
+
+        win.MusicBoxFun.store.setState('appState.selectedNotes', selectedNotes);
+
+        cy.window().scrollTo(0, 0);
+
+        cy.get('body').type('{cmd}x');
+
+        cy.get(overlayMessageSelector).should('be.visible')
+          .and('contain', '2 notes cut and added to clipboard');
       });
     });
   });

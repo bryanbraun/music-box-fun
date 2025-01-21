@@ -85,6 +85,12 @@ function hasAnyNotes(notesObject) {
   return Object.values(notesObject).some(notesArray => notesArray.length > 0);
 }
 
+export function getNotesCount(notesObject) {
+  return Object.values(notesObject).reduce((accumulator, notesArray) => {
+    return accumulator + notesArray.length;
+  }, 0);
+}
+
 export function hasSelectedNotes() {
   return hasAnyNotes(musicBoxStore.state.appState.selectedNotes);
 };
@@ -115,7 +121,6 @@ export function cloneExistingNotesOnly(notesObject) {
   });
 
   return clonedNotesObject;
-
 }
 
 // Return a copy of songData with all notes deduped and sorted. This

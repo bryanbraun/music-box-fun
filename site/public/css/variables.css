@@ -78,10 +78,11 @@
   --z-share-box: 28;
   --z-floating-actions: 28;
   --z-audio-context-message: 30;
+  --z-overlay-message: 34;
   --z-selection-box: 40;
   --z-drag-zone--is-dragging: 50;
-  --off-canvas-sidebar-overlay: 75;
-  --off-canvas-sidebar: 80;
+  --z-off-canvas-sidebar-overlay: 75;
+  --z-off-canvas-sidebar: 80;
 
   /* (left-sidebar context) */
   --z-search-results: 1;
