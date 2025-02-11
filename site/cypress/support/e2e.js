@@ -18,3 +18,10 @@ import './commands'
 
 // Alternatively you can use CommonJS syntax:
 // require('./commands')
+
+// Prevent Cypress from failing tests when custom element is already defined
+Cypress.on('uncaught:exception', (err) => {
+  if (err.message.includes('has already been used with this registry')) {
+    return false;
+  }
+});

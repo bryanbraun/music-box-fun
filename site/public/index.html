@@ -25,6 +25,11 @@
     @import "css/utilities.css";
   </style>
 
+  <script type="module">
+    import { Modal } from './js/components/modal.js';
+    customElements.define('music-box-modal', Modal);
+  </script>
+
   <!-- We disable zooming to prevent Safari's auto-zoom on form fields, which is an
        awkward experience. See also: https://stackoverflow.com/a/46254706/1154642 -->
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -338,6 +343,7 @@
       </div>
       <div id="footnote"></div>
     </div>
+    <music-box-modal></music-box-modal>
   </main>
   <script type="module" src="/js/app-entry.js"></script>
   <link rel="stylesheet" href="/css/print.css">

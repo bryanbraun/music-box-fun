@@ -1082,3 +1082,30 @@
   display: none;
 }
 
+.info-button {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: var(--primary-color, #007bff);
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s;
+}
+
+.info-button:hover {
+  background: var(--primary-color-dark, #0056b3);
+}
+
+.info-button:focus {
+  outline: 2px solid var(--primary-color-dark, #0056b3);
+  outline-offset: 2px;
+}
+
