@@ -1,12 +1,6 @@
 # This Caddyfile is for our local development server config.
 
-https:// {
-	# Allows us to visit the site from other devices on the network. Good for mobile testing.
-	# See: https://caddy.community/t/https-on-lan-access-via-different-host/11627/2
-	tls internal {
-		on_demand
-	}
-
+:8000 {
 	# This value of "root" assumes that our "caddy start"
 	# command is being executed from the project root.
 	root site/public
