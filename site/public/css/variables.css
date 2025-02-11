@@ -83,6 +83,7 @@
   --z-drag-zone--is-dragging: 50;
   --z-off-canvas-sidebar-overlay: 75;
   --z-off-canvas-sidebar: 80;
+  --z-modal-overlay: 90;
 
   /* (left-sidebar context) */
   --z-search-results: 1;
