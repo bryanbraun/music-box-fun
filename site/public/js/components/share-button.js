@@ -11,7 +11,7 @@ export class ShareButton extends MBComponent {
   updateEmailShareLink(event) {
     const subject = musicBoxStore.state.songState.songTitle || 'Untitled Song';
     const songUrl = document.location.href;
-    const newHref = `mailto:?subject=${encodeURIComponent(subject)}&body=${songUrl}`;
+    const newHref = `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(songUrl)}`;
 
     if (event) {
       event.currentTarget.href = newHref;
