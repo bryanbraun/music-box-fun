@@ -12,7 +12,7 @@ key.pem
 # Ignore test files
 site/cypress/videos
 site/cypress/screenshots
-
+site/cypress/downloads
 
 # API
 .env.dev

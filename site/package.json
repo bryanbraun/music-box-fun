@@ -20,6 +20,7 @@
     "esinstall": "^1.1.7"
   },
   "dependencies": {
+    "@tonejs/midi": "2.0.28",
     "anchor-js": "5.0.0",
     "classnames": "2.2.6",
     "json-url": "2.4.0",
@@ -28,6 +29,7 @@
   },
   "buildModules": {
     "install": [
+      "@tonejs/midi",
       "anchor-js",
       "classnames",
       "json-url",

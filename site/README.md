@@ -14,4 +14,4 @@ The local development server uses SSL, which is required for frontend features l
 ## Updating dependencies
 
 1. Update the versions in `package.json`
-2. Run `npm install && npm build`
+2. Run `npm install`

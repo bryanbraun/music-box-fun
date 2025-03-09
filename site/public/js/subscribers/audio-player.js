@@ -4,9 +4,8 @@ import { startScrolling, stopScrolling } from '../common/page-scroller.js';
 import { forEachNotes } from '../common/notes.js';
 import { Transport, Part, getContext } from '../vendor/tone.js';
 import { audioContextResuming } from './audio-context.js';
-import { PLAYHEAD_TO_VIEWPORT_TOP } from '../constants.js';
+import { PLAYHEAD_TO_VIEWPORT_TOP, PULSE_PER_QUARTER_NOTE, NOTE_DURATION_IN_TICKS, TICKS_PER_PIXEL } from '../constants.js';
 
-const TICKS_PER_PIXEL = 4;
 const audioContext = getContext();
 
 export const audioPlayer = {
@@ -15,14 +14,9 @@ export const audioPlayer = {
   // Convert our songData into a format that ToneJS can read.
   //  - Each note becomes a time-pitch pair: [time, pitch]
   //  - The pitch is a string in Scientific Pitch Notation
-  //  - The time is measured in ticks (Pulse Per Quarter):
-  //     - The duration of a tick is relative to the tempo.
-  //     - 192 ticks = 1 quarter note.
-  //     - 48px = 1 quarter note (in our UI).
-  //     - Thus, to convert, it's 4 ticks per pixel.
-  //
-  //  For more details, see:
-  //  https://github.com/Tonejs/Tone.js/wiki/Time#ticks
+  //  - The time is measured in ticks, where "8i" = 8 ticks
+  //    from the beginning of the song (see constants.js for
+  //    more details about timing and ticks).
   buildSequence(songData) {
     const sequenceArray = [];
 
@@ -39,16 +33,14 @@ export const audioPlayer = {
   },
 
   defineSong() {
-    Transport.loop = false;
-    Transport.timeSignature = 4;
     Transport.bpm.value = musicBoxStore.state.songState.tempo;
 
     const sequence = this.buildSequence(musicBoxStore.state.songState.songData);
 
     // The "Part" class is built on a base-class that references Tone's default audioContext.
     // Thus, the Transport is able to see the events in this "song" when it's time to play the timeline.
-    new Part(function (time, note) {
-      sampler.triggerAttackRelease(note, '8n', time);
+    new Part((time, note) => {
+      sampler.triggerAttackRelease(note, `${NOTE_DURATION_IN_TICKS}i`, time);
     }, sequence).start(0);
   },
 
@@ -91,6 +83,9 @@ export const audioPlayer = {
   },
 
   setup() {
+    Transport.PPQ = PULSE_PER_QUARTER_NOTE;
+    Transport.timeSignature = 4;
+
     Transport.on('start', startScrolling);
     // Transport.on('stop', stopScrolling);
 
