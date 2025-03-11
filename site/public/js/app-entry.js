@@ -27,6 +27,7 @@ import { SongLinkButton } from './components/song-link-button.js';
 import { ShareButton } from './components/share-button.js';
 import { PaperFooter } from './components/paper-footer.js';
 import { NoteDragZone } from './components/note-drag-zone.js';
+import { Modal } from './components/modal.js';
 
 import { musicBoxStore } from './music-box-store.js';
 import { setupSampler } from './common/sampler.js';
@@ -84,6 +85,9 @@ urlManager.getStateFromUrlAsync().then(urlState => {
   new SpaceEditor().render();
   new WorkspaceSelection().render();
   new NoteDragZone().render();
+
+  // Register our Modal web component
+  customElements.define('music-box-modal', Modal);
 
   // These are hidden by default so they don't need to .render() on page load.
   new OverlayMessage();
