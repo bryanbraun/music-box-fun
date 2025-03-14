@@ -28,21 +28,26 @@
   <!-- We disable zooming to prevent Safari's auto-zoom on form fields, which is an
        awkward experience. See also: https://stackoverflow.com/a/46254706/1154642 -->
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="Make and share music box songs online.">
+  <meta name="description"
+    content="Make and share music box songs online. Browse the song library or create your own DIY music box songs.">
   <meta name="keywords" content="Music Box, Online Music Box, Music Box Songs">
   <meta name="robots" content="follow, index">
   <meta name="theme-color" content="#ffffff" />
 
   <meta property="og:title" content="Music Box Fun - Online Music Box Maker">
-  <meta property="og:description" content="Make and share music box songs online.">
+  <meta property="og:description"
+    content="Make and share music box songs online. Browse the song library or create your own DIY music box songs.">
   <meta property="og:image" content="https://musicbox.fun/images/og-image.png">
   <meta property="og:url" content="https://musicbox.fun">
   <meta property="og:type" content="website">
 
   <link rel="manifest" href="/musicboxfun.webmanifest">
 
-  <link rel="apple-touch-icon" href="/images/icon-192x192.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=PYeynP2871">
+  <!-- See https://evilmartians.com/chronicles/how-to-favicon-in-2021-six-files-that-fit-most-needs -->
+  <link rel="icon" sizes="32x32" href="/images/icon-32x32.ico">
+  <link rel="icon" type="image/svg+xml" href="/images/icon.svg">
+  <link rel="apple-touch-icon" href="/images/icon-padded-180x180.png">
+
   <link rel="canonical" href="https://musicbox.fun" />
 </head>
 
@@ -140,7 +145,7 @@
           <form id="song-title" class="song-title">
             <img src="/images/loading.gif" alt="loading..." />
           </form>
-          <div id="pitch-header" class="pitch-header">
+          <div id="pitch-header" class="pitch-header" data-nosnippet>
             <div class="pitch-label">C</div>
             <div class="pitch-label">D</div>
             <div class="pitch-label">E</div>
@@ -212,8 +217,8 @@
           </div>
         </div>
       </div>
-      <div id="audio-disabled-message" class="audio-disabled-message audio-disabled-message--hidden">
-        <strong>Not hearing anything?</strong><br>Your browser disabled the sound. Click anywhere to enable it.
+      <div id="audio-disabled-message" class="audio-disabled-message audio-disabled-message--hidden" data-nosnippet>
+        <!-- exclude this content from the static page, so it isn't used in search results snippets -->
       </div>
       <div id="overlay-message" class="overlay-message" aria-live="polite" aria-atomic="true"></div>
       <div id="off-canvas-nav-icon" class="nav-icon">
