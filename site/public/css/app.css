@@ -384,6 +384,8 @@
   top: 0;
   background: rgba(255, 255, 255, 0.95);
   padding: 4px var(--paper-side-margin) 3px;
+  /* Fix an issue where the header can stick over the edge of the paper on lo-res displays */
+  margin: 0 1px;
   /* Stack our header above the note-lines and holes */
   z-index: var(--z-music-box-note-header);
 }

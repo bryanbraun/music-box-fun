@@ -1,6 +1,7 @@
 import { MBComponent } from './music-box-component.js';
 import { musicBoxStore } from '../music-box-store.js';
 import { escapeHtml } from '../utils.js';
+import { DEFAULT_SONG_TITLE } from '../constants.js';
 
 export class SongTitle extends MBComponent {
   constructor() {
@@ -21,7 +22,7 @@ export class SongTitle extends MBComponent {
     this.element.innerHTML = `
       <input
         type="text"
-        placeholder="Untitled Song"
+        placeholder="${DEFAULT_SONG_TITLE}"
         value="${escapeHtml(musicBoxStore.state.songState.songTitle)}"
         name="song-title"
         maxlength="140"

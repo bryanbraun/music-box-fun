@@ -13,7 +13,7 @@ These kinds of tests tend to be be slower, which is a good incentive to not writ
 **Notes:**
 
 - I try to choose selectors based on recommendations in the [Cypress docs](https://docs.cypress.io/guides/references/best-practices.html#Selecting-Elements) and [Testing library docs](https://kentcdodds.com/blog/introducing-the-react-testing-library#this-solution). Specifically, I:
-  - Favor id selectors, or targeting an element by it's label or textContent.
+  - Favor existing id selectors, or targeting an element by it's label or textContent.
   - If neither of those will work I place `data-testid` attribute in the component code.
     - I don't put `data-testid` in the static initial page load, because my tests usually want the interactive component that loads later, and Cypress will wait for the `data-testid`s to appear before proceeding.
     - Note: it's ok to have multiple identical `data-testid`s on the same page, unlike html `id`s.

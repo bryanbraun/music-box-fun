@@ -27,6 +27,7 @@ const NOTE_DURATION_IN_TICKS = PULSE_PER_QUARTER_NOTE / 2; // Use an "eighth not
 const EIGHTH_BAR_GAP = QUARTER_BAR_GAP / 2; // 24 - Pixel distance between the gray eighth note bars.
 const SIXTEENTH_BAR_GAP = EIGHTH_BAR_GAP / 2; // 12 - Pixel distance between 16th notes (half-bars).
 const DEFAULT_TEMPO = 110;
+const MAX_TEMPO = 180; // Max tempo is based on how fast a person can rotate the handle. This should be realistic!
 const NUMBER_OF_BARS_PER_PAGE = 52;
 const NOTE_STARTING_THRESHOLD = NOTE_LINE_STARTING_GAP / 2;
 
@@ -35,6 +36,7 @@ const NOTE_STARTING_THRESHOLD = NOTE_LINE_STARTING_GAP / 2;
 // it updates a big chunk of state at once). In cases like these, the final state is the one that matters,
 // so a brief debounce delay can help reduce processing.
 const WAIT_FOR_STATE = 5;
+const DEFAULT_SONG_TITLE = 'Untitled Song';
 
 export {
   QUARTER_BAR_GAP,
@@ -48,7 +50,9 @@ export {
   EIGHTH_BAR_GAP,
   SIXTEENTH_BAR_GAP,
   DEFAULT_TEMPO,
+  MAX_TEMPO,
   NUMBER_OF_BARS_PER_PAGE,
   NOTE_STARTING_THRESHOLD,
   WAIT_FOR_STATE,
+  DEFAULT_SONG_TITLE,
 }

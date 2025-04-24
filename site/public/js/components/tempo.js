@@ -1,7 +1,7 @@
 import { MBComponent } from './music-box-component.js';
 import { TempoField } from './tempo-field.js';
 import { TempoSlider } from './tempo-slider.js';
-import { DEFAULT_TEMPO } from '../constants.js';
+import { DEFAULT_TEMPO, MAX_TEMPO } from '../constants.js';
 
 export class Tempo extends MBComponent {
   constructor() {
@@ -15,7 +15,7 @@ export class Tempo extends MBComponent {
 
     // Constants
     this.MIN = 50;
-    this.MAX = 180;
+    this.MAX = MAX_TEMPO;
   }
 
   render() {

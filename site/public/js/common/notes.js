@@ -1,5 +1,6 @@
 import { QUARTER_BAR_GAP } from '../constants.js';
 import { musicBoxStore } from '../music-box-store.js';
+import { initialState } from '../state.js';
 
 // The "dead zone" is the region after a note, wherein if a note is placed, it
 // will display as red and will not play a note (due to mechanical limitations).
@@ -98,6 +99,12 @@ export function hasSelectedNotes() {
 export function isNotesClipboardEmpty() {
   return !hasAnyNotes(musicBoxStore.state.appState.notesClipboard);
 };
+
+export function isCurrentSongEmpty() {
+  const isSongTitleDefault = musicBoxStore.state.songState.songTitle === initialState.songState.songTitle;
+  const isTempoDefault = musicBoxStore.state.songState.tempo === initialState.songState.tempo;
+  return isSongTitleDefault && isTempoDefault && !hasAnyNotes(musicBoxStore.state.songState.songData);
+}
 
 // Return a copy of the notesObject with all notes removed.
 export function clearAllExistingNotes(notesObject) {

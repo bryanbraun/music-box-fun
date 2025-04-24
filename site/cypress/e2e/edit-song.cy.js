@@ -473,9 +473,7 @@ describe('Song edits', () => {
       cy.get('#C5').click(5, 40); // Supported on 15-note box
 
       cy.get('body').type('{cmd}a');
-      cy.get('body').type('{cmd}c');
-
-      cy.get(fileSelectSelector).select('new-song');
+      cy.get('body').type('{cmd}x');
 
       cy.get(musicBoxTypeSelector).select('15');
 

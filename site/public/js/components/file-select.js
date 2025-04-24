@@ -2,9 +2,10 @@ import { MBComponent } from './music-box-component.js';
 import { musicBoxStore } from '../music-box-store.js';
 import { initialState } from '../state.js';
 import { cloneDeep } from '../utils.js';
-import { clearAllExistingNotes } from '../common/notes.js';
-import { forEachNotes } from '../common/notes.js';
-import { PULSE_PER_QUARTER_NOTE, NOTE_DURATION_IN_TICKS, TICKS_PER_PIXEL } from '../constants.js';
+import { clearAllExistingNotes, isCurrentSongEmpty } from '../common/notes.js';
+import { confirmationDialog } from '../common/confirmation-dialog.js';
+import { getMidiBlobFromSongState, getSongStateFromMidiBlob } from '../common/midi.js';
+import { DEFAULT_SONG_TITLE } from '../constants.js';
 
 export class FileSelect extends MBComponent {
   constructor() {
@@ -12,93 +13,75 @@ export class FileSelect extends MBComponent {
       element: document.querySelector('#file')
     });
 
-    this.handleChange = this.handleChange.bind(this);
+    this.handleDropdownChange = this.handleDropdownChange.bind(this);
   }
 
-  handleChange(event) {
+  async handleDropdownChange(event) {
     switch (event.target.value) {
       case 'new-song':
-        let newSongState = cloneDeep(initialState).songState;
-        newSongState.songData = clearAllExistingNotes(musicBoxStore.state.songState.songData);
-        musicBoxStore.setState('songState', newSongState);
-        window.scrollTo(0, 0);
+        if (isCurrentSongEmpty()) break;
+
+        try {
+          await confirmationDialog('Creating a new song will overwrite your current song. \nAre you sure you want to continue?');
+          let newSongState = cloneDeep(initialState).songState;
+          newSongState.songData = clearAllExistingNotes(musicBoxStore.state.songState.songData);
+          musicBoxStore.setState('songState', newSongState);
+          window.scrollTo(0, 0);
+        } catch (error) { } // User cancelled the confirmation dialog, do nothing.
         break;
       case 'print-song':
         window.print()
         break;
+      case 'import-midi':
+        try {
+          if (!isCurrentSongEmpty()) {
+            await confirmationDialog('Importing this song will overwrite your current song. \nAre you sure you want to continue?');
+          }
+          const hiddenFileInput = this.element.querySelector('input[type=file]');
+          hiddenFileInput.click(); // Triggers handleMidiImport()
+        } catch (error) { }; // User cancelled the confirmation dialog, do nothing.
+        break;
       case 'export-midi':
-        this.exportMidi();
+        try {
+          const blob = await getMidiBlobFromSongState(musicBoxStore.state.songState);
+          const songTitleToExport = musicBoxStore.state.songState.songTitle || DEFAULT_SONG_TITLE;
+          const downloadLink = document.createElement('a');
+          downloadLink.href = URL.createObjectURL(blob);
+          downloadLink.download = `${songTitleToExport.replace(/\s+/g, '_')}.mid`;
+          downloadLink.click();
+        } catch (error) {
+          window.alert('An error occurred and the MIDI file could not be exported.');
+          console.error('Error exporting MIDI:', error);
+        }
         break;
     }
 
-    event.target.value = 'file';
+    event.target.value = 'file'; // In all cases, return focus to the "File" option.
   }
 
-  // Eventually: move the midi parts out into a separate file.
-  async exportMidi() {
-    const songData = musicBoxStore.state.songState.songData;
-    const tempo = musicBoxStore.state.songState.tempo;
-    const songTitle = musicBoxStore.state.songState.songTitle || 'Untitled Song';
+  async handleMidiImport(event) {
+    const file = event.target.files[0];
+    if (!file) return;
 
     try {
-      const { Midi } = await import('../vendor/@tonejs/midi.js');
+      const [newSongState, meta] = await getSongStateFromMidiBlob(file);
 
-      // Create a new MIDI file
-      const midi = new Midi();
-      midi.header.fromJSON({
-        name: songTitle,
-        ppq: PULSE_PER_QUARTER_NOTE,
-        tempos: [
-          {
-            bpm: tempo,
-            ticks: 0
-          }
-        ],
-        timeSignatures: [
-          {
-            timeSignature: [4, 4],
-            ticks: 0
-          }
-        ],
-        keySignatures: [],
-        meta: []
-      });
+      musicBoxStore.setState('songState', newSongState);
 
-      // Add a track
-      const track = midi.addTrack();
-      track.name = "Music Box";
-      track.instrument.name = "music box";
-
-      // Add notes to the track
-      Object.keys(songData).forEach(pitchId => {
-        forEachNotes(songData[pitchId], (yPos, isSilent) => {
-          if (!isSilent) {
-            const ticksPosition = yPos * TICKS_PER_PIXEL;
-
-            track.addNote({
-              name: pitchId,
-              ticks: ticksPosition,
-              durationTicks: NOTE_DURATION_IN_TICKS
-            });
-          }
-        });
-      });
-
-      // Generate the MIDI file
-      const midiData = midi.toArray();
-      const blob = new Blob([midiData], { type: 'audio/midi' });
-
-      // Create a download link and click it
-      const downloadLink = document.createElement('a');
-      downloadLink.href = URL.createObjectURL(blob);
-      downloadLink.download = `${songTitle.replace(/\s+/g, '_')}.mid`;
-      document.body.appendChild(downloadLink);
-      downloadLink.click();
-      document.body.removeChild(downloadLink);
+      if (meta.someNotesCouldNotBeImported) {
+        // We use setTimeout to ensure the alert is shown after the state update (for a better user experience). This is
+        // necessary because even though the state change runs first (synchronously), the alert still blocks the UI thread.
+        setTimeout(() => {
+          window.alert('Some notes could not be imported because they were outside of the range of this music box. \n\nAll other notes were imported successfully. 👍');
+        }, 0);
+      }
     } catch (error) {
-      window.alert('An error occurred and the MIDI file could not be exported.');
-      console.error('Error exporting MIDI:', error);
+      window.alert('An error occurred and the MIDI file could not be imported.');
+      console.error('Error importing MIDI:', error);
     }
+
+    // We reset the file input value to allow re-importing the same file.
+    event.target.value = '';
   }
 
   render() {
@@ -108,12 +91,21 @@ export class FileSelect extends MBComponent {
           <select class="select file-select" data-testid="file-select" name="file-select">
             <option selected disabled value="file">File</option>
             <option value="new-song">New blank song</option>
-            <option value="print-song">Print song</option>
+            <option value="import-midi">Import MIDI</option>
             <option value="export-midi">Export as MIDI</option>
+            <option value="print-song">Print song</option>
           </select>
         </label>
+        <input
+          type="file"
+          class="hidden"
+          accept=".mid, .midi"
+        />
       `;
 
-    this.element.querySelector('select').addEventListener('change', this.handleChange);
+    this.element.querySelector('select').addEventListener('change', this.handleDropdownChange);
+
+    // We use a hidden file input for MIDI import to make it testable via Cypress.
+    this.element.querySelector('input[type=file]').addEventListener('change', this.handleMidiImport);
   }
 }

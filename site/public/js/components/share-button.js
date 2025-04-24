@@ -1,5 +1,6 @@
 import { MBComponent } from './music-box-component.js';
 import { musicBoxStore } from '../music-box-store.js';
+import { DEFAULT_SONG_TITLE } from '../constants.js';
 
 export class ShareButton extends MBComponent {
   constructor() {
@@ -9,7 +10,7 @@ export class ShareButton extends MBComponent {
   }
 
   updateEmailShareLink(event) {
-    const subject = musicBoxStore.state.songState.songTitle || 'Untitled Song';
+    const subject = musicBoxStore.state.songState.songTitle || DEFAULT_SONG_TITLE;
     const songUrl = document.location.href;
     const newHref = `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(songUrl)}`;
 
@@ -22,7 +23,7 @@ export class ShareButton extends MBComponent {
 
   handleWebShareClick() {
     navigator.share({
-      title: musicBoxStore.state.songState.songTitle || 'Untitled Song',
+      title: musicBoxStore.state.songState.songTitle || DEFAULT_SONG_TITLE,
       url: document.location.href
     });
   }

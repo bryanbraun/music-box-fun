@@ -24,7 +24,7 @@ export const initialState = {
   // BREAK LINKS TO EXISTING SONGS. MAKE SURE YOUR CHANGES ARE VERSIONED
   // OR BACKWARDS COMPATIBLE. SEE "/DOCS/URL-DATA.MD" FOR DETAILS.
   songState: {
-    songTitle: '',
+    songTitle: '', // We leave this empty and populate it with a default on export/share.
     tempo: DEFAULT_TEMPO,
     songData: {
       C4: [],
