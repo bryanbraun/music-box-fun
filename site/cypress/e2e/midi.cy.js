@@ -2,8 +2,7 @@
 
 import { Midi } from '../../public/js/vendor/@tonejs/midi.js';
 
-const fileSelectSelector = '[data-testid="file-select"]';
-const fileUploadSelector = '#file input[type="file"]';
+const fileUploadSelector = '#file-dropdown input[type="file"]';
 
 describe('MIDI export', () => {
   beforeEach(() => {
@@ -23,7 +22,8 @@ describe('MIDI export', () => {
     cy.visit('/#1XQAAAAJMAAAAAAAAAABBqEgrEn85P544Pg18ZR5V7leb0PO4nKjjJCWqJvSndRoZiLMKMOOUkT0p4n2E_X8l3A7l9Sm31RK4zD-5XCQBkuHC3ACyNV__tmTAAA');
 
     // Export the song to MIDI
-    cy.get(fileSelectSelector).select('export-midi');
+    cy.get('#file-dropdown__menu').click();
+    cy.get('[data-action="export-midi"').click();
 
     // Verify the file was downloaded
     cy.readFile(`cypress/downloads/MIDI_Content_Test.mid`, 'binary', { timeout: 15000 })
@@ -69,8 +69,6 @@ describe('MIDI export', () => {
         expect(notes[2].ticks).to.equal(expectedTicks[2]);
         expect(notes[3].ticks).to.equal(expectedTicks[3]);
       });
-
-    cy.get(`${fileSelectSelector} [selected]`).should('have.value', 'file'); // selected option resets
   });
 });
 
@@ -87,13 +85,13 @@ describe('MIDI import', () => {
         }
       });
 
-      cy.get(fileSelectSelector).select('import-midi');
+      cy.get('#file-dropdown__menu').click();
+      cy.get('[data-action="import-midi"').click();
 
       cy.window().its('confirm').should('be.called');
 
       cy.get('#song-title input').should('have.value', 'My song');
       cy.get('#note-lines .hole').should('have.length', 1);
-      cy.get(`${fileSelectSelector} [selected]`).should('have.value', 'file');
     });
 
     it("doesn't launch when there is no existing song data to overwrite", () => {
@@ -103,7 +101,8 @@ describe('MIDI import', () => {
         }
       });
 
-      cy.get(fileSelectSelector).select('import-midi');
+      cy.get('#file-dropdown__menu').click();
+      cy.get('[data-action="import-midi"').click();
 
       cy.window().its('confirm').should('not.be.called');
     });

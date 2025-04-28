@@ -22,8 +22,8 @@
   --surface-color: var(--mb-gray-10);
   --music-box-color: var(--mb-gray-30);
   --controls-button-color: var(--mb-offwhite);
-  --controls-border-color: var(--mb-gray-20);
-  --controls-border-bottom-color: var(--mb-gray-35);
+  --controls-button-border-color: var(--mb-gray-20);
+  --controls-button-border-bottom-color: var(--mb-gray-35);
   --active-hole-color: #ffb500;
   --highlighted-pitch-color: #eaeaa4;
   --link-color: var(--mb-black);

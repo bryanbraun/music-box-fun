@@ -1,4 +1,4 @@
-/* generic select styles */
+/* generic select button styles */
 .select {
   width: 100%;
   -webkit-appearance: none;
@@ -9,9 +9,9 @@
   background-repeat: no-repeat;
   background-position: right 7px center;
   border-radius: 5px;
-  border: 1px solid var(--controls-border-color);
-  border-bottom: 1px solid var(--controls-border-bottom-color);
-  padding: 0.4rem 1.2rem 0.4rem 0.4rem;
+  border: 1px solid var(--controls-button-border-color);
+  border-bottom: 1px solid var(--controls-button-border-bottom-color);
+  padding: 0.4rem 1.2rem 0.3rem 0.4rem;
   cursor: pointer;
 }
 .select::after > .select {

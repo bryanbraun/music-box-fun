@@ -7,17 +7,23 @@ import { confirmationDialog } from '../common/confirmation-dialog.js';
 import { getMidiBlobFromSongState, getSongStateFromMidiBlob } from '../common/midi.js';
 import { DEFAULT_SONG_TITLE } from '../constants.js';
 
-export class FileSelect extends MBComponent {
+export class FileDropdown extends MBComponent {
   constructor() {
     super({
-      element: document.querySelector('#file')
+      element: document.querySelector('#file-dropdown')
     });
 
-    this.handleDropdownChange = this.handleDropdownChange.bind(this);
+    this.handleDropdownItemClick = this.handleDropdownItemClick.bind(this);
+    this.handleMidiImport = this.handleMidiImport.bind(this);
   }
 
-  async handleDropdownChange(event) {
-    switch (event.target.value) {
+  async handleDropdownItemClick(event) {
+    // Only handle clicks on menu items, not the entire menu
+    if (!event.target.classList.contains('file-dropdown__item')) return;
+
+    const action = event.target.dataset.action;
+
+    switch (action) {
       case 'new-song':
         if (isCurrentSongEmpty()) break;
 
@@ -30,7 +36,7 @@ export class FileSelect extends MBComponent {
         } catch (error) { } // User cancelled the confirmation dialog, do nothing.
         break;
       case 'print-song':
-        window.print()
+        window.print();
         break;
       case 'import-midi':
         try {
@@ -38,8 +44,8 @@ export class FileSelect extends MBComponent {
             await confirmationDialog('Importing this song will overwrite your current song. \nAre you sure you want to continue?');
           }
           const hiddenFileInput = this.element.querySelector('input[type=file]');
-          hiddenFileInput.click(); // Triggers handleMidiImport()
-        } catch (error) { }; // User cancelled the confirmation dialog, do nothing.
+          hiddenFileInput.click(); // This works in Safari because it's triggered from a click event
+        } catch (error) { } // User cancelled the confirmation dialog, do nothing.
         break;
       case 'export-midi':
         try {
@@ -56,7 +62,8 @@ export class FileSelect extends MBComponent {
         break;
     }
 
-    event.target.value = 'file'; // In all cases, return focus to the "File" option.
+    // Hide the dropdown after selection
+    event.target.dispatchEvent(new CustomEvent('menuClose', { bubbles: true }));
   }
 
   async handleMidiImport(event) {
@@ -80,32 +87,29 @@ export class FileSelect extends MBComponent {
       console.error('Error importing MIDI:', error);
     }
 
-    // We reset the file input value to allow re-importing the same file.
+    // We reset the file input value to allow re-importing of the same file.
     event.target.value = '';
   }
 
   render() {
+    // Note: this heading is a div to work around a bug. See: https://github.com/vanillawc/wc-menu-wrapper/issues/3
     this.element.innerHTML = `
-        <label>
-          <span class="visuallyhidden">File</span>
-          <select class="select file-select" data-testid="file-select" name="file-select">
-            <option selected disabled value="file">File</option>
-            <option value="new-song">New blank song</option>
-            <option value="import-midi">Import MIDI</option>
-            <option value="export-midi">Export as MIDI</option>
-            <option value="print-song">Print song</option>
-          </select>
-        </label>
-        <input
-          type="file"
-          class="hidden"
-          accept=".mid, .midi"
-        />
-      `;
+      <wc-menu-wrapper id="file-dropdown__menu" heading="file-dropdown__heading" item="file-dropdown__item">
+        <div class="select file-dropdown__heading" role="button">File</div>
+        <button class="file-dropdown__item" data-action="new-song">New blank song</button>
+        <button class="file-dropdown__item" data-action="import-midi">Import MIDI</button>
+        <button class="file-dropdown__item" data-action="export-midi">Export as MIDI</button>
+        <button class="file-dropdown__item" data-action="print-song">Print song</button>
+      </wc-menu-wrapper>
 
-    this.element.querySelector('select').addEventListener('change', this.handleDropdownChange);
+      <input
+        type="file"
+        class="hidden"
+        accept=".mid, .midi"
+      />
+    `;
 
-    // We use a hidden file input for MIDI import to make it testable via Cypress.
+    this.element.querySelector('#file-dropdown__menu').addEventListener('click', this.handleDropdownItemClick); // Uses event delegation
     this.element.querySelector('input[type=file]').addEventListener('change', this.handleMidiImport);
   }
 }

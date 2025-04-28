@@ -21,6 +21,7 @@
   },
   "dependencies": {
     "@tonejs/midi": "2.0.28",
+    "@vanillawc/wc-menu-wrapper": "0.0.5",
     "anchor-js": "5.0.0",
     "classnames": "2.2.6",
     "json-url": "2.4.0",
@@ -30,6 +31,7 @@
   "buildModules": {
     "install": [
       "@tonejs/midi",
+      "@vanillawc/wc-menu-wrapper",
       "anchor-js",
       "classnames",
       "json-url",

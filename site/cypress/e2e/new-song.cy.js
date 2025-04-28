@@ -13,7 +13,8 @@ describe('New blank song', () => {
       }
     });
 
-    cy.get('[data-testid="file-select"]').select('new-song');
+    cy.get('#file-dropdown__menu').click();
+    cy.get('[data-action="new-song"').click();
 
     cy.window().its('confirm').should('be.called');
 
@@ -42,7 +43,8 @@ describe('New blank song', () => {
       }
     });
 
-    cy.get('[data-testid="file-select"]').select('new-song');
+    cy.get('#file-dropdown__menu').click();
+    cy.get('[data-action="new-song"').click();
 
     cy.window().its('confirm').should('be.called');
 
@@ -66,7 +68,8 @@ describe('New blank song', () => {
       }
     });
 
-    cy.get('[data-testid="file-select"]').select('new-song');
+    cy.get('#file-dropdown__menu').click();
+    cy.get('[data-action="new-song"').click();
     cy.window().its('confirm').should('not.be.called');
   });
 });

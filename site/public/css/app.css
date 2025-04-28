@@ -743,17 +743,32 @@
   fill: var(--controls-button-color);
 }
 
-.file-select {
-  padding-left: 1.8rem;
-  padding-bottom: 0.3rem;
+div:has(> .file-dropdown__item) {
+  border: 1px solid var(--mb-gray-30);
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow: 0px 3px 10px 0 rgb(0 0 0 / 20%);
+}
+.file-dropdown__heading {
   background-image: url(/images/file.svg), url(/images/select-down.svg);
   background-position: 7px center, right 7px center;
   background-repeat: no-repeat, no-repeat;
+  padding-left: 1.8rem;
+}
+.file-dropdown__item {
+  font-family: system-ui, Helvetica, sans-serif;
+  font-size: 12px;
+  background: var(--mb-offwhite);
+  padding: 0.5rem;
+  cursor: pointer;
+  border: none;
+}
+.file-dropdown__item:hover {
+  background-color: var(--mb-gray-6);
 }
 
 .music-box-type-select {
   padding-left: 1.8rem;
-  padding-bottom: 0.3rem; /* remove some padding because this text has no descenders (and we don't expect it to) */
   background-image: url(/images/music-box-type.svg),
                     url(/images/select-down.svg);
   background-position: 7px center, right 7px center;
@@ -885,8 +900,8 @@
   padding: 4px 10px;
   background: var(--controls-button-color);
   color: var(--text-color);
-  border: 1px solid var(--controls-border-color);
-  border-bottom: 1px solid var(--controls-border-bottom-color);
+  border: 1px solid var(--controls-button-border-color);
+  border-bottom: 1px solid var(--controls-button-border-bottom-color);
   border-radius: 4px;
   box-shadow: 0 1px 3px -3px rgba(0,0,0,1);
   cursor: pointer;

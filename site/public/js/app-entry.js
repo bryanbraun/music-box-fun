@@ -5,7 +5,7 @@ import { Search } from './components/search.js';
 import { BrowseTabs } from './components/browse-tabs.js';
 import { RightSidebar } from './components/right-sidebar.js';
 import { PlayButton } from './components/play-button.js';
-import { FileSelect } from './components/file-select.js';
+import { FileDropdown } from './components/file-dropdown.js';
 import { MusicBoxTypeSelect } from './components/music-box-type-select.js';
 import { Tempo } from './components/tempo.js';
 import { SnapToGridSelect } from './components/snap-to-grid-select.js';
@@ -27,6 +27,7 @@ import { SongLinkButton } from './components/song-link-button.js';
 import { ShareButton } from './components/share-button.js';
 import { PaperFooter } from './components/paper-footer.js';
 import { NoteDragZone } from './components/note-drag-zone.js';
+import "./vendor/@vanillawc/wc-menu-wrapper.js"; // used in file-dropdown.js
 
 import { musicBoxStore } from './music-box-store.js';
 import { setupSampler } from './common/sampler.js';
@@ -63,7 +64,7 @@ urlManager.getStateFromUrlAsync().then(urlState => {
   new BrowseTabs().render();
   new RightSidebar().render();
   new PlayButton({ id: 'sidebar-play-button' }).render();
-  new FileSelect().render();
+  new FileDropdown().render();
   new MusicBoxTypeSelect().render();
   new Tempo().render();
   new SnapToGridSelect().render();

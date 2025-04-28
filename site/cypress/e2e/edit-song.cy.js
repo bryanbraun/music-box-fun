@@ -340,8 +340,6 @@ describe('Song edits', () => {
   });
 
   describe('copy/paste', () => {
-    const fileSelectSelector = '[data-testid="file-select"]';
-
     it('should enable a user to copy selected notes and paste them into the song.', () => {
       cy.visit('/');
 
@@ -511,31 +509,36 @@ describe('Song edits', () => {
       cy.get('body').type('{cmd}a');
       cy.get('body').type('{cmd}c');
 
-      cy.get(fileSelectSelector).select('new-song');
+      cy.get('#file-dropdown__menu').click();
+      cy.get('[data-action="new-song"').click();
       cy.get(snapToSelector).select("grid");
       cy.window().scrollTo(0, '100%');
       cy.get('body').type('{cmd}v');
       cy.get('#C5 .hole').should('have.attr', 'style', `transform: translateY(2560px)`);
 
-      cy.get(fileSelectSelector).select('new-song');
+      cy.get('#file-dropdown__menu').click();
+      cy.get('[data-action="new-song"').click();
       cy.get(snapToSelector).select("16ths");
       cy.window().scrollTo(0, '100%');
       cy.get('body').type('{cmd}v');
       cy.get('#C5 .hole').should('have.attr', 'style', `transform: translateY(2548px)`);
 
-      cy.get(fileSelectSelector).select('new-song');
+      cy.get('#file-dropdown__menu').click();
+      cy.get('[data-action="new-song"').click();
       cy.get(snapToSelector).select("none");
       cy.window().scrollTo(0, '100%');
       cy.get('body').type('{cmd}v');
       cy.get('#C5 .hole').should('have.attr', 'style', `transform: translateY(2545px)`);
 
-      cy.get(fileSelectSelector).select('new-song');
+      cy.get('#file-dropdown__menu').click();
+      cy.get('[data-action="new-song"').click();
       cy.get(snapToSelector).select("⅛ triplet");
       cy.window().scrollTo(0, '100%');
       cy.get('body').type('{cmd}v');
       cy.get('#C5 .hole').should('have.attr', 'style', `transform: translateY(2560px)`);
 
-      cy.get(fileSelectSelector).select('new-song');
+      cy.get('#file-dropdown__menu').click();
+      cy.get('[data-action="new-song"').click();
       cy.get(snapToSelector).select("¼ triplet");
       cy.window().scrollTo(0, '100%');
       cy.get('body').type('{cmd}v');

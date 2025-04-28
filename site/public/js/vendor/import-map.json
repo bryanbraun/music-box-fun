@@ -1,6 +1,7 @@
 {
   "imports": {
     "@tonejs/midi": "./@tonejs/midi.js",
+    "@vanillawc/wc-menu-wrapper": "./@vanillawc/wc-menu-wrapper.js",
     "anchor-js": "./anchor-js.js",
     "classnames": "./classnames.js",
     "json-url": "./json-url.js",
