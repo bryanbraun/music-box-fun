@@ -55,5 +55,3 @@ This project uses the GNU GPLv3 License, amended with [the Commons Clause](https
 This means you get [the terms of the GPLv3](https://choosealicense.com/licenses/gpl-3.0/), excluding the permission to use it for commercial use.
 
 ![Visual summary of the Permissions Conditions and Limitations of the GPLv3 with a Commons Clause](license-summary.png)
-
-

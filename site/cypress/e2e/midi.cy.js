@@ -5,11 +5,6 @@ import { Midi } from '../../public/js/vendor/@tonejs/midi.js';
 const fileUploadSelector = '#file-dropdown input[type="file"]';
 
 describe('MIDI export', () => {
-  beforeEach(() => {
-    // Clear downloads folder before each test
-    cy.exec('rm -f cypress/downloads/*', { log: true, failOnNonZeroExit: false });
-  });
-
   it('should export a song with correct MIDI content', () => {
     // Initial song
     //   Box type: 15

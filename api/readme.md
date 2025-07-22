@@ -143,5 +143,5 @@ You can also view logs in the running container with `docker logs api`.
 
 ## Tests
 
-See [our testing approach document](../site/cypress/readme.md#first-time-setup-for-deploys).
+See [our testing approach document](../site/cypress/README.md#first-time-setup-for-deploys).
 
