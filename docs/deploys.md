@@ -6,23 +6,26 @@ We use docker-context to simplify this process, as described in [this blog post]
 
 ## First time setup for deploys
 
-Create a production docker context called `prod`, that references the prod server IP address.
+Create a production docker context called `mbf-prod`, that references the prod server IP address.
 
 ```bash
 # Note: deploys will only work if your SSH key is registered with the web host.
-docker context create prod --docker "host=ssh://root@198.199.79.182"
+docker context create mbf-prod --docker "host=ssh://root@198.199.79.182"
 ```
 
-Now, we can use the `-c prod` argument to execute any docker or docker-compose commands remotely on the prod server. For example:
-- `docker -c prod ps` - See what containers are running
-- `docker -c prod logs api` - Inspect the logs of the api container
-- `docker -c prod stop api` - Stops the `api` container
+Now, we can use the `-c mbf-prod` argument to execute any docker or docker-compose commands remotely on the prod server. For example:
+- `docker -c mbf-prod ps` - See what containers are running
+- `docker -c mbf-prod logs api` - Inspect the logs of the api container
+- `docker -c mbf-prod stop api` - Stops the `api` container
 
 ## Deploy Commands
 
-Deploy commands can be found in the Makefile, and are executed from the project root. Examples include:
+Deploy commands can be found in the Makefile, and are executed from the project root. Specifically:
 
-- `make deploy-api` - Builds an image based on the state of my local `api` codebase and deploys it to prod.
+`make deploy-api`
+
+  1. Builds an image based on the state of my local `api` codebase and pushes it to [the music-box-fun container registry on Github](https://github.com/bryanbraun/music-box-fun/pkgs/container/music-box-fun/versions).
+  2. Uses docker-context to access the prod server, pull down the newly built image, stop the old containers, and start the new containers (running migrations, as needed).
 
 The frontend code is currently automatically deployed when the repo is pushed to Github.
 

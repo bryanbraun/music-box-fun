@@ -1,4 +1,3 @@
-version: "3.8"
 services:
   db:
     # for convenience in attaching
@@ -25,6 +24,8 @@ services:
   api:
     # for convenience in attaching
     container_name: api
+
+    platform: linux/amd64
 
     # this builds our image off of the Dockerfile in this folder (instead of sourcing it from elsewhere)
     build:

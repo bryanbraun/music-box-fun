@@ -1,7 +1,7 @@
-version: "3.8"
 services:
   db:
-    container_name: db     # for convenience in attaching
+    # for convenience in attaching
+    container_name: db
 
     # Base our container on the official Postgres image at hub.docker.com.
     # See: https://hub.docker.com/_/postgres/
@@ -25,15 +25,10 @@ services:
   api:
     container_name: api     # for convenience in attaching
 
-    # this builds our image off of the Dockerfile in this folder (instead of sourcing it from elsewhere)
-    build:
-      context: .
-      args:
-        # Skips any gems inside a "group :development do" condition, in our Gemfile.
-        BUNDLE_WITHOUT: development
+    platform: linux/amd64
 
-    # this names our freshly built image 'musicboxfun'
-    image: musicboxfun
+    # Use pre-built image from GitHub Container Registry instead of building
+    image: ghcr.io/bryanbraun/music-box-fun:latest
 
     volumes:
       - /root/musicboxfun_volumes/log:/var/www/musicboxfun/log

@@ -3,3 +3,5 @@
 pg/*
 log/*
 tmp/*
+.env*
+master.key
