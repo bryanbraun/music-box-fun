@@ -140,7 +140,7 @@ export class BrowseTabSongLibrary extends MBComponent {
       </div>
       <div class="library-note">
         ${lastUpdatedText ? `<div>Song Library last updated: ${lastUpdatedText}</div>` : ''}
-        <div>To add your song to the library, <a id="library-add-mailto" href="mailto:bbraun7@gmail.com?subject=Add%20music%20box%20song%20to%20library" target="_blank">email it to me</a>.</div>
+        <div>To add your song to the library, <a id="library-add-mailto" href="mailto:bbraun7@gmail.com?subject=Add%20music%20box%20song%20to%20library" target="_blank" title="bbraun7@gmail.com">email it to me</a>.</div>
       </div>
     `;
 
