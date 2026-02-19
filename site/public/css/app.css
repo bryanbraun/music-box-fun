@@ -250,6 +250,9 @@
   color: var(--mb-gray-60);
   border-top: 1px solid var(--mb-gray-20);
 }
+.library-note > div + div {
+  margin-top: 0.125rem;
+}
 
 .greater-workspace {
   margin-left: var(--left-sidebar-width);

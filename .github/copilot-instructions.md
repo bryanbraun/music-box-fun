@@ -1,1 +1,1 @@
-docs/.rules.md
+../docs/.rules.md

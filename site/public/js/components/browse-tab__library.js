@@ -23,12 +23,18 @@ export class BrowseTabSongLibrary extends MBComponent {
     this.fetchSongs = this.fetchSongs.bind(this);
     this.nextPageUrl = null;
     this.pendingFetch = false;
+    this.dateFormat = new Intl.DateTimeFormat(undefined, {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric'
+    });
   }
 
   async fetchSongs(apiPath) {
     let songsData = {
       isError: false,
       songs: [],
+      last_updated: null,
       meta: {}
     };
 
@@ -116,6 +122,7 @@ export class BrowseTabSongLibrary extends MBComponent {
     const searchQuery = musicBoxStore.state.appState.songLibraryQuery;
     const apiPath = `/v1/songs${searchQuery ? `?q=${searchQuery}` : ''}`;
     const songsData = await this.fetchSongs(apiPath);
+    const lastUpdatedText = songsData.last_updated ? this.dateFormat.format(new Date(songsData.last_updated)) : null;
 
     this.nextPageUrl = songsData.meta.next;
 
@@ -131,7 +138,10 @@ export class BrowseTabSongLibrary extends MBComponent {
           `}
         `}
       </div>
-      <p class="library-note">To add your song to the library, <a id="library-add-mailto" href="mailto:bbraun7@gmail.com?subject=Add%20music%20box%20song%20to%20library" target="_blank">email it to me</a>.</p>
+      <div class="library-note">
+        ${lastUpdatedText ? `<div>Song Library last updated: ${lastUpdatedText}</div>` : ''}
+        <div>To add your song to the library, <a id="library-add-mailto" href="mailto:bbraun7@gmail.com?subject=Add%20music%20box%20song%20to%20library" target="_blank">email it to me</a>.</div>
+      </div>
     `;
 
     let backToBrowseLinkEl = this.element.querySelector('#back-to-browse-link');

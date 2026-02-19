@@ -14,11 +14,13 @@ class SongsController < ApplicationController
       full_result = Song.search_by_title(query_param).with_pg_search_highlight
       filtered_song_data = full_result.limit(songs_per_page).offset(offset).as_json(only: [:pg_search_highlight, :data, :creator, :creator_url])
       next_page_link = "/v1/songs?q=#{query_param}&offset=#{offset + songs_per_page}&limit=#{songs_per_page}"
+      last_updated = nil # Not relevant for search results
     else
       # For non-search requests, return recent songs with pagination data
       full_result = Song.order(created_at: :desc)
       filtered_song_data = full_result.limit(songs_per_page).offset(offset).as_json(only: [:title, :data, :creator, :creator_url])
       next_page_link = "/v1/songs?offset=#{offset + songs_per_page}&limit=#{songs_per_page}"
+      last_updated = full_result.first&.updated_at
     end
 
     total = full_result.size
@@ -26,6 +28,7 @@ class SongsController < ApplicationController
 
     render json: {
       songs: filtered_song_data,
+      last_updated: last_updated,
       # metadata for pagination
       meta: {
         total: total,

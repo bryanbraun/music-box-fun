@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2021_11_09_041341) do
+ActiveRecord::Schema[7.2].define(version: 2026_02_19_000000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "unaccent"
@@ -20,7 +20,7 @@ ActiveRecord::Schema[7.2].define(version: 2021_11_09_041341) do
     t.text "data"
     t.string "creator"
     t.string "creator_url"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.timestamptz "created_at", default: -> { "now()" }, null: false
+    t.timestamptz "updated_at", default: -> { "now()" }, null: false
   end
 end
