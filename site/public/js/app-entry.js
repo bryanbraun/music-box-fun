@@ -9,6 +9,7 @@ import { FileDropdown } from './components/file-dropdown.js';
 import { MusicBoxTypeSelect } from './components/music-box-type-select.js';
 import { Tempo } from './components/tempo.js';
 import { SnapToGridSelect } from './components/snap-to-grid-select.js';
+import { ThickerStaffLinesToggle } from './components/thicker-staff-lines-toggle.js';
 import { Footnote } from './components/footnote.js';
 import { SongTitle } from './components/song-title.js';
 import { PitchHeader } from './components/pitch-header.js';
@@ -40,6 +41,7 @@ import { urlManager } from './subscribers/url-manager.js';
 import { audioPlayer } from './subscribers/audio-player.js';
 import { songPauser } from './subscribers/song-pauser.js';
 import { setupTextSelectionListener } from './subscribers/text-selection-listener.js';
+import { loadLocalPreferences, subscribeLocalPreferencesToState } from './subscribers/local-preferences.js';
 
 import { setupTestObjects } from './test.js';
 
@@ -52,6 +54,9 @@ urlManager.getStateFromUrlAsync().then(urlState => {
   if (urlState) {
     musicBoxStore.state.songState = urlState;
   }
+
+  loadLocalPreferences();
+  subscribeLocalPreferencesToState();
 
   // Things we should set up before rendering components.
   playheadObserver.setup(); // because we observe new notes as they are created.
@@ -68,6 +73,7 @@ urlManager.getStateFromUrlAsync().then(urlState => {
   new MusicBoxTypeSelect().render();
   new Tempo().render();
   new SnapToGridSelect().render();
+  new ThickerStaffLinesToggle().render();
   new Footnote().render();
   new SongTitle().render();
   new PitchHeader().render();

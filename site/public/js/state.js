@@ -8,6 +8,7 @@ import { DEFAULT_TEMPO } from './constants.js';
 export const initialState = {
   appState: {
     snapTo: 'grid',
+    thickerStaffLines: false,
     isPlaying: false,
     audioDisabledMessageStatus: 'hidden',
     offCanvasSidebarFocused: 'none',

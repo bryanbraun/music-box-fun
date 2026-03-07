@@ -787,6 +787,36 @@ div:has(> .file-dropdown__item) {
   margin-right: 0.5rem;
 }
 
+.thicker-staff-lines-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.thicker-staff-lines-toggle input[type="checkbox"][disabled] + span {
+  color: var(--mb-gray-50);
+}
+
+/* 15-note treble */
+.box-type-15.thicker-staff-lines #E4::before,
+.box-type-15.thicker-staff-lines #G4::before,
+.box-type-15.thicker-staff-lines #B4::before,
+.box-type-15.thicker-staff-lines #D5::before,
+.box-type-15.thicker-staff-lines #F5::before,
+/* 20-note bass */
+.box-type-20.thicker-staff-lines #D4::before,
+.box-type-20.thicker-staff-lines #F4::before,
+.box-type-20.thicker-staff-lines #A4::before,
+/* 20-note treble */
+.box-type-20.thicker-staff-lines #E5::before,
+.box-type-20.thicker-staff-lines #G5::before,
+.box-type-20.thicker-staff-lines #B5::before,
+.box-type-20.thicker-staff-lines #D6::before,
+.box-type-20.thicker-staff-lines #F6::before {
+  border-left-width: 3px;
+}
+
+
 .footnote p {
   font-size: 12px;
   margin: 0;
